@@ -1,0 +1,190 @@
+extend
+class ZPlayer{
+	int //Movement
+		JumpCost,
+		SprintCost,
+		DashCost,
+		DashTimer,
+		DashCooldown,
+		IdleRechargeBonus;
+		
+	double //Movement
+		   SprintSpeed,
+		   DashSpeed;
+
+	//Movement
+	Property JumpCost: JumpCost;
+	Property SprintSpeed: SprintSpeed;
+	Property SprintCost: SprintCost;
+	Property DashSpeed: DashSpeed;
+	Property DashCost: DashCost;
+	Property DashTimer: DashTimer;
+	Property DashCooldown: DashCooldown;
+	Property IdleRechargeBonus: IdleRechargeBonus;
+
+	Default{
+		//Movement
+		Player.ForwardMove ZPlayerDefaults.WALK_SPEED, ZPlayerDefaults.WALK_SPEED/2;
+		Player.SideMove ZPlayerDefaults.STRAFE_SPEED, ZPlayerDefaults.STRAFE_SPEED/2;
+		Player.ViewBob ZPlayerDefaults.WALK_SPEED;
+		Player.JumpZ 8;
+		ZPlayer.JumpCost ZPlayerDefaults.JUMP_COST;
+		ZPlayer.SprintSpeed ZPlayerDefaults.SPRINT_SPEED;
+		ZPlayer.SprintCost ZPlayerDefaults.SPRINT_COST;
+		ZPlayer.DashSpeed ZPlayerDefaults.DASH_SPEED;
+		ZPlayer.DashCost ZPlayerDefaults.DASH_COST;
+		ZPlayer.DashTimer ZPlayerDefaults.DASH_TIMER;
+		ZPlayer.DashCooldown ZPlayerDefaults.DASH_COOLDOWN;
+		ZPlayer.IdleRechargeBonus ZPlayerDefaults.IDLE_RECHARGE_BONUS;
+	}
+	
+	override
+	void CheckJump(){
+		let player=self.player;
+		// [RH] check for jump
+		if(player.cmd.buttons&BT_JUMP){
+			if(player.crouchoffset != 0){
+				// Jumping while crouching will force an un-crouch but not jump
+				player.crouching = 1;
+			}else if(energy<JumpCost){
+				return;
+			}else if(waterlevel >= 2){
+				Vel.Z = 4 * Speed;
+			}else if(bNoGravity){
+				Vel.Z = 3.;
+			}else if(level.IsJumpingAllowed()&&player.onground&&player.jumpTics==0){
+				energy-=JumpCost;//Energy Usage for Jumping
+				double jumpvelz=JumpZ*35/TICRATE;
+				double jumpfac=0;
+				
+				// [BC] If the player has the high jump power, double his jump velocity.
+				// (actually, pick the best factors from all active items.)
+				for (let p=Inv; p!=null; p=p.Inv){
+					let pp=PowerHighJump(p);
+					if(pp){
+						double f=pp.Strength;
+						if(f>jumpfac)jumpfac=f;
+					}
+				}
+				if(jumpfac>0)jumpvelz*=jumpfac;
+				
+				Vel.Z+=jumpvelz;
+				bOnMobj=false;
+				player.jumpTics=-1;
+				if(!(player.cheats&CF_PREDICTING))A_PlaySound("*jump", CHAN_BODY);
+			}
+		}
+	}
+}
+
+class ZHandler_Sprint:ZHandler{
+	override
+	void OnRegister(){
+		super.OnRegister();
+		SetOrder(int('Sprint'));
+	}
+	
+	override
+	bool InputProcess(InputEvent e){
+		//e.KeyScan=Bindings.GetKeysForCommand("+use")
+		return false;
+	}
+	
+	override
+	void WorldTick(){
+		if(!ActivePlayer)return;
+		//Sprinting
+		if((playerInfo.original_cmd.buttons & BT_SPEED) &&
+		   (playerInfo.original_cmd.buttons & BT_FORWARD) &&
+		   (ActivePlayer.energy>ActivePlayer.SprintCost) &&
+		   (ActivePlayer.health>ActivePlayer.RunHealth)){
+			ActivePlayer.energy=ActivePlayer.energy-ActivePlayer.SprintCost;
+			ActivePlayer.A_TakeInventory("ZBackCompensate");
+			ActivePlayer.A_GiveInventory("ZSprintCompensate");
+		//Backstep
+		}else if(playerInfo.cmd.buttons & BT_BACK){
+			ActivePlayer.A_TakeInventory("ZSprintCompensate");
+			ActivePlayer.A_GiveInventory("ZBackCompensate");
+		}else{
+			ActivePlayer.A_TakeInventory("ZBackCompensate");
+			ActivePlayer.A_TakeInventory("ZSprintCompensate");
+		}
+	}
+}
+
+class ZCompensate:PowerSpeed{
+	Default{
+		Inventory.InterHubAmount 0;
+		Powerup.Duration 0x7FFFFFFD;
+	}
+}
+
+class ZBackCompensate:ZCompensate{
+	override
+	double GetSpeedFactor(){
+		return ZPlayer(owner).SideMove1;
+	}
+}
+
+class ZSprintCompensate:ZCompensate{
+	override
+	double GetSpeedFactor(){
+		return ZPlayer(owner).SprintSpeed;
+	}
+}
+
+class ZHandler_Dash:ZHandler{
+	bool DashAvailable;
+	int CurrentDashButton,
+		DashTimer,
+		DashCooldown;
+	
+	override
+	void OnRegister(){
+		super.OnRegister();
+		SetOrder(int('Dash'));
+	}
+	
+	override
+	void WorldTick(){
+		if(!ActivePlayer)return;
+		//Dash
+		if(DashCooldown>0)
+			DashCooldown--;
+		else{
+			if(DashTimer>0)
+				DashTimer--;
+			else
+				CurrentDashButton=666;
+			static const int DashKeys[]={
+				BT_FORWARD,
+				BT_BACK,
+				BT_MOVELEFT,
+				BT_MOVERIGHT
+			};
+			for(int i=0; i<4; i++){
+				if(((playerInfo.original_cmd.buttons & ~playerInfo.original_oldbuttons) & DashKeys[i]) &&
+				   (ActivePlayer.energy>ActivePlayer.DashCost)){
+					if(CurrentDashButton==DashKeys[i] && DashTimer>0){
+						ActivePlayer.energy=ActivePlayer.energy-ActivePlayer.DashCost;
+						int midairBoost;
+						if(ActivePlayer.vel.z==0)
+							midairBoost=0;
+						else
+							midairBoost=ActivePlayer.JumpZ;
+						if(i<2)
+							ActivePlayer.A_ChangeVelocity(-1**i/*or cos(i*PI) or 1-2*(i%2)*/*ActivePlayer.DashSpeed, 0, midairBoost, CVF_RELATIVE);
+						else
+							ActivePlayer.A_ChangeVelocity(0, -1**i*ActivePlayer.DashSpeed, midairBoost, CVF_RELATIVE);
+						DashCooldown=ActivePlayer.DashCooldown;
+						DashTimer=0;
+					}else{
+						CurrentDashButton=DashKeys[i];
+						DashTimer=ActivePlayer.DashTimer;
+					}
+					break;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,3 @@
+//Debugging
+server bool z_debug_health=false;
+server bool z_debug_movement=false;

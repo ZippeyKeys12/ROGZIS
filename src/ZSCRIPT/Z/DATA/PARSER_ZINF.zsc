@@ -1,0 +1,177 @@
+class Parser_Zinf{
+	private
+	Array<String> sections;
+	
+	private
+	Array<DataMap> entries;
+
+	static
+	Parser_Zinf Create(String LumpName){
+		return new("Parser_Zinf").LoadLumps(LumpName);
+	}
+
+	Parser_Zinf LoadLumps(String LumpName){
+		static
+		const String limiters[]={
+			//Beginnings
+			"@",
+			"<!--",
+			//Endings
+			"\n",
+			"-->"
+		};
+		static
+		const String charsToDestroy[]={
+			"\t",
+			"\v",
+			"\n",
+			"\f",
+			"\r"
+		};
+		int lump = -1;
+		while(-1!=(lump=Wads.FindLump(LumpName, lump + 1))){
+			String inputFile=Wads.ReadLump(lump);
+			int limiterOfB,
+				limiterOfE;
+			for(int i=0; i<limiters.Size()/2; i++)
+				while(inputFile.IndexOf(limiters[i])>-1){
+					limiterOfB=inputFile.IndexOf(limiters[i]);
+					limiterOfE=inputFile.IndexOf(limiters[i+2], limiterOfB)+limiters[i+2].Length();
+					inputFile.Remove(limiterOfB, limiterOfE-limiterOfB);
+				}
+			for(int i=0; i<charsToDestroy.Size(); i++)
+				inputFile.Replace(charsToDestroy[i],"");
+			Array<String> inputString;
+			inputString.Clear();
+			inputFile.Split(inputString,"[", TOK_SKIPEMPTY);
+			for(int i=0; i<inputString.Size(); i++){
+				String currString=inputString[i];
+				String section=currString.Left(currString.IndexOf("]"));
+				if(Find(section)==-1){
+					sections.Push(section);
+					entries.Push(new("DataMap"));
+				}
+				currString=currString.Mid(currString.IndexOf("]")+1);
+				Array<String> values;
+				values.Clear();
+				currString.Split(values, ";", TOK_SKIPEMPTY);
+				for(int j=0; j<values.Size(); j++)
+					if(values[j].Length()>0){
+						Array<String> entry;
+						entry.Clear();
+						values[j].Split(entry, ":", TOK_SKIPEMPTY);
+						String key=values[j].Left(values[j].IndexOf(":")),
+							   value=values[j].Mid(values[j].IndexOf(":")+1);
+						if(value)
+						entries[Find(section)].Put(key, value);
+					}
+			}
+		}
+		for(int i=0; i<entries.Size(); i++)
+			for(int j=0; j<entries[i].Size(); j++){
+				MapEntry currEntry=entries[i].Index(j);
+				String value=currEntry.value;
+				if(value.IndexOf("<")>-1){
+					bool varNotFound=true;
+					int starter=value.IndexOf("<"),
+						ender=value.IndexOf(">", starter),
+						sectionIndex, scanLength;
+					String varName=value.Mid(starter+1, ender-starter-1),
+						   varKey;
+					MapEntry iterEntry;
+					if(varName.IndexOf(".")==-1){
+						sectionIndex=i;
+						varKey=varName;
+						scanLength=j;
+					}else{
+						Array<String> entry;
+						entry.Clear();
+						varName.Split(entry, ".", TOK_SKIPEMPTY);
+						sectionIndex=Find(entry[0]);
+						varKey=entry[1];
+						scanLength=entries[sectionIndex].Size();
+					}
+					for(int k=0; k<scanLength; k++){
+						if(sectionIndex==-1)break;
+						iterEntry=entries[sectionIndex].Index(k);
+						if(iterEntry.key~==varKey){
+							varNotFound=false;
+							break;
+						}
+					}
+					if(varNotFound)
+						currEntry.value.Replace("<"..varName..">", "N/@");
+					else
+						currEntry.value.Replace("<"..varName..">", iterEntry.value);
+					value=currEntry.value;
+				}
+				if(value.IndexOf("*")>-1||value.IndexOf("/")>-1){
+					Array<String> meth;
+					meth.Clear();
+					value.Split(meth, "*", TOK_SKIPEMPTY);
+					for(int k=0; k<meth.Size(); k++){
+						if(meth[k].IndexOf("/")>-1){
+							Array<String> meth2;
+							meth2.Clear();
+							meth[k].Split(meth2, "/", TOK_SKIPEMPTY);
+							while(meth2.Size()>1){
+								console.printf(meth[k]);
+								if(meth2[0].ToDouble()!=0&&meth2[1].ToDouble()!=0)
+									meth2[0]=meth2[0].ToDouble()/meth2[1].ToDouble().."";
+								meth2.Delete(1);
+							}
+							meth[k]=meth2[0];
+						}
+					}
+					while(meth.Size()>1){
+						if(meth[0].ToDouble()!=0&&meth[1].ToDouble()!=0)
+							meth[0]=meth[0].ToDouble()*meth[1].ToDouble().."";
+						meth.Delete(1);
+					}
+					currEntry.value=meth[0];
+				}
+			}
+		return self;
+	}
+	
+	bool GetBool(String section, String key) const{
+		return entries[Find(section)].GetBool(key);
+	}
+	
+	int GetInt(String section, String key) const{
+		return entries[Find(section)].GetInt(key);
+	}
+	
+	double GetDouble(String section, String key) const{
+		return entries[Find(section)].GetDouble(key);
+	}
+	
+	String Get(String section, String key) const{
+		return entries[Find(section)].Get(key);
+	}
+	
+	bool GetBoolFromArray(String section, String key, int index) const{
+		return GetFromArray(section, key, index).ToInt();
+	}
+	
+	int GetIntFromArray(String section, String key, int index) const{
+		return GetFromArray(section, key, index).ToInt();
+	}
+	
+	double GetDoubleFromArray(String section, String key, int index) const{
+		return GetFromArray(section, key, index).ToDouble();
+	}
+	
+	String GetFromArray(String section, String key, int index) const{
+		Array<String> info;
+		entries[Find(section)].Get(key).Split(info, ",", TOK_SKIPEMPTY);
+		return (0<=index<info.Size())?info[index]:",N/@,";
+	}
+	
+	protected int Find(String section) const{
+		for(int i=0; i<sections.Size(); i++)
+			if(sections[i]~==section)
+				return i;
+		return -1;
+	}
+}

@@ -1,0 +1,43 @@
+class DamageTypes:Registry{
+	bool Add(DamageType DamageType){
+		return DamageType && super.Add(DamageType);
+	}
+
+	DamageType Get(Name Name){
+		return DamageType(super.Get(Name));
+	}
+}
+
+class DamageType:RegistryItem{
+	private
+	int DamageFlags;
+	
+	private
+	Name Name;
+	
+	private
+	DataMap Factors;
+	
+	static
+	DamageType Create(Name Name, int ArmorPlating=1, int MagneticShield=1, int PlasmaShield=1, int HardLight=1, int DamageFlags=0){
+		return new("DamageType").Init(Name, ArmorPlating.."", MagneticShield.."", PlasmaShield.."", HardLight.."", DamageFlags);
+	}
+	
+	DamageType Init(Name Name, String ArmorPlating, String MagneticShield, String PlasmaShield, String HardLight, int DamageFlags=0){
+		self.Name=Name;
+		Factors=new("DataMap");
+		Factors.Put("ArmorPlating",		ArmorPlating);
+		Factors.Put("MagneticShield",	MagneticShield);
+		Factors.Put("PlasmaShield",		PlasmaShield);
+		Factors.Put("HardLight",		HardLight);
+		self.DamageFlags=DamageFlags;
+		return self;
+	}
+	
+	override
+	Name GetName(){return Name;}
+	
+	int GetFactor(String ArmorType){return Factors.GetInt(ArmorType);}
+	
+	int GetFlags(){return DamageFlags;}
+}

@@ -1,0 +1,81 @@
+class DataMap{
+	Array<MapEntry> entries;
+	
+	void Put(String key, String value){
+		if(!key || !value || key.Length()==0 || value.Length()==0) return;
+		if(Get(key)=="")entries.Push(MapEntry.Create(key, value));
+		else
+			for(int i=0; i<entries.Size(); i++)
+				if(entries[i].key~==key)
+					entries[i]=MapEntry.Create(key, value);
+	}
+	
+	String Get(String key) const{
+		for(int i=0; i<entries.Size(); i++)
+			if(!entries[i]){
+				entries.Delete(i);
+				entries.ShrinkToFit();
+				i--;
+			}else if(entries[i].key~==key)
+				return entries[i].value;
+		return "";
+	}
+	
+	bool GetBool(String key) const{
+		return GetInt(key)!=0;
+	}
+	
+	int GetInt(String key) const{
+		return Get(key).ToInt();
+	}
+	
+	double GetDouble(String key) const{
+		return Get(key).ToDouble();
+	}
+	
+	String Remove(String key){
+		for(int i=0; i<entries.Size(); i++)
+			if(!entries[i]){
+				entries.Delete(i);
+				entries.ShrinkToFit();
+			}else if(entries[i].key~==key){
+				String val=entries[i].value;
+				entries.Delete(i);
+				entries.ShrinkToFit();
+				return val;
+			}
+		return "";
+	}
+	
+	int Size() const{
+		return entries.Size();
+	}
+	
+	MapEntry Index(int index) const{
+		return entries[index];
+	}
+	
+	String ToString() const{
+		String finalVal="";
+		for(int i=0; i<entries.Size(); i++)
+			finalVal=String.Format("%s%s=%s\n",finalVal,entries[i].key,entries[i].value);
+		return finalVal;
+	}
+	
+	void Clear(){
+		entries.Clear();
+	}
+}
+
+class MapEntry{
+	String key;
+	String value;
+	
+	static
+	MapEntry Create(String key, String value){
+		MapEntry entry=new("MapEntry");
+		entry.key=key;
+		entry.value=value;
+		return entry;
+	}
+}

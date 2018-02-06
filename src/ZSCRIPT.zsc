@@ -1,0 +1,28 @@
+version "3.2.5"
+
+//SETTINGS
+#include "SETTINGS"
+
+//SYSTEM
+#include "ZSCRIPT/Z/SYS/MANAGER.zsc"
+#include "ZSCRIPT/Z/SYS/DAMAGETYPE.zsc"
+
+//DATA MANAGEMENT
+#include "ZSCRIPT/Z/DATA/DATAMAP.zsc"
+#include "ZSCRIPT/Z/DATA/PARSER_ZINF.zsc"
+#include "ZSCRIPT/Z/DATA/PARSER_CSV.zsc"
+#include "ZSCRIPT/Z/DATA/REGISTRIES.zsc"
+
+//UI
+#include "ZSCRIPT/Z/UI/HUD.zsc"
+
+//PLAYER
+#include "ZSCRIPT/Z/PLYR/MAIN.zsc"
+#include "ZSCRIPT/Z/PLYR/CHEATS.zsc"
+#include "ZSCRIPT/Z/PLYR/HEALTH.zsc"
+#include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
+
+//INVENTORY
+#include "ZSCRIPT/Z/INV/ITEM.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR.zsc"
+#include "ZSCRIPT/Z/INV/WEAPON.zsc"

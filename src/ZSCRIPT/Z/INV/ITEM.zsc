@@ -1,0 +1,58 @@
+class Items:Registry{
+	bool Add(Item Item){
+		return Item && super.Add(Item);
+	}
+	
+	Item Get(Name Name) const{
+		return Item(super.Get(Name));
+	}
+	
+	Item GetRand() const{
+		return Item(super.GetRand());
+	}
+}
+
+class Item:RegistryItem{
+	protected
+	int Level,
+		Price,
+		Durability;
+
+	protected
+	Name Name;
+	
+	protected
+	String	Description;
+
+	protected
+	Vector2 Size;
+	
+	static
+	Item Create(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
+		return new("Item").Init(Name, Description, Price, Durability, Width, Height);
+	}
+	
+	Item Init(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
+		self.Name=Name;
+		self.Description=Description;
+		if(Price>0) self.Price=Price;
+		if(Durability>0) self.Durability=Durability;
+		if(Width<=0) Width=1;
+		if(Height<=0) Height=1;
+		self.Size=(Width, Height);
+		return self;
+	}
+
+	override
+	Name GetName() const{return Name;}
+
+	int GetLevel() const{return Level;}
+
+	int GetPrice() const{return Price;}
+
+	int GetDurability() const{return Durability;}
+
+	String getDesc() const{return Description;}
+
+	Vector2 getSize() const{return Size;}
+}

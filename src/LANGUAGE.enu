@@ -1,0 +1,6 @@
+[enu default]
+
+ZMENU_TITLE = "Z Menu";
+
+ZMENU_DEBUGMODE_HEALTH = "Debug Health";
+ZMENU_DEBUGMODE_MOVEMENT = "Debug Movement";

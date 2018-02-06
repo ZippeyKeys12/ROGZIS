@@ -1,0 +1,117 @@
+enum ArmorInfo{
+	//Armor Slots	-	Only One
+	AMR_HEAD		=	1<<0,
+	AMR_TORSO		=	1<<1,
+	AMR_HANDS		=	1<<2,
+	AMR_LEGS		=	1<<3,
+	AMR_FEET		=	1<<4,
+	//Armor Types	-	Multiple
+	AMR_PLATE		=	1<<5,
+	AMR_MAGNET		=	1<<6,
+	AMR_PLASMA		=	1<<7,
+	AMR_LIGHT		=	1<<8,
+	//Attributes	-	Multiple
+	AMR_SEALED		=	1<<9,
+	AMR_THRUST		=	1<<10,
+	AMR_JETPACK		=	1<<11,
+	AMR_MAGNIFY		=	1<<12,
+	AMR_OWNPOWER	=	1<<13,
+};
+
+class Armors:Registry{
+	bool Add(ArmorPiece ArmorPiece){
+		return ArmorPiece && super.Add(ArmorPiece);
+	}
+	
+	ArmorPiece Get(Name Name) const{
+		return ArmorPiece(super.Get(Name));
+	}
+	
+	ArmorPiece GetRand() const{
+		return ArmorPiece(super.GetRand());
+	}
+}
+
+class ArmorPiece:Item{
+	protected
+	int //Shield
+		Shield;
+		/*
+		//Armor
+		Armor,
+		MaxArmor,
+		ArmorAmt,
+		ArmorLvl,
+		
+		//Shield
+		Shield,
+		MaxShield,
+		MaxOvershield,
+		ShieldDivider,
+		ShieldRecharge,
+		ShieldRechargeRate;*/
+
+	protected
+	ArmorInfo Info;
+	
+	DamageTypes DamageTypes;
+
+	static
+	ArmorPiece Create(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1){
+		return new("ArmorPiece").Init(Name, Description, Info, Price, Durability, Width, Height);
+	}
+	
+	protected
+	ArmorPiece Init(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1){
+		if(Width==-1)
+			if(Info & AMR_HEAD)
+				Width=1;
+			else
+				Width=2;
+		if(Height==-1)
+			if(Info & AMR_HEAD)
+				Height=1;
+			else if((Info & AMR_HANDS) || (Info & AMR_FEET))
+				Height=1;
+			else
+				Height=2;
+		self.Info=Info;
+		//self.DamageTypes=ZManager.
+		return ArmorPiece(super.Init(Name, Description, Price, Durability, Width, Height));
+	}
+	
+	virtual
+	void ModifyDamage(in out int Damage, Name DamageType, in out ZPlayer Player){
+		//DamageType DamageType=
+		/*int i;
+		for(i=0; i<DamageTypes.Size(); i+=3)
+			if(DamageType==DamageTypes[i]){
+				//Shield
+				if(DamageTypes[i+1].ToDouble()*Damage<=Shield){
+					Shield-=DamageTypes[i+1].ToDouble()*Damage;
+					Damage=0;
+					break;
+				}else{
+					if(DamageTypes[i+2].ToDouble()*Damage<=Durability){
+					}
+				}
+			}
+		//Shield
+		if(damage<=shield){
+			shield=shield-damage;
+			return 0;
+		}else{
+			//Armor
+			damage=damage-shield;
+			shield=0;
+			if(damage*armorAbsorb<=armor){
+				armor=armor-damage*armorAbsorb;
+				damage=damage*(1-armorAbsorb);
+			}else{
+				damage=damage-armor;
+				armor=0;
+			}
+		}
+		return damage;*/
+	}
+}

@@ -1,0 +1,62 @@
+class ZManager:Thinker{
+	private
+	Items Items;
+
+	private
+	Armors Armors;
+
+	private
+	Weapons Weapons;
+
+	private
+	DamageTypes DamageTypes;
+
+	private
+	Parser_Zinf ParserZinf;
+	
+	Array<String> lol;
+
+	ZManager Init(){
+		ChangeStatNum(STAT_STATIC);
+		Items=new("Items");
+		Armors=new("Armors");
+		Weapons=new("Weapons");
+		DamageTypes=new("DamageTypes");
+		ParserZinf=Parser_Zinf.Create("ZCONFIG");
+		return self;
+	}
+
+	static ZManager Get(){
+		ThinkerIterator it=ThinkerIterator.Create("ZManager",STAT_STATIC);
+		let p=ZManager(it.Next());
+		if(!p)p=new("ZManager").Init();
+		return p;
+	}
+	
+	static void Debug(String str, Name kind){
+		if(kind=="Health" && z_debug_health)
+			console.printf(str);
+		if(kind=="Movement" && z_debug_movement)
+			console.printf(str);
+	}
+	
+	Parser_Zinf Config(){
+		return ParserZinf;
+	}
+
+	Item Item(Name Name) const{
+		return Items.Get(Name);
+	}
+
+	ArmorPiece Armor(Name Name) const{
+		return Armors.Get(Name);
+	}
+
+	ZWeapon Weapon(Name Name) const{
+		return Weapons.Get(Name);
+	}
+
+	DamageType DamageType(Name Name) const{
+		return DamageTypes.Get(Name);
+	}
+}

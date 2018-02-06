@@ -1,0 +1,74 @@
+class ZPlayer:DoomPlayer{
+	bool //General
+		 loadedProp,
+		 //Energy
+		 energyRecharging;
+	
+	int //Oxygen
+		oxygen,
+		maxOxygen,
+		
+		//Energy
+		energy,
+		maxEnergy,
+		energyRecharge,
+		energyRecharger,
+		energyRechargeRate;
+		
+	Actor AimTarget;
+
+	//Oxygen
+	Property Oxygen: oxygen;
+	Property MaxOxygen: maxOxygen;
+	
+	//Energy
+	Property Energy: energy;
+	Property MaxEnergy: maxEnergy;
+	Property EnergyRecharge: energyRecharge;
+	Property EnergyRechargeRate: energyRechargeRate;
+	
+	Default{
+		//Oxygen
+		ZPlayer.Oxygen ZPlayerDefaults.MAX_OXYGEN;
+		ZPlayer.MaxOxygen ZPlayerDefaults.MAX_OXYGEN;
+		//Energy
+		ZPlayer.Energy ZPlayerDefaults.MAX_ENERGY;
+		ZPlayer.MaxEnergy ZPlayerDefaults.MAX_ENERGY;
+		ZPlayer.EnergyRecharge ZPlayerDefaults.ENERGY_RECHARGE;
+		ZPlayer.EnergyRechargeRate TICRATE*ZPlayerDefaults.ENERGY_RECHARGE_RATE;
+	}
+	
+	override
+	void PostBeginPlay(){
+		super.PostBeginPlay();
+		Parser_Zinf Config=ZManager.Get().Config();
+		//Player
+			//Health
+			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
+			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
+			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH"));
+			//Armor
+	}
+	
+	override
+	void Tick(){
+		//Handle Voodoo Dolls
+		if (!player || !player.mo || player.mo != self) return super.Tick();
+		//Get Actor being aimed at
+		FTranslatedLineTarget t;
+		AimLineAttack(angle, 2048, t, .5);
+		AimTarget=t.linetarget;
+		super.Tick();
+	}
+}
+
+class ZHandler:EventHandler{
+	ZPlayer activePlayer;
+	PlayerInfo playerInfo;
+	
+	override
+	void PlayerEntered(PlayerEvent e){
+		activePlayer=ZPlayer(players[e.playernumber].mo);
+		playerInfo=activePlayer.player;
+	}
+}

@@ -1,0 +1,44 @@
+class Parser_CSV{
+	Array<CSVRow> Rows;
+	
+	static
+	Parser_CSV Create(String LumpName){
+		return new("Parser_CSV").LoadLumps(LumpName);
+	}
+	
+	Parser_CSV LoadLumps(String LumpName){
+		int Lump = -1;
+		while(-1!=(Lump=Wads.FindLump(LumpName, Lump + 1))){
+			String InputFile=Wads.ReadLump(Lump);
+			Array<String> Temp;
+			Temp.Clear();
+			InputFile.Split(Temp, ",", TOK_SKIPEMPTY);
+			for(int i=0; i<Temp.Size(); i++)
+				Rows.Push(CSVRow.Create(Temp[i]));
+		}
+		return self;
+	}
+	
+	Parser_CSV Clear(){
+		Rows.Clear();
+		return self;
+	}
+}
+
+class CSVRow{
+	Array<String> Values;
+	
+	static
+	CSVRow Create(String Row){
+		return new("CSVRow").Init(Row);
+	}
+	
+	CSVRow Init(String Row){
+		Row.Split(Values, ",", TOK_SKIPEMPTY);
+		return self;
+	}
+	
+	String Get(int Index) const{
+		return Values[Index];
+	}
+}

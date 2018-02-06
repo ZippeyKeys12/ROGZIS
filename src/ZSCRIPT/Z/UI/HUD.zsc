@@ -1,0 +1,91 @@
+Class ZStatusBar : BaseStatusBar{
+	int hDraw, hMax,
+		aDraw, aMax,
+		sDraw, sMax,
+		eDraw, eMax, erMax;
+	ZPlayer playerInst;
+	LinearValueInterpolator health,
+							armor,
+							shield,
+							energy, energyRecharger;
+	Thinker dsasd;
+	
+	override
+	void Init(){
+		super.Init(); //Prevents Crashes
+		SetSize(0, 640, 480);
+	}
+	
+	override
+	void DrawAutomapHUD(double ticFrac){
+		DoDrawAutomapHUD(Font.CR_RED, Font.CR_UNTRANSLATED);
+	}
+	
+	override
+	void Draw (int state, double TicFrac){
+		super.Draw(state, TicFrac);
+		BeginHUD();
+		int x=70;
+		int y=440;
+		//DrawImage("STATBASE", (320, 0));
+		//Health
+		hDraw=health.getValue();
+		DrawBar("BDYHEAL1", "BLNKSCRN", hDraw, hMax/2, (110.5, -29), 0, 0);
+		if(hDraw>playerInst.maxHealth/2){DrawBar("BDYHEAL2", "BLNKSCRN", hDraw-hMax/2, hMax/2, (110.5, -27), 0, 0);}
+		//Armor
+		aDraw=armor.getValue();
+		DrawBar("BDYARMR1", "BLNKSCRN", aDraw, aMax, (110.5, -42.5), 0, 0);
+		//Shield
+		sDraw=shield.getValue();
+		DrawBar("BDYSHLD1", "BLNKSCRN", sDraw, sMax, (110.5, -41), 0, 0);
+		//DrawImage("BARDVDR1", (320, -29));
+		//Energy528
+		DrawBar("BDYNRGY1", "BLNKSCRN", energy.getValue(), eMax, (-110.5, -8.5), 0, 0);
+		if(!(playerInst.shield>=sMax && playerInst.energy>=eMax))
+		{DrawBar("BDYNRGY2", "BDYNRGYO", erMax-energyRecharger.getValue(), erMax, (-110.5, -7.5), 0, 0);}
+	}
+	
+	override
+	void Tick(){
+		super.Tick();
+		
+		//Init
+		if(!playerInst||hMax!=playerInst.maxHealth||aMax!=playerInst.maxArmor||
+		   sMax!=playerInst.maxShield||eMax!=playerInst.maxEnergy||
+		   erMax!=playerInst.energyRechargeRate){
+			
+			playerInst=ZPlayer(CPlayer.mo);
+			//Health
+			hMax=playerInst.maxHealth;
+			health=LinearValueInterpolator.Create(0, .03*hMax);
+			health.Reset(CPlayer.health);
+			//Armor
+			aMax=playerInst.maxArmor;
+			armor=LinearValueInterpolator.Create(0, .03*aMax);
+			armor.Reset(playerInst.armor);
+			//Shield
+			sMax=playerInst.maxShield;
+			shield=LinearValueInterpolator.Create(0, .03*sMax);
+			shield.Reset(playerInst.shield);
+			//Energy
+			eMax=playerInst.maxEnergy;
+			energy=LinearValueInterpolator.Create(0, .03*eMax);
+			energy.Reset(playerInst.energy);
+			erMax=playerInst.energyRechargeRate;
+			energyRecharger=LinearValueInterpolator.Create(0, .03*erMax);
+			energyRecharger.Reset(playerInst.energyRecharger);
+			//End Init
+		}else{
+			//Health
+			health.Update(playerInst.health);
+			//Armor
+			armor.Update(playerInst.armor);
+			//Shield
+			shield.Update(playerInst.shield);
+			//Energy
+			energy.Update(playerInst.energy);
+			energyRecharger.Update(playerInst.energyRecharger);
+		}
+		
+	}
+}
