@@ -19,17 +19,14 @@ enum ArmorInfo{
 };
 
 class Armors:Registry{
-	bool Add(ArmorPiece ArmorPiece){
-		return ArmorPiece && super.Add(ArmorPiece);
-	}
+	bool Add(ArmorPiece ArmorPiece)
+	{return ArmorPiece && super.Add(ArmorPiece);}
 	
-	ArmorPiece Get(Name Name) const{
-		return ArmorPiece(super.Get(Name));
-	}
+	ArmorPiece Get(Name Name) const
+	{return ArmorPiece(super.Get(Name));}
 	
-	ArmorPiece GetRand() const{
-		return ArmorPiece(super.GetRand());
-	}
+	ArmorPiece GetRand() const
+	{return ArmorPiece(super.GetRand());}
 }
 
 class ArmorPiece:Item{
@@ -57,9 +54,8 @@ class ArmorPiece:Item{
 	DamageTypes DamageTypes;
 
 	static
-	ArmorPiece Create(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1){
-		return new("ArmorPiece").Init(Name, Description, Info, Price, Durability, Width, Height);
-	}
+	ArmorPiece Create(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1)
+	{return new("ArmorPiece").Init(Name, Description, Info, Price, Durability, Width, Height);}
 	
 	protected
 	ArmorPiece Init(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1){

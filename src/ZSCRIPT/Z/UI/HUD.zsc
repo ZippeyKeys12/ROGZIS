@@ -8,7 +8,6 @@ Class ZStatusBar : BaseStatusBar{
 							armor,
 							shield,
 							energy, energyRecharger;
-	Thinker dsasd;
 	
 	override
 	void Init(){
@@ -48,7 +47,6 @@ Class ZStatusBar : BaseStatusBar{
 	override
 	void Tick(){
 		super.Tick();
-		
 		//Init
 		if(!playerInst||hMax!=playerInst.maxHealth||aMax!=playerInst.maxArmor||
 		   sMax!=playerInst.maxShield||eMax!=playerInst.maxEnergy||

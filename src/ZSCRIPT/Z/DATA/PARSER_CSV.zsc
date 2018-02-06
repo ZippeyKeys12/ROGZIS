@@ -2,9 +2,8 @@ class Parser_CSV{
 	Array<CSVRow> Rows;
 	
 	static
-	Parser_CSV Create(String LumpName){
-		return new("Parser_CSV").LoadLumps(LumpName);
-	}
+	Parser_CSV Create(String LumpName)
+	{return new("Parser_CSV").LoadLumps(LumpName);}
 	
 	Parser_CSV LoadLumps(String LumpName){
 		int Lump = -1;
@@ -29,16 +28,14 @@ class CSVRow{
 	Array<String> Values;
 	
 	static
-	CSVRow Create(String Row){
-		return new("CSVRow").Init(Row);
-	}
+	CSVRow Create(String Row)
+	{return new("CSVRow").Init(Row);}
 	
 	CSVRow Init(String Row){
 		Row.Split(Values, ",", TOK_SKIPEMPTY);
 		return self;
 	}
 	
-	String Get(int Index) const{
-		return Values[Index];
-	}
+	String Get(int Index) const
+	{return Values[Index];}
 }

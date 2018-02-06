@@ -21,17 +21,14 @@ class DataMap{
 		return "";
 	}
 	
-	bool GetBool(String key) const{
-		return GetInt(key)!=0;
-	}
+	bool GetBool(String key) const
+	{return GetInt(key);}
 	
-	int GetInt(String key) const{
-		return Get(key).ToInt();
-	}
+	int GetInt(String key) const
+	{return Get(key).ToInt();}
 	
-	double GetDouble(String key) const{
-		return Get(key).ToDouble();
-	}
+	double GetDouble(String key) const
+	{return Get(key).ToDouble();}
 	
 	String Remove(String key){
 		for(int i=0; i<entries.Size(); i++)
@@ -47,13 +44,11 @@ class DataMap{
 		return "";
 	}
 	
-	int Size() const{
-		return entries.Size();
-	}
+	int Size() const
+	{return entries.Size();}
 	
-	MapEntry Index(int index) const{
-		return entries[index];
-	}
+	MapEntry Index(int index) const
+	{return entries[index];}
 	
 	String ToString() const{
 		String finalVal="";
@@ -62,9 +57,8 @@ class DataMap{
 		return finalVal;
 	}
 	
-	void Clear(){
-		entries.Clear();
-	}
+	void Clear()
+	{entries.Clear();}
 }
 
 class MapEntry{

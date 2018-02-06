@@ -15,12 +15,12 @@ class Registry{
 		return null;
 	}
 
-	RegistryItem GetRand() const{
-		if(RegistryItems.Size()==0)return null;
-		return RegistryItems[random(0,RegistryItems.Size()-1)];
-	}
+	RegistryItem GetRand() const
+	{return RegistryItems.Size()==0?null:RegistryItems[random(0,RegistryItems.Size()-1)];}
 }
 
 class RegistryItem{
-	virtual Name GetName() const{return '';}
+	virtual
+	Name GetName() const
+	{return '';}
 }

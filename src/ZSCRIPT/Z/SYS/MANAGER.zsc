@@ -40,23 +40,18 @@ class ZManager:Thinker{
 			console.printf(str);
 	}
 	
-	Parser_Zinf Config(){
-		return ParserZinf;
-	}
+	Parser_Zinf Config() const
+	{return ParserZinf;}
 
-	Item Item(Name Name) const{
-		return Items.Get(Name);
-	}
+	Item Item(Name Name) const
+	{return Items.Get(Name);}
 
-	ArmorPiece Armor(Name Name) const{
-		return Armors.Get(Name);
-	}
+	ArmorPiece Armor(Name Name) const
+	{return Armors.Get(Name);}
 
-	ZWeapon Weapon(Name Name) const{
-		return Weapons.Get(Name);
-	}
+	ZWeapon Weapon(Name Name) const
+	{return Weapons.Get(Name);}
 
-	DamageType DamageType(Name Name) const{
-		return DamageTypes.Get(Name);
-	}
+	DamageType DamageType(Name Name) const
+	{return DamageTypes.Get(Name);}
 }

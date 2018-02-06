@@ -6,9 +6,8 @@ class Parser_Zinf{
 	Array<DataMap> entries;
 
 	static
-	Parser_Zinf Create(String LumpName){
-		return new("Parser_Zinf").LoadLumps(LumpName);
-	}
+	Parser_Zinf Create(String LumpName)
+	{return new("Parser_Zinf").LoadLumps(LumpName);}
 
 	Parser_Zinf LoadLumps(String LumpName){
 		static
@@ -134,33 +133,26 @@ class Parser_Zinf{
 		return self;
 	}
 	
-	bool GetBool(String section, String key) const{
-		return entries[Find(section)].GetBool(key);
-	}
+	bool GetBool(String section, String key) const
+	{return entries[Find(section)].GetBool(key);}
 	
-	int GetInt(String section, String key) const{
-		return entries[Find(section)].GetInt(key);
-	}
+	int GetInt(String section, String key) const
+	{return entries[Find(section)].GetInt(key);}
 	
-	double GetDouble(String section, String key) const{
-		return entries[Find(section)].GetDouble(key);
-	}
+	double GetDouble(String section, String key) const
+	{return entries[Find(section)].GetDouble(key);}
 	
-	String Get(String section, String key) const{
-		return entries[Find(section)].Get(key);
-	}
+	String Get(String section, String key) const
+	{return entries[Find(section)].Get(key);}
 	
-	bool GetBoolFromArray(String section, String key, int index) const{
-		return GetFromArray(section, key, index).ToInt();
-	}
+	bool GetBoolFromArray(String section, String key, int index) const
+	{return GetFromArray(section, key, index).ToInt();}
 	
-	int GetIntFromArray(String section, String key, int index) const{
-		return GetFromArray(section, key, index).ToInt();
-	}
+	int GetIntFromArray(String section, String key, int index) const
+	{return GetFromArray(section, key, index).ToInt();}
 	
-	double GetDoubleFromArray(String section, String key, int index) const{
-		return GetFromArray(section, key, index).ToDouble();
-	}
+	double GetDoubleFromArray(String section, String key, int index) const
+	{return GetFromArray(section, key, index).ToDouble();}
 	
 	String GetFromArray(String section, String key, int index) const{
 		Array<String> info;

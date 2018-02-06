@@ -1,11 +1,9 @@
 class DamageTypes:Registry{
-	bool Add(DamageType DamageType){
-		return DamageType && super.Add(DamageType);
-	}
+	bool Add(DamageType DamageType)
+	{return DamageType && super.Add(DamageType);}
 
-	DamageType Get(Name Name){
-		return DamageType(super.Get(Name));
-	}
+	DamageType Get(Name Name) const
+	{return DamageType(super.Get(Name));}
 }
 
 class DamageType:RegistryItem{
@@ -35,9 +33,12 @@ class DamageType:RegistryItem{
 	}
 	
 	override
-	Name GetName(){return Name;}
+	Name GetName() const
+	{return Name;}
 	
-	int GetFactor(String ArmorType){return Factors.GetInt(ArmorType);}
+	int GetFactor(String ArmorType) const
+	{return Factors.GetInt(ArmorType);}
 	
-	int GetFlags(){return DamageFlags;}
+	int GetFlags() const
+	{return DamageFlags;}
 }

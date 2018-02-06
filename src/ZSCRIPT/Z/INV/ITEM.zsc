@@ -1,15 +1,12 @@
 class Items:Registry{
-	bool Add(Item Item){
-		return Item && super.Add(Item);
-	}
+	bool Add(Item Item)
+	{return Item && super.Add(Item);}
 	
-	Item Get(Name Name) const{
-		return Item(super.Get(Name));
-	}
+	Item Get(Name Name) const
+	{return Item(super.Get(Name));}
 	
-	Item GetRand() const{
-		return Item(super.GetRand());
-	}
+	Item GetRand() const
+	{return Item(super.GetRand());}
 }
 
 class Item:RegistryItem{
@@ -28,9 +25,8 @@ class Item:RegistryItem{
 	Vector2 Size;
 	
 	static
-	Item Create(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
-		return new("Item").Init(Name, Description, Price, Durability, Width, Height);
-	}
+	Item Create(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0)
+	{return new("Item").Init(Name, Description, Price, Durability, Width, Height);}
 	
 	Item Init(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
 		self.Name=Name;
@@ -44,15 +40,21 @@ class Item:RegistryItem{
 	}
 
 	override
-	Name GetName() const{return Name;}
+	Name GetName() const
+	{return Name;}
 
-	int GetLevel() const{return Level;}
+	int GetLevel() const
+	{return Level;}
 
-	int GetPrice() const{return Price;}
+	int GetPrice() const
+	{return Price;}
 
-	int GetDurability() const{return Durability;}
+	int GetDurability() const
+	{return Durability;}
 
-	String getDesc() const{return Description;}
+	String getDesc() const
+	{return Description;}
 
-	Vector2 getSize() const{return Size;}
+	Vector2 getSize() const
+	{return Size;}
 }

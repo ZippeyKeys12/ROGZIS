@@ -1,5 +1,5 @@
 GameInfo {
 	PlayerClasses = "ZPlayer"
 	StatusBarClass = "ZStatusBar"
-	EventHandlers = "StartupHandler",  "ZHandler_Recharger", "ZHandler_Sprint", "ZHandler_Dash"
+	EventHandlers = "ZHandler_Recharger", "ZHandler_Sprint", "ZHandler_Dash"
 }
