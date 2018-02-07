@@ -11,9 +11,9 @@ class Items:Registry{
 
 class Item:RegistryItem{
 	protected
-	int Level,
-		Price,
-		Durability;
+	int Price,
+		Durability,
+		MaxDurability;
 
 	protected
 	Name Name;
@@ -32,7 +32,7 @@ class Item:RegistryItem{
 		self.Name=Name;
 		self.Description=Description;
 		if(Price>0) self.Price=Price;
-		if(Durability>0) self.Durability=Durability;
+		if(Durability>0) self.Durability=MaxDurability=Durability;
 		if(Width<=0) Width=1;
 		if(Height<=0) Height=1;
 		self.Size=(Width, Height);
@@ -43,18 +43,15 @@ class Item:RegistryItem{
 	Name GetName() const
 	{return Name;}
 
-	int GetLevel() const
-	{return Level;}
-
 	int GetPrice() const
 	{return Price;}
 
 	int GetDurability() const
 	{return Durability;}
 
-	String getDesc() const
+	String GetDesc() const
 	{return Description;}
 
-	Vector2 getSize() const
+	Vector2 GetSize() const
 	{return Size;}
 }

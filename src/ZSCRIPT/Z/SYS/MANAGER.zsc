@@ -23,7 +23,7 @@ class ZManager:Thinker{
 		Weapons=new("Weapons");
 		ParserZinf=Parser_Zinf.Create("ZCONFIG");
 		//For registration
-		int i=0; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
+		int i=1; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
 		//DamageTypes
 		DamageTypes=new("DamageTypes");
 		while("N/@" != (LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
