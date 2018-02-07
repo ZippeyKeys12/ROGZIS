@@ -54,11 +54,12 @@ class ArmorPiece:Item{
 	DamageTypes DamageTypes;
 
 	static
-	ArmorPiece Create(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1)
+	ArmorPiece Create(String Name, String Description, ArmorInfo Info=0, int Price=0, int Durability=0, int Width=-1, int Height=-1)
+	
 	{return new("ArmorPiece").Init(Name, Description, Info, Price, Durability, Width, Height);}
 	
 	protected
-	ArmorPiece Init(String Name, String Description, ArmorInfo Info, int Price=0, int Durability=0, int Width=-1, int Height=-1){
+	ArmorPiece Init(String Name, String Description, ArmorInfo Info, int Price, int Durability, int Width, int Height){
 		if(Width==-1)
 			if(Info & AMR_HEAD)
 				Width=1;

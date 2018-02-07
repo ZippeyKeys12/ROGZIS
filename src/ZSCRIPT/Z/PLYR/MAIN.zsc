@@ -46,7 +46,7 @@ class ZPlayer:DoomPlayer{
 			//Health
 			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
 			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
-			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH"));
+			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
 			//Armor
 	}
 	

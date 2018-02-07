@@ -1,0 +1,6 @@
+Name	Magnetic Repulsion	Armor Plating	Plasma Shield	Hard Light	Flags
+Armor-Piercing Bullets	0.50	1.25	0.75	1.00	
+Plasma	0.00	0.75	1.25	1.00	
+Hard Light	0.00	1.25	1.00	1.25	
+Concentrated Laser	0.00	1.50	1.50	-0.50	
+Radiation	0.00	0.00	1.00	1.00	DMG_ZONE

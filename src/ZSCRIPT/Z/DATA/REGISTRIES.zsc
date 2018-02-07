@@ -17,6 +17,12 @@ class Registry{
 
 	RegistryItem GetRand() const
 	{return RegistryItems.Size()==0?null:RegistryItems[random(0,RegistryItems.Size()-1)];}
+	
+	RegistryItem Index(int Index) const
+	{return RegistryItems[Index];}
+	
+	int Size() const
+	{return RegistryItems.Size();}
 }
 
 class RegistryItem{

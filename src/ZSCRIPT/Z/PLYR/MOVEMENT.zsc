@@ -121,14 +121,12 @@ class ZCompensate:PowerSpeed{
 
 class ZBackCompensate:ZCompensate{
 	override
-	double GetSpeedFactor()
-	{return ZPlayer(owner).SideMove1;}
+	double GetSpeedFactor(){return ZPlayer(owner).SideMove1;}
 }
 
 class ZSprintCompensate:ZCompensate{
 	override
-	double GetSpeedFactor()
-	{return ZPlayer(owner).SprintSpeed;}
+	double GetSpeedFactor(){return ZPlayer(owner).SprintSpeed;}
 }
 
 class ZHandler_Dash:ZHandler{

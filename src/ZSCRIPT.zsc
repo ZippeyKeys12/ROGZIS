@@ -10,7 +10,7 @@ version "3.2.5"
 //DATA MANAGEMENT
 #include "ZSCRIPT/Z/DATA/DATAMAP.zsc"
 #include "ZSCRIPT/Z/DATA/PARSER_ZINF.zsc"
-#include "ZSCRIPT/Z/DATA/PARSER_CSV.zsc"
+#include "ZSCRIPT/Z/DATA/PARSER_TSV.zsc"
 #include "ZSCRIPT/Z/DATA/REGISTRIES.zsc"
 
 //UI
