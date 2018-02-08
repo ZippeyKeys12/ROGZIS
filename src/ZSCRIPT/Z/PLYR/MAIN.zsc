@@ -41,13 +41,12 @@ class ZPlayer:DoomPlayer{
 	override
 	void PostBeginPlay(){
 		super.PostBeginPlay();
-		Parser_Zinf Config=ZManager.Get().Config();
+		Parser_Zinf Config=ZManager.Config();
 		//Player
 			//Health
 			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
 			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
 			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
-			//Armor
 	}
 	
 	override

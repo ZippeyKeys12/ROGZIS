@@ -13,9 +13,8 @@ class ZManager:Thinker{
 
 	private
 	Parser_Zinf ParserZinf;
-	
-	Array<String> lol;
 
+	private
 	ZManager Init(){
 		ChangeStatNum(STAT_STATIC);
 		Items=new("Items");
@@ -36,12 +35,13 @@ class ZManager:Thinker{
 					if(Flags[k]~=="DMG_ZONE")
 						ActualFlags|=DMG_ZONE;
 				//Registration
-				DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetInt(1), Row.GetInt(2), Row.GetInt(3), Row.GetInt(4), ActualFlags));
+				DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetDouble(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), ActualFlags));
 			}
 		}
 		return self;
 	}
 
+	private
 	static
 	ZManager Get(){
 		ThinkerIterator it=ThinkerIterator.Create("ZManager",STAT_STATIC);
@@ -58,18 +58,23 @@ class ZManager:Thinker{
 			console.printf(str);
 	}
 	
-	Parser_Zinf Config() const
-	{return ParserZinf;}
+	static
+	Parser_Zinf Config()
+	{return Get().ParserZinf;}
 
-	Item Item(Name Name) const
-	{return Items.Get(Name);}
+	static
+	Item Item(Name Name)
+	{return Get().Items.Get(Name);}
 
-	ArmorPiece Armor(Name Name) const
-	{return Armors.Get(Name);}
+	static
+	ArmorPiece Armor(Name Name)
+	{return Get().Armors.Get(Name);}
 
-	ZWeapon Weapon(Name Name) const
-	{return Weapons.Get(Name);}
+	static
+	ZWeapon Weapon(Name Name)
+	{return Get().Weapons.Get(Name);}
 
-	ZDamageType DamageType(Name Name) const
-	{return DamageTypes.Get(Name);}
+	static
+	ZDamageType DamageType(Name Name)
+	{return Get().DamageTypes.Get(Name);}
 }
