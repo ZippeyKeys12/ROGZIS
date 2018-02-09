@@ -1,5 +1,10 @@
 extend
 class ZPlayer{
+	bool DashAvailable;
+	int CurrentDashButton,
+		DashOppurt,
+		DashCountdown;
+
 	int //Movement
 		JumpCost,
 		SprintCost,
@@ -39,6 +44,30 @@ class ZPlayer{
 	}
 	
 	override
+	void HandleMovement(){
+		let player = self.player;
+		// [RH] Check for fast turn around
+		if (player.cmd.buttons & BT_TURN180 && !(player.oldbuttons & BT_TURN180))
+		{
+			player.turnticks = TURN180_TICKS;
+		}
+
+		// Handle movement
+		if (reactiontime)
+		{ // Player is frozen
+			reactiontime--;
+		}
+		else
+		{
+			MovePlayer();
+			CheckJump();
+			CheckMoveUpDown();
+			CheckSprint();
+			CheckDash();
+		}
+	}
+	
+	override
 	void CheckJump(){
 		let player=self.player;
 		// [RH] check for jump
@@ -75,39 +104,68 @@ class ZPlayer{
 			}
 		}
 	}
-}
-
-class ZHandler_Sprint:ZHandler{
-	override
-	void OnRegister(){
-		super.OnRegister();
-		SetOrder(int('Sprint'));
-	}
 	
-	override
-	bool InputProcess(InputEvent e){
-		//e.KeyScan=Bindings.GetKeysForCommand("+use")
-		return false;
-	}
-	
-	override
-	void WorldTick(){
-		if(!ActivePlayer)return;
+	virtual
+	void CheckSprint(){
+		bool Thrust=ZInv && ZInv.Armor[AMR_TORSO] && (ZInv.Armor[AMR_TORSO].GetInfo() & AMR_THRUST);
 		//Sprinting
-		if((playerInfo.original_cmd.buttons & BT_SPEED) &&
-		   (playerInfo.original_cmd.buttons & BT_FORWARD) &&
-		   (ActivePlayer.energy>ActivePlayer.SprintCost) &&
-		   (ActivePlayer.health>ActivePlayer.RunHealth)){
-			ActivePlayer.energy=ActivePlayer.energy-ActivePlayer.SprintCost;
-			ActivePlayer.A_TakeInventory("ZBackCompensate");
-			ActivePlayer.A_GiveInventory("ZSprintCompensate");
+		if(Thrust && (player.original_cmd.buttons & BT_SPEED) &&
+		   (player.original_cmd.buttons & BT_FORWARD) &&
+		   (energy>SprintCost) &&
+		   (health>RunHealth)){
+			energy-=SprintCost;
+			self.A_TakeInventory("ZBackCompensate");
+			self.A_GiveInventory("ZSprintCompensate");
 		//Backstep
-		}else if(playerInfo.cmd.buttons & BT_BACK){
-			ActivePlayer.A_TakeInventory("ZSprintCompensate");
-			ActivePlayer.A_GiveInventory("ZBackCompensate");
+		}else if(!Thrust && (player.cmd.buttons & BT_BACK)){
+			self.A_TakeInventory("ZSprintCompensate");
+			self.A_GiveInventory("ZBackCompensate");
 		}else{
-			ActivePlayer.A_TakeInventory("ZBackCompensate");
-			ActivePlayer.A_TakeInventory("ZSprintCompensate");
+			self.A_TakeInventory("ZBackCompensate");
+			self.A_TakeInventory("ZSprintCompensate");
+		}
+	}
+	
+	virtual
+	void CheckDash(){
+		if(!ZInv || !ZInv.Armor[AMR_HANDS] || !(ZInv.Armor[AMR_HANDS].GetInfo() & AMR_THRUST)) return;
+		//Dash
+		if(DashCountdown>0)
+			DashCountdown--;
+		else{
+			if(DashOppurt>0)
+				DashOppurt--;
+			else
+				CurrentDashButton=666;
+			static const int DashKeys[]={
+				BT_FORWARD,
+				BT_BACK,
+				BT_MOVELEFT,
+				BT_MOVERIGHT
+			};
+			for(int i=0; i<4; i++){
+				if(((player.original_cmd.buttons & ~player.original_oldbuttons) & DashKeys[i]) &&
+				   (energy>DashCost)){
+					if(CurrentDashButton==DashKeys[i] && DashOppurt>0){
+						energy=energy-DashCost;
+						int midairBoost;
+						if(vel.z==0)
+							midairBoost=JumpZ;
+						else
+							midairBoost=JumpZ;
+						if(i<=1)
+							A_ChangeVelocity(-1**i*DashSpeed, 0, midairBoost, CVF_RELATIVE);
+						else
+							A_ChangeVelocity(0, -1**i*DashSpeed, midairBoost, CVF_RELATIVE);
+						DashCountdown=DashCooldown;
+						DashOppurt=0;
+					}else{
+						CurrentDashButton=DashKeys[i];
+						DashOppurt=DashTimer;
+					}
+					break;
+				}
+			}
 		}
 	}
 }
@@ -127,60 +185,4 @@ class ZBackCompensate:ZCompensate{
 class ZSprintCompensate:ZCompensate{
 	override
 	double GetSpeedFactor(){return ZPlayer(owner).SprintSpeed;}
-}
-
-class ZHandler_Dash:ZHandler{
-	bool DashAvailable;
-	int CurrentDashButton,
-		DashTimer,
-		DashCooldown;
-	
-	override
-	void OnRegister(){
-		super.OnRegister();
-		SetOrder(int('Dash'));
-	}
-	
-	override
-	void WorldTick(){
-		if(!ActivePlayer)return;
-		//Dash
-		if(DashCooldown>0)
-			DashCooldown--;
-		else{
-			if(DashTimer>0)
-				DashTimer--;
-			else
-				CurrentDashButton=666;
-			static const int DashKeys[]={
-				BT_FORWARD,
-				BT_BACK,
-				BT_MOVELEFT,
-				BT_MOVERIGHT
-			};
-			for(int i=0; i<4; i++){
-				if(((playerInfo.original_cmd.buttons & ~playerInfo.original_oldbuttons) & DashKeys[i]) &&
-				   (ActivePlayer.energy>ActivePlayer.DashCost)){
-					if(CurrentDashButton==DashKeys[i] && DashTimer>0){
-						ActivePlayer.energy=ActivePlayer.energy-ActivePlayer.DashCost;
-						int midairBoost;
-						if(ActivePlayer.vel.z==0)
-							midairBoost=0;
-						else
-							midairBoost=ActivePlayer.JumpZ;
-						if(i<2)
-							ActivePlayer.A_ChangeVelocity(-1**i/*or cos(i*PI) or 1-2*(i%2)*/*ActivePlayer.DashSpeed, 0, midairBoost, CVF_RELATIVE);
-						else
-							ActivePlayer.A_ChangeVelocity(0, -1**i*ActivePlayer.DashSpeed, midairBoost, CVF_RELATIVE);
-						DashCooldown=ActivePlayer.DashCooldown;
-						DashTimer=0;
-					}else{
-						CurrentDashButton=DashKeys[i];
-						DashTimer=ActivePlayer.DashTimer;
-					}
-					break;
-				}
-			}
-		}
-	}
 }

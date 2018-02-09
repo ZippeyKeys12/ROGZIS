@@ -1,8 +1,17 @@
 extend
 class ZPlayer{
-	
+	ZInventory ZInv;
 }
 
-class GridInventory{
+class ZInventory play{
+	Vector2 Size;
 	
+	ZArmor Armor[5];
+	
+	static
+	ZInventory Create(int Width=1, int Height=1){
+		ZInventory Inventory=new("ZInventory");
+		Inventory.Size=(Width, Height);
+		return Inventory;
+	}
 }

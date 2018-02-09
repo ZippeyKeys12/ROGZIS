@@ -47,6 +47,16 @@ class ZPlayer:DoomPlayer{
 			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
 			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
 			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
+			//Inventory
+			ZInv=ZInventory.Create(10, 10);
+			ArmorStats stts;
+			stts.Slot=AMR_TORSO;
+			stts.Info=AMR_ENERGY|AMR_THRUST;
+			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", stts);
+			ArmorStats stts2;
+			stts2.Slot=AMR_HANDS;
+			stts2.Info=AMR_ENERGY|AMR_THRUST;
+			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", stts2);
 	}
 	
 	override

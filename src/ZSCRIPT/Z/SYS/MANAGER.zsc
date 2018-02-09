@@ -18,7 +18,6 @@ class ZManager:Thinker{
 	ZManager Init(){
 		ChangeStatNum(STAT_STATIC);
 		Items=new("Items");
-		Armors=new("Armors");
 		Weapons=new("Weapons");
 		ParserZinf=Parser_Zinf.Create("ZCONFIG");
 		//For registration
@@ -36,6 +35,67 @@ class ZManager:Thinker{
 						ActualFlags|=DMG_ZONE;
 				//Registration
 				DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetDouble(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), ActualFlags));
+			}
+		}
+		Armors=new("Armors");
+		while("N/@" != (LumpName=ParserZinf.GetFromArray("EXTERNAL", "tARMORS", i++))){
+			for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
+				Row=ParserTSV.GetRow(j);
+				//Stats Management
+				ArmorStats Stats;
+					//Slot Management
+					int Slot;
+					if(Row.Get(2)~=="AMR_HEAD")
+						Stats.Slot=AMR_HEAD;
+					else if(Row.Get(2)~=="AMR_TORSO")
+						Stats.Slot=AMR_TORSO;
+					else if(Row.Get(2)~=="AMR_HANDS")
+						Stats.Slot=AMR_HANDS;
+					else if(Row.Get(2)~=="AMR_LEGS")
+						Stats.Slot=AMR_LEGS;
+					else if(Row.Get(2)~=="AMR_FEET")
+						Stats.Slot=AMR_FEET;
+					//Flags Management
+					Array<String> Flags; Flags.Clear();
+					Row.Get(3).Split(Flags, "|", TOK_SKIPEMPTY);
+					for(int k=0; k<Flags.Size(); k++)
+						if(Flags[k]~=="AMR_PLATE")
+							Stats.Info|=AMR_PLATE;
+						else if(Flags[k]~=="AMR_MAGNET")
+							Stats.Info|=AMR_MAGNET;
+						else if(Flags[k]~=="AMR_SHIELD")
+							Stats.Info|=AMR_SHIELD;
+						else if(Flags[k]~=="AMR_LIGHT")
+							Stats.Info|=AMR_LIGHT;
+						else if(Flags[k]~=="AMR_ENERGY")
+							Stats.Info|=AMR_ENERGY;
+						else if(Flags[k]~=="AMR_SEALED")
+							Stats.Info|=AMR_SEALED;
+						else if(Flags[k]~=="AMR_THRUST")
+							Stats.Info|=AMR_THRUST;
+						else if(Flags[k]~=="AMR_JETPACK")
+							Stats.Info|=AMR_JETPACK;
+						else if(Flags[k]~=="AMR_MAGNIFY")
+							Stats.Info|=AMR_MAGNIFY;
+						else if(Flags[k]~=="AMR_MOWNPOWER")
+							Stats.Info|=AMR_MOWNPOWER;
+						else if(Flags[k]~=="AMR_SOWNPOWER")
+							Stats.Info|=AMR_SOWNPOWER;
+						else if(Flags[k]~=="AMR_LOWNPOWER")
+							Stats.Info|=AMR_LOWNPOWER;
+					Stats.PlateAbsorption=Row.GetDouble(4);
+					Stats.Energy=Row.GetInt(5);
+					Stats.EnergyRechargeRate=Row.GetInt(6);
+					Stats.Magnet=Row.GetInt(7);
+					Stats.MagnetRechargeRate=Row.GetInt(8);
+					Stats.Shield=Row.GetInt(9);
+					Stats.ShieldDivider=Row.GetDouble(10);
+					Stats.ShieldRechargeRate=Row.GetInt(11);
+					Stats.Light=Row.GetInt(12);
+					Stats.ThrustPower=Row.GetInt(13);
+					Stats.JetpackPower=Row.GetInt(14);
+				//Registration
+				Armors.Add(ZArmor.Create(Row.Get(0), Row.Get(1), Stats, Row.GetInt(15), Row.GetInt(16)));
 			}
 		}
 		return self;
@@ -67,7 +127,7 @@ class ZManager:Thinker{
 	{return Get().Items.Get(Name);}
 
 	static
-	ArmorPiece Armor(Name Name)
+	ZArmor Armor(Name Name)
 	{return Get().Armors.Get(Name);}
 
 	static

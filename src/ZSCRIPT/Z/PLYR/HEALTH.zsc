@@ -83,7 +83,7 @@ class ZPlayer{
 	}
 }
 
-class ZHandler_Recharger:ZHandler{
+/*class ZHandler_Recharger:ZHandler{
 	int oldStats,
 		newStats,
 		maxStats,
@@ -147,4 +147,4 @@ class ZHandler_Recharger:ZHandler{
 				+ActivePlayer.shield
 				+ActivePlayer.energy;
 	}
-}
+}*/

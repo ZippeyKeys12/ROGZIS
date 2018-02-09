@@ -1,38 +1,45 @@
+enum ArmorSlot{
+	AMR_HEAD		=	0,
+	AMR_TORSO		=	1,
+	AMR_HANDS		=	2,
+	AMR_LEGS		=	3,
+	AMR_FEET		=	4,
+}
+
 enum ArmorInfo{
-	//Armor Slots	-	Only One
-	AMR_HEAD		=	1<<0,
-	AMR_TORSO		=	1<<1,
-	AMR_HANDS		=	1<<2,
-	AMR_LEGS		=	1<<3,
-	AMR_FEET		=	1<<4,
-
 	//Armor Types	-	Multiple
-	AMR_PLATE		=	1<<5,
-	AMR_MAGNET		=	1<<6,	//Also provides abilties
-	AMR_SHIELD		=	1<<7,
-	AMR_LIGHT		=	1<<8,
+	AMR_PLATE		=	1<<0,
+	AMR_MAGNET		=	1<<1,	//Also provides abilties
+	AMR_SHIELD		=	1<<2,
+	AMR_LIGHT		=	1<<3,
 
-	//Attributes	-	Multiple
-	AMR_ENERGY		=	1<<9,	//Needed for AMR_MAGNET, AMR_PLASMA and AMR_LIGHT
-	AMR_SEALED		=	1<<10,	//Not needed for AMR_LIGHT
-	AMR_THRUST		=	1<<11,
-	AMR_JETPACK		=	1<<12,	//Evolution of AMR_THRUST
-	AMR_MAGNIFY		=	1<<13,	//Binoculars
-	AMR_MOWNPOWER	=	1<<14,	//Separates armor systems' energy
-	AMR_SOWNPOWER	=	1<<15,
-	AMR_LOWNPOWER	=	1<<16,
+	//Attributes
+	AMR_ENERGY		=	1<<4,	//Needed for AMR_MAGNET, AMR_PLASMA and AMR_LIGHT and any abilities
+	AMR_SEALED		=	1<<5,	//Not needed for AMR_LIGHT
+	AMR_THRUST		=	1<<6,
+	AMR_JETPACK		=	1<<7,	//Evolution of AMR_THRUST
+	AMR_MAGNIFY		=	1<<8,	//Binoculars
+
+	//Energy Store
+	AMR_MOWNPOWER	=	1<<9,
+	AMR_SOWNPOWER	=	1<<10,
+	AMR_LOWNPOWER	=	1<<11,
 };
 
 struct ArmorStats{
-	int /////////////////////
-		// Defensive Stats //
-		/////////////////////
-		//Energy
+	ArmorSlot Slot;
+
+	ArmorInfo Info;
+
+	/////////////////////
+	// Defensive Stats //
+	/////////////////////
+	double  //Armor Plating
+		    PlateAbsorption;
+
+	int //Energy
 		Energy,
 		EnergyRechargeRate,
-		
-		//Armor Plating
-		PlateAbsorption,
 		
 		//Magnetic Repulsion
 		Magnet,
@@ -54,28 +61,37 @@ struct ArmorStats{
 }
 
 class Armors:Registry{
-	bool Add(ArmorPiece ArmorPiece)
-	{return ArmorPiece && super.Add(ArmorPiece);}
+	bool Add(ZArmor ZArmor)
+	{return ZArmor && super.Add(ZArmor);}
 	
-	ArmorPiece Get(Name Name) const
-	{return ArmorPiece(super.Get(Name));}
+	ZArmor Get(Name Name) const
+	{return ZArmor(super.Get(Name));}
 	
-	ArmorPiece GetRand() const
-	{return ArmorPiece(super.GetRand());}
+	ZArmor GetRand() const
+	{return ZArmor(super.GetRand());}
 }
 
-class ArmorPiece:Item play{
+class ZArmor:Item play{
 	protected
-	int /////////////////////
-		// Defensive Stats //
-		/////////////////////
+	ArmorSlot Slot;
+	
+	protected
+	ArmorInfo Info;
+
+	/////////////////////
+	// Defensive Stats //
+	/////////////////////
+	protected
+	double //Armor Plating
+		   PlateAbsorption;
+
+	protected
+	int 
+		
 		//Energy
 		Energy,
 		MaxEnergy,
 		EnergyRechargeRate,
-		
-		//Armor Plating
-		PlateAbsorption,
 		
 		//Magnetic Repulsion
 		Magnet,
@@ -98,31 +114,30 @@ class ArmorPiece:Item play{
 		ThrustPower,
 		JetpackPower;
 
-	protected
-	ArmorInfo Info;
-
 	static
-	ArmorPiece Create(String Name, String Description, in out ArmorStats Stats, ArmorInfo Info=0, int Price=0, int Durability=0, int Width=-1, int Height=-1)
-	{return new("ArmorPiece").Init(Name, Description, Stats, Info, Price, Durability, Width, Height);}
+	ZArmor Create(String Name, String Description, in out ArmorStats Stats, int Price=0, int Durability=0, int Width=-1, int Height=-1)
+	{return new("ZArmor").Init(Name, Description, Stats, Price, Durability, Width, Height);}
 	
 	protected
-	ArmorPiece Init(String Name, String Description, in out ArmorStats Stats, ArmorInfo Info, int Price, int Durability, int Width, int Height){
+	ZArmor Init(String Name, String Description, in out ArmorStats Stats, int Price, int Durability, int Width, int Height){
+		Slot=Stats.Slot;
+		Info=Stats.Info;
 		//Armor Stats
 		if(Info & AMR_PLATE)
 			PlateAbsorption=Stats.PlateAbsorption;
 		if(Info & AMR_ENERGY){
 			Energy=MaxEnergy=Stats.Energy;
 			EnergyRechargeRate=Stats.EnergyRechargeRate;
-			if(Info & (AMR_MAGNET | AMR_MOWNPOWER)){
+			if((Info & AMR_MAGNET) && (Info & AMR_MOWNPOWER)){
 				Magnet=MaxMagnet=Stats.Magnet;
 				MagnetRechargeRate=Stats.MagnetRechargeRate;
 			}
-			if(Info & (AMR_SHIELD | AMR_SOWNPOWER)){
+			if((Info & AMR_SHIELD) && (Info & AMR_SOWNPOWER)){
 				Shield=MaxShield=Stats.Shield;
 				ShieldDivider=Stats.ShieldDivider;
 				ShieldRechargeRate=Stats.ShieldRechargeRate;
 			}
-			if(Info & (AMR_LIGHT | AMR_LOWNPOWER))
+			if((Info & AMR_LIGHT) && (Info & AMR_LOWNPOWER))
 				Light=MaxLight=Stats.Light;
 			if(Info & AMR_THRUST)
 				ThrustPower=Stats.ThrustPower;
@@ -142,9 +157,14 @@ class ArmorPiece:Item play{
 				Height=1;
 			else
 				Height=2;
-		self.Info=Info;
-		return ArmorPiece(super.Init(Name, Description, Price, Durability, Width, Height));
+		return ZArmor(super.Init(Name, Description, Price, Durability, Width, Height));
 	}
+	
+	ArmorSlot GetSlot()
+	{return Slot;}
+	
+	ArmorInfo GetInfo()
+	{return Info;}
 	
 	virtual
 	int ModifyDamage(int Damage, Name DamageType, in out ZPlayer Player){
@@ -155,7 +175,7 @@ class ArmorPiece:Item play{
 		if(Info & AMR_ENERGY){
 			//Magnetic Repulsion
 			if(Info & AMR_MAGNET)
-				if(Info & AMR_MOWNPOWER){
+				if(Info & AMR_MOWNPOWER)
 					if((Dam=TempDamage*ZDamageType.Factor(AMR_MAGNET))>0)
 						if(ceil(Dam)<=Magnet){
 							Magnet-=Dam;
@@ -168,7 +188,7 @@ class ArmorPiece:Item play{
 						Magnet=clamp(Magnet-ceil(Dam), 0, MaxMagnet);
 						return 0;
 					}
-				}else{
+				else
 					if((Dam=TempDamage*ZDamageType.Factor(AMR_MAGNET))>0)
 						if(ceil(Dam)<=Energy){
 							Energy-=Dam;
@@ -181,11 +201,10 @@ class ArmorPiece:Item play{
 						Energy=clamp(Energy-ceil(Dam), 0, MaxEnergy);
 						return 0;
 					}
-				}
 
 			//Hard Light Construct
 			if(Info & AMR_LIGHT)
-				if(Info & AMR_LOWNPOWER){
+				if(Info & AMR_LOWNPOWER)
 					if((Dam=TempDamage*ZDamageType.Factor(AMR_LIGHT))>0)
 						if(ceil(Dam)<=Light){
 							Light-=Dam;
@@ -198,7 +217,7 @@ class ArmorPiece:Item play{
 						Light=clamp(Light-ceil(Dam), 0, MaxLight);
 						return 0;
 					}
-				}else{
+				else
 					if((Dam=TempDamage*ZDamageType.Factor(AMR_LIGHT))>0)
 						if(ceil(Dam)<=Energy){
 							Energy-=Dam;
@@ -211,11 +230,10 @@ class ArmorPiece:Item play{
 						Energy=clamp(Energy-ceil(Dam), 0, MaxEnergy);
 						return 0;
 					}
-				}
 
 			//Plasma Shield
 			if(Info & AMR_SHIELD)
-				if(Info & AMR_SOWNPOWER){
+				if(Info & AMR_SOWNPOWER)
 					if((Dam=TempDamage*ZDamageType.Factor(AMR_SHIELD))>0)
 						if(ceil(Dam)<=Shield){
 							Shield-=Dam;
@@ -228,7 +246,7 @@ class ArmorPiece:Item play{
 						Shield=clamp(Shield-ceil(Dam), 0, MaxShield);
 						return 0;
 					}
-				}else{
+				else
 					if((Dam=TempDamage*ZDamageType.Factor(AMR_SHIELD))>0)
 						if(ceil(Dam)<=Energy){
 							Energy-=Dam;
@@ -241,12 +259,12 @@ class ArmorPiece:Item play{
 						Energy=clamp(Energy-ceil(Dam), 0, MaxEnergy);
 						return 0;
 					}
-				}
 		}
-
+		int DurabilityHit;
 		//Armor Plating
 		if((Info & AMR_PLATE) && ((Dam=TempDamage*ZDamageType.Factor(AMR_PLATE))>0)){
-			TempDamage*=1-PlateAbsorption*sqrt(clamp(Durability/MaxDurability, 0, 2));
+			TempDamage*=1-(DurabilityHit=PlateAbsorption*sqrt(clamp(Durability/MaxDurability, 0, 2)));
+			Durability-=DurabilityHit;
 		}
 		return ceil(TempDamage);
 	}

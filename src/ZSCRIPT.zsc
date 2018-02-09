@@ -19,6 +19,7 @@ version "3.2.5"
 //PLAYER
 #include "ZSCRIPT/Z/PLYR/MAIN.zsc"
 #include "ZSCRIPT/Z/PLYR/CHEATS.zsc"
+#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"
 #include "ZSCRIPT/Z/PLYR/HEALTH.zsc"
 #include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
 
