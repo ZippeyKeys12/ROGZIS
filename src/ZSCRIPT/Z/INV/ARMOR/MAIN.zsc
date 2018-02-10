@@ -1,0 +1,151 @@
+enum ArmorSlot{
+	AMR_HEAD		=	0,
+	AMR_TORSO		=	1,
+	AMR_HANDS		=	2,
+	AMR_LEGS		=	3,
+	AMR_FEET		=	4,
+}
+
+enum ArmorInfo{
+	//Armor Types	-	Multiple
+	AMR_PLATE		=	1<<0,
+	AMR_MAGNET		=	1<<1,	//Also provides abilties
+	AMR_SHIELD		=	1<<2,
+	AMR_LIGHT		=	1<<3,
+
+	//Attributes
+	AMR_ENERGY		=	1<<4,	//Needed for AMR_MAGNET, AMR_PLASMA and AMR_LIGHT and any abilities
+	AMR_SEALED		=	1<<5,	//Not needed for AMR_LIGHT
+	AMR_THRUST		=	1<<6,
+	AMR_JETPACK		=	1<<7,	//Evolution of AMR_THRUST
+	AMR_MAGNIFY		=	1<<8,	//Binoculars
+
+	//Energy Store
+	AMR_MOWNPOWER	=	1<<9,
+	AMR_SOWNPOWER	=	1<<10,
+	AMR_LOWNPOWER	=	1<<11,
+};
+
+struct ArmorStats{
+	ArmorSlot Slot;
+
+	ArmorInfo Info;
+
+	/////////////////////
+	// Defensive Stats //
+	/////////////////////
+	double  //Armor Plating
+		    PlateAbsorption;
+
+	int //Energy
+		Energy,
+		EnergyRechargeRate,
+		
+		//Magnetic Repulsion
+		Magnet,
+		MagnetRechargeRate,
+		
+		//Plasma Shield
+		Shield,
+		ShieldDivider,
+		ShieldRechargeRate,
+		
+		//Hard Light Construct
+		Light;
+}
+
+class Armors:Registry{
+	bool Add(ZArmor ZArmor)
+	{return ZArmor && super.Add(ZArmor);}
+	
+	ZArmor Get(Name Name) const
+	{return ZArmor(super.Get(Name));}
+	
+	ZArmor GetRand() const
+	{return ZArmor(super.GetRand());}
+}
+
+class ZArmor:Item play{
+	protected
+	ArmorSlot Slot;
+	
+	protected
+	ArmorInfo Info;
+
+	static
+	ZArmor Create(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats=null, int Price=0, int Durability=0, int Width=-1, int Height=-1)
+	{return new("ZArmor").Init(Name, Description, Slot, Info, Stats, TStats, Price, Durability, Width, Height);}
+	
+	protected
+	ZArmor Init(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats, int Price, int Durability, int Width, int Height){
+		self.Slot=Slot;
+		self.Info=Info;
+		//Damage Stats
+		InitDamage(Info, Stats);
+		//Armor Abilities
+		if(Info & AMR_ENERGY){
+			if(Info & AMR_THRUST)
+				InitThrust(Info, TStats);
+		}
+		//Item Initialization
+		if(Width==-1)
+			if(Slot==AMR_HEAD)
+				Width=1;
+			else
+				Width=2;
+		if(Height==-1)
+			if(Slot==AMR_HEAD)
+				Height=1;
+			else if(Slot==AMR_HANDS || Slot==AMR_FEET)
+				Height=1;
+			else
+				Height=2;
+		return ZArmor(super.Init(Name, Description, Price, Durability, Width, Height));
+	}
+	
+	clearscope
+	ArmorSlot GetSlot() const
+	{return Slot;}
+	
+	clearscope
+	ArmorInfo GetInfo() const
+	{return Info;}
+	
+	virtual
+	void OnArmorTick(ZPlayer Player){
+		
+	}
+
+	virtual
+	void HandleArmorMovement(ZPlayer Player){
+		PlayerInfo PlayerInfo=Player.player;
+		if(Info & AMR_ENERGY){
+			if(Info & AMR_MAGNET)
+				switch(Slot){
+					case AMR_HANDS: break;
+					case AMR_LEGS: break;
+					case AMR_FEET: break;
+					default: break;
+				}
+			if(Info & AMR_THRUST)
+				switch(Slot){
+					case AMR_TORSO:
+						CheckSprint(Player, PlayerInfo);
+						break;
+					case AMR_HANDS:
+						CheckDash(Player, PlayerInfo);
+						break;
+					case AMR_LEGS: break;
+					case AMR_FEET: break;
+					default: break;
+				}
+			if(Info & AMR_JETPACK)
+				switch(Slot){
+					case AMR_TORSO: break;
+					case AMR_LEGS: break;
+					case AMR_FEET: break;
+					default: break;
+				}
+		}
+	}
+}

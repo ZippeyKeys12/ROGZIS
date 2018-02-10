@@ -25,5 +25,12 @@ version "3.2.5"
 
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"
-#include "ZSCRIPT/Z/INV/ARMOR.zsc"
+//Armor
+#include "ZSCRIPT/Z/INV/ARMOR/MAIN.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/DAMAGE.zsc"
+	//Thrust
+	#include "ZSCRIPT/Z/INV/ARMOR/THRUST/MAIN.zsc"
+	#include "ZSCRIPT/Z/INV/ARMOR/THRUST/SPRINT.zsc"
+	#include "ZSCRIPT/Z/INV/ARMOR/THRUST/DASH.zsc"
+//Weapons
 #include "ZSCRIPT/Z/INV/WEAPON.zsc"

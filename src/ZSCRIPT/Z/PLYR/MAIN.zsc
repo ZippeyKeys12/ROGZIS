@@ -1,19 +1,7 @@
-class ZPlayer:DoomPlayer{
-	bool //General
-		 loadedProp,
-		 //Energy
-		 energyRecharging;
-	
+class ZPlayer:DoomPlayer{	
 	int //Oxygen
 		oxygen,
-		maxOxygen,
-		
-		//Energy
-		energy,
-		maxEnergy,
-		energyRecharge,
-		energyRecharger,
-		energyRechargeRate;
+		maxOxygen;
 		
 	Actor AimTarget;
 
@@ -21,21 +9,10 @@ class ZPlayer:DoomPlayer{
 	Property Oxygen: oxygen;
 	Property MaxOxygen: maxOxygen;
 	
-	//Energy
-	Property Energy: energy;
-	Property MaxEnergy: maxEnergy;
-	Property EnergyRecharge: energyRecharge;
-	Property EnergyRechargeRate: energyRechargeRate;
-	
 	Default{
 		//Oxygen
 		ZPlayer.Oxygen ZPlayerDefaults.MAX_OXYGEN;
 		ZPlayer.MaxOxygen ZPlayerDefaults.MAX_OXYGEN;
-		//Energy
-		ZPlayer.Energy ZPlayerDefaults.MAX_ENERGY;
-		ZPlayer.MaxEnergy ZPlayerDefaults.MAX_ENERGY;
-		ZPlayer.EnergyRecharge ZPlayerDefaults.ENERGY_RECHARGE;
-		ZPlayer.EnergyRechargeRate TICRATE*ZPlayerDefaults.ENERGY_RECHARGE_RATE;
 	}
 	
 	override
@@ -48,15 +25,16 @@ class ZPlayer:DoomPlayer{
 			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
 			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
 			//Inventory
-			ZInv=ZInventory.Create(10, 10);
+			ZInv=ZInventory.Create();
 			ArmorStats stts;
-			stts.Slot=AMR_TORSO;
-			stts.Info=AMR_ENERGY|AMR_THRUST;
-			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", stts);
-			ArmorStats stts2;
-			stts2.Slot=AMR_HANDS;
-			stts2.Info=AMR_ENERGY|AMR_THRUST;
-			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", stts2);
+			stts.Energy=5000;
+			ThrustStats thurst;
+			thurst.ThrustPower=10;
+			thurst.SprintSpeed=5;
+			thurst.DashTimer=12;
+			thurst.DashCooldown=50;
+			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thurst);
+			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thurst);
 	}
 	
 	override
@@ -69,15 +47,18 @@ class ZPlayer:DoomPlayer{
 		AimTarget=t.linetarget;
 		super.Tick();
 	}
-}
-
-class ZHandler:EventHandler{
-	ZPlayer activePlayer;
-	PlayerInfo playerInfo;
 	
-	override
-	void PlayerEntered(PlayerEvent e){
-		activePlayer=ZPlayer(players[e.playernumber].mo);
-		playerInfo=activePlayer.player;
+	virtual
+	clearscope
+	int, int GetEnergy(){
+		int Energy, MaxEnergy,
+			e,		me;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+				if(ZInv.Armor[i]){
+					[e, me]=ZInv.Armor[i].GetEnergy();
+					Energy+=e;
+					MaxEnergy+=me;
+				}
+		return Energy, MaxEnergy;
 	}
 }

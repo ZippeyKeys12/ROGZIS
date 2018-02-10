@@ -1,84 +1,9 @@
 extend
 class ZPlayer{
-	bool //Health
-		 runHealthAdapt;
-
-	int //Armor
-		armor,
-		maxArmor,
-		armorAmt,
-		armorLvl,
-		
-		//Shield
-		shield,
-		maxShield,
-		maxOvershield,
-		shieldDivider,
-		shieldRecharge,
-		shieldRechargeRate;
-
-	//Array<int> //Armor
-			   //maxArmor;
-
-	Array<double> //Armor
-				  armorAbsorb;
-	
-	//Shield
-	Property Shield: shield;
-	Property MaxShield: maxShield, maxOvershield;
-	Property ShieldDivider: shieldDivider;
-	Property ShieldRecharge: shieldRecharge;
-	Property ShieldRechargeRate: shieldRechargeRate;
-	
-	Default{
-		//Health
-		Health 1;
-		Player.MaxHealth 1;
-		Player.RunHealth 1;
-		
-		//Armor
-		//ZPlayer.Armor ZPlayerDefaults.MAX_ARMOR;
-		//ZPlayer.MaxArmor ZPlayerDefaults.MAX_ARMOR;
-		//ZPlayer.ArmorAbsorption ZPlayerDefaults.ARMOR_ABSORPTION;
-		
-		//Shield
-		ZPlayer.Shield ZPlayerDefaults.MAX_SHIELD;
-		ZPlayer.MaxShield ZPlayerDefaults.MAX_SHIELD, ZPlayerDefaults.MAX_SHIELD*ZPlayerDefaults.OVERSHIELD_FACTOR;
-		ZPlayer.ShieldDivider ZPlayerDefaults.SHIELD_DIVIDER;
-		ZPlayer.ShieldRecharge ZPlayerDefaults.SHIELD_RECHARGE;
-		ZPlayer.ShieldRechargeRate ZPlayerDefaults.SHIELD_RECHARGE_RATE;
-	}
-	
 	override
 	int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0){
-		damage=super.DamageMobj(inflictor, source, damage, mod, flags|DMG_NO_ARMOR, angle);
-		ZManager.Debug("Health: "..health, "Health");
-		ZManager.Debug("Armor: "..armor, "Health");
-		ZManager.Debug("Shield: "..shield, "Health");
-		return damage;
-	}
-	
-	override
-	int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype){
-		ZManager.Debug("OG Damage: "..damage, "Health");
-		damage = super.TakeSpecialDamage(inflictor, source, damage, damagetype); //Get the damage amount from the OG TakeSpecialDamage function with 2* raw damage
-		/*if(damage<=0){return 0;}
-		//Shield
-		if(damage<=shield){
-			shield=shield-damage;
-			return 0;
-		}else{
-			//Armor
-			damage=damage-shield;
-			shield=0;
-			if(damage*armorAbsorb<=armor){
-				armor=armor-damage*armorAbsorb;
-				damage=damage*(1-armorAbsorb);
-			}else{
-				damage=damage-armor;
-				armor=0;
-			}
-		}*/
+		ZDamageType ZDamageType=ZManager.DamageType(DamageType);
+		damage=super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 		return damage;
 	}
 }

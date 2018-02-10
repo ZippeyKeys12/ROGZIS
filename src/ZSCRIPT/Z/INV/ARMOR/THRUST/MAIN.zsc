@@ -1,0 +1,31 @@
+struct ThrustStats{
+	//Sprint
+	const SprintCost=ZPlayerDefaults.SPRINT_COST;
+	//Dash
+	const DashCost=ZPlayerDefaults.DASH_COST;
+	
+	int //General
+		ThrustPower,
+		//Sprint
+		SprintSpeed,
+		//Dash
+		DashTimer,
+		DashCooldown;
+}
+
+extend
+class ZArmor{
+	protected
+	int ThrustPower;
+	
+	virtual
+	void InitThrust(ArmorInfo Info, in out ThrustStats Stats){
+		ThrustPower=Stats.ThrustPower;
+		DashOppurt=DashCountdown=0;
+		SprintCost=Stats.SprintCost;
+		SprintSpeed=Stats.SprintSpeed;
+		DashCost=Stats.DashCost;
+		DashTimer=Stats.DashTimer;
+		DashCooldown=Stats.DashCooldown;
+	}
+}

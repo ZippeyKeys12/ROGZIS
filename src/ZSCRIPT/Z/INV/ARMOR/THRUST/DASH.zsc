@@ -1,0 +1,51 @@
+extend
+class ZArmor{
+	protected
+	bool DashAvailable;
+
+	protected
+	int //Dash
+		DashCost,
+		DashTimer,
+		DashOppurt,
+		DashCooldown,
+		DashCountdown,
+		CurrentDashButton;
+
+	virtual
+	void CheckDash(ZPlayer Player, PlayerInfo PlayerInfo){
+		//Dash
+		if(DashCountdown>0)
+			DashCountdown--;
+		else{
+			if(DashOppurt>0)
+				DashOppurt--;
+			else
+				CurrentDashButton=666;
+			static const int DashKeys[]={
+				BT_FORWARD,
+				BT_BACK,
+				BT_MOVELEFT,
+				BT_MOVERIGHT
+			};
+			for(int i=0; i<4; i++){
+				if(((PlayerInfo.original_cmd.buttons & ~PlayerInfo.original_oldbuttons) & DashKeys[i]) &&
+				   (Energy>DashCost)){
+					if(CurrentDashButton==DashKeys[i] && DashOppurt>0){
+						Energy-=DashCost;
+						int MidAirBoost=Player.JumpZ;
+						if(PlayerInfo.OnGround) MidAirBoost/=2;
+						if(i<=1) Player.A_ChangeVelocity(ThrustPower*-1**i, z: MidAirBoost, flags: CVF_RELATIVE);
+						else Player.A_ChangeVelocity(y: ThrustPower*-1**i, z: MidAirBoost, flags: CVF_RELATIVE);
+						DashCountdown=DashCooldown;
+						DashOppurt=0;
+					}else{
+						CurrentDashButton=DashKeys[i];
+						DashOppurt=DashTimer;
+					}
+					break;
+				}
+			}
+		}
+	}
+}

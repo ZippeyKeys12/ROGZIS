@@ -1,69 +1,31 @@
 extend
 class ZPlayer{
-	bool DashAvailable;
-	int CurrentDashButton,
-		DashOppurt,
-		DashCountdown;
-
-	int //Movement
-		JumpCost,
-		SprintCost,
-		DashCost,
-		DashTimer,
-		DashCooldown,
-		IdleRechargeBonus;
-		
-	double //Movement
-		   SprintSpeed,
-		   DashSpeed;
-
-	//Movement
-	Property JumpCost: JumpCost;
-	Property SprintSpeed: SprintSpeed;
-	Property SprintCost: SprintCost;
-	Property DashSpeed: DashSpeed;
-	Property DashCost: DashCost;
-	Property DashTimer: DashTimer;
-	Property DashCooldown: DashCooldown;
-	Property IdleRechargeBonus: IdleRechargeBonus;
-
 	Default{
 		//Movement
 		Player.ForwardMove ZPlayerDefaults.WALK_SPEED, ZPlayerDefaults.WALK_SPEED/2;
 		Player.SideMove ZPlayerDefaults.STRAFE_SPEED, ZPlayerDefaults.STRAFE_SPEED/2;
 		Player.ViewBob ZPlayerDefaults.WALK_SPEED;
 		Player.JumpZ 8;
-		ZPlayer.JumpCost ZPlayerDefaults.JUMP_COST;
-		ZPlayer.SprintSpeed ZPlayerDefaults.SPRINT_SPEED;
-		ZPlayer.SprintCost ZPlayerDefaults.SPRINT_COST;
-		ZPlayer.DashSpeed ZPlayerDefaults.DASH_SPEED;
-		ZPlayer.DashCost ZPlayerDefaults.DASH_COST;
-		ZPlayer.DashTimer ZPlayerDefaults.DASH_TIMER;
-		ZPlayer.DashCooldown ZPlayerDefaults.DASH_COOLDOWN;
-		ZPlayer.IdleRechargeBonus ZPlayerDefaults.IDLE_RECHARGE_BONUS;
 	}
 	
 	override
 	void HandleMovement(){
 		let player = self.player;
 		// [RH] Check for fast turn around
-		if (player.cmd.buttons & BT_TURN180 && !(player.oldbuttons & BT_TURN180))
-		{
+		if ((player.cmd.buttons & BT_TURN180) && (~player.oldbuttons & BT_TURN180))
 			player.turnticks = TURN180_TICKS;
-		}
 
 		// Handle movement
-		if (reactiontime)
-		{ // Player is frozen
+		if (reactiontime){
+			// Player is frozen
 			reactiontime--;
-		}
-		else
-		{
+		}else{
 			MovePlayer();
 			CheckJump();
 			CheckMoveUpDown();
-			CheckSprint();
-			CheckDash();
+			for(int i=0; i<ZInv.Armor.Size(); i++)
+				if(ZInv.Armor[i])
+					ZInv.Armor[i].HandleArmorMovement(self);
 		}
 	}
 	
@@ -75,14 +37,14 @@ class ZPlayer{
 			if(player.crouchoffset != 0){
 				// Jumping while crouching will force an un-crouch but not jump
 				player.crouching = 1;
-			}else if(energy<JumpCost){
-				return;
+			//}else if(energy<JumpCost){
+				//return;
 			}else if(waterlevel >= 2){
 				Vel.Z = 4 * Speed;
 			}else if(bNoGravity){
 				Vel.Z = 3.;
 			}else if(level.IsJumpingAllowed()&&player.onground&&player.jumpTics==0){
-				energy-=JumpCost;//Energy Usage for Jumping
+				//energy-=JumpCost;//Energy Usage for Jumping
 				double jumpvelz=JumpZ*35/TICRATE;
 				double jumpfac=0;
 				
@@ -104,85 +66,4 @@ class ZPlayer{
 			}
 		}
 	}
-	
-	virtual
-	void CheckSprint(){
-		bool Thrust=ZInv && ZInv.Armor[AMR_TORSO] && (ZInv.Armor[AMR_TORSO].GetInfo() & AMR_THRUST);
-		//Sprinting
-		if(Thrust && (player.original_cmd.buttons & BT_SPEED) &&
-		   (player.original_cmd.buttons & BT_FORWARD) &&
-		   (energy>SprintCost) &&
-		   (health>RunHealth)){
-			energy-=SprintCost;
-			self.A_TakeInventory("ZBackCompensate");
-			self.A_GiveInventory("ZSprintCompensate");
-		//Backstep
-		}else if(!Thrust && (player.cmd.buttons & BT_BACK)){
-			self.A_TakeInventory("ZSprintCompensate");
-			self.A_GiveInventory("ZBackCompensate");
-		}else{
-			self.A_TakeInventory("ZBackCompensate");
-			self.A_TakeInventory("ZSprintCompensate");
-		}
-	}
-	
-	virtual
-	void CheckDash(){
-		if(!ZInv || !ZInv.Armor[AMR_HANDS] || !(ZInv.Armor[AMR_HANDS].GetInfo() & AMR_THRUST)) return;
-		//Dash
-		if(DashCountdown>0)
-			DashCountdown--;
-		else{
-			if(DashOppurt>0)
-				DashOppurt--;
-			else
-				CurrentDashButton=666;
-			static const int DashKeys[]={
-				BT_FORWARD,
-				BT_BACK,
-				BT_MOVELEFT,
-				BT_MOVERIGHT
-			};
-			for(int i=0; i<4; i++){
-				if(((player.original_cmd.buttons & ~player.original_oldbuttons) & DashKeys[i]) &&
-				   (energy>DashCost)){
-					if(CurrentDashButton==DashKeys[i] && DashOppurt>0){
-						energy=energy-DashCost;
-						int midairBoost;
-						if(vel.z==0)
-							midairBoost=JumpZ;
-						else
-							midairBoost=JumpZ;
-						if(i<=1)
-							A_ChangeVelocity(-1**i*DashSpeed, 0, midairBoost, CVF_RELATIVE);
-						else
-							A_ChangeVelocity(0, -1**i*DashSpeed, midairBoost, CVF_RELATIVE);
-						DashCountdown=DashCooldown;
-						DashOppurt=0;
-					}else{
-						CurrentDashButton=DashKeys[i];
-						DashOppurt=DashTimer;
-					}
-					break;
-				}
-			}
-		}
-	}
-}
-
-class ZCompensate:PowerSpeed{
-	Default{
-		Inventory.InterHubAmount 0;
-		Powerup.Duration 0x7FFFFFFD;
-	}
-}
-
-class ZBackCompensate:ZCompensate{
-	override
-	double GetSpeedFactor(){return ZPlayer(owner).SideMove1;}
-}
-
-class ZSprintCompensate:ZCompensate{
-	override
-	double GetSpeedFactor(){return ZPlayer(owner).SprintSpeed;}
 }

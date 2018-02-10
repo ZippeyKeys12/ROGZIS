@@ -92,10 +92,10 @@ class ZManager:Thinker{
 					Stats.ShieldDivider=Row.GetDouble(10);
 					Stats.ShieldRechargeRate=Row.GetInt(11);
 					Stats.Light=Row.GetInt(12);
-					Stats.ThrustPower=Row.GetInt(13);
-					Stats.JetpackPower=Row.GetInt(14);
+					//Stats.ThrustPower=Row.GetInt(13);
+					//Stats.JetpackPower=Row.GetInt(14);
 				//Registration
-				Armors.Add(ZArmor.Create(Row.Get(0), Row.Get(1), Stats, Row.GetInt(15), Row.GetInt(16)));
+				//Armors.Add(ZArmor.Create(Row.Get(0), Row.Get(1), Stats, Row.GetInt(15), Row.GetInt(16)));
 			}
 		}
 		return self;
