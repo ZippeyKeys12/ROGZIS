@@ -14,56 +14,15 @@ class ZPlayer{
 		// [RH] Check for fast turn around
 		if ((player.cmd.buttons & BT_TURN180) && (~player.oldbuttons & BT_TURN180))
 			player.turnticks = TURN180_TICKS;
-
 		// Handle movement
-		if (reactiontime){
+		if (reactiontime)
 			// Player is frozen
 			reactiontime--;
-		}else{
+		else{
 			MovePlayer();
-			CheckJump();
 			CheckMoveUpDown();
 			for(int i=0; i<ZInv.Armor.Size(); i++)
-				if(ZInv.Armor[i])
-					ZInv.Armor[i].HandleArmorMovement(self);
-		}
-	}
-	
-	override
-	void CheckJump(){
-		let player=self.player;
-		// [RH] check for jump
-		if(player.cmd.buttons&BT_JUMP){
-			if(player.crouchoffset != 0){
-				// Jumping while crouching will force an un-crouch but not jump
-				player.crouching = 1;
-			//}else if(energy<JumpCost){
-				//return;
-			}else if(waterlevel >= 2){
-				Vel.Z = 4 * Speed;
-			}else if(bNoGravity){
-				Vel.Z = 3.;
-			}else if(level.IsJumpingAllowed()&&player.onground&&player.jumpTics==0){
-				//energy-=JumpCost;//Energy Usage for Jumping
-				double jumpvelz=JumpZ*35/TICRATE;
-				double jumpfac=0;
-				
-				// [BC] If the player has the high jump power, double his jump velocity.
-				// (actually, pick the best factors from all active items.)
-				for (let p=Inv; p!=null; p=p.Inv){
-					let pp=PowerHighJump(p);
-					if(pp){
-						double f=pp.Strength;
-						if(f>jumpfac)jumpfac=f;
-					}
-				}
-				if(jumpfac>0)jumpvelz*=jumpfac;
-				
-				Vel.Z+=jumpvelz;
-				bOnMobj=false;
-				player.jumpTics=-1;
-				if(!(player.cheats&CF_PREDICTING))A_PlaySound("*jump", CHAN_BODY);
-			}
+				if(ZInv.Armor[i])ZInv.Armor[i].HandleArmorMovement(self);
 		}
 	}
 }

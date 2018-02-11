@@ -1,6 +1,0 @@
-extend
-class ZPlayer{
-	override
-	void CheatGive (String name, int amount)
-	{console.printf("WIP");}
-}

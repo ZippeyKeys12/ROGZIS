@@ -1,11 +1,105 @@
 extend
 class ZPlayer{
 	ZInventory ZInv;
+	
+	virtual
+	clearscope
+	int, int GetPlate(){
+		int Durability, MaxDurability,
+			d,		md;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i]){
+				[d, md]=ZInv.Armor[i].GetDurability();
+				Durability+=d;
+				MaxDurability+=md;
+			}
+		return Durability, MaxDurability;
+	}
+	
+	virtual
+	clearscope
+	int, int GetEnergy(){
+		int Energy, MaxEnergy,
+			e,		me;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i]){
+				[e, me]=ZInv.Armor[i].GetEnergy();
+				Energy+=e;
+				MaxEnergy+=me;
+			}
+		return Energy, MaxEnergy;
+	}
+	
+	virtual
+	clearscope
+	int, int GetMagnet(){
+		int Magnet, MaxMagnet,
+			m,		mm;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i]){
+				[m, mm]=ZInv.Armor[i].GetMagnet();
+				Magnet+=m;
+				MaxMagnet+=mm;
+			}
+		return Magnet, MaxMagnet;
+	}
+	
+	virtual
+	clearscope
+	int, int GetShield(){
+		int Shield, MaxShield,
+			s,		ms;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i]){
+				[s, ms]=ZInv.Armor[i].GetShield();
+				Shield+=s;
+				MaxShield+=ms;
+			}
+		return Shield, MaxShield;
+	}
+	
+	virtual
+	clearscope
+	int, int GetLight(){
+		int Light, MaxLight,
+			l,		ml;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i]){
+				[l, ml]=ZInv.Armor[i].GetLight();
+				Light+=l;
+				MaxLight+=ml;
+			}
+		return Light, MaxLight;
+	}
+	
+	virtual
+	void DrainEnergy(int Amount){
+		if(Amount<=0)return;
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i] && ZInv.Armor[i].GetEnergy()>0){
+				ZInv.Armor[i].DrainEnergy(Amount, self);
+				return;
+			}
+	}
+	
+	virtual
+	bool IsHeavy(){
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i] && (ZInv.Armor[i].GetInfo() & AMR_HEAVY))return true;
+		return false;
+	}
+	
+	override
+	int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0){
+		ZDamageType ZDamageType=ZManager.DamageType(DamageType);
+		damage=super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+		return damage;
+	}
 }
 
 class ZInventory play{	
 	ZArmor Armor[5];
-	int Space[6][12];
+	bool Space[6][12];
 	
 	static
 	ZInventory Create()

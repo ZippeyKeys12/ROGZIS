@@ -21,9 +21,11 @@ enum ArmorInfo{
 	AMR_MAGNIFY		=	1<<8,	//Binoculars
 
 	//Energy Store
-	AMR_MOWNPOWER	=	1<<9,
+	AMR_MOWNPOWER	=	1<<9,	//Dedicated power for armor systems
 	AMR_SOWNPOWER	=	1<<10,
 	AMR_LOWNPOWER	=	1<<11,
+	
+	AMR_HEAVY		=	1<<12,	//Prevents jumping without using power
 };
 
 struct ArmorStats{
@@ -37,21 +39,28 @@ struct ArmorStats{
 	double  //Armor Plating
 		    PlateAbsorption;
 
-	int //Energy
+	int //General
+		IdleRechargeBonus,
+		//Energy
 		Energy,
 		EnergyRechargeRate,
+		EnergyRechargeAmount,
 		
 		//Magnetic Repulsion
 		Magnet,
 		MagnetRechargeRate,
+		MagnetRechargeAmount,
 		
 		//Plasma Shield
 		Shield,
 		ShieldDivider,
 		ShieldRechargeRate,
+		ShieldRechargeAmount,
 		
 		//Hard Light Construct
-		Light;
+		Light,
+		LightRechargeRate,
+		LightRechargeAmount;
 }
 
 class Armors:Registry{
@@ -65,7 +74,7 @@ class Armors:Registry{
 	{return ZArmor(super.GetRand());}
 }
 
-class ZArmor:Item play{
+class ZArmor:Item{
 	protected
 	ArmorSlot Slot;
 	
@@ -85,7 +94,7 @@ class ZArmor:Item play{
 		//Armor Abilities
 		if(Info & AMR_ENERGY){
 			if(Info & AMR_THRUST)
-				InitThrust(Info, TStats);
+				InitThrust(Slot, TStats);
 		}
 		//Item Initialization
 		if(Width==-1)
@@ -111,14 +120,42 @@ class ZArmor:Item play{
 	ArmorInfo GetInfo() const
 	{return Info;}
 	
+	override
+	void OnInventoryTick(ZPlayer Player){
+		if(Info & AMR_ENERGY){
+			RechargeEnergy(Player, false);
+		}
+	}
+	
 	virtual
 	void OnArmorTick(ZPlayer Player){
-		
+		PlayerInfo PlayerInfo=Player.player;
+		if(Info & AMR_ENERGY){
+			RechargeEnergy(Player);
+			if(Info & AMR_THRUST)
+				switch(Slot){
+					case AMR_FEET:
+						SoftenFall(Player);
+						break;
+					default: break;
+				}
+		}
 	}
 
 	virtual
 	void HandleArmorMovement(ZPlayer Player){
 		PlayerInfo PlayerInfo=Player.player;
+		switch(Slot){
+			case AMR_TORSO:
+				CheckSprint(Player, PlayerInfo, Info & AMR_THRUST);
+				break;
+			case AMR_HANDS: break;
+			case AMR_LEGS: break;
+			case AMR_FEET:
+				CheckJump(Player, PlayerInfo, Info & AMR_THRUST);
+				break;
+			default: break;
+		}
 		if(Info & AMR_ENERGY){
 			if(Info & AMR_MAGNET)
 				switch(Slot){
@@ -130,13 +167,11 @@ class ZArmor:Item play{
 			if(Info & AMR_THRUST)
 				switch(Slot){
 					case AMR_TORSO:
-						CheckSprint(Player, PlayerInfo);
 						break;
 					case AMR_HANDS:
 						CheckDash(Player, PlayerInfo);
 						break;
 					case AMR_LEGS: break;
-					case AMR_FEET: break;
 					default: break;
 				}
 			if(Info & AMR_JETPACK)
@@ -149,3 +184,7 @@ class ZArmor:Item play{
 		}
 	}
 }
+
+#include "ZSCRIPT/Z/INV/ARMOR/ENERGY.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/DAMAGE.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/THRUST/MAIN.zsc"

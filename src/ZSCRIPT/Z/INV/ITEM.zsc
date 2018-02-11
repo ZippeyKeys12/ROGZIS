@@ -1,15 +1,15 @@
 class Items:Registry{
 	bool Add(Item Item)
 	{return Item && super.Add(Item);}
-	
+
 	Item Get(Name Name) const
 	{return Item(super.Get(Name));}
-	
+
 	Item GetRand() const
 	{return Item(super.GetRand());}
 }
 
-class Item:RegistryItem{
+class Item:RegistryItem play{
 	protected
 	int Price,
 		Durability,
@@ -39,19 +39,26 @@ class Item:RegistryItem{
 		return self;
 	}
 
+	virtual
+	void OnInventoryTick(ZPlayer Player){}
+
 	override
 	Name GetName() const
 	{return Name;}
 
+	clearscope
 	int GetPrice() const
 	{return Price;}
 
-	int GetDurability() const
-	{return Durability;}
+	clearscope
+	int, int GetDurability() const
+	{return Durability, MaxDurability;}
 
+	clearscope
 	String GetDesc() const
 	{return Description;}
 
+	clearscope
 	Vector2 GetSize() const
-	{return Size;}
+	{return (Size.X, Size.Y);}
 }

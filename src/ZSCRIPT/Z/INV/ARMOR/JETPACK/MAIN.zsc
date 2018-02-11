@@ -1,0 +1,16 @@
+struct JetpackStats{
+
+	int JetpackPower;
+}
+
+extend
+class ZArmor{
+	protected
+	int //Jetpack
+		JetpackPower;
+
+	virtual
+	void InitThrust(in out JetpackStats Stats){
+		JetpackPower=Stats.JetpackPower;
+	}
+}

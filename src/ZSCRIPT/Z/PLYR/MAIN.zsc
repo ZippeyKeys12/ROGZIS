@@ -28,13 +28,17 @@ class ZPlayer:DoomPlayer{
 			ZInv=ZInventory.Create();
 			ArmorStats stts;
 			stts.Energy=5000;
-			ThrustStats thurst;
-			thurst.ThrustPower=10;
-			thurst.SprintSpeed=5;
-			thurst.DashTimer=12;
-			thurst.DashCooldown=50;
-			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thurst);
-			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thurst);
+			stts.EnergyRechargeRate=200;
+			stts.EnergyRechargeAmount=20;
+			stts.IdleRechargeBonus=2;
+			ThrustStats thrust;
+			thrust.ThrustPower=15;
+			thrust.DashTimer=12;
+			thrust.DashCooldown=50;
+			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thrust);
+			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust);
+			ZInv.Armor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust);
+			ZInv.Armor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST, stts, thrust);
 	}
 	
 	override
@@ -46,19 +50,12 @@ class ZPlayer:DoomPlayer{
 		AimLineAttack(angle, 2048, t, .5);
 		AimTarget=t.linetarget;
 		super.Tick();
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
 	}
 	
-	virtual
-	clearscope
-	int, int GetEnergy(){
-		int Energy, MaxEnergy,
-			e,		me;
-		for(int i=0; i<ZInv.Armor.Size(); i++)
-				if(ZInv.Armor[i]){
-					[e, me]=ZInv.Armor[i].GetEnergy();
-					Energy+=e;
-					MaxEnergy+=me;
-				}
-		return Energy, MaxEnergy;
-	}
+	override
+	void CheatGive (String name, int amount)
+	{console.printf("WIP");}
 }
+

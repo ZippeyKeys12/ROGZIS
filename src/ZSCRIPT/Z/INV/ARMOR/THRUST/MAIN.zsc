@@ -3,11 +3,11 @@ struct ThrustStats{
 	const SprintCost=ZPlayerDefaults.SPRINT_COST;
 	//Dash
 	const DashCost=ZPlayerDefaults.DASH_COST;
+	//Jump
+	const JumpCost=ZPlayerDefaults.JUMP_COST;
 	
 	int //General
 		ThrustPower,
-		//Sprint
-		SprintSpeed,
 		//Dash
 		DashTimer,
 		DashCooldown;
@@ -19,13 +19,20 @@ class ZArmor{
 	int ThrustPower;
 	
 	virtual
-	void InitThrust(ArmorInfo Info, in out ThrustStats Stats){
+	void InitThrust(ArmorSlot Slot, in out ThrustStats Stats){
 		ThrustPower=Stats.ThrustPower;
-		DashOppurt=DashCountdown=0;
-		SprintCost=Stats.SprintCost;
-		SprintSpeed=Stats.SprintSpeed;
-		DashCost=Stats.DashCost;
-		DashTimer=Stats.DashTimer;
-		DashCooldown=Stats.DashCooldown;
+		if(Slot==AMR_TORSO)
+			SprintCost=Stats.SprintCost;
+		else if(Slot==AMR_HANDS || Slot==AMR_FEET){
+			DashOppurt=DashCountdown=0;
+			DashCost=Stats.DashCost;
+			DashTimer=Stats.DashTimer;
+			DashCooldown=Stats.DashCooldown;
+		}if(Slot==AMR_FEET)JumpCost=Stats.JumpCost;
 	}
 }
+
+#include "ZSCRIPT/Z/INV/ARMOR/THRUST/SPRINT.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/THRUST/DASH.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/THRUST/JUMP.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/THRUST/LONGFALL.zsc"

@@ -2,26 +2,25 @@ extend
 class ZArmor{
 	protected
 	int //Sprint
-		SprintCost,
-		SprintSpeed;
+		SprintCost;
 
 	virtual
-	void CheckSprint(ZPlayer Player, PlayerInfo PlayerInfo){
+	void CheckSprint(ZPlayer Player, PlayerInfo PlayerInfo, bool Thrust=false){
 		if(!Player.CountInv("ZCompensate"))Player.GiveInventory("ZCompensate", 1);
 		//Sprinting
-		if((Info & AMR_THRUST) && (PlayerInfo.original_cmd.buttons & BT_SPEED) &&
-		   (PlayerInfo.original_cmd.buttons & BT_FORWARD) &&
-		   (Energy>SprintCost) &&
+		if(Thrust && (~PlayerInfo.cmd.buttons & BT_BACK) &&
+		   (PlayerInfo.cmd.buttons & BT_SPEED) &&
+		   (PlayerInfo.cmd.buttons & BT_FORWARD) &&
+		   (Player.GetEnergy()>SprintCost) &&
 		   (Player.Health>Player.RunHealth)){
-			Energy-=SprintCost;
-			Player.FindInventory("ZCompensate").Speed=SprintSpeed;
+			Recharger=0;
+			DrainEnergy(SprintCost, Player);
+			Player.FindInventory("ZCompensate").Speed=ThrustPower/5.;
 		//Backstep
-		}else if((~Info & AMR_THRUST) && (PlayerInfo.cmd.buttons & BT_BACK)){
-			
-			Player.FindInventory("ZCompensate").Speed=1;
-		}else{
+		}else if(!Thrust && (PlayerInfo.cmd.buttons & BT_BACK))
 			Player.FindInventory("ZCompensate").Speed=Player.SideMove1;
-		}
+		else
+			Player.FindInventory("ZCompensate").Speed=1;
 	}
 }
 
