@@ -1,6 +1,10 @@
 struct JetpackStats{
+	int //General
+		JetpackPower,
+		JetpackCost;
 
-	int JetpackPower;
+	double //Jetpack
+		   JetpackControl;
 }
 
 extend
@@ -10,7 +14,14 @@ class ZArmor{
 		JetpackPower;
 
 	virtual
-	void InitThrust(in out JetpackStats Stats){
+	void InitJetpack(ArmorSlot Slot, in out JetpackStats Stats){
 		JetpackPower=Stats.JetpackPower;
+		if(Slot==AMR_FEET){
+			JetpackWaiter=0;
+			JetpackCost=Stats.JetpackCost;
+			JetpackControl=Stats.JetpackControl;
+		}
 	}
 }
+
+#include "ZSCRIPT/Z/INV/ARMOR/JETPACK/JETPACK.zsc"

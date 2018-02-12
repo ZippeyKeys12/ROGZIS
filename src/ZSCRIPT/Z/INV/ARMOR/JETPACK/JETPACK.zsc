@@ -1,0 +1,28 @@
+extend
+class ZArmor{
+	protected
+	bool Flying;
+
+	protected
+	int	JetpackCost,
+		JetpackWaiter;
+	
+	protected
+	double JetpackControl;
+
+	virtual
+	void CheckJetpack(ZPlayer Player, PlayerInfo PlayerInfo){
+		if((PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_JUMP) && Player.GetEnergy()>JetpackCost)
+			if((MidAir || JetpackWaiter==Player.TICRATE/5)){
+				Player.Vel.Z=JetpackPower/(2.*(Player.IsHeavy()?2:1));
+				Player.A_ChangeVelocity(
+				x:	((PlayerInfo.cmd.buttons & BT_FORWARD  )?JetpackControl:0)- 
+					((PlayerInfo.cmd.buttons & BT_BACK     )?JetpackControl:0),
+				y:	((PlayerInfo.cmd.buttons & BT_MOVELEFT )?JetpackControl:0)-
+					((PlayerInfo.cmd.buttons & BT_MOVERIGHT)?JetpackControl:0),
+				flags: CVF_RELATIVE);
+				DrainEnergy(JetpackCost*(Player.IsHeavy()?2:1), Player);
+			}else JetpackWaiter++;
+		else JetpackWaiter=0;
+	}
+}

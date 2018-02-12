@@ -41,6 +41,7 @@ struct ArmorStats{
 
 	int //General
 		IdleRechargeBonus,
+		
 		//Energy
 		Energy,
 		EnergyRechargeRate,
@@ -82,11 +83,11 @@ class ZArmor:Item{
 	ArmorInfo Info;
 
 	static
-	ZArmor Create(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats=null, int Price=0, int Durability=0, int Width=-1, int Height=-1)
-	{return new("ZArmor").Init(Name, Description, Slot, Info, Stats, TStats, Price, Durability, Width, Height);}
+	ZArmor Create(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats=null, JetpackStats JStats=null, int Price=0, int Durability=0, int Width=-1, int Height=-1)
+	{return new("ZArmor").Init(Name, Description, Slot, Info, Stats, TStats, JStats, Price, Durability, Width, Height);}
 	
 	protected
-	ZArmor Init(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats, int Price, int Durability, int Width, int Height){
+	ZArmor Init(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats, JetpackStats JStats, int Price, int Durability, int Width, int Height){
 		self.Slot=Slot;
 		self.Info=Info;
 		//Damage Stats
@@ -95,6 +96,8 @@ class ZArmor:Item{
 		if(Info & AMR_ENERGY){
 			if(Info & AMR_THRUST)
 				InitThrust(Slot, TStats);
+			if(Info & AMR_JETPACK)
+				InitJetpack(Slot, JStats);
 		}
 		//Item Initialization
 		if(Width==-1)
@@ -123,7 +126,7 @@ class ZArmor:Item{
 	override
 	void OnInventoryTick(ZPlayer Player){
 		if(Info & AMR_ENERGY){
-			RechargeEnergy(Player, false);
+			//RechargeEnergy(Player, false); Might be OP
 		}
 	}
 	
@@ -141,50 +144,10 @@ class ZArmor:Item{
 				}
 		}
 	}
-
-	virtual
-	void HandleArmorMovement(ZPlayer Player){
-		PlayerInfo PlayerInfo=Player.player;
-		switch(Slot){
-			case AMR_TORSO:
-				CheckSprint(Player, PlayerInfo, Info & AMR_THRUST);
-				break;
-			case AMR_HANDS: break;
-			case AMR_LEGS: break;
-			case AMR_FEET:
-				CheckJump(Player, PlayerInfo, Info & AMR_THRUST);
-				break;
-			default: break;
-		}
-		if(Info & AMR_ENERGY){
-			if(Info & AMR_MAGNET)
-				switch(Slot){
-					case AMR_HANDS: break;
-					case AMR_LEGS: break;
-					case AMR_FEET: break;
-					default: break;
-				}
-			if(Info & AMR_THRUST)
-				switch(Slot){
-					case AMR_TORSO:
-						break;
-					case AMR_HANDS:
-						CheckDash(Player, PlayerInfo);
-						break;
-					case AMR_LEGS: break;
-					default: break;
-				}
-			if(Info & AMR_JETPACK)
-				switch(Slot){
-					case AMR_TORSO: break;
-					case AMR_LEGS: break;
-					case AMR_FEET: break;
-					default: break;
-				}
-		}
-	}
 }
 
 #include "ZSCRIPT/Z/INV/ARMOR/ENERGY.zsc"
 #include "ZSCRIPT/Z/INV/ARMOR/DAMAGE.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/MOVEMENT.zsc"
 #include "ZSCRIPT/Z/INV/ARMOR/THRUST/MAIN.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/JETPACK/MAIN.zsc"

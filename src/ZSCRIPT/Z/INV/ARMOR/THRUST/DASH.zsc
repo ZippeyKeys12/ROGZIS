@@ -35,8 +35,11 @@ class ZArmor{
 						DrainEnergy(DashCost, Player);
 						int MidAirBoost=Player.JumpZ;
 						if(PlayerInfo.OnGround) MidAirBoost/=2;
-						if(i<=1) Player.A_ChangeVelocity(ThrustPower*-1**i, z: MidAirBoost, flags: CVF_RELATIVE);
-						else Player.A_ChangeVelocity(y: ThrustPower*-1**i, z: MidAirBoost, flags: CVF_RELATIVE);
+						Player.A_ChangeVelocity(
+						x: (CurrentDashButton & (BT_FORWARD	|BT_BACK		))?(ThrustPower*-1**i):0,
+						y: (CurrentDashButton & (BT_MOVELEFT|BT_MOVERIGHT	))?(ThrustPower*-1**i):0,
+						flags: CVF_RELATIVE);
+						PlayerInfo.cmd.buttons|=BT_JUMP;
 						DashCountdown=DashCooldown;
 						DashOppurt=0;
 					}else{

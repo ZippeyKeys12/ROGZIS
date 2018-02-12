@@ -92,6 +92,9 @@ class ZPlayer{
 	override
 	int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0){
 		ZDamageType ZDamageType=ZManager.DamageType(DamageType);
+		if(ZDamageType){
+			
+		}
 		damage=super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 		return damage;
 	}
@@ -99,7 +102,7 @@ class ZPlayer{
 
 class ZInventory play{	
 	ZArmor Armor[5];
-	bool Space[6][12];
+	bool Occupied[6][12];
 	
 	static
 	ZInventory Create()

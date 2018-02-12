@@ -1,13 +1,13 @@
 class ZPlayer:DoomPlayer{	
 	int //Oxygen
-		oxygen,
-		maxOxygen;
+		Oxygen,
+		MaxOxygen;
 		
 	Actor AimTarget;
 
 	//Oxygen
-	Property Oxygen: oxygen;
-	Property MaxOxygen: maxOxygen;
+	Property Oxygen: Oxygen;
+	Property MaxOxygen: MaxOxygen;
 	
 	Default{
 		//Oxygen
@@ -32,13 +32,17 @@ class ZPlayer:DoomPlayer{
 			stts.EnergyRechargeAmount=20;
 			stts.IdleRechargeBonus=2;
 			ThrustStats thrust;
-			thrust.ThrustPower=15;
+			thrust.ThrustPower=10;
 			thrust.DashTimer=12;
 			thrust.DashCooldown=50;
-			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thrust);
-			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust);
-			ZInv.Armor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust);
-			ZInv.Armor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST, stts, thrust);
+			JetpackStats jetpack;
+			jetpack.JetpackPower=5;
+			jetpack.JetpackControl=1;
+			jetpack.JetpackCost=30;
+			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+			ZInv.Armor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+			ZInv.Armor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
 	}
 	
 	override
@@ -46,13 +50,17 @@ class ZPlayer:DoomPlayer{
 		//Handle Voodoo Dolls
 		if (!player || !player.mo || player.mo != self) return super.Tick();
 		//Get Actor being aimed at
-		FTranslatedLineTarget t;
-		AimLineAttack(angle, 2048, t, .5);
-		AimTarget=t.linetarget;
+		FLineTraceData Data;
+		Trace(2048, data: Data);
+		AimTarget=Data.HitActor;
 		super.Tick();
 		for(int i=0; i<ZInv.Armor.Size(); i++)
 			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
 	}
+	
+	virtual
+	bool Trace(double Distance=1024, double Pitch=0, out FLineTraceData Data=null)
+	{return LineTrace(Angle, Distance, Pitch, data: Data);}
 	
 	override
 	void CheatGive (String name, int amount)

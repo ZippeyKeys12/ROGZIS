@@ -1,0 +1,131 @@
+extend
+class ZArmor{
+	protected
+	bool //Fall Absorption
+		 MidAir;
+
+	protected
+	int //Sprint
+		SprintCost,
+		
+		//Jump
+		JumpCost,
+		
+		//Air Control
+		AirControlCost;
+
+	virtual
+	void HandleArmorMovement(ZPlayer Player){
+		PlayerInfo PlayerInfo=Player.player;
+		if(Info & AMR_ENERGY){
+			if(Info & AMR_MAGNET)
+				switch(Slot){
+					case AMR_HANDS: break;
+					case AMR_LEGS: break;
+					case AMR_FEET: break;
+					default: break;
+				}
+			if(Info & AMR_THRUST)
+				switch(Slot){
+					case AMR_TORSO:
+						break;
+					case AMR_HANDS:
+						CheckDash(Player, PlayerInfo);
+						break;
+					case AMR_LEGS: break;
+					default: break;
+				}
+			if(Info & AMR_JETPACK)
+				switch(Slot){
+					case AMR_TORSO: break;
+					case AMR_LEGS: break;
+					case AMR_FEET:
+						CheckJetpack(Player, PlayerInfo);
+						break;
+					default: break;
+				}
+		}
+	}
+
+	virtual
+	double CheckSprint(ZPlayer Player, PlayerInfo PlayerInfo){
+		//Sprinting
+		if((Info & AMR_THRUST) && (~PlayerInfo.cmd.buttons & BT_BACK) &&
+		   (PlayerInfo.cmd.buttons & BT_SPEED) &&
+		   (PlayerInfo.cmd.buttons & BT_FORWARD) &&
+		   (Player.GetEnergy()>SprintCost) &&
+		   (Player.Health>Player.RunHealth)){
+			Recharger=0;
+			DrainEnergy(SprintCost, Player);
+			return ThrustPower/3.5;
+		//Backstep
+		}else if((~Info & AMR_THRUST) && (PlayerInfo.cmd.buttons & BT_BACK)) return Player.SideMove1;
+		else return 1;
+	}
+
+	virtual
+	void CheckJump(ZPlayer Player, PlayerInfo PlayerInfo){
+		if(DashCountdown>0)DashCountdown--;
+		else if(DashOppurt>0)DashOppurt--;
+		else CurrentDashButton=666;
+		// [RH] check for jump
+		if(PlayerInfo.cmd.buttons & BT_JUMP){
+			if((Info & AMR_THRUST)  && DashCountdown==0 && (~PlayerInfo.oldbuttons & BT_JUMP) && Player.GetEnergy()>DashCost){
+				if(DashOppurt>0 || !PlayerInfo.OnGround){
+					DrainEnergy(DashCost, Player);
+					Player.Vel.Z+=ThrustPower/((Info & AMR_HEAVY)?2.:1.);
+					DashCountdown=DashCooldown;
+					DashOppurt=0;
+				}else if(PlayerInfo.OnGround)DashOppurt=DashTimer;
+			}
+			if(PlayerInfo.CrouchOffset!=0)PlayerInfo.Crouching=1;
+			else if(Player.IsHeavy() && Player.GetEnergy()<JumpCost && (~Info & AMR_THRUST) && (~Info & AMR_JETPACK))return;
+			else if(Player.WaterLevel>=2)Player.Vel.Z=4*Player.Speed;
+			else if(Player.bNoGravity)Player.Vel.Z=3.;
+			else if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0){
+				double JumpVelZ=Player.JumpZ*35/Player.TICRATE;
+				if(Player.IsHeavy()){
+					if(Player.GetEnergy()>=JumpCost)DrainEnergy(JumpCost, Player);
+					else JumpVelZ/=2;
+				}
+				double JumpFac=0;
+
+				// [BC] If the player has the high jump power, double his jump velocity.
+				// (actually, pick the best factors from all active items.)
+				for (PowerHighJump p=PowerHighJump(Player.Inv); p!=null; p=PowerHighJump(p.Inv))
+					if(p && p.Strength>JumpFac)JumpFac=p.Strength;
+
+				if(JumpFac>0)JumpVelZ*=JumpFac;
+
+				Player.Vel.Z+=JumpVelZ;
+				Player.bOnMobj=false;
+				PlayerInfo.JumpTics=-1;
+				if(~PlayerInfo.Cheats & CF_PREDICTING)Player.A_PlaySound("*jump", CHAN_BODY);
+			}
+		}
+	}
+
+	virtual
+	void SoftenFall(ZPlayer Player){
+		if(Player.Vel.Z<=-ThrustPower){
+			FLineTraceData Data;
+			Player.Trace(128, 90, Data);
+			if (Data.Distance+Player.Vel.Z<=30)
+				if (MidAir){
+					MidAir=false;
+					Player.Vel.Z+=ThrustPower;
+				}
+			else MidAir=true;
+		}
+	}
+
+	virtual
+	double CheckAirControl(){
+		double AirControl=0;
+		if(Info & AMR_THRUST)
+			AirControl+=ThrustPower/5.;
+		if(Info & AMR_JETPACK)
+			AirControl+=JetpackPower/3.;
+		return AirControl;
+	}
+}

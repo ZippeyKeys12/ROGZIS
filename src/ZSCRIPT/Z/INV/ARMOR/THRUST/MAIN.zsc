@@ -32,7 +32,4 @@ class ZArmor{
 	}
 }
 
-#include "ZSCRIPT/Z/INV/ARMOR/THRUST/SPRINT.zsc"
 #include "ZSCRIPT/Z/INV/ARMOR/THRUST/DASH.zsc"
-#include "ZSCRIPT/Z/INV/ARMOR/THRUST/JUMP.zsc"
-#include "ZSCRIPT/Z/INV/ARMOR/THRUST/LONGFALL.zsc"
