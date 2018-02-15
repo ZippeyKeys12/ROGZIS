@@ -1,11 +1,14 @@
 version "3.2.5"
 
 //SETTINGS
-#include "SETTINGS"
+#include "SETTINGS.zsc"
 
 //SYSTEM
-#include "ZSCRIPT/Z/SYS/MANAGER.zsc"
+#include "ZSCRIPT/Z/SYS/CONSTANTS.zsc"
 #include "ZSCRIPT/Z/SYS/DAMAGETYPE.zsc"
+#include "ZSCRIPT/Z/SYS/MANAGER.zsc"
+#include "ZSCRIPT/Z/SYS/HANDLER.zsc"
+#include "ZSCRIPT/Z/SYS/WORLDSTATE.zsc"
 
 //DATA MANAGEMENT
 #include "ZSCRIPT/Z/DATA/DATAMAP.zsc"
@@ -18,8 +21,8 @@ version "3.2.5"
 
 //PLAYER
 #include "ZSCRIPT/Z/PLYR/MAIN.zsc"
-#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"
 #include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
+#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"
 
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"

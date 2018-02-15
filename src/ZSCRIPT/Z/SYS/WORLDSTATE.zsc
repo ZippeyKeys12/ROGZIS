@@ -1,0 +1,17 @@
+struct ZWorldState{
+	//Player
+	ZPlayer		Player;
+	PlayerInfo	PlayerInfo;
+}
+
+extend
+class ZManager{
+	ZWorldState WorldState;
+
+	static
+	void PlayerEntered(PlayerEvent e){
+		ZManager Manager=Instance();
+		Manager.WorldState.PlayerInfo=Players[e.PlayerNumber];
+		Manager.WorldState.Player=ZPlayer(Manager.WorldState.PlayerInfo.mo);
+	}
+}

@@ -2,7 +2,9 @@ class ZPlayer:DoomPlayer{
 	int //Oxygen
 		Oxygen,
 		MaxOxygen;
-		
+
+	double LastVelLength;
+
 	Actor AimTarget;
 
 	//Oxygen
@@ -10,6 +12,7 @@ class ZPlayer:DoomPlayer{
 	Property MaxOxygen: MaxOxygen;
 	
 	Default{
+		Player.ViewHeight 56;
 		//Oxygen
 		ZPlayer.Oxygen ZPlayerDefaults.MAX_OXYGEN;
 		ZPlayer.MaxOxygen ZPlayerDefaults.MAX_OXYGEN;
@@ -48,19 +51,35 @@ class ZPlayer:DoomPlayer{
 	override
 	void Tick(){
 		//Handle Voodoo Dolls
-		if (!player || !player.mo || player.mo != self) return super.Tick();
-		//Get Actor being aimed at
-		FLineTraceData Data;
-		Trace(2048, data: Data);
-		AimTarget=Data.HitActor;
 		super.Tick();
+		if (!player || !player.mo || player.mo != self) return;
+		//Get Actor being aimed at
+		AimTarget=GetAimTarget();
+		//Armor ticks
 		for(int i=0; i<ZInv.Armor.Size(); i++)
 			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
+		//Collision damage
+		CheckCollisionDamage();
 	}
 	
 	virtual
 	bool Trace(double Distance=1024, double Pitch=0, out FLineTraceData Data=null)
 	{return LineTrace(Angle, Distance, Pitch, data: Data);}
+	
+	virtual
+	Actor GetAimTarget(){
+		FLineTraceData Data;
+		Trace(2048, data: Data);
+		return Data.HitActor;
+	}
+	
+	virtual
+	void CheckCollisionDamage(){
+		int Dam;
+		if((Dam=abs(Vel.Length()-LastVelLength))>40)
+			DamageMobj(self, self, Dam, 'Speed', DMG_THRUSTLESS);
+		LastVelLength=Vel.Length();
+	}
 	
 	override
 	void CheatGive (String name, int amount)
