@@ -52,7 +52,9 @@ class ZArmor{
 	
 
 	virtual
-	int ModifyDamage(int Damage, ZDamageType DamageType, in out ZPlayer Player){
+	int ModifyDamage(int Damage, Name Mod){
+		ZDamageType DamageType=ZManager.DamageType(Mod);
+		if(!DamageType)return Damage;
 		double Dam, TempDamage=Damage;
 		//Powered Armor
 		if(Info & AMR_ENERGY){

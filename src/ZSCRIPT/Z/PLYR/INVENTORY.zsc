@@ -90,13 +90,12 @@ class ZPlayer{
 	}
 	
 	override
-	int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0){
-		ZDamageType ZDamageType=ZManager.DamageType(DamageType);
-		if(ZDamageType){
-			
-		}
-		damage=super.DamageMobj(inflictor, source, damage, mod, flags, angle);
-		return damage;
+	int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags = 0, double Angle = 0){
+		for(int i=0; i<ZInv.Armor.Size(); i++)
+			if(ZInv.Armor[i] && ZInv.Armor[i].GetEnergy()>0)
+				Damage=ZInv.Armor[i].ModifyDamage(Damage, Mod);
+		Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
+		return Damage;
 	}
 }
 
