@@ -1,8 +1,9 @@
 extend
 class ZArmor{
+	int OldStats;
+
 	protected
 	int //General
-		OldStats,
 		Recharger,
 		
 		//Energy
@@ -57,32 +58,33 @@ class ZArmor{
 	}
 	
 	virtual
-	void RechargeEnergy(ZPlayer Player, bool CheckStats=true){
+	void RechargeEnergy(ZPlayer Player){
 		if(!Player || Player.Health<=0)return;
 		//This Tick
-		int CurrentStats=Player.GetEnergy();
-		if(Info & AMR_PLATE)	CurrentStats+=Player.GetPlate();
-		if(Info & AMR_MAGNET)	CurrentStats+=Player.GetMagnet();
-		if(Info & AMR_SHIELD)	CurrentStats+=Player.GetShield();
-		if(Info & AMR_LIGHT)	CurrentStats+=Player.GetLight();
-		if(!CheckStats || CurrentStats==OldStats){
+		int CurrentStats=Player.GetEnergy()
+						+Player.GetPlate()
+						+Player.GetMagnet()
+						+Player.GetShield()
+						+Player.GetLight();
+		if(CurrentStats>=OldStats){
+			console.printf(Slot.." "..Recharger.." "..Energy);
 			int ShieldGoal;
 			if(Energy<MaxEnergy){
 				if(Recharger==EnergyRechargeRate){
 					Energy=Clamp(Energy+EnergyRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), 0, MaxEnergy);
 					if(Energy==MaxEnergy)Recharger=0;
 				}else Recharger++;
-			}else if((Info & AMR_MAGNET) && Magnet<MaxMagnet){
+			}else if((Info & AMR_MAGNET) && (Info & AMR_MOWNPOWER) && Magnet<MaxMagnet){
 				if(Recharger==MagnetRechargeRate){
 					Magnet=Clamp(Magnet+MagnetRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), 0, MaxMagnet);
 					if(Magnet==MaxMagnet)Recharger=0;
 				}else Recharger++;
-			}else if((Info & AMR_SHIELD) && Shield<(ShieldGoal=int(Shield/ShieldDivider+1)*ShieldDivider)){
+			}else if((Info & AMR_SHIELD) && (Info & AMR_SOWNPOWER) && Shield<(ShieldGoal=int(Shield/ShieldDivider+1)*ShieldDivider)){
 				if(Recharger==ShieldRechargeRate){
 					Shield=Clamp(Shield+ShieldRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), 0, ShieldGoal);
 					if(Shield==ShieldGoal)Recharger=0;
 				}else Recharger++;
-			}else if((Info & AMR_LIGHT) && Light==0){
+			}else if((Info & AMR_LIGHT) && (Info & AMR_LOWNPOWER) && Light==0){
 				if(LightChargeUp==MaxLight){
 					Light=MaxLight;
 					Recharger=LightChargeUp=0;
@@ -92,10 +94,10 @@ class ZArmor{
 			}
 		}else Recharger=0;
 		//Last Tick
-		OldStats=Player.GetEnergy();
-		if(Info & AMR_PLATE)	OldStats+=Player.GetPlate();
-		if(Info & AMR_MAGNET)	OldStats+=Player.GetMagnet();
-		if(Info & AMR_SHIELD)	OldStats+=Player.GetShield();
-		if(Info & AMR_LIGHT)	OldStats+=Player.GetLight();
+		OldStats=Player.GetEnergy()
+				+Player.GetPlate()
+				+Player.GetMagnet()
+				+Player.GetShield()
+				+Player.GetLight();
 	}
 }

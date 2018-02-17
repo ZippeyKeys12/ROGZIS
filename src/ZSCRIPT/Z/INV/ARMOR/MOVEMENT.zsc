@@ -35,8 +35,6 @@ class ZArmor{
 				}
 			if(Info & AMR_THRUST)
 				switch(Slot){
-					case AMR_TORSO:
-						break;
 					case AMR_HANDS:
 						CheckDash(Player, PlayerInfo);
 						break;
@@ -45,7 +43,6 @@ class ZArmor{
 				}
 			if(Info & AMR_JETPACK)
 				switch(Slot){
-					case AMR_TORSO: break;
 					case AMR_LEGS: break;
 					case AMR_FEET:
 						CheckJetpack(Player, PlayerInfo);
@@ -65,9 +62,9 @@ class ZArmor{
 		   (Player.Health>Player.RunHealth)){
 			Recharger=0;
 			DrainEnergy(SprintCost, Player);
-			return ThrustPower/3.5;
+			return ThrustPower/5.5;
 		//Backstep
-		}else if((~Info & AMR_THRUST) && (PlayerInfo.cmd.buttons & BT_BACK)) return Player.SideMove1;
+		}else if((~Info & AMR_THRUST) && (PlayerInfo.cmd.buttons & BT_BACK))return Player.SideMove1;
 		else return 1;
 	}
 

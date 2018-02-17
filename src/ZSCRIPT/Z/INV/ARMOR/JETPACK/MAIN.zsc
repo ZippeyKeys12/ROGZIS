@@ -16,7 +16,9 @@ class ZArmor{
 	virtual
 	void InitJetpack(ArmorSlot Slot, in out JetpackStats Stats){
 		JetpackPower=Stats.JetpackPower;
-		if(Slot==AMR_FEET){
+		if(Slot==AMR_TORSO){
+			ChargeWaiter=0;
+		}else if(Slot==AMR_FEET){
 			JetpackWaiter=0;
 			JetpackCost=Stats.JetpackCost;
 			JetpackControl=Stats.JetpackControl;
@@ -24,4 +26,5 @@ class ZArmor{
 	}
 }
 
+#include "ZSCRIPT/Z/INV/ARMOR/JETPACK/CHARGE.zsc"
 #include "ZSCRIPT/Z/INV/ARMOR/JETPACK/JETPACK.zsc"

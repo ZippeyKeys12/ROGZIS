@@ -30,7 +30,7 @@ class ZPlayer:DoomPlayer{
 			//Inventory
 			ZInv=ZInventory.Create();
 			ArmorStats stts;
-			stts.Energy=5000;
+			stts.Energy=500;
 			stts.EnergyRechargeRate=200;
 			stts.EnergyRechargeAmount=20;
 			stts.IdleRechargeBonus=2;
@@ -42,7 +42,7 @@ class ZPlayer:DoomPlayer{
 			jetpack.JetpackPower=5;
 			jetpack.JetpackControl=.5;
 			jetpack.JetpackCost=30;
-			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
 			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
 			ZInv.Armor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
 			ZInv.Armor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
