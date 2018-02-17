@@ -5,13 +5,20 @@ class ZArmor{
 
     virtual
 	double CheckCharge(ZPlayer Player, PlayerInfo PlayerInfo){
-		if((PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_SPEED) && (PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_FORWARD) && Player.GetEnergy()>=JetpackCost*(Player.IsHeavy()?1:.5))
-			if(ChargeWaiter==ceil(Player.TICRATE*1.5)){
-				DrainEnergy(JetpackCost*(Player.IsHeavy()?1:.5), Player);
-                console.printf(JetpackPower/(Player.IsHeavy()?.1:.05)/75..."");
-                return JetpackPower/(Player.IsHeavy()?.1:.05)/75.;
-			}else ChargeWaiter++;
-		else ChargeWaiter=0;
-        return 0;
+		if(Info & AMR_JETPACK)
+			if(!Player.bSkullfly){
+				if((PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_USER1	) &&
+				   (PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_FORWARD	) &&
+				   Player.GetEnergy()>=JetpackCost*(Player.IsHeavy()?3:1.5))
+					Player.bSkullfly=ChargeWaiter==Player.TICRATE;
+				ChargeWaiter=Clamp(ChargeWaiter+1, 0, Player.TICRATE);
+			}else{
+				DrainEnergy(JetpackCost*(Player.IsHeavy()?3:1.5), Player);
+				Player.bSkullfly=ChargeWaiter-->Player.TICRATE*.75;
+				if(!Player.bSkullfly)ChargeWaiter=0;
+				console.printf(JetpackPower/(Player.IsHeavy()?.1:.05)/40..."");
+				return JetpackPower/(Player.IsHeavy()?.1:.05)/20.;
+			}
+		return 1;
 	}
 }

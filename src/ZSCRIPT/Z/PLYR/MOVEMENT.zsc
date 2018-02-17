@@ -87,8 +87,8 @@ class ZPlayer{
 			SideMove*=MoveFactor*(35/TICRATE);
 
 			if(ZInv.ArMor[AMR_TORSO]){
-				ForwardMove+=ZInv.ArMor[AMR_TORSO].CheckSprint(self, Player);
-				ForwardMove+=ZInv.ArMor[AMR_TORSO].CheckCharge(self, Player);
+				ForwardMove*=ZInv.ArMor[AMR_TORSO].CheckSprint(self, Player);
+				ForwardMove*=ZInv.ArMor[AMR_TORSO].CheckCharge(self, Player);
 			}else if(Player.cmd.buttons & BT_BACK)ForwardMove*=SideMove1;
 
 			if (ForwardMove)

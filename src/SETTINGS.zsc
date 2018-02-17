@@ -16,7 +16,7 @@ struct ZPlayerDefaults{
 	const STRAFE_SPEED=WALK_SPEED-WALK_SPEED/5;
 	const JUMP_COST=10;
 	const SPRINT_SPEED=2.75;
-	const SPRINT_COST=15;
+	const SPRINT_COST=10;
 	const DASH_SPEED=20;
 	const DASH_COST=SPRINT_COST*30;
 	const DASH_TIMER=10;

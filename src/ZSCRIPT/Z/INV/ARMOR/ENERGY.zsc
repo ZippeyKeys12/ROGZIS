@@ -67,7 +67,6 @@ class ZArmor{
 						+Player.GetShield()
 						+Player.GetLight();
 		if(CurrentStats>=OldStats){
-			console.printf(Slot.." "..Recharger.." "..Energy);
 			int ShieldGoal;
 			if(Energy<MaxEnergy){
 				if(Recharger==EnergyRechargeRate){

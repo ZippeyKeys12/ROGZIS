@@ -54,6 +54,7 @@ class ZArmor{
 
 	virtual
 	double CheckSprint(ZPlayer Player, PlayerInfo PlayerInfo){
+		if(!PlayerInfo.OnGround)return 1;
 		//Sprinting
 		if((Info & AMR_THRUST) && (~PlayerInfo.cmd.buttons & BT_BACK) &&
 		   (PlayerInfo.cmd.buttons & BT_SPEED) &&
@@ -62,7 +63,7 @@ class ZArmor{
 		   (Player.Health>Player.RunHealth)){
 			Recharger=0;
 			DrainEnergy(SprintCost, Player);
-			return ThrustPower/5.5;
+			return ThrustPower/3.5;
 		//Backstep
 		}else if((~Info & AMR_THRUST) && (PlayerInfo.cmd.buttons & BT_BACK))return Player.SideMove1;
 		else return 1;

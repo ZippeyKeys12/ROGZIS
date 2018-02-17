@@ -28,18 +28,22 @@ class ZArmor{
 				BT_MOVELEFT,
 				BT_MOVERIGHT
 			};
-			for(int i=0; i<4; i++){
-				if(((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & DashKeys[i]) &&
+			for(int i=(Player.Vel.Z==0)?1:0; i<DashKeys.Size(); i++){
+				if((((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & DashKeys[i]) ||
+				   (((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & BT_SPEED) && (Player.Vel.Z!=0 || (~PlayerInfo.cmd.buttons & BT_FORWARD)) && (PlayerInfo.cmd.buttons & DashKeys[i]))) &&
 				   (Player.GetEnergy()>DashCost)){
-					if(CurrentDashButton==DashKeys[i] && DashOppurt>0){
+					if((CurrentDashButton==DashKeys[i] && DashOppurt>0) || ((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & BT_SPEED)){
 						DrainEnergy(DashCost, Player);
-						int MidAirBoost=Player.JumpZ;
-						if(PlayerInfo.OnGround) MidAirBoost/=2;
+						int MidAirBoost=Player.JumpZ,
+							Power=ThrustPower*-1**i;
+						if(Player.Vel.Z==0){
+							MidAirBoost=0;
+							Power*=2;
+						}
 						Player.A_ChangeVelocity(
-						x: (CurrentDashButton & (BT_FORWARD	|BT_BACK		))?(ThrustPower*-1**i):0,
-						y: (CurrentDashButton & (BT_MOVELEFT|BT_MOVERIGHT	))?(ThrustPower*-1**i):0,
-						flags: CVF_RELATIVE);
-						PlayerInfo.cmd.buttons|=BT_JUMP;
+							(DashKeys[i] & (BT_FORWARD|BT_BACK		))?Power:0,
+							(DashKeys[i] & (BT_MOVELEFT|BT_MOVERIGHT))?Power:0,
+							MidAirBoost, CVF_RELATIVE);
 						DashCountdown=DashCooldown;
 						DashOppurt=0;
 					}else{
