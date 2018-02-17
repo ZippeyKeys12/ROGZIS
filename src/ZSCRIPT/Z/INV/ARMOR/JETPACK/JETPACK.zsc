@@ -13,7 +13,7 @@ class ZArmor{
 	virtual
 	void CheckJetpack(ZPlayer Player, PlayerInfo PlayerInfo){
 		if((PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_JUMP) && Player.GetEnergy()>JetpackCost)
-			if((MidAir || JetpackWaiter==Player.TICRATE/5)){
+			if((JetpackWaiter==Player.TICRATE/5)){
 				Player.Vel.Z=JetpackPower/(2.*(Player.IsHeavy()?2:1));
 				Player.A_ChangeVelocity(
 				x:	((PlayerInfo.cmd.buttons & BT_FORWARD  )?JetpackControl:0)- 

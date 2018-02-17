@@ -1,29 +1,30 @@
 class Registry{
 	private
-	Array<RegistryItem> RegistryItems;
+	ZArray RegistryItems;
+
+	Registry Init(){
+		RegistryItems=new("ZArray");
+		return self;
+	}
 
 	bool Add(RegistryItem RegistryItem){
 		if(!RegistryItem || Get(RegistryItem.GetName()))return false;
-		RegistryItems.Push(RegistryItem);
+		RegistryItems._.Push(RegistryItem);
 		return true;
 	}
 
 	RegistryItem Get(Name Name) const{
-		for(int i=0; i<RegistryItems.Size(); i++)
-			if(RegistryItems[i].GetName()==Name)
-				return RegistryItems[i];
+		for(int i=0; i<RegistryItems._.Size(); i++)
+			if(RegistryItem(RegistryItems._[i]).GetName()==Name)
+				return RegistryItem(RegistryItems._[i]);
 		return null;
 	}
 
 	RegistryItem GetRand() const
-	{return RegistryItems.Size()==0?null:RegistryItems[random(0,RegistryItems.Size()-1)];}
+	{return RegistryItems._.Size()==0?null:RegistryItem(RegistryItems._[random(0, RegistryItems._.Size()-1)]);}
 
-	RegistryItem Index(int Index) const
-	{return RegistryItems[Index];}
-
-	clearscope
-	int Size() const
-	{return RegistryItems.Size();}
+	ZIterator Iterator()
+	{return ZIterator.Create(RegistryItems);}
 }
 
 class RegistryItem{

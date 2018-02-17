@@ -12,7 +12,7 @@ class ZPlayer{
 	void HandleMovement(){
 		let Player = self.Player;
 		// [RH] Check for fast turn around
-		if ((Player.cmd.buttons & BT_TURN180) && (~Player.oldbuttons & BT_TURN180))
+		if (Player.cmd.buttons & ~Player.oldbuttons & BT_TURN180)
 			Player.turnticks = TURN180_TICKS;
 		// Handle Movement
 		if (reactiontime)
@@ -22,9 +22,8 @@ class ZPlayer{
 			MovePlayer();
 			CheckMoveUpDown();
 			for(int i=0; i<ZInv.ArMor.Size(); i++)
-				if(ZInv.ArMor[i])ZInv.ArMor[i].HandleArMorMovement(self);
-			if(ZInv.ArMor[AMR_FEET])ZInv.ArMor[AMR_FEET].CheckJump(self, Player);
-			else CheckJump();
+				if(ZInv.ArMor[i])ZInv.ArMor[i].HandleArmorMovement(self);
+			if(!ZInv.ArMor[AMR_FEET])CheckJump();
 			MaxStepHeight=(Player.CrouchOffset!=0)?12:24; 
 		}
 	}

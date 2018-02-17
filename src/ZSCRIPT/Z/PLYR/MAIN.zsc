@@ -40,7 +40,7 @@ class ZPlayer:DoomPlayer{
 			thrust.DashCooldown=50;
 			JetpackStats jetpack;
 			jetpack.JetpackPower=5;
-			jetpack.JetpackControl=1;
+			jetpack.JetpackControl=.5;
 			jetpack.JetpackCost=30;
 			ZInv.Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
 			ZInv.Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
@@ -77,7 +77,7 @@ class ZPlayer:DoomPlayer{
 	void CheckCollisionDamage(){
 		int Dam;
 		if((Dam=abs(Vel.Length()-LastVelLength))>40)
-			DamageMobj(self, self, Dam, 'Speed', DMG_THRUSTLESS);
+			DamageMobj(self, self, Dam, 'Plasma', DMG_THRUSTLESS);
 		LastVelLength=Vel.Length();
 	}
 	

@@ -17,6 +17,14 @@ class ZArmor{
 	virtual
 	void HandleArmorMovement(ZPlayer Player){
 		PlayerInfo PlayerInfo=Player.player;
+		switch(Slot){
+			case AMR_HANDS: break;
+			case AMR_LEGS: break;
+			case AMR_FEET:
+				CheckJump(Player, PlayerInfo);
+				break;
+			default: break;
+		}
 		if(Info & AMR_ENERGY){
 			if(Info & AMR_MAGNET)
 				switch(Slot){

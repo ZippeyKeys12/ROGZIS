@@ -3,7 +3,7 @@ enum DamageTypeInfo{
 	DMG_ZONE	=	1<<0,
 }
 
-class DamageTypes:Registry{
+class ZDamageTypes:Registry{
 	bool Add(ZDamageType DamageType)
 	{return DamageType && super.Add(DamageType);}
 

@@ -1,0 +1,12 @@
+class ZCalc{
+    static
+    int ShiftOf(int Value){
+        if(Value==0)return 0;
+        int Shifts=0;
+        while(Value>1){
+            Value>>=1;
+            Shifts++;
+        }
+        return Shifts;
+    }
+}

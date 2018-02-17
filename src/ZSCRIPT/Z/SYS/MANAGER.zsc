@@ -1,15 +1,15 @@
 class ZManager:Thinker{
 	private
-	Items Items;
+	ZItems Items;
 
 	private
-	Armors Armors;
+	ZArmors Armors;
 
 	private
-	Weapons Weapons;
+	ZWeapons Weapons;
 
 	private
-	DamageTypes DamageTypes;
+	ZDamageTypes DamageTypes;
 
 	private
 	Parser_Zinf ParserZinf;
@@ -26,13 +26,13 @@ class ZManager:Thinker{
 	private
 	ZManager Init(){
 		ChangeStatNum(STAT_ZDATA);
-		Items=new("Items");
-		Weapons=new("Weapons");
+		Items=ZItems(new("ZItems").Init());
+		Weapons=ZWeapons(new("ZWeapons").Init());
 		ParserZinf=Parser_Zinf.Create("ZCONFIG");
 		//For registration
 		int i=1; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
 		//DamageTypes
-		DamageTypes=new("DamageTypes");
+		DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
 		while("N/@" != (LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
 			for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
 				Row=ParserTSV.GetRow(j);
@@ -46,7 +46,7 @@ class ZManager:Thinker{
 				DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetDouble(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), ActualFlags));
 			}
 		}
-		Armors=new("Armors");
+		Armors=ZArmors(new("ZArmors").Init());
 		while("N/@" != (LumpName=ParserZinf.GetFromArray("EXTERNAL", "tARMORS", i++))){
 			for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
 				Row=ParserTSV.GetRow(j);

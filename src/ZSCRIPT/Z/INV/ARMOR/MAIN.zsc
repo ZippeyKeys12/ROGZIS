@@ -34,13 +34,13 @@ struct ArmorStats{
 		LightRechargeAmount;
 }
 
-class Armors:Registry{
+class ZArmors:Registry{
 	bool Add(ZArmor ZArmor)
 	{return ZArmor && super.Add(ZArmor);}
-	
+
 	ZArmor Get(Name Name) const
 	{return ZArmor(super.Get(Name));}
-	
+
 	ZArmor GetRand() const
 	{return ZArmor(super.GetRand());}
 }
@@ -48,14 +48,14 @@ class Armors:Registry{
 class ZArmor:Item{
 	protected
 	ArmorSlot Slot;
-	
+
 	protected
 	ArmorInfo Info;
 
 	static
 	ZArmor Create(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats=null, JetpackStats JStats=null, int Price=0, int Durability=0, int Width=-1, int Height=-1)
 	{return new("ZArmor").Init(Name, Description, Slot, Info, Stats, TStats, JStats, Price, Durability, Width, Height);}
-	
+
 	protected
 	ZArmor Init(String Name, String Description, ArmorSlot Slot, ArmorInfo Info, in out ArmorStats Stats, ThrustStats TStats, JetpackStats JStats, int Price, int Durability, int Width, int Height){
 		self.Slot=Slot;
@@ -88,18 +88,18 @@ class ZArmor:Item{
 	clearscope
 	ArmorSlot GetSlot() const
 	{return Slot;}
-	
+
 	clearscope
 	ArmorInfo GetInfo() const
 	{return Info;}
-	
+
 	override
 	void OnInventoryTick(ZPlayer Player){
 		if(Info & AMR_ENERGY){
 			//RechargeEnergy(Player, false); Might be OP
 		}
 	}
-	
+
 	virtual
 	void OnArmorTick(ZPlayer Player){
 		PlayerInfo PlayerInfo=Player.player;
@@ -119,5 +119,4 @@ class ZArmor:Item{
 #include "ZSCRIPT/Z/INV/ARMOR/ENERGY.zsc"
 #include "ZSCRIPT/Z/INV/ARMOR/DAMAGE.zsc"
 #include "ZSCRIPT/Z/INV/ARMOR/MOVEMENT.zsc"
-#include "ZSCRIPT/Z/INV/ARMOR/THRUST/MAIN.zsc"
-#include "ZSCRIPT/Z/INV/ARMOR/JETPACK/MAIN.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR/ABILITIES.zsc"

@@ -1,4 +1,4 @@
-class Items:Registry{
+class ZItems:Registry{
 	bool Add(Item Item)
 	{return Item && super.Add(Item);}
 

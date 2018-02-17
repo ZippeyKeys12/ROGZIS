@@ -1,4 +1,4 @@
-class Weapons:Registry{
+class ZWeapons:Registry{
 	bool Add(ZWeapon ZWeapon)
 	{return ZWeapon && super.Add(ZWeapon);}
 	
