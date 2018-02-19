@@ -84,17 +84,14 @@ class ZArmor{
 					DashOppurt=0;
 				}else if(PlayerInfo.OnGround)DashOppurt=DashTimer;
 			}
-			if(PlayerInfo.CrouchOffset!=0)PlayerInfo.Crouching=1;
-			else if(Player.IsHeavy() && Player.GetEnergy()<JumpCost && (~Info & AMR_THRUST) && (~Info & AMR_JETPACK))return;
-			else if(Player.WaterLevel>=2)Player.Vel.Z=4*Player.Speed;
+			if(Player.WaterLevel>=2)Player.Vel.Z=4*Player.Speed;
 			else if(Player.bNoGravity)Player.Vel.Z=3.;
 			else if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0){
 				double JumpVelZ=Player.JumpZ*35/Player.TICRATE;
-				if(Player.IsHeavy()){
-					if(Player.GetEnergy()>=JumpCost)DrainEnergy(JumpCost, Player);
-					else JumpVelZ/=2;
-				}
+				if(Player.GetEnergy()>=JumpCost && ((Info & AMR_THRUST) || (Info & AMR_JETPACK)))DrainEnergy(JumpCost, Player);
+				else JumpVelZ/=2;
 				double JumpFac=0;
+				Player.CrouchingJump=PlayerInfo.cmd.buttons & BT_CROUCH;
 
 				// [BC] If the player has the high jump power, double his jump velocity.
 				// (actually, pick the best factors from all active items.)

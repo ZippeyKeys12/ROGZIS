@@ -1,10 +1,14 @@
 extend
 class ZPlayer{
+	bool //Crouch-Jumping
+		 CrouchingJump;
+
 	Default{
 		//Movement
 		Player.ForwardMove ZPlayerDefaults.WALK_SPEED, ZPlayerDefaults.WALK_SPEED/2;
 		Player.SideMove ZPlayerDefaults.STRAFE_SPEED, ZPlayerDefaults.STRAFE_SPEED/2;
 		Player.ViewBob ZPlayerDefaults.WALK_SPEED;
+		MaxStepHeight 12;
 		Player.JumpZ 8;
 	}
 	
@@ -21,15 +25,18 @@ class ZPlayer{
 		else{
 			MovePlayer();
 			CheckMoveUpDown();
-			for(int i=0; i<ZInv.ArMor.Size(); i++)
-				if(ZInv.ArMor[i])ZInv.ArMor[i].HandleArmorMovement(self);
-			if(!ZInv.ArMor[AMR_FEET])CheckJump();
-			MaxStepHeight=(Player.CrouchOffset!=0)?12:24; 
+			for(int i=0; i<ZInv.Armor.Size(); i++)
+				if(ZInv.Armor[i])ZInv.Armor[i].HandleArmorMovement(self);
+			if(!ZInv.Armor[AMR_FEET])CheckJump();
+			if(Player.OnGround)
+				MaxStepHeight=(Player.CrouchOffset!=0)?9:18;
+			else
+				MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
 		}
 	}
 
 	override
-	void MovePlayer (){
+	void MovePlayer(){
 		let Player = self.Player;
 		UserCmd cmd = Player.cmd;
 
@@ -87,9 +94,9 @@ class ZPlayer{
 			ForwardMove*=MoveFactor*(35/TICRATE);
 			SideMove*=MoveFactor*(35/TICRATE);
 
-			if(ZInv.ArMor[AMR_TORSO]){
-				ForwardMove*=ZInv.ArMor[AMR_TORSO].CheckSprint(self, Player);
-				ForwardMove*=ZInv.ArMor[AMR_TORSO].CheckCharge(self, Player);
+			if(ZInv.Armor[AMR_TORSO]){
+				ForwardMove*=ZInv.Armor[AMR_TORSO].CheckSprint(self, Player);
+				ForwardMove*=ZInv.Armor[AMR_TORSO].CheckCharge(self, Player);
 			}else if(Player.cmd.buttons & BT_BACK)ForwardMove*=SideMove1;
 
 			if (ForwardMove)
@@ -118,16 +125,12 @@ class ZPlayer{
 		let Player = self.Player;
 		// [RH] check for jump
 		if (Player.cmd.buttons & BT_JUMP)
-			if (Player.CrouchOffset!=0)
-				// Jumping while crouching will force an un-crouch but not jump
-				Player.Crouching=1;
-			else if (WaterLevel>=2)Vel.Z=4*Speed;
+			if (WaterLevel>=2)Vel.Z=4*Speed;
 			else if (bNoGravity)Vel.Z=3.;
 			else if (level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics == 0){
-				double JumpVelZ=JumpZ*35/TICRATE;
+				double JumpVelZ=JumpZ*17.5/TICRATE;
 				double JumpFac=0;
-
-				if(IsHeavy())JumpVelZ/=2;
+				CrouchingJump=Player.cmd.buttons & BT_CROUCH;
 
 				// [BC] If the Player has the high jump power, double his jump velocity.
 				// (actually, pick the best factors from all active items.)
@@ -141,5 +144,25 @@ class ZPlayer{
 				Player.JumpTics=-1;
 				if(~Player.Cheats & CF_PREDICTING)A_PlaySound("*jump", CHAN_BODY);
 			}
+	}
+
+	override
+	void CheckCrouch(bool totallyfrozen){
+		let player = self.player;
+		UserCmd cmd = player.cmd;
+
+		if(cmd.buttons & BT_CROUCH)cmd.buttons&=~BT_JUMP;
+		if (CanCrouch() && player.health>0 && level.IsCrouchingAllowed())
+			if (!totallyfrozen){
+				int crouchdir = player.crouching;
+
+				if(crouchdir==0)crouchdir=(cmd.buttons & BT_CROUCH)?-1:1;
+				else if(cmd.buttons & BT_CROUCH)player.crouching=0;
+
+				if(crouchdir==1 && player.crouchfactor<1 && Pos.Z+height<ceilingz)CrouchMove(1);
+				else if(crouchdir==-1 && player.crouchfactor>0.5)CrouchMove(-1);
+			}
+		else player.Uncrouch();
+		player.crouchoffset=-(ViewHeight)*(1-player.crouchfactor);
 	}
 }
