@@ -185,6 +185,7 @@ class ZPlayer{
 		bool Result=super.CanCollideWith(Other, Passive);
 		if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
 			Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
+			//TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
 			A_ChangeVelocity(0, flags: CVF_REPLACE|CVF_RELATIVE);
 			CheckCollisionDamage();
 			bSkullfly=false;
@@ -194,7 +195,6 @@ class ZPlayer{
 
 	virtual
 	void LowerFriction(){
-		int Buttons=Player.cmd.buttons;
-		Friction=(Player.OnGround && !(Buttons & BT_FORWARD || Buttons & BT_BACK || Buttons & BT_MOVELEFT || Buttons & BT_MOVERIGHT))?.75:1.00;
+		Friction=(Player.OnGround && !(Player.cmd.buttons & (BT_FORWARD|BT_BACK|BT_MOVELEFT|BT_MOVERIGHT)))?.75:1;
 	}
 }
