@@ -61,13 +61,14 @@ class ZPlayer{
 			BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
 			if (!Player.OnGround && !bNoGravity && !waterlevel){
 				// [RH] allow very limited Movement if not on ground.
-				MoveFactor*=Level.AirControl;
-				BobFactor*=Level.AirControl;
-				for(int i=1; i<ZInv.ArMor.Size(); i++)
-					if(ZInv.ArMor[i]){
-						MoveFactor*=ZInv.ArMor[i].CheckAirControl();
-						BobFactor*=ZInv.ArMor[i].CheckAirControl();
-					}
+				if(ZInv.Armor[AMR_TORSO]){
+					MoveFactor*=ZInv.Armor[AMR_TORSO].CheckAirControl();
+					BobFactor*=ZInv.Armor[AMR_TORSO].CheckAirControl();
+				}
+				if(ZInv.Armor[AMR_FEET]){
+					MoveFactor*=ZInv.Armor[AMR_FEET].CheckAirControl();
+					BobFactor*=ZInv.Armor[AMR_FEET].CheckAirControl();
+				}
 			}
 
 			ForwardMove=cmd.ForwardMove;

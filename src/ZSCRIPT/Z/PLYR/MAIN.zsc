@@ -85,7 +85,7 @@ class ZPlayer:DoomPlayer{
 	override
 	bool CanCollideWith (Actor Other, bool Passive){
 		bool Result=super.CanCollideWith(Other, Passive);
-		if(Result && bSkullfly && Vel.XY.Length()>=15){
+		if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
 			Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
 			A_ChangeVelocity(0, flags: CVF_REPLACE|CVF_RELATIVE);
 			CheckCollisionDamage();

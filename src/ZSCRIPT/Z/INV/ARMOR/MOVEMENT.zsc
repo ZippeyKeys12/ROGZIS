@@ -129,9 +129,9 @@ class ZArmor{
 	double CheckAirControl(){
 		double AirControl=0;
 		if(Info & AMR_THRUST)
-			AirControl+=ThrustPower/5.;
+			AirControl+=.5*ThrustPower/(ThrustPower+1.);
 		if(Info & AMR_JETPACK)
-			AirControl+=JetpackPower/3.;
+			AirControl+=.5*JetpackPower/(JetpackPower+1.);
 		return AirControl;
 	}
 }

@@ -16,7 +16,6 @@ class ZArmor{
 				DrainEnergy(JetpackCost*(Player.IsHeavy()?3:1.5), Player);
 				Player.bSkullfly=ChargeWaiter-->Player.TICRATE*.75;
 				if(!Player.bSkullfly)ChargeWaiter=0;
-				console.printf(JetpackPower/(Player.IsHeavy()?.1:.05)/40..."");
 				return JetpackPower/(Player.IsHeavy()?.1:.05)/20.;
 			}
 		return 1;
