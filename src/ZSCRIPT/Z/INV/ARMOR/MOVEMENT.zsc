@@ -56,16 +56,16 @@ class ZArmor{
 	double CheckSprint(ZPlayer Player, PlayerInfo PlayerInfo){
 		if(!PlayerInfo.OnGround)return 1;
 		//Sprinting
-		if((Info & AMR_THRUST) && (~PlayerInfo.cmd.buttons & BT_BACK) &&
-		   (PlayerInfo.cmd.buttons & BT_SPEED) &&
-		   (PlayerInfo.cmd.buttons & BT_FORWARD) &&
+		if((Info & AMR_THRUST) && (~Buttons & BT_BACK) &&
+		   (Buttons & BT_SPEED) &&
+		   (Buttons & BT_FORWARD) &&
 		   (Player.GetEnergy()>SprintCost) &&
 		   (Player.Health>Player.RunHealth)){
 			Recharger=0;
 			DrainEnergy(SprintCost, Player);
 			return ThrustPower/3.5;
 		//Backstep
-		}else if((~Info & AMR_THRUST) && (PlayerInfo.cmd.buttons & BT_BACK))return Player.SideMove1;
+		}else if((~Info & AMR_THRUST) && (Buttons & BT_BACK))return Player.SideMove1;
 		else return 1;
 	}
 
@@ -75,8 +75,8 @@ class ZArmor{
 		else if(DashOppurt>0)DashOppurt--;
 		else CurrentDashButton=666;
 		// [RH] check for jump
-		if(PlayerInfo.cmd.buttons & BT_JUMP){
-			if((Info & AMR_THRUST)  && DashCountdown==0 && (~PlayerInfo.oldbuttons & BT_JUMP) && Player.GetEnergy()>DashCost){
+		if(Buttons & BT_JUMP){
+			if((Info & AMR_THRUST)  && DashCountdown==0 && (~OldButtons & BT_JUMP) && Player.GetEnergy()>DashCost){
 				if(DashOppurt>0 || !PlayerInfo.OnGround){
 					DrainEnergy(DashCost, Player);
 					Player.Vel.Z+=ThrustPower/((Info & AMR_HEAVY)?2.:1.);
@@ -91,7 +91,7 @@ class ZArmor{
 				if(Player.GetEnergy()>=JumpCost && ((Info & AMR_THRUST) || (Info & AMR_JETPACK)))DrainEnergy(JumpCost, Player);
 				else JumpVelZ/=2;
 				double JumpFac=0;
-				Player.CrouchingJump=PlayerInfo.cmd.buttons & BT_CROUCH;
+				Player.CrouchingJump=Buttons & BT_CROUCH;
 
 				// [BC] If the player has the high jump power, double his jump velocity.
 				// (actually, pick the best factors from all active items.)

@@ -29,10 +29,10 @@ class ZArmor{
 				BT_MOVERIGHT
 			};
 			for(int i=(Player.Vel.Z==0)?1:0; i<DashKeys.Size(); i++){
-				if((((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & DashKeys[i]) ||
-				   (((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & BT_SPEED) && (Player.Vel.Z!=0 || (~PlayerInfo.cmd.buttons & BT_FORWARD)) && (PlayerInfo.cmd.buttons & DashKeys[i]))) &&
+				if(((NewButtons & DashKeys[i]) ||
+				   ((NewButtons & BT_SPEED) && (Player.Vel.Z!=0 || (~Buttons & BT_FORWARD)) && (Buttons & DashKeys[i]))) &&
 				   (Player.GetEnergy()>DashCost)){
-					if((CurrentDashButton==DashKeys[i] && DashOppurt>0) || ((PlayerInfo.cmd.buttons & ~PlayerInfo.oldbuttons) & BT_SPEED)){
+					if((CurrentDashButton==DashKeys[i] && DashOppurt>0) || ((Buttons & ~OldButtons) & BT_SPEED)){
 						DrainEnergy(DashCost, Player);
 						int MidAirBoost=Player.JumpZ,
 							Power=ThrustPower*-1**i;

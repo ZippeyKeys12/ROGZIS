@@ -58,8 +58,6 @@ class ZPlayer:DoomPlayer{
 		//Armor ticks
 		for(int i=0; i<ZInv.Armor.Size(); i++)
 			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
-		//Collision damage
-		CheckCollisionDamage();
 	}
 	
 	virtual
@@ -71,27 +69,6 @@ class ZPlayer:DoomPlayer{
 		FLineTraceData Data;
 		Trace(2048, data: Data);
 		return Data.HitActor;
-	}
-	
-	virtual
-	void CheckCollisionDamage(){
-		int Dam;
-		if((Dam=LastVelLength-Vel.Length())>40)
-			if(bSkullfly)A_ChangeVelocity(-50, flags: CVF_REPLACE|CVF_RELATIVE);
-			else if(!Player.OnGround)DamageMobj(self, self, Dam/2, 'Plasma', DMG_THRUSTLESS);
-		LastVelLength=Vel.Length();
-	}
-
-	override
-	bool CanCollideWith (Actor Other, bool Passive){
-		bool Result=super.CanCollideWith(Other, Passive);
-		if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
-			Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
-			A_ChangeVelocity(0, flags: CVF_REPLACE|CVF_RELATIVE);
-			CheckCollisionDamage();
-			bSkullfly=false;
-		}
-		return Result;
 	}
 
 	override

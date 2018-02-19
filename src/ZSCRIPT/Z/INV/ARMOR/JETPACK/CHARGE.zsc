@@ -7,9 +7,7 @@ class ZArmor{
 	double CheckCharge(ZPlayer Player, PlayerInfo PlayerInfo){
 		if(Info & AMR_JETPACK)
 			if(!Player.bSkullfly){
-				if((PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_USER1	) &&
-				   (PlayerInfo.cmd.buttons & PlayerInfo.oldbuttons & BT_FORWARD	) &&
-				   Player.GetEnergy()>=JetpackCost*(Player.IsHeavy()?3:1.5))
+				if((Buttons & BT_USER1	) && (Buttons & BT_FORWARD) &&  Player.GetEnergy()>=JetpackCost*(Player.IsHeavy()?3:1.5))
 					Player.bSkullfly=ChargeWaiter==Player.TICRATE;
 				ChargeWaiter=Clamp(ChargeWaiter+1, 0, Player.TICRATE);
 			}else{
