@@ -10,3 +10,36 @@ class ZCalc{
         return Shifts;
     }
 }
+
+class ZLeftInterpolator{
+	int CurrentValue;
+
+	static
+    ZLeftInterpolator Create(int DesiredValue){
+		ZLeftInterpolator Interpolator = new("ZLeftInterpolator");
+		Interpolator.CurrentValue = DesiredValue;
+		return Interpolator;
+	}
+
+	void Reset(int DesiredValue)
+	{CurrentValue=DesiredValue;}
+
+	//This must be called peroiodically in the status bar's Tick function.
+	//Do not call this in the Draw function because that may skip some frames!
+	void Update(int DesiredValue){
+		for(int i=9; i>=0; i--){
+			int Place=10**i;
+			if(CurrentValue/Place>DesiredValue/Place){
+				CurrentValue-=Place;
+				break;
+			}else if(CurrentValue/Place<DesiredValue/Place){
+				CurrentValue+=Place;
+				break;
+			}
+		}
+	}
+
+	//This must be called in the draw function to retrieve the value for output.
+	int GetValue()
+    {return CurrentValue;}
+}
