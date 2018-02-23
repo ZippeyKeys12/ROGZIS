@@ -15,7 +15,7 @@ class ZLeftInterpolator{
 	int CurrentValue;
 
 	static
-    ZLeftInterpolator Create(int DesiredValue){
+	ZLeftInterpolator Create(int DesiredValue){
 		ZLeftInterpolator Interpolator = new("ZLeftInterpolator");
 		Interpolator.CurrentValue = DesiredValue;
 		return Interpolator;
@@ -41,5 +41,5 @@ class ZLeftInterpolator{
 
 	//This must be called in the draw function to retrieve the value for output.
 	int GetValue()
-    {return CurrentValue;}
+	{return CurrentValue;}
 }
