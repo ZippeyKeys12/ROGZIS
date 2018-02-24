@@ -61,13 +61,13 @@ class ZPlayer:DoomPlayer{
 	}
 	
 	virtual
-	bool Trace(double Distance=1024, double Pitch=0, out FLineTraceData Data=null)
+	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
 	{return LineTrace(Angle, Distance, Pitch, data: Data);}
 	
 	virtual
 	Actor GetAimTarget(){
 		FLineTraceData Data;
-		Trace(2048, data: Data);
+		Trace(Data, 2048);
 		return Data.HitActor;
 	}
 

@@ -112,7 +112,7 @@ class ZArmor{
 	void SoftenFall(ZPlayer Player){
 		if(Player.Vel.Z<=-ThrustPower){
 			FLineTraceData Data;
-			Player.Trace(128, 90, Data);
+			Player.Trace(Data, 128, 90);
 			if (Data.Distance+Player.Vel.Z<=30)
 				if (MidAir){
 					MidAir=false;
