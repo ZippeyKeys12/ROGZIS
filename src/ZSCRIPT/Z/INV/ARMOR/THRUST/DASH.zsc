@@ -35,7 +35,7 @@ class ZArmor{
 					if((CurrentDashButton==DashKeys[i] && DashOppurt>0) || ((Buttons & ~OldButtons) & BT_SPEED)){
 						DrainEnergy(DashCost, Player);
 						int MidAirBoost=Player.JumpZ,
-							Power=ThrustPower*-1**i;
+							Power=ThrustPower*ZCalc.Alternate(i);
 						if(Player.Vel.Z==0){
 							MidAirBoost=0;
 							Power*=2;

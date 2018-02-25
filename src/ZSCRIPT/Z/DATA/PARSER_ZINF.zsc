@@ -28,7 +28,7 @@ class Parser_Zinf{
 			"\r"
 		};
 		int lump = -1;
-		while(-1!=(lump=Wads.FindLump(LumpName, lump + 1))){
+		until(-1==(lump=Wads.FindLump(LumpName, lump + 1))){
 			String InputFile=Wads.ReadLump(lump);
 			int LimiterOfB,
 				LimiterOfE;

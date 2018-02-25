@@ -33,7 +33,7 @@ class ZManager:Thinker{
 		int i=1; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
 		//DamageTypes
 		DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
-		while("N/@" != (LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
+		until("N/@"==(LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
 			for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
 				Row=ParserTSV.GetRow(j);
 				//Flags Management
@@ -47,7 +47,7 @@ class ZManager:Thinker{
 			}
 		}
 		Armors=ZArmors(new("ZArmors").Init());
-		while("N/@" != (LumpName=ParserZinf.GetFromArray("EXTERNAL", "tARMORS", i++))){
+		until("N/@"==(LumpName=ParserZinf.GetFromArray("EXTERNAL", "tARMORS", i++))){
 			for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
 				Row=ParserTSV.GetRow(j);
 				//Stats Management

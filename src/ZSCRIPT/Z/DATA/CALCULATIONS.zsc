@@ -9,6 +9,14 @@ class ZCalc{
 		}
 		return Shifts;
 	}
+
+	static
+	int Sign(double Value)
+	{return (Value<0)?-1:1;}
+
+	static
+	int Alternate (int n, bool Offset=false)
+	{return -1**(n-Offset);}
 }
 
 class ZLeftInterpolator{
