@@ -4,7 +4,7 @@ from distutils.dir_util import copy_tree
 
 def ZRead(BuildFolder, LumpName):
     # Replacements
-    IncludePattern=re.compile("#include\\s+\"(\\S+)\"")
+    IncludePattern=re.compile("#include\\s+\"(\\S.+\\S)\"")
     Lines=[]
     with open(BuildFolder+"/"+LumpName) as Input:
         for Line in Input:
