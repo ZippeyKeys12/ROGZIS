@@ -1,8 +1,10 @@
 class ZArray
 {Array<Object> _;}
 
-class ZArray_String
-{Array<String> _;}
+class ZArray_String{
+	Array<String> _;
+	Array<String> __;
+}
 
 class ZIterator{
 	private

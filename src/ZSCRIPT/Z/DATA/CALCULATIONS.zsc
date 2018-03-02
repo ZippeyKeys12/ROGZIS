@@ -1,4 +1,11 @@
 class ZCalc{
+	/////////////
+	// Numbers //
+	/////////////
+	static
+	bool Equal(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
+	{return abs(FirstValue-SecondValue)<=Epsilon;}
+
 	static
 	int ShiftOf(int Value){
 		if(Value==0)return 0;
@@ -15,8 +22,156 @@ class ZCalc{
 	{return (Value<0)?-1:1;}
 
 	static
-	int Alternate (int n, bool Offset=false)
+	double TransferSign(double Value, double Sign)
+	{return abs(Value)*Sign(Sign);}
+
+	static
+	int Alternate(int n, bool Offset=false)
 	{return -1**(n-Offset);}
+
+	static
+	double NormalRangeMap(double Value, double Start, double End)
+	{return clamp((Value-Start)/(End-Start), 0, 1);}
+
+	static
+	double AbnormalRangeMap(double Value, double Start, double End)
+	{return clamp(Value*(End-Start)+Start, Start, End);}
+
+	static
+	int IRangeMap(int Value, int OldStart, int OldEnd, int NewStart, int NewEnd)
+	{return AbnormalRangeMap(NormalRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
+
+	static
+	double DRangeMap(double Value, double OldStart, double OldEnd, double NewStart, double NewEnd)
+	{return AbnormalRangeMap(NormalRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
+
+	static
+	double AMean(ZArray_String Array){
+		double Total=0;
+		for(int i=0; i<Array._.Size(); i++)
+			Total+=Array._[i].ToDouble();
+		return Total/Array._.Size();
+	}
+
+	static
+	double GMean(ZArray_String Array){
+		double Total=1;
+		for(int i=0; i<Array._.Size(); i++)
+			Total*=Array._[i].ToDouble();
+		return Total**(1/Array._.Size());
+	}
+
+	static
+	double HMean(ZArray_String Array){
+		double Total=0;
+		for(int i=0; i<Array._.Size(); i++)
+			Total+=1/Array._[i].ToDouble();
+		return Array._.Size()/Total;
+	}
+
+	static
+	int Factorial(int N){
+		if(N>0)return N*Factorial(N-1);
+		else if(N==0)return 1;
+		else return -1;
+	}
+
+	static
+	int nCr(int N, int K)
+	{return Factorial(N)/(Factorial(K)*Factorial(N-K));}
+
+	static
+	double Bernstein(int X, int N, int V){
+		return nCr(N, V)*X**V*(1-X)**(N-V);
+	}
+
+	static
+	double Lerp(double Time, double Begin=0, double End=1){
+		Time=clamp(Time, 0, 1);
+		return (1-Time)*Begin+Time*End;
+	}
+
+	static
+	double SmoothStart(double Time, double Begin=0, double End=1, double Degree=2)
+	{return AbnormalRangeMap(NormalRangeMap(Time, Begin, End)**Degree, Begin, End);}
+
+	static
+	double SmoothStop(double Time, double Begin=0, double End=1, double Degree=2)
+	{return AbnormalRangeMap(1-(1-NormalRangeMap(Time, Begin, End))**Degree, Begin, End);}
+
+	static
+	double SmoothStep(double Time, double Begin=0, double End=1, double Degree=2)
+	{return Lerp(Time, SmoothStart(Time, Begin, End, Degree), SmoothStop(Time, Begin, End, Degree));}
+
+	/////////////
+	// Vector2 //
+	/////////////
+	static
+	Vector2 BezierCurve(int Time, int N, int I, ZArray_String Points){
+		Vector2 Total=(0, 0);
+		for(int j=0; j<Points._.Size(); j++)
+			Total+=(Points._[j].ToDouble(), Points.__[j].ToDouble())*Bernstein(Time, N, I);
+		return Total;
+	}
+
+	static
+	Vector2 V2Lerp(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1))
+	{return (Lerp(Time, Begin.x, End.x), Lerp(Time, Begin.y, End.y));}
+
+	static
+	Vector2 V2SmoothStart(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1), double Degree=2)
+	{return (SmoothStart(Time, Begin.x, End.x, Degree), SmoothStart(Time, Begin.y, End.y, Degree));}
+
+	static
+	Vector2 V2SmoothStop(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1), double Degree=2)
+	{return (SmoothStop(Time, Begin.x, End.x, Degree), SmoothStop(Time, Begin.y, End.y, Degree));}
+
+	static
+	Vector2 V2SmoothStep(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1), double Degree=2)
+	{return (SmoothStep(Time, Begin.x, End.x, Degree), SmoothStep(Time, Begin.y, End.y, Degree));}
+
+	static
+	bool IsInTriangle(Vector2 Point, Vector2 A, Vector2 B, Vector2 C){
+		Vector2 C2A=C-A,
+				B2A=B-A,
+				P2A=Point-A;
+		int C2C=C2A dot C2A,
+			C2B=C2A dot B2A,
+			C2P=C2A dot P2A,
+			B2B=B2A dot B2A,
+			B2P=B2A dot P2A,
+			InverseDenominator=1/(C2C*B2B-C2B**2),
+			u=InverseDenominator*(B2B*C2P-C2B*B2P),
+			v=InverseDenominator*(C2C*B2P-C2B*C2P);
+			return u>=0 && v>=0 && u+v<1;
+	}
+
+	static
+	Vector2	V2CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
+	{return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
+
+	/////////////
+	// Vector3 //
+	/////////////
+	static
+	Vector3 V3Lerp(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1, 1, 1))
+	{return (Lerp(Time, Begin.x, End.x), Lerp(Time, Begin.y, End.y), Lerp(Time, Begin.z, End.z));}
+
+	static
+	Vector3 V3SmoothStart(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
+	{return (SmoothStart(Time, Begin.x, End.x, Degree), SmoothStart(Time, Begin.y, End.y, Degree), SmoothStart(Time, Begin.z, End.z, Degree));}
+
+	static
+	Vector3 V3SmoothStop(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
+	{return (SmoothStop(Time, Begin.x, End.x, Degree), SmoothStop(Time, Begin.y, End.y, Degree), SmoothStop(Time, Begin.z, End.z, Degree));}
+
+	static
+	Vector3 V3SmoothStep(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
+	{return (SmoothStep(Time, Begin.x, End.x, Degree), SmoothStep(Time, Begin.y, End.y, Degree), SmoothStep(Time, Begin.z, End.z, Degree));}
+
+	static
+	Vector3	V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
+	{return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 }
 
 class ZLeftInterpolator{
