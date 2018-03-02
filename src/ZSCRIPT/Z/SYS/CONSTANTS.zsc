@@ -1,6 +1,13 @@
 /////////////
 // Systems //
 /////////////
+enum ZErrorLevel{
+	ERR_INFO=0,
+	ERR_WARNING,
+	ERR_ERROR,
+	ERR_FATAL,
+}
+
 enum ZStatNum{
 	//Thinkers that don't actually think
 	STAT_STATIC		=	Thinker.STAT_STATIC,	//Persists between levels

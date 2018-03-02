@@ -119,6 +119,23 @@ class ZManager:Thinker{
 	}
 
 	static
+	void Error(String Error, ZErrorLevel Level){
+		switch(Level){
+			case ERR_INFO:		break;
+			case ERR_WARNING:	break;
+			case ERR_ERROR:
+				ThrowAbortException("Error handling not defined");
+				break;
+			case ERR_FATAL:
+				ThrowAbortException("Fatal Error: %s", Error);
+				break;
+			default:
+				ThrowAbortException("Unclassified Error: '%s'", Error);
+				break;
+		}
+	}
+
+	static
 	void StatNum(ZStatNum STAT_NUM1=STAT_ZDATA, ZStatNum STAT_NUM2=STAT_ZDATA){
 		ZManager Manager;
 		if(Manager=Instance(STAT_NUM1))
