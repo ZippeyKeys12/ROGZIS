@@ -1,6 +1,9 @@
 class ZArray
 {Array<Object> _;}
 
+class ZArray_String
+{Array<String> _;}
+
 class ZIterator{
 	private
 	int Iter;
