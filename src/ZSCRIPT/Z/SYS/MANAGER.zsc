@@ -111,6 +111,7 @@ class ZManager:Thinker{
 	}
 
 	static
+	clearscope
 	void Debug(String str, Name kind){
 		if(kind=="Health" && z_debug_health)
 			console.printf(str);
@@ -119,6 +120,7 @@ class ZManager:Thinker{
 	}
 
 	static
+	clearscope
 	void Error(String Error, ZErrorLevel Level){
 		switch(Level){
 			case ERR_INFO:		break;
@@ -127,7 +129,7 @@ class ZManager:Thinker{
 				ThrowAbortException("Error handling not defined");
 				break;
 			case ERR_FATAL:
-				ThrowAbortException("Fatal Error: %s", Error);
+				ThrowAbortException("%s", Error);
 				break;
 			default:
 				ThrowAbortException("Unclassified Error: '%s'", Error);

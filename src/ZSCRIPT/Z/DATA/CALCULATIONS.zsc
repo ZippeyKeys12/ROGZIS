@@ -73,7 +73,8 @@ class ZCalc{
 	int Factorial(int N){
 		if(N>0)return N*Factorial(N-1);
 		else if(N==0)return 1;
-		else return -1;
+		else ZManager.Error("Attempted factorial of a negative number", ERR_FATAL);
+		return 0;
 	}
 
 	static
@@ -188,7 +189,8 @@ class ZMatrix{
 
 	private
 	ZMatrix Init(int Rows, int Columns){
-		if(Rows<=0 || Columns<=0){}
+		if(Rows<=0 || Columns<=0)
+			ZManager.Error("Attempted to create a negatively-sized matrix", ERR_FATAL);
 		self.Rows=Rows;
 		self.Columns=Columns;
 		Values.Resize(Rows*Columns);
