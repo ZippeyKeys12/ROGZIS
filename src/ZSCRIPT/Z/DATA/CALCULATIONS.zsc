@@ -3,7 +3,7 @@ class ZCalc{
 	// Numbers //
 	/////////////
 	static
-	bool Equal(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
+	bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
 	{return abs(FirstValue-SecondValue)<=Epsilon;}
 
 	static
@@ -213,7 +213,7 @@ class ZMatrix{
 	int GetColumns() const
 	{return Columns;}
 
-	ZMatrix Add(ZMatrix Other){
+	ZMatrix Add(ZMatrix Other) const{
 		if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
 		ZMatrix Result=ZMatrix.Create(Rows, Columns);
 		for(int Row=0; Row<Rows; Row++)
@@ -222,7 +222,7 @@ class ZMatrix{
 		return Result;
 	}
 
-	ZMatrix SMultiply(double Multiplier){
+	ZMatrix SMultiply(double Multiplier) const{
 		ZMatrix Result=ZMatrix.Create(Rows, Columns);
 		for(int Row=0; Row<Rows; Row++)
 			for(int Column=0; Column<Columns; Column++)
@@ -230,7 +230,7 @@ class ZMatrix{
 		return Result;
 	}
 
-	ZMatrix MMultiply(ZMatrix Other){
+	ZMatrix MMultiply(ZMatrix Other) const{
 		if(Columns!=Other.Rows)ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
 		ZMatrix Result=ZMatrix.Create(Rows, Other.Columns);
 		for(int Row=0; Row<Rows; Row++)
