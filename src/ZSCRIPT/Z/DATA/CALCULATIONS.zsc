@@ -184,17 +184,17 @@ class ZMatrix{
 	Array<double> Values;
 
 	static
-	ZMatrix Create(int Rows, int Columns)
-	{return new("ZMatrix").Init(Rows, Columns);}
+	ZMatrix Create(int Rows, int Columns, bool Identity=false)
+	{return new("ZMatrix").Init(Rows, Columns, Identity);}
 
 	private
-	ZMatrix Init(int Rows, int Columns){
+	ZMatrix Init(int Rows, int Columns, bool Identity){
 		if(Rows<=0 || Columns<=0)
 			ZManager.Error("Attempted to create a negatively-sized matrix", ERR_FATAL);
 		self.Rows=Rows;
 		self.Columns=Columns;
 		Values.Resize(Rows*Columns);
-		for(int i=0; i<Values.Size(); i++)Values[i]=0;
+		for(int i=0; i<Values.Size(); i++)Values[i]=Identity?1:0;
 		return self;
 	}
 
