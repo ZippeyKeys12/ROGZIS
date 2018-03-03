@@ -245,12 +245,13 @@ class ZMatrix{
 }
 
 class ZLeftInterpolator{
+	protected
 	int CurrentValue;
 
 	static
 	ZLeftInterpolator Create(int DesiredValue){
 		ZLeftInterpolator Interpolator = new("ZLeftInterpolator");
-		Interpolator.CurrentValue = DesiredValue;
+		Interpolator.Reset(DesiredValue);
 		return Interpolator;
 	}
 
