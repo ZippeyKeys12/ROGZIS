@@ -175,6 +175,80 @@ class ZCalc{
 	{return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 }
 
+class ZQuaternion{
+	private
+	int W, X, Y, Z;
+
+	static
+	ZQuaternion Create(double W, double X, double Y, double Z)
+	{return new("ZQuaternion").Init(W, X, Y, Z);}
+
+	static
+	ZQuaternion FromAngleAxis(double Angle, Vector3 Axis){
+		Angle*=.5;
+		Axis=Sin(Angle)*Axis.Unit();
+		return Create(Cos(Angle), Axis.x, Axis.y, Axis.z);
+	}
+
+	static
+	ZQuaternion FromEulerAngles(double Yaw, double Pitch, double Roll){
+		ZQuaternion ZQuat=FromAngleAxis(Yaw, (0, 0, 1));
+		return FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (0, 0, 1)));
+	}
+
+	private
+	ZQuaternion Init(double W, double X, double Y, double Z){
+		self.W=W;
+		self.X=X;
+		self.Y=Y;
+		self.Z=Z;
+		return self;
+	}
+
+	double Length() const
+	{return sqrt(LengthSquared());}
+
+	double LengthSquared() const
+	{return W**2+X**2+Y**2+Z**2;}
+
+	ZQuaternion Negative() const
+	{return Create(-W, -X, -Y, -Z);}
+
+	ZQuaternion Unit() const
+	{return SMultiply(1/Length());}
+
+	ZQuaternion Inverse() const
+	{return Conjugate().SMultiply(1/LengthSquared());}
+
+	ZQuaternion Conjugate() const
+	{return Create(W, -X, -Y, -Z);}
+
+	ZQuaternion Add(ZQuaternion Other) const
+	{return Create(W+Other.W, X+Other.X, Y+Other.Y, Z+Other.Z);}
+
+	ZQuaternion Subtract(ZQuaternion Other) const
+	{return Add(Other.Negative());}
+
+	ZQuaternion SMultiply(double Multiplier) const
+	{return Create(W*Multiplier, X*Multiplier, Y*Multiplier, Z*Multiplier);}
+
+	ZQuaternion QMultiply(ZQuaternion Other) const
+	{return Create(W*Other.W-X*Other.X-Y*Other.Y-Z*Other.Z,
+				   W*Other.X+X*Other.W+Y*Other.Z-Z*Other.Y,
+				   W*Other.Y+Y*Other.W+Z*Other.X-X*Other.Z,
+				   W*Other.Z+Z*Other.W+X*Other.Y-Y*Other.X);}
+
+	void Equal(ZQuaternion Other){
+		W=Other.W;
+		X=Other.X;
+		Y=Other.Y;
+		Z=Other.Z;
+	}
+
+	bool Equals(ZQuaternion Other) const
+	{return ZCalc.Equals(W, Other.W) && ZCalc.Equals(X, Other.X) && ZCalc.Equals(Y, Other.Y) && ZCalc.Equals(Z, Other.Z);}
+}
+
 class ZMatrix{
 	private
 	int Columns,
