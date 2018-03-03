@@ -112,12 +112,8 @@ class ZManager:Thinker{
 
 	static
 	clearscope
-	void Debug(String str, Name kind){
-		if(kind=="Health" && z_debug_health)
-			console.printf(str);
-		if(kind=="Movement" && z_debug_movement)
-			console.printf(str);
-	}
+	void Debug(String Output, Name CVarName)
+	{if(CVar.FindCVar(CVarName).GetBool())console.printf(Output);}
 
 	static
 	clearscope
