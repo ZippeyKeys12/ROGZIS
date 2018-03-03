@@ -184,6 +184,14 @@ class ZQuaternion{
 	{return new("ZQuaternion").Init(W, X, Y, Z);}
 
 	static
+	ZQuaternion Zero()
+	{return Create(0, 0, 0, 0);}
+
+	static
+	ZQuaternion Identity()
+	{return Create(1, 0, 0, 0);}
+
+	static
 	ZQuaternion FromAngleAxis(double Angle, Vector3 Axis){
 		Angle*=.5;
 		Axis=Sin(Angle)*Axis.Unit();
@@ -238,6 +246,9 @@ class ZQuaternion{
 				   W*Other.Y+Y*Other.W+Z*Other.X-X*Other.Z,
 				   W*Other.Z+Z*Other.W+X*Other.Y-Y*Other.X);}
 
+	double DotProduct(ZQuaternion Other) const
+	{return W*Other.W+X*Other.X+Y*Other.Y+Z*Other.Z;}
+
 	void Equal(ZQuaternion Other){
 		W=Other.W;
 		X=Other.X;
@@ -247,6 +258,12 @@ class ZQuaternion{
 
 	bool Equals(ZQuaternion Other) const
 	{return ZCalc.Equals(W, Other.W) && ZCalc.Equals(X, Other.X) && ZCalc.Equals(Y, Other.Y) && ZCalc.Equals(Z, Other.Z);}
+
+	bool IsZero() const
+	{return ZCalc.Equals(LengthSquared(), 0);}
+
+	bool IsIdentity() const
+	{return Equals(Identity());}
 }
 
 class ZMatrix{
