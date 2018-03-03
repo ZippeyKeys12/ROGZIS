@@ -209,6 +209,36 @@ class ZMatrix{
 
 	int GetColumns() const
 	{return Columns;}
+
+	ZMatrix Add(ZMatrix Other){
+		if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+		ZMatrix Result=ZMatrix.Create(Rows, Columns);
+		for(int Row=0; Row<Rows; Row++)
+			for(int Column=0; Column<Columns; Column++)
+				Result.Set(Row, Column, Get(Row, Column)+Other.Get(Row, Column));
+		return Result;
+	}
+
+	ZMatrix SMultiply(double Multiplier){
+		ZMatrix Result=ZMatrix.Create(Rows, Columns);
+		for(int Row=0; Row<Rows; Row++)
+			for(int Column=0; Column<Columns; Column++)
+				Result.Set(Row, Column, Get(Row, Column)*Multiplier);
+		return Result;
+	}
+
+	ZMatrix MMultiply(ZMatrix Other){
+		if(Columns!=Other.Rows)ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
+		ZMatrix Result=ZMatrix.Create(Rows, Other.Columns);
+		for(int Row=0; Row<Rows; Row++)
+			for(int Column=0; Column<Columns; Column++){
+				double Value;
+				for(int i=0; i<Columns; i++)
+					Value+=Get(Row, i)*Other.Get(i, Column);
+				Result.Set(Row, Column, Value);
+			}
+		return Result;
+	}
 }
 
 class ZLeftInterpolator{
