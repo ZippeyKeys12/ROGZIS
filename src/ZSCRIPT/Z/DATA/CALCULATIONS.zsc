@@ -199,10 +199,8 @@ class ZQuaternion{
 	}
 
 	static
-	ZQuaternion FromEulerAngles(double Yaw, double Pitch, double Roll){
-		ZQuaternion ZQuat=FromAngleAxis(Yaw, (0, 0, 1));
-		return FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (0, 0, 1)));
-	}
+	ZQuaternion FromEulerAngles(double Yaw, double Pitch, double Roll)
+	{return new("ZQuaternion").SetEulerAngles(Yaw, Pitch, Roll);}
 
 	private
 	ZQuaternion Init(double W, double X, double Y, double Z){
@@ -212,6 +210,9 @@ class ZQuaternion{
 		self.Z=Z;
 		return self;
 	}
+
+	ZQuaternion SetEulerAngles(double Yaw, double Pitch, double Roll)
+	{return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (0, 0, 1))));}
 
 	double Length() const
 	{return sqrt(LengthSquared());}
@@ -249,11 +250,12 @@ class ZQuaternion{
 	double DotProduct(ZQuaternion Other) const
 	{return W*Other.W+X*Other.X+Y*Other.Y+Z*Other.Z;}
 
-	void Equal(ZQuaternion Other){
+	ZQuaternion Equal(ZQuaternion Other){
 		W=Other.W;
 		X=Other.X;
 		Y=Other.Y;
 		Z=Other.Z;
+		return self;
 	}
 
 	bool Equals(ZQuaternion Other) const
