@@ -258,8 +258,12 @@ class ZMatrix{
 	Array<double> Values;
 
 	static
-	ZMatrix Create(int Rows, int Columns=0, bool Identity=false)
-	{return new("ZMatrix").Init(Rows, Columns, Identity);}
+	ZMatrix Create(int Rows, int Columns)
+	{return new("ZMatrix").Init(Rows, Columns, false);}
+
+	static
+	ZMatrix Identity(int Size)
+	{return new("ZMatrix").Init(Size, Size, true);}
 
 	private
 	ZMatrix Init(int Rows, int Columns, bool Identity){
