@@ -90,22 +90,22 @@ class ZCalc{
 	}
 
 	static
-	double Lerp(double Time, double Begin=0, double End=1){
+	double Lerp(double Time, double Start=0, double End=1){
 		Time=clamp(Time, 0, 1);
-		return (1-Time)*Begin+Time*End;
+		return (1-Time)*Start+Time*End;
 	}
 
 	static
-	double SmoothStart(double Time, double Begin=0, double End=1, double Degree=2)
-	{return AbnormalRangeMap(NormalRangeMap(Time, Begin, End)**Degree, Begin, End);}
+	double SmoothStart(double Time, double Start=0, double End=1, double Degree=2)
+	{return AbnormalRangeMap(NormalRangeMap(Time, Start, End)**Degree, Start, End);}
 
 	static
-	double SmoothStop(double Time, double Begin=0, double End=1, double Degree=2)
-	{return AbnormalRangeMap(1-(1-NormalRangeMap(Time, Begin, End))**Degree, Begin, End);}
+	double SmoothStop(double Time, double Start=0, double End=1, double Degree=2)
+	{return AbnormalRangeMap(1-(1-NormalRangeMap(Time, Start, End))**Degree, Start, End);}
 
 	static
-	double SmoothStep(double Time, double Begin=0, double End=1, double Degree=2)
-	{return Lerp(Time, SmoothStart(Time, Begin, End, Degree), SmoothStop(Time, Begin, End, Degree));}
+	double SmoothStep(double Time, double Start=0, double End=1, double Degree=2)
+	{return Lerp(Time, SmoothStart(Time, Start, End, Degree), SmoothStop(Time, Start, End, Degree));}
 
 	/////////////
 	// Vector2 //
@@ -119,20 +119,20 @@ class ZCalc{
 	}
 
 	static
-	Vector2 V2Lerp(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1))
-	{return (Lerp(Time, Begin.x, End.x), Lerp(Time, Begin.y, End.y));}
+	Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1))
+	{return (Lerp(Time, Start.x, End.x), Lerp(Time, Start.y, End.y));}
 
 	static
-	Vector2 V2SmoothStart(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStart(Time, Begin.x, End.x, Degree), SmoothStart(Time, Begin.y, End.y, Degree));}
+	Vector2 V2SmoothStart(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
+	{return (SmoothStart(Time, Start.x, End.x, Degree), SmoothStart(Time, Start.y, End.y, Degree));}
 
 	static
-	Vector2 V2SmoothStop(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStop(Time, Begin.x, End.x, Degree), SmoothStop(Time, Begin.y, End.y, Degree));}
+	Vector2 V2SmoothStop(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
+	{return (SmoothStop(Time, Start.x, End.x, Degree), SmoothStop(Time, Start.y, End.y, Degree));}
 
 	static
-	Vector2 V2SmoothStep(double Time, Vector2 Begin=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStep(Time, Begin.x, End.x, Degree), SmoothStep(Time, Begin.y, End.y, Degree));}
+	Vector2 V2SmoothStep(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
+	{return (SmoothStep(Time, Start.x, End.x, Degree), SmoothStep(Time, Start.y, End.y, Degree));}
 
 	static
 	bool IsInTriangle(Vector2 Point, Vector2 A, Vector2 B, Vector2 C){
@@ -158,20 +158,20 @@ class ZCalc{
 	// Vector3 //
 	/////////////
 	static
-	Vector3 V3Lerp(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1, 1, 1))
-	{return (Lerp(Time, Begin.x, End.x), Lerp(Time, Begin.y, End.y), Lerp(Time, Begin.z, End.z));}
+	Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1))
+	{return (Lerp(Time, Start.x, End.x), Lerp(Time, Start.y, End.y), Lerp(Time, Start.z, End.z));}
 
 	static
-	Vector3 V3SmoothStart(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
-	{return (SmoothStart(Time, Begin.x, End.x, Degree), SmoothStart(Time, Begin.y, End.y, Degree), SmoothStart(Time, Begin.z, End.z, Degree));}
+	Vector3 V3SmoothStart(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
+	{return (SmoothStart(Time, Start.x, End.x, Degree), SmoothStart(Time, Start.y, End.y, Degree), SmoothStart(Time, Start.z, End.z, Degree));}
 
 	static
-	Vector3 V3SmoothStop(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
-	{return (SmoothStop(Time, Begin.x, End.x, Degree), SmoothStop(Time, Begin.y, End.y, Degree), SmoothStop(Time, Begin.z, End.z, Degree));}
+	Vector3 V3SmoothStop(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
+	{return (SmoothStop(Time, Start.x, End.x, Degree), SmoothStop(Time, Start.y, End.y, Degree), SmoothStop(Time, Start.z, End.z, Degree));}
 
 	static
-	Vector3 V3SmoothStep(double Time, Vector3 Begin=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
-	{return (SmoothStep(Time, Begin.x, End.x, Degree), SmoothStep(Time, Begin.y, End.y, Degree), SmoothStep(Time, Begin.z, End.z, Degree));}
+	Vector3 V3SmoothStep(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
+	{return (SmoothStep(Time, Start.x, End.x, Degree), SmoothStep(Time, Start.y, End.y, Degree), SmoothStep(Time, Start.z, End.z, Degree));}
 
 	static
 	Vector3	V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
