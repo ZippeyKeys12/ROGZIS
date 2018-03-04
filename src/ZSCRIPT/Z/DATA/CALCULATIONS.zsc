@@ -266,6 +266,12 @@ class ZQuaternion{
 
 	bool IsIdentity() const
 	{return Equals(Identity());}
+
+	double, double, double GetEulerAngles() const{
+		double SinP=2*(W*Y-Z*X),
+			   YSquared=Y**2;
+		return ATan2(2*(W*Z+X*Y), 1-2*(YSquared+Z**2)), (abs(SinP)>=1)?ZCalc.TransferSign(90, SinP):ASin(SinP), ATan2(2*(W*X+Y*Z), 1-2*(YSquared+X**2));
+	}
 }
 
 class ZMatrix{
