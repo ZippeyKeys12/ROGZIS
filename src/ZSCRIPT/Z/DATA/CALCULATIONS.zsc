@@ -119,8 +119,10 @@ class ZCalc{
 	}
 
 	static
-	Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1))
-	{return (1-Time)*Start+Time*End;}
+	Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
+		Time=clamp(Time, 0, 1);
+		return (1-Time)*Start+Time*End;
+	}
 
 	static
 	Vector2 V2SmoothStart(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
@@ -158,8 +160,10 @@ class ZCalc{
 	// Vector3 //
 	/////////////
 	static
-	Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1))
-	{return (1-Time)*Start+Time*End;}
+	Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1)){
+		Time=clamp(Time, 0, 1);
+		return (1-Time)*Start+Time*End;
+	}
 
 	static
 	Vector3 V3SmoothStart(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
@@ -176,6 +180,7 @@ class ZCalc{
 	static
 	Vector3	V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
 	{return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
+	}
 }
 
 class ZQuaternion{
