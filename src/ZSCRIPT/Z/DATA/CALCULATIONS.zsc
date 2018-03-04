@@ -1,7 +1,7 @@
 const E=2.718281828459;
 const PI=3.14159265359;
 
-class ZCalc{
+struct ZCalc{
 	/////////////
 	// Numbers //
 	/////////////
