@@ -120,7 +120,7 @@ class ZCalc{
 
 	static
 	Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1))
-	{return (Lerp(Time, Start.x, End.x), Lerp(Time, Start.y, End.y));}
+	{return (1-Time)*Start+Time*End;}
 
 	static
 	Vector2 V2SmoothStart(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
@@ -159,7 +159,7 @@ class ZCalc{
 	/////////////
 	static
 	Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1))
-	{return (Lerp(Time, Start.x, End.x), Lerp(Time, Start.y, End.y), Lerp(Time, Start.z, End.z));}
+	{return (1-Time)*Start+Time*End;}
 
 	static
 	Vector3 V3SmoothStart(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
