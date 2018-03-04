@@ -45,14 +45,13 @@ class ZPlayer{
 		UserCmd cmd = Player.cmd;
 
 		// [RH] 180-degree turn overrides all other yaws
-		if (Player.turnticks)
-		{
+		if (Player.turnticks){
 			Player.turnticks--;
-			Angle += (180. / TURN180_TICKS);
+			Angle+=(180./TURN180_TICKS);
 		}
-		else Angle += cmd.yaw * (360./65536.);
+		else Angle+=cmd.yaw*(360./65536.);
 
-		Player.OnGround = (Pos.Z <= FloorZ) || bOnMobj || bMBFBouncer || (Player.Cheats & CF_NOCLIP2);
+		Player.OnGround=(Pos.Z<=FloorZ) || bOnMobj || bMBFBouncer || (Player.Cheats & CF_NOCLIP2);
 
 		// killough 10/98:
 		//
@@ -61,14 +60,14 @@ class ZPlayer{
 		// ice, because the Player still "works just as hard" to Move, while the
 		// thrust applied to the Movement varies with 'MoveFactor'.
 
-		if (cmd.forwardMove | cmd.sideMove){
+		if (cmd.forwardMove|cmd.sideMove){
 			double MoveFactor,
 				   BobFactor,
 				   Friction,
 				   ForwardMove,
 				   SideMove;
 
-			[Friction, MoveFactor] = GetFriction();
+			[Friction, MoveFactor]=GetFriction();
 			BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
 			if (!Player.OnGround && !bNoGravity && !waterlevel){
 				// [RH] allow very limited Movement if not on ground.
@@ -89,10 +88,10 @@ class ZPlayer{
 			SideMove*=Speed/256;
 
 			// When crouching, speed and bobbing have to be reduced
-			if (CanCrouch() && Player.CrouchFactor != 1){
-				ForwardMove *= Player.CrouchFactor;
-				SideMove *= Player.CrouchFactor;
-				BobFactor *= Player.CrouchFactor;
+			if (CanCrouch() && Player.CrouchFactor!=1){
+				ForwardMove*=Player.CrouchFactor;
+				SideMove*=Player.CrouchFactor;
+				BobFactor*=Player.CrouchFactor;
 			}
 
 			ForwardMove*=MoveFactor*(35/TICRATE);
@@ -103,15 +102,13 @@ class ZPlayer{
 				ForwardMove*=ZInv.Armor[AMR_TORSO].CheckCharge(self, Player);
 			}else if(Player.cmd.buttons & BT_BACK)ForwardMove*=SideMove1;
 
-			if (ForwardMove)
-			{
+			if (ForwardMove){
 				Bob(Angle, cmd.ForwardMove * BobFactor / 256., true);
 				ForwardThrust(ForwardMove, Angle);
 			}
-			if (SideMove)
-			{
-				let a = Angle - 90;
-				Bob(a, cmd.SideMove * BobFactor / 256., false);
+			if (SideMove){
+				let a=Angle-90;
+				Bob(a, cmd.SideMove*BobFactor/256., false);
 				Thrust(SideMove, a);
 			}
 
@@ -119,14 +116,14 @@ class ZPlayer{
 
 			if (Player.Cheats & CF_REVERTPLEASE){
 				Player.Cheats &= ~CF_REVERTPLEASE;
-				Player.Camera = Player.Mo;
+				Player.Camera=Player.Mo;
 			}
 		}
 	}
 
 	override
 	void CheckJump(){
-		let Player = self.Player;
+		let Player=self.Player;
 		// [RH] check for jump
 		if (Player.cmd.buttons & BT_JUMP)
 			if (Player.CrouchOffset!=0)Player.Crouching=1;
@@ -159,7 +156,7 @@ class ZPlayer{
 		if(CrouchBtn)cmd.buttons&=~BT_JUMP;
 		if (CanCrouch() && Player.Health>0 && level.IsCrouchingAllowed())
 			if (!TotallyFrozen){
-				int CrouchDir = Player.Crouching;
+				int CrouchDir=Player.Crouching;
 
 				if(CrouchDir==0)CrouchDir=CrouchBtn?-1:1;
 				else if(CrouchBtn)Player.Crouching=0;
