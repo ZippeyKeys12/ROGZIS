@@ -52,10 +52,10 @@ class ZPlayer:DoomPlayer{
 	void Tick(){
 		//Handle Voodoo Dolls
 		super.Tick();
-		if (!player || !player.mo || player.mo != self) return;
+		if(!player || !player.mo || player.mo!=self)return;
 		//Get Actor being aimed at
 		AimTarget=GetAimTarget();
-		//Armor ticks
+		//Armor Ticks
 		for(int i=0; i<ZInv.Armor.Size(); i++)
 			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
 	}
