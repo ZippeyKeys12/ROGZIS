@@ -1,18 +1,26 @@
-class ZPlayer:DoomPlayer{	
+class ZPlayer:ZPlayerBase{	
 	int //Oxygen
 		Oxygen,
 		MaxOxygen;
 
 	double LastVelLength;
 
-	Actor AimTarget;
-
 	//Oxygen
 	Property Oxygen: Oxygen;
 	Property MaxOxygen: MaxOxygen;
 	
 	Default{
+		//Descriptors
+		Player.DisplayName "Marine";
 		Player.ViewHeight 56;
+		Player.AttackZOffset 26;
+		//Start Items
+		Player.StartItem "Pistol";
+		Player.StartItem "Fist";
+		Player.StartItem "Clip", 50;
+		//Weapons
+		Player.WeaponSlot 1, "Fist";
+		Player.WeaponSlot 2, "Pistol";
 		//Oxygen
 		ZPlayer.Oxygen ZPlayerDefaults.MAX_OXYGEN;
 		ZPlayer.MaxOxygen ZPlayerDefaults.MAX_OXYGEN;
@@ -23,8 +31,6 @@ class ZPlayer:DoomPlayer{
 		super.PostBeginPlay();
 		Parser_Zinf Config=ZManager.Config();
 		//Player
-			///View
-			Orientation=ZQuaternion.FromEulerAngles(Angle, Pitch, Roll);
 			//Health
 			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
 			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
@@ -49,42 +55,22 @@ class ZPlayer:DoomPlayer{
 			ZInv.Armor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
 			ZInv.Armor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
 	}
-	
+
+	override
+    void HandleView()
+    {Orientation.SetEulerAngles(Angle, Pitch, Roll);}
+
 	override
 	void Tick(){
 		//Handle Voodoo Dolls
 		super.Tick();
 		if(!player || !player.mo || player.mo!=self)return;
-		//Get Actor being aimed at
-		AimTarget=GetAimTarget();
 		//Armor Ticks
 		for(int i=0; i<ZInv.Armor.Size(); i++)
 			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
-		//View
-		HandleView();
-		double TAngle, TPitch, TRoll;
-    	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
-    	A_SetAngle(TAngle, SPF_INTERPOLATE);
-		A_SetPitch(TPitch, SPF_INTERPOLATE);
-		A_SetRoll(TRoll, SPF_INTERPOLATE);
-	}
-	
-	virtual
-	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-	{return LineTrace(Angle, Distance, Pitch, data: Data);}
-	
-	virtual
-	Actor GetAimTarget(){
-		FLineTraceData Data;
-		Trace(Data, 2048);
-		return Data.HitActor;
 	}
 
 	override
 	void CheatGive (String name, int amount)
 	{console.printf("WIP");}
 }
-
-#include "ZSCRIPT/Z/PLYR/VIEW.zsc"
-#include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
-#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"

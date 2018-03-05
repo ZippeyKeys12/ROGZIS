@@ -1,8 +1,0 @@
-extend
-class ZPlayer{
-    ZQuaternion Orientation;
-
-    virtual
-    void HandleView()
-    {Orientation.SetEulerAngles(Angle, Pitch, Roll);}
-}

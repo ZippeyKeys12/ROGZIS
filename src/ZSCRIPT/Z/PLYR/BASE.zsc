@@ -1,0 +1,48 @@
+class ZPlayerBase:PlayerPawn{
+	Actor AimTarget;
+
+    ZQuaternion Orientation;
+
+    override
+    void PostBeginPlay(){
+		super.PostBeginPlay();
+		///View
+		Orientation=ZQuaternion.FromEulerAngles(Angle, Pitch, Roll);
+    }
+
+    override
+	void Tick(){
+		//Handle Voodoo Dolls
+		super.Tick();
+		if(!player || !player.mo || player.mo!=self)return;
+		//Get Actor being aimed at
+		AimTarget=GetAimTarget();
+        //View
+		HandleView();
+		double TAngle, TPitch, TRoll;
+    	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
+    	A_SetAngle(TAngle, SPF_INTERPOLATE);
+		A_SetPitch(TPitch, SPF_INTERPOLATE);
+		A_SetRoll(TRoll, SPF_INTERPOLATE);
+    }
+
+    virtual
+    void HandleView(){}
+
+    virtual
+	Actor GetAimTarget(){
+		FLineTraceData Data;
+		Trace(Data, 2048);
+		return Data.HitActor;
+	}
+
+	virtual
+	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
+	{return LineTrace(Angle, Distance, Pitch, data: Data);}
+}
+
+#include "ZSCRIPT/Z/PLYR/VIEW.zsc"
+
+#include "ZSCRIPT/Z/PLYR/MAIN.zsc"
+#include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
+#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"
