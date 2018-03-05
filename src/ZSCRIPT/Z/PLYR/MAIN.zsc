@@ -23,6 +23,8 @@ class ZPlayer:DoomPlayer{
 		super.PostBeginPlay();
 		Parser_Zinf Config=ZManager.Config();
 		//Player
+			///View
+			Orientation=ZQuaternion.FromEulerAngles(Angle, Pitch, Roll);
 			//Health
 			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
 			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
@@ -58,6 +60,13 @@ class ZPlayer:DoomPlayer{
 		//Armor Ticks
 		for(int i=0; i<ZInv.Armor.Size(); i++)
 			if(ZInv.Armor[i])ZInv.Armor[i].OnArmorTick(self);
+		//View
+		HandleView();
+		double TAngle, TPitch, TRoll;
+    	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
+    	A_SetAngle(TAngle, SPF_INTERPOLATE);
+		A_SetPitch(TPitch, SPF_INTERPOLATE);
+		A_SetRoll(TRoll, SPF_INTERPOLATE);
 	}
 	
 	virtual
