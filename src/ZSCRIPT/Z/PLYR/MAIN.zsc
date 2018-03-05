@@ -76,3 +76,6 @@ class ZPlayer:DoomPlayer{
 	{console.printf("WIP");}
 }
 
+#include "ZSCRIPT/Z/PLYR/VIEW.zsc"
+#include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
+#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"

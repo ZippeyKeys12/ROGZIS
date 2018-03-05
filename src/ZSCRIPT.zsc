@@ -23,8 +23,6 @@ version "3.2.5"
 
 //PLAYER
 #include "ZSCRIPT/Z/PLYR/MAIN.zsc"
-#include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
-#include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"
 
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"
