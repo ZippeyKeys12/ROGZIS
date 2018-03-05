@@ -204,7 +204,7 @@ struct ZCalc{
 
 class ZQuaternion{
 	private
-	int W, X, Y, Z;
+	double W, X, Y, Z;
 
 	static
 	ZQuaternion Create(double W, double X, double Y, double Z)
@@ -239,7 +239,7 @@ class ZQuaternion{
 	}
 
 	ZQuaternion SetEulerAngles(double Yaw, double Pitch, double Roll)
-	{return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (0, 0, 1))));}
+	{return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (1, 0, 0))));}
 
 	double Length() const
 	{return sqrt(LengthSquared());}
