@@ -41,8 +41,6 @@ class ZPlayerBase:PlayerPawn{
 	{return LineTrace(Angle, Distance, Pitch, data: Data);}
 }
 
-#include "ZSCRIPT/Z/PLYR/VIEW.zsc"
-
 #include "ZSCRIPT/Z/PLYR/MAIN.zsc"
 #include "ZSCRIPT/Z/PLYR/MOVEMENT.zsc"
 #include "ZSCRIPT/Z/PLYR/INVENTORY.zsc"
