@@ -57,10 +57,6 @@ class ZPlayer:ZPlayerBase{
 	}
 
 	override
-    void HandleView()
-    {Orientation.SetEulerAngles(Angle, Pitch, Roll);}
-
-	override
 	void Tick(){
 		//Handle Voodoo Dolls
 		super.Tick();

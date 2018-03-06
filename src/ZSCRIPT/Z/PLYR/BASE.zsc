@@ -1,33 +1,53 @@
 class ZPlayerBase:PlayerPawn{
+	double RunOscillation,
+		   ActualRoll,
+		   ActiveRoll,
+		   PassiveRoll;
+
+	Vector3 ViewVector,
+			SideVector;
+
 	Actor AimTarget;
 
-    ZQuaternion Orientation;
+	ZQuaternion Orientation;
 
-    override
-    void PostBeginPlay(){
+	override
+	void PostBeginPlay(){
 		super.PostBeginPlay();
-		///View
-		Orientation=ZQuaternion.FromEulerAngles(Angle, Pitch, Roll);
-    }
+		//View
+		double XYLength=Cos(Pitch);
+		SideVector=(Sin(Angle)*XYLength, Cos(Angle)*XYLength, -Sin(Pitch));
+		Orientation=ZQuaternion.FromAngleAxis(ActualRoll=0, ViewVector=(Cos(Angle)*XYLength, Sin(Angle)*XYLength, -Sin(Pitch)));
+	}
 
-    override
+	override
 	void Tick(){
 		//Handle Voodoo Dolls
 		super.Tick();
-		if(!player || !player.mo || player.mo!=self)return;
+		if(!player || !player.mo || player.mo!=self || Health<=0)return;
 		//Get Actor being aimed at
 		AimTarget=GetAimTarget();
-        //View
+		//View
 		HandleView();
 		double TAngle, TPitch, TRoll;
     	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
     	A_SetAngle(TAngle, SPF_INTERPOLATE);
 		A_SetPitch(TPitch, SPF_INTERPOLATE);
-		A_SetRoll(TRoll, SPF_INTERPOLATE);
+		A_SetRoll(TRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
+		double XYLength=Cos(Pitch);
+		ViewVector=(Cos(Angle)*XYLength, Sin(Angle)*XYLength, -Sin(Pitch));
+		SideVector=(Sin(Angle)*XYLength, Cos(Angle)*XYLength, -Sin(Pitch));
     }
 
     virtual
-    void HandleView(){}
+    void HandleView(){
+		if(Player.OnGround){
+			PassiveRoll+=(Vel dot SideVector)/25.;
+			PassiveRoll+=Sin(RunOscillation+=15)*(Vel dot ViewVector)/50.;
+		}
+		PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
+		Orientation.SetEulerAngles(Angle, Pitch, ActualRoll);
+	}
 
     virtual
 	Actor GetAimTarget(){
