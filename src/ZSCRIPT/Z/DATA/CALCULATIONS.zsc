@@ -22,7 +22,7 @@ struct ZCalc{
 
 	static
 	int Sign(double Value)
-	{return (Value==0)?0:(Value<0)?-1:1;}
+	{return (Equals(Value, 0))?0:(Value<0)?-1:1;}
 
 	static
 	double TransferSign(double Value, double Sign)
