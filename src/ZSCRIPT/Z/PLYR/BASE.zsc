@@ -43,7 +43,7 @@ class ZPlayerBase:PlayerPawn{
     void HandleView(){
 		if(Player.OnGround){
 			PassiveRoll+=(Vel dot SideVector)/25.;
-			PassiveRoll+=Sin(RunOscillation+=15)*(Vel dot ViewVector)/50.;
+			PassiveRoll+=Sin(RunOscillation+=5*PI)*(Vel dot ViewVector)/50.;
 		}
 		PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
 		Orientation.SetEulerAngles(Angle, Pitch, ActualRoll);
