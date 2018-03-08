@@ -47,7 +47,7 @@ class ZPlayerBase:PlayerPawn{
 		A_SetRoll(ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
 		double XYLength=Cos(Pitch);
 		ViewVector=(Cos(Angle)*XYLength, Sin(Angle)*XYLength, -Sin(Pitch));
-		SideVector=(Sin(Angle)*XYLength, Cos(Angle)*XYLength, -Sin(Pitch));
+		SideVector=(Sin(Angle)*XYLength, Cos(Angle)*XYLength, -Sin(Pitch));//Fix
     }
 
     virtual
