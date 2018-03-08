@@ -11,6 +11,10 @@ class ZPlayerBase:PlayerPawn{
 
 	ZQuaternion Orientation;
 
+	Default{
+        Species "Player";
+	}
+
 	override
 	void PostBeginPlay(){
 		super.PostBeginPlay();
@@ -28,26 +32,27 @@ class ZPlayerBase:PlayerPawn{
 		//Get Actor being aimed at
 		AimTarget=GetAimTarget();
 		//View
+		if(Player.OnGround){
+			PassiveRoll+=(Vel dot SideVector)/25.;
+			PassiveRoll+=Sin(RunOscillation+=5*PI)*(Vel dot ViewVector)/50.;
+		}
+		PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
 		HandleView();
 		double TAngle, TPitch, TRoll;
+		Orientation=Orientation.Unit();
     	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
     	A_SetAngle(TAngle, SPF_INTERPOLATE);
 		A_SetPitch(TPitch, SPF_INTERPOLATE);
-		A_SetRoll(TRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
+		ActualRoll=TRoll;
+		A_SetRoll(ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
 		double XYLength=Cos(Pitch);
 		ViewVector=(Cos(Angle)*XYLength, Sin(Angle)*XYLength, -Sin(Pitch));
 		SideVector=(Sin(Angle)*XYLength, Cos(Angle)*XYLength, -Sin(Pitch));
     }
 
     virtual
-    void HandleView(){
-		if(Player.OnGround){
-			PassiveRoll+=(Vel dot SideVector)/25.;
-			PassiveRoll+=Sin(RunOscillation+=5*PI)*(Vel dot ViewVector)/50.;
-		}
-		PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
-		Orientation.SetEulerAngles(Angle, Pitch, ActualRoll);
-	}
+    void HandleView()
+	{Orientation.SetEulerAngles(Angle, Pitch, ActualRoll);}
 
     virtual
 	Actor GetAimTarget(){
