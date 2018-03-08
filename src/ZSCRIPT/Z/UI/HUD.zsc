@@ -53,7 +53,7 @@ Class ZStatusBar : BaseStatusBar{
 		   sMax!=playerInst.maxShield||eMax!=playerInst.maxEnergy||
 		   erMax!=playerInst.energyRechargeRate*/){
 			playerInst=ZPlayer(CPlayer.mo);
-			if(!playerInst.ZInv)return;
+			if(!playerInst||!playerInst.ZInv)return;
 			//Health
 			hMax=playerInst.maxHealth;
 			health=LinearValueInterpolator.Create(0, .03*hMax);
