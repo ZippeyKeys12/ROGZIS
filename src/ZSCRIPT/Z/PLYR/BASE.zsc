@@ -41,7 +41,7 @@ class ZPlayerBase:PlayerPawn{
 		double TAngle, TPitch, TRoll;
 		Orientation=Orientation.Unit();
     	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
-    	A_SetAngle(TAngle, SPF_INTERPOLATE);
+    	A_SetAngle(abs(Angle)>179?TAngle:ZCalc.TransferSign(TAngle, Angle), SPF_INTERPOLATE);
 		A_SetPitch(TPitch, SPF_INTERPOLATE);
 		ActualRoll=TRoll;
 		A_SetRoll(ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
