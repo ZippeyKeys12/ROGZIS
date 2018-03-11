@@ -153,9 +153,9 @@ struct ZCalc{
 			B2B=B2A dot B2A,
 			B2P=B2A dot P2A,
 			InverseDenominator=1/(C2C*B2B-C2B**2),
-			u=InverseDenominator*(B2B*C2P-C2B*B2P),
-			v=InverseDenominator*(C2C*B2P-C2B*C2P);
-			return u>=0 && v>=0 && u+v<1;
+			U=InverseDenominator*(B2B*C2P-C2B*B2P),
+			V=InverseDenominator*(C2C*B2P-C2B*C2P);
+			return U>=0 && V>=0 && U+V<1;
 	}
 
 	static
