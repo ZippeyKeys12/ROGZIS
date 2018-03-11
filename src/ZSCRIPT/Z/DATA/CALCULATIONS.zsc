@@ -33,20 +33,24 @@ struct ZCalc{
 	{return -1**(n-Offset);}
 
 	static
-	double NormalRangeMap(double Value, double Start, double End)
-	{return clamp((Value-Start)/(End-Start), 0, 1);}
+	NormRange(double Value)
+	{return Clamp(Value, 0, 1);}
 
 	static
-	double AbnormalRangeMap(double Value, double Start, double End)
+	double NormRangeMap(double Value, double Start, double End)
+	{return NormRange((Value-Start)/(End-Start));}
+
+	static
+	double ANormRangeMap(double Value, double Start, double End)
 	{return clamp(Value*(End-Start)+Start, Start, End);}
 
 	static
 	int IRangeMap(int Value, int OldStart, int OldEnd, int NewStart, int NewEnd)
-	{return AbnormalRangeMap(NormalRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
+	{return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
 
 	static
 	double DRangeMap(double Value, double OldStart, double OldEnd, double NewStart, double NewEnd)
-	{return AbnormalRangeMap(NormalRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
+	{return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
 
 	static
 	double AMean(ZArray_String Array){
@@ -90,17 +94,17 @@ struct ZCalc{
 
 	static
 	double Lerp(double Time, double Start=0, double End=1){
-		Time=clamp(Time, 0, 1);
+		Time=NormRange(Time);
 		return (1-Time)*Start+Time*End;
 	}
 
 	static
 	double SmoothStart(double Time, double Start=0, double End=1, double Degree=2)
-	{return AbnormalRangeMap(NormalRangeMap(Time, Start, End)**Degree, Start, End);}
+	{return ANormRangeMap(NormRangeMap(Time, Start, End)**Degree, Start, End);}
 
 	static
 	double SmoothStop(double Time, double Start=0, double End=1, double Degree=2)
-	{return AbnormalRangeMap(1-(1-NormalRangeMap(Time, Start, End))**Degree, Start, End);}
+	{return ANormRangeMap(1-(1-NormRangeMap(Time, Start, End))**Degree, Start, End);}
 
 	static
 	double SmoothStep(double Time, double Start=0, double End=1, double Degree=2)
@@ -118,7 +122,7 @@ struct ZCalc{
 
 	static
 	Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
-		Time=clamp(Time, 0, 1);
+		Time=NormRange(Time);
 		return (1-Time)*Start+Time*End;
 	}
 
@@ -167,7 +171,7 @@ struct ZCalc{
 	/////////////
 	static
 	Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1)){
-		Time=clamp(Time, 0, 1);
+		Time=NormRange(Time);
 		return (1-Time)*Start+Time*End;
 	}
 
