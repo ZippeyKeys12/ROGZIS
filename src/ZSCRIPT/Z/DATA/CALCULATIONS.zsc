@@ -120,15 +120,15 @@ struct ZCalc{
 
 	static
 	Vector2 V2SmoothStart(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStart(Time, Start.x, End.x, Degree), SmoothStart(Time, Start.y, End.y, Degree));}
+	{return (SmoothStart(Time, Start.X, End.X, Degree), SmoothStart(Time, Start.Y, End.Y, Degree));}
 
 	static
 	Vector2 V2SmoothStop(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStop(Time, Start.x, End.x, Degree), SmoothStop(Time, Start.y, End.y, Degree));}
+	{return (SmoothStop(Time, Start.X, End.X, Degree), SmoothStop(Time, Start.Y, End.Y, Degree));}
 
 	static
 	Vector2 V2SmoothStep(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStep(Time, Start.x, End.x, Degree), SmoothStep(Time, Start.y, End.y, Degree));}
+	{return (SmoothStep(Time, Start.X, End.X, Degree), SmoothStep(Time, Start.Y, End.Y, Degree));}
 
 	static
 	Vector2 V2BezierCurve(int Time, int N, int I, ZArray_String Points){
