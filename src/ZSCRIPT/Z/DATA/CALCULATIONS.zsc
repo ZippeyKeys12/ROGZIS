@@ -141,10 +141,10 @@ struct ZCalc{
 	{return (SmoothStep(Time, Start.X, End.X, Degree), SmoothStep(Time, Start.Y, End.Y, Degree));}
 
 	static
-	Vector2 V2BezierCurve(int Time, int N, int I, ZArray_String Points){
+	Vector2 V2Bezier(double Time, ZArray_String Points){
 		Vector2 Total=(0, 0);
 		for(int j=0; j<Points._.Size(); j++)
-			Total+=(Points._[j].ToDouble(), Points.__[j].ToDouble())*Bernstein(Time, N, I);
+			Total+=(Points._[j].ToDouble(), Points.__[j].ToDouble())*Bernstein(Time, Points._.Size(), j);
 		return Total;
 	}
 
