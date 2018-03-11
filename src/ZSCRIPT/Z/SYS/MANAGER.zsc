@@ -18,7 +18,7 @@ class ZManager:Thinker{
 	private
 	ZManager Instance(ZStatNum STAT_NUM=STAT_ZDATA){
 		ThinkerIterator it=ThinkerIterator.Create("ZManager", STAT_NUM);
-		let p=ZManager(it.Next());
+		ZManager p=ZManager(it.Next());
 		if(!p)p=new("ZManager").Init();
 		return p;
 	}
