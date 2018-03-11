@@ -110,6 +110,10 @@ struct ZCalc{
 	// Vector2 //
 	/////////////
 	static
+	Vector2 V2Rotate(Vector2 Vector, double Angle){
+		double X=Vector.X,
+			   Y=Vector.Y;
+		return (X*Cos(Angle)-Y*Sin(Angle), X*Sin(Angle)+Y*Cos(Angle));
 	}
 
 	static
