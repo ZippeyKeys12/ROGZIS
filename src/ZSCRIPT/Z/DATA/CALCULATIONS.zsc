@@ -91,8 +91,8 @@ struct ZCalc{
 	{return Factorial(N)/(Factorial(K)*Factorial(N-K));}
 
 	static
-	double Bernstein(int X, int N, int V)
-	{return nCr(N, V)*X**V*(1-X)**(N-V);}
+	double Bernstein(double Time, int N, int V)
+	{return nCr(N, V)*Time**V*(1-Time)**(N-V);}
 
 	static
 	double Lerp(double Time, double Start=0, double End=1){
