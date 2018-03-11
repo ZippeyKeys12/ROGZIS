@@ -1,7 +1,10 @@
 class ZPlayerBase:PlayerPawn{
-	double RunOscillation,
+	double ActualYaw,
+	       ActualPitch,
 		   ActualRoll,
-		   ActiveRoll,
+		   Shake,
+		   ShakeLevel,
+		   RunOscillation,
 		   PassiveRoll;
 
 	Vector2 SideVector;
@@ -9,6 +12,10 @@ class ZPlayerBase:PlayerPawn{
 	Vector3 ViewVector;
 
 	Actor AimTarget;
+
+	ZPerlin YawShake,
+			PitchShake,
+			RollShake;
 
 	ZQuaternion Orientation;
 
@@ -20,8 +27,12 @@ class ZPlayerBase:PlayerPawn{
 	void PostBeginPlay(){
 		super.PostBeginPlay();
 		//View
-		double XYLength=Cos(Pitch);
-		Orientation=ZQuaternion.FromAngleAxis(ActualRoll=0, ViewVector=(Cos(Angle)*XYLength, Sin(Angle)*XYLength, -Sin(Pitch)));
+		ShakeLevel=1;
+		YawShake=ZPerlin.Create(666, 1000, 3);
+		PitchShake=ZPerlin.Create(667, 1000, 3);
+		RollShake=ZPerlin.Create(667, 1000, 3);
+		double XYLength=Cos(ActualPitch=Pitch);
+		Orientation=ZQuaternion.FromAngleAxis(ActualRoll=Roll=0, ViewVector=(Cos(ActualYaw=Angle)*XYLength, Sin(ActualYaw)*XYLength, -Sin(ActualPitch)));
 		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
 	}
 
@@ -33,19 +44,30 @@ class ZPlayerBase:PlayerPawn{
 		//Get Actor being aimed at
 		AimTarget=GetAimTarget();
 		//View
-		if(Player.OnGround){
-			PassiveRoll+=Sin(RunOscillation+=5*ZCalc.PI)*(Vel dot ViewVector)/50.;
-			PassiveRoll+=(Vel.XY dot SideVector)/25.;
-		}
-		PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
-		HandleView();
-		double TAngle, TPitch, TRoll;
-		Orientation=Orientation.Unit();
-    	[TAngle, TPitch, TRoll]=Orientation.GetEulerAngles();
-    	A_SetAngle(abs(Angle)>179?TAngle:ZCalc.TransferSign(TAngle, Angle), SPF_INTERPOLATE);
-		A_SetPitch(TPitch, SPF_INTERPOLATE);
-		ActualRoll=TRoll;
-		A_SetRoll(ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
+			//Screen Shake
+			double CurrentShake=ShakeLevel*ZCalc.NormRange(ZCalc.SmoothStart(Shake)),
+				   ActiveYaw=0, ActivePitch=0, ActiveRoll=0;
+			if(CurrentShake>0){
+				ActiveYaw=CurrentShake*ZCalc.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+				ActivePitch=CurrentShake*ZCalc.DRangeMap(PitchShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+				ActiveRoll=CurrentShake*ZCalc.DRangeMap(RollShake.Get(Level.MapTime%1000, 1), 2, 7, -5, 5);
+				AddScreenShake(-.025);
+			}
+			//Tilt
+			if(Player.OnGround){
+				PassiveRoll+=Sin(RunOscillation+=5*ZCalc.PI)*(Vel dot ViewVector)/50.;
+				PassiveRoll+=(Vel.XY dot SideVector)/25.;
+			}
+			PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
+			//Orientation
+			HandleView();
+			Orientation=Orientation.Unit();
+			[ActualYaw, ActualPitch, ActualRoll]=Orientation.GetEulerAngles();
+			ActualYaw=abs(Angle)>179?ActualYaw:ZCalc.TransferSign(ActualYaw, Angle);
+			A_SetAngle(ActualYaw+ActiveYaw, SPF_INTERPOLATE);
+			A_SetPitch(ActualPitch+ActivePitch, SPF_INTERPOLATE);
+			A_SetRoll(ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
+		//Direction Vectors
 		double XYLength=Cos(Pitch);
 		ViewVector=(Cos(Angle)*XYLength, Sin(Angle)*XYLength, -Sin(Pitch));
 		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
@@ -54,6 +76,9 @@ class ZPlayerBase:PlayerPawn{
     virtual
     void HandleView()
 	{Orientation.SetEulerAngles(Angle, Pitch, ActualRoll);}
+	virtual
+	void AddScreenShake(double Amount)
+	{Shake=ZCalc.NormRange(Shake+Amount);}
 
     virtual
 	Actor GetAimTarget(){
