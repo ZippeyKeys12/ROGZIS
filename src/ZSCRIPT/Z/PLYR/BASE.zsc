@@ -34,7 +34,7 @@ class ZPlayerBase:PlayerPawn{
 		AimTarget=GetAimTarget();
 		//View
 		if(Player.OnGround){
-			PassiveRoll+=Sin(RunOscillation+=5*PI)*(Vel dot ViewVector)/50.;
+			PassiveRoll+=Sin(RunOscillation+=5*ZCalc.PI)*(Vel dot ViewVector)/50.;
 			PassiveRoll+=(Vel.XY dot SideVector)/25.;
 		}
 		PassiveRoll*=(abs(PassiveRoll)>0.00001)?.75:0;
