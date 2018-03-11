@@ -344,7 +344,7 @@ class ZMatrix{
 		return self;
 	}
 
-	double Set(int Value, int Row, int Column)
+	double Set(int Row, int Column, double Value)
 	{return Values[Row*Columns+Column]=Value;}
 
 	double Get(int Row, int Column) const
