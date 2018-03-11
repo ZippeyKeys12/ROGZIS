@@ -36,7 +36,7 @@ struct ZCalc{
 	{return -1**(n-Offset);}
 
 	static
-	int NormRange(double Value)
+	double NormRange(double Value)
 	{return Clamp(Value, 0, 1);}
 
 	static
