@@ -4,6 +4,11 @@ class ZArray
 class ZArray_String{
 	Array<String> _;
 	Array<String> __;
+
+	void V2Push(Vector2 Point){
+		_.Push(Point.X.."");
+		__.Push(Point.Y.."");
+	}
 }
 
 class ZIterator{
