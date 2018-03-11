@@ -333,6 +333,10 @@ class ZMatrix{
 	ZMatrix Identity(int Size)
 	{return new("ZMatrix").Init(Size, Size, true);}
 
+	static
+	ZMatrix WhiteNoise(int Rows, int Columns, int Seed)
+	{return new("ZMatrix").Init(Rows, Columns, true).Noise(Seed);}
+
 	private
 	ZMatrix Init(int Rows, int Columns, bool Ones){
 		if(Rows<=0 || Columns<=0)
@@ -356,6 +360,14 @@ class ZMatrix{
 	int Width() const
 	{return Columns;}
 
+	ZMatrix Noise(int Seed=int('NoiseyBoi')) const{
+		SetRandomSeed[NoiseyBoi](Seed);
+		ZMatrix Result=ZMatrix.Create(Rows, Columns);
+		for(int i=0; i<Rows; i++)
+			for(int j=0; j<Columns; j++)
+				Result.Set(i, j, Get(i, j)*FRandom[NoiseyBoi](-1, 1));
+		return Result;
+	}
 	ZMatrix Add(ZMatrix Other) const{
 		if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
 		ZMatrix Result=ZMatrix.Create(Rows, Columns);
