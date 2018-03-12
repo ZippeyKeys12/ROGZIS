@@ -24,6 +24,5 @@ class ZManager{
 		Player.YawShake=ZPerlin.Create(Seed, 1000, 3);
 		Player.PitchShake=ZPerlin.Create(Seed+1, 1000, 3);
 		Player.RollShake=ZPerlin.Create(Seed+2, 1000, 3);
-		console.printf("a");
 	}
 }
