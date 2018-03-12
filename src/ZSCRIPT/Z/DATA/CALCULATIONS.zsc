@@ -79,6 +79,10 @@ struct ZCalc{
 	}
 
 	static
+	double AsymptoticMean(double X, double Target, double Weight=.1)
+	{return (Target-X)*(1-Weight);}
+
+	static
 	int Factorial(int N){
 		if(N>0)return N*Factorial(N-1);
 		else if(N==0)return 1;
