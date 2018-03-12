@@ -28,9 +28,6 @@ class ZPlayerBase:PlayerPawn{
 		super.PostBeginPlay();
 		//View
 		ShakeLevel=1;
-		YawShake=ZPerlin.Create(666, 1000, 3);
-		PitchShake=ZPerlin.Create(667, 1000, 3);
-		RollShake=ZPerlin.Create(667, 1000, 3);
 		double XYLength=Cos(ActualPitch=Pitch);
 		Orientation=ZQuaternion.FromAngleAxis(ActualRoll=Roll=0, ViewVector=(Cos(ActualYaw=Angle)*XYLength, Sin(ActualYaw)*XYLength, -Sin(ActualPitch)));
 		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);

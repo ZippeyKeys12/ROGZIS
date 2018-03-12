@@ -9,9 +9,21 @@ class ZManager{
 	ZWorldState WorldState;
 
 	static
-	void PlayerEntered(PlayerEvent e){
-		ZManager Manager=Instance();
-		Manager.WorldState.PlayerInfo=Players[e.PlayerNumber];
-		Manager.WorldState.Player=ZPlayer(Manager.WorldState.PlayerInfo.mo);
+	void PlayerSetup(PlayerEvent e){
+		Instance().WorldState.PlayerInfo=Players[e.PlayerNumber];
+		Instance().WorldState.Player=ZPlayer(Instance().WorldState.PlayerInfo.mo);
+	}
+
+	static
+	void WorldLoaded(WorldEvent e){
+		ZPlayer Player=Instance().WorldState.Player;
+		String Checksum=Level.GetChecksum();
+		int Seed=0;
+		for(int i=0; i<Checksum.Length(); i++)
+			Seed^=Checksum.CharCodeAt(i)<<8*(i%4);
+		Player.YawShake=ZPerlin.Create(Seed, 1000, 3);
+		Player.PitchShake=ZPerlin.Create(Seed+1, 1000, 3);
+		Player.RollShake=ZPerlin.Create(Seed+2, 1000, 3);
+		console.printf("a");
 	}
 }
