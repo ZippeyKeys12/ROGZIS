@@ -119,16 +119,18 @@ class ZManager:Thinker{
 	clearscope
 	void Error(String Error, ZErrorLevel Level){
 		switch(Level){
-			case ERR_INFO:		break;
-			case ERR_WARNING:	break;
+			case ERR_INFO:break;
+			case ERR_WARNING:
+				Console.PrintF("\cx%s", Error);
+				break;
 			case ERR_ERROR:
-				ThrowAbortException("Error handling not defined");
+				Console.PrintF("\cr%s", Error);
 				break;
 			case ERR_FATAL:
-				ThrowAbortException("%s", Error);
+				ThrowAbortException("\cy%s", Error);
 				break;
 			default:
-				ThrowAbortException("Unclassified Error: '%s'", Error);
+				ThrowAbortException("Unclassified Error: '\cw%s'", Error);
 				break;
 		}
 	}
