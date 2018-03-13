@@ -1,7 +1,9 @@
-class ZStaticHandler:StaticEventHandler{
+class ZHandler:StaticEventHandler{
 	override
-	void WorldLoaded(WorldEvent e)
-	{ZManager.StatNum(STAT_STATIC);}
+	void WorldLoaded(WorldEvent e){
+		ZManager.StatNum(STAT_STATIC);
+		ZManager.WorldLoaded(e);
+	}
 
 	override
 	void WorldUnloaded(WorldEvent e)
@@ -10,10 +12,4 @@ class ZStaticHandler:StaticEventHandler{
 	override
 	void PlayerEntered(PlayerEvent e)
 	{ZManager.PlayerSetup(e);}
-}
-
-class ZHandler:EventHandler{
-	override
-	void WorldLoaded(WorldEvent e)
-	{ZManager.WorldLoaded(e);}
 }
