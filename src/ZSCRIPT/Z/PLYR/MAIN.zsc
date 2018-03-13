@@ -25,7 +25,7 @@ class ZPlayer:ZPlayerBase{
 		ZPlayer.Oxygen ZPlayerDefaults.MAX_OXYGEN;
 		ZPlayer.MaxOxygen ZPlayerDefaults.MAX_OXYGEN;
 	}
-	
+
 	override
 	void PostBeginPlay(){
 		super.PostBeginPlay();
