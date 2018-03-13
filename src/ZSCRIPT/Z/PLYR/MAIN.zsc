@@ -12,7 +12,7 @@ class ZPlayer:ZPlayerBase{
 	Default{
 		//Descriptors
 		Player.DisplayName "Marine";
-		Player.ViewHeight 56;
+		Player.ViewHeight 48;
 		Player.AttackZOffset 26;
 		//Start Items
 		Player.StartItem "Pistol";
