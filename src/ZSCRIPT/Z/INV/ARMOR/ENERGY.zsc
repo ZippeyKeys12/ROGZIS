@@ -1,9 +1,7 @@
 extend
 class ZArmor{
-	int OldStats;
-
-	protected
 	int //General
+		OldStats,
 		Recharger,
 		
 		//Energy

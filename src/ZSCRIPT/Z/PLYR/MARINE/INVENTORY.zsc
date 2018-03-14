@@ -1,0 +1,93 @@
+extend
+class ZPlayer{
+	ZArmor Armor[5];
+	
+	virtual
+	clearscope
+	int, int GetPlate(){
+		int Durability, MaxDurability,
+			d,		md;
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i]){
+				[d, md]=Armor[i].GetDurability();
+				Durability+=d;
+				MaxDurability+=md;
+			}
+		return Durability, MaxDurability;
+	}
+	
+	virtual
+	clearscope
+	int, int GetEnergy(){
+		int Energy, MaxEnergy,
+			e,		me;
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i]){
+				[e, me]=Armor[i].GetEnergy();
+				Energy+=e;
+				MaxEnergy+=me;
+			}
+		return Energy, MaxEnergy;
+	}
+	
+	virtual
+	clearscope
+	int, int GetMagnet(){
+		int Magnet, MaxMagnet,
+			m,		mm;
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i]){
+				[m, mm]=Armor[i].GetMagnet();
+				Magnet+=m;
+				MaxMagnet+=mm;
+			}
+		return Magnet, MaxMagnet;
+	}
+	
+	virtual
+	clearscope
+	int, int GetShield(){
+		int Shield, MaxShield,
+			s,		ms;
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i]){
+				[s, ms]=Armor[i].GetShield();
+				Shield+=s;
+				MaxShield+=ms;
+			}
+		return Shield, MaxShield;
+	}
+	
+	virtual
+	clearscope
+	int, int GetLight(){
+		int Light, MaxLight,
+			l,		ml;
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i]){
+				[l, ml]=Armor[i].GetLight();
+				Light+=l;
+				MaxLight+=ml;
+			}
+		return Light, MaxLight;
+	}
+	
+	virtual
+	void DrainEnergy(int Amount){
+		if(Amount<=0)return;
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i] && Armor[i].GetEnergy()>0){
+				Armor[i].DrainEnergy(Amount, self);
+				return;
+			}
+	}
+
+	override
+	int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
+		for(int i=0; i<Armor.Size(); i++)
+			if(Armor[i] && Armor[i].GetEnergy()>0)
+				Damage=Armor[i].ModifyDamage(Damage, Mod);
+		Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
+		return Damage;
+	}
+}

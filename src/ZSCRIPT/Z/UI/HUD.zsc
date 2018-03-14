@@ -49,11 +49,11 @@ Class ZStatusBar : BaseStatusBar{
 	void Tick(){
 		super.Tick();
 		//Init
-		if(!playerInst||!playerInst.ZInv||hMax!=playerInst.maxHealth/*||aMax!=playerInst.maxArmor||
+		if(!playerInst||hMax!=playerInst.maxHealth/*||aMax!=playerInst.maxArmor||
 		   sMax!=playerInst.maxShield||eMax!=playerInst.maxEnergy||
 		   erMax!=playerInst.energyRechargeRate*/){
 			playerInst=ZPlayer(CPlayer.mo);
-			if(!playerInst||!playerInst.ZInv)return;
+			if(!playerInst)return;
 			//Health
 			hMax=playerInst.maxHealth;
 			health=LinearValueInterpolator.Create(0, .03*hMax);

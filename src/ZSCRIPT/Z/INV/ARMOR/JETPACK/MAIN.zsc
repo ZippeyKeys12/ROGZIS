@@ -9,7 +9,6 @@ struct JetpackStats{
 
 extend
 class ZArmor{
-	protected
 	int //Jetpack
 		JetpackPower;
 

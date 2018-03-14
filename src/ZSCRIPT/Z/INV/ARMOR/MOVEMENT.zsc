@@ -4,7 +4,6 @@ class ZArmor{
 	bool //Fall Absorption
 		 MidAir;
 
-	protected
 	int //Sprint
 		SprintCost,
 		

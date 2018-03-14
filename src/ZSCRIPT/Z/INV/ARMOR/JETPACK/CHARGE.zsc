@@ -1,20 +1,19 @@
 extend
 class ZArmor{
-    protected
 	int	ChargeWaiter;
 
     virtual
 	double CheckCharge(ZPlayer Player, PlayerInfo PlayerInfo){
 		if(Info & AMR_JETPACK)
 			if(!Player.bSkullfly){
-				if((Buttons & BT_USER1	) && (Buttons & BT_FORWARD) &&  Player.GetEnergy()>=JetpackCost*(Player.IsHeavy()?3:1.5))
+				if((Buttons & BT_USER1	) && (Buttons & BT_FORWARD) &&  Player.GetEnergy()>=JetpackCost*1.5)
 					Player.bSkullfly=ChargeWaiter==Player.TICRATE;
 				ChargeWaiter=Clamp(ChargeWaiter+1, 0, Player.TICRATE);
 			}else{
-				DrainEnergy(JetpackCost*(Player.IsHeavy()?3:1.5), Player);
+				DrainEnergy(JetpackCost*1.5, Player);
 				Player.bSkullfly=ChargeWaiter-->Player.TICRATE*.75;
 				if(!Player.bSkullfly)ChargeWaiter=0;
-				return JetpackPower/(Player.IsHeavy()?.1:.05)/20.;
+				return JetpackPower/.1/20.;
 			}
 		return 1;
 	}

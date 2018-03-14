@@ -15,7 +15,6 @@ struct ThrustStats{
 
 extend
 class ZArmor{
-	protected
 	int ThrustPower;
 	
 	virtual

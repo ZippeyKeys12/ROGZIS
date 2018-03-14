@@ -1,23 +1,21 @@
 extend
 class ZArmor{
-	protected
 	int	JetpackCost,
 		JetpackWaiter;
-	
-	protected
+
 	double JetpackControl;
 
 	virtual
 	void CheckJetpack(ZPlayer Player, PlayerInfo PlayerInfo){
-		if((SameButtons & BT_JUMP) && (Buttons & BT_USER1) && Player.GetEnergy()>=JetpackCost*(Player.IsHeavy()?2:1)){
-			Player.Vel.Z=JetpackPower/(2.*(Player.IsHeavy()?2:1));
+		if((SameButtons & BT_JUMP) && (Buttons & BT_USER1) && Player.GetEnergy()>=JetpackCost){
+			Player.Vel.Z=JetpackPower/2.;
 			Player.A_ChangeVelocity(
 			x:	((Buttons & BT_FORWARD  )?JetpackControl:0)-
 				((Buttons & BT_BACK     )?JetpackControl:0),
 			y:	((Buttons & BT_MOVELEFT )?JetpackControl:0)-
 				((Buttons & BT_MOVERIGHT)?JetpackControl:0),
 			flags: CVF_RELATIVE);
-			DrainEnergy(JetpackCost*(Player.IsHeavy()?2:1), Player);
+			DrainEnergy(JetpackCost, Player);
 		}
 	}
 }

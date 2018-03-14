@@ -3,11 +3,9 @@ class ZArmor{
 	/////////////////////
 	// Defensive Stats //
 	/////////////////////
-	protected
 	double //Armor Plating
 		   PlateAbsorption;
 
-	protected
 	int //Magnetic Repulsion
 		Magnet,
 		MaxMagnet,

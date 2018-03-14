@@ -1,9 +1,7 @@
 extend
 class ZArmor{
-	protected
 	bool DashAvailable;
 
-	protected
 	int //Dash
 		DashCost,
 		DashTimer,

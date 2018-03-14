@@ -1,0 +1,68 @@
+class ZPlayerBase:PlayerPawn{
+	protected
+	int //Player inputs
+		Buttons,
+		OldButtons,
+		NewButtons,
+		SameButtons;
+
+	Actor AimTarget;
+
+	Default{
+        Species "Player";
+	}
+
+	override
+	void PostBeginPlay(){
+		super.PostBeginPlay();
+		//View
+		ShakeLevel=1;
+		double XYLength=Cos(ActualPitch=Pitch);
+		Orientation=ZQuaternion.FromAngleAxis(ActualRoll=Roll=0, ViewVector=(Cos(ActualYaw=Angle)*XYLength, Sin(ActualYaw)*XYLength, -Sin(ActualPitch)));
+		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+	}
+
+	virtual
+	void AddScreenShake(double Amount)
+	{Shake=ZCalc.NormRange(Shake+Amount);}
+
+	override
+	void Tick(){
+		//Handle Voodoo Dolls
+		super.Tick();
+		if(!player || !player.mo || player.mo!=self || Health<=0)return;
+		//Actual Stuff
+		RecordInput();
+		SetAimTarget();
+		HandleView();
+    }
+
+	virtual
+	void RecordInput(){
+		Buttons=Player.cmd.buttons;
+		OldButtons=Player.oldbuttons;
+		NewButtons=Buttons & ~OldButtons;
+		SameButtons=Buttons & OldButtons;
+	}
+
+    virtual
+	void SetAimTarget(){
+		FLineTraceData Data;
+		Trace(Data, 2048, ActualPitch);
+		AimTarget=Data.HitActor;
+	}
+
+	virtual
+	void HandleView(){
+		HandleScreenShake();
+		HandleViewTilt();
+		HandleViewChange();
+		HandleOrientation();
+	}
+
+	virtual
+	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
+	{return LineTrace(ActualYaw, Distance, Pitch, Data: Data);}
+}
+
+#include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

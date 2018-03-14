@@ -25,14 +25,12 @@ class ZPlayer{
 		else{
 			MovePlayer();
 			CheckMoveUpDown();
-			for(int i=0; i<ZInv.Armor.Size(); i++)
-				if(ZInv.Armor[i])ZInv.Armor[i].HandleArmorMovement(self);
-			if(!ZInv.Armor[AMR_FEET])CheckJump();
+			for(int i=0; i<Armor.Size(); i++)
+				if(Armor[i])Armor[i].HandleArmorMovement(self);
+			if(!Armor[AMR_FEET])CheckJump();
 			//Crouch-jumping and reduce crouch step height
-			if(Player.OnGround)
-				MaxStepHeight=(Player.CrouchOffset!=0)?9:18;
-			else
-				MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
+			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?9:18;
+			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
 			//Other checks
 			LowerFriction();
 			CheckCollisionDamage();
@@ -71,13 +69,13 @@ class ZPlayer{
 			BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
 			if (!Player.OnGround && !bNoGravity && !waterlevel){
 				// [RH] allow very limited Movement if not on ground.
-				if(ZInv.Armor[AMR_TORSO]){
-					MoveFactor*=ZInv.Armor[AMR_TORSO].CheckAirControl();
-					BobFactor*=ZInv.Armor[AMR_TORSO].CheckAirControl();
+				if(Armor[AMR_TORSO]){
+					MoveFactor*=Armor[AMR_TORSO].CheckAirControl();
+					BobFactor*=Armor[AMR_TORSO].CheckAirControl();
 				}
-				if(ZInv.Armor[AMR_FEET]){
-					MoveFactor*=ZInv.Armor[AMR_FEET].CheckAirControl();
-					BobFactor*=ZInv.Armor[AMR_FEET].CheckAirControl();
+				if(Armor[AMR_FEET]){
+					MoveFactor*=Armor[AMR_FEET].CheckAirControl();
+					BobFactor*=Armor[AMR_FEET].CheckAirControl();
 				}
 			}
 
@@ -97,9 +95,9 @@ class ZPlayer{
 			ForwardMove*=MoveFactor*(35/TICRATE);
 			SideMove*=MoveFactor*(35/TICRATE);
 
-			if(ZInv.Armor[AMR_TORSO]){
-				ForwardMove*=ZInv.Armor[AMR_TORSO].CheckSprint(self, Player);
-				ForwardMove*=ZInv.Armor[AMR_TORSO].CheckCharge(self, Player);
+			if(Armor[AMR_TORSO]){
+				ForwardMove*=Armor[AMR_TORSO].CheckSprint(self, Player);
+				ForwardMove*=Armor[AMR_TORSO].CheckCharge(self, Player);
 			}else if(Player.cmd.buttons & BT_BACK)ForwardMove*=SideMove1;
 
 			if (ForwardMove){
@@ -125,18 +123,18 @@ class ZPlayer{
 	void CheckJump(){
 		let Player=self.Player;
 		// [RH] check for jump
-		if (Player.cmd.buttons & BT_JUMP)
-			if (Player.CrouchOffset!=0)Player.Crouching=1;
-			else if (WaterLevel>=2)Vel.Z=4*Speed;
-			else if (bNoGravity)Vel.Z=3.;
-			else if (level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics == 0){
+		if(Player.cmd.buttons & BT_JUMP)
+			if(Player.CrouchOffset!=0)Player.Crouching=1;
+			else if(WaterLevel>=2)Vel.Z=4*Speed;
+			else if(bNoGravity)Vel.Z=3.;
+			else if(level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics == 0){
 				double JumpVelZ=JumpZ*17.5/TICRATE;
 				double JumpFac=0;
 				CrouchingJump=Player.cmd.buttons & BT_CROUCH;
 
 				// [BC] If the Player has the high jump power, double his jump velocity.
 				// (actually, pick the best factors from all active items.)
-				for (PowerHighJump p=PowerHighJump(Inv); p!=null; p=PowerHighJump(p.Inv))
+				for(PowerHighJump p=PowerHighJump(Inv); p!=null; p=PowerHighJump(p.Inv))
 					if(p && p.Strength>JumpFac)JumpFac=p.Strength;
 
 				if(JumpFac>0)JumpVelZ*=JumpFac;
@@ -154,8 +152,8 @@ class ZPlayer{
 		bool CrouchBtn=cmd.buttons & BT_CROUCH;
 
 		if(CrouchBtn)cmd.buttons&=~BT_JUMP;
-		if (CanCrouch() && Player.Health>0 && level.IsCrouchingAllowed())
-			if (!TotallyFrozen){
+		if(CanCrouch() && Player.Health>0 && level.IsCrouchingAllowed())
+			if(!TotallyFrozen){
 				int CrouchDir=Player.Crouching;
 
 				if(CrouchDir==0)CrouchDir=CrouchBtn?-1:1;
@@ -165,7 +163,7 @@ class ZPlayer{
 				else if(CrouchDir==-1 && Player.CrouchFactor>0.5)CrouchMove(-1);
 			}
 		else Player.Uncrouch();
-		Player.CrouchOffset=-(ViewHeight)*(1-Player.CrouchFactor);
+		Player.CrouchOffset=-ViewHeight*(1-Player.CrouchFactor);
 	}
 
 	virtual
@@ -173,12 +171,12 @@ class ZPlayer{
 		int Dam;
 		if((Dam=LastVelLength-Vel.Length())>40)
 			if(bSkullfly)A_ChangeVelocity(-50, flags: CVF_REPLACE|CVF_RELATIVE);
-			else if(!Player.OnGround)DamageMobj(self, self, Dam/2, 'Plasma', DMG_THRUSTLESS);
+			else DamageMobj(self, self, 100, 'Plasma', DMG_THRUSTLESS);
 		LastVelLength=Vel.Length();
 	}
 
 	override
-	bool CanCollideWith (Actor Other, bool Passive){
+	bool CanCollideWith(Actor Other, bool Passive){
 		bool Result=super.CanCollideWith(Other, Passive);
 		if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
 			Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');

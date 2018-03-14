@@ -22,7 +22,7 @@ version "3.2.5"
 #include "ZSCRIPT/Z/UI/HUD.zsc"
 
 //PLAYER
-#include "ZSCRIPT/Z/PLYR/BASE.zsc"
+#include "ZSCRIPT/Z/PLYR/INCLUDES.zsc"
 
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"
