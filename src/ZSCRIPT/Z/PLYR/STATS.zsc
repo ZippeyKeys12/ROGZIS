@@ -18,6 +18,24 @@ class ZStats:Thinker{
 	private
 	ZStats Init(){
 		ChangeStatNum(STAT_STATIC);
+        //Inventory
+        ArmorStats stts;
+        stts.Energy=500;
+        stts.EnergyRechargeRate=200;
+        stts.EnergyRechargeAmount=20;
+        stts.IdleRechargeBonus=2;
+        ThrustStats thrust;
+        thrust.ThrustPower=10;
+        thrust.DashTimer=12;
+        thrust.DashCooldown=50;
+        JetpackStats jetpack;
+        jetpack.JetpackPower=5;
+        jetpack.JetpackControl=.5;
+        jetpack.JetpackCost=30;
+        MArmor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
+        MArmor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+        MArmor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+        MArmor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
         return self;
     }
 }

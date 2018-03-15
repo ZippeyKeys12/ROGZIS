@@ -11,13 +11,13 @@ class ZManager{
 	static
 	void PlayerSetup(PlayerEvent e){
 		Instance().WorldState.PlayerInfo=Players[e.PlayerNumber];
-		ZPlayer Player=Instance().WorldState.Player=ZPlayer(Instance().WorldState.PlayerInfo.mo);
-		Player.Stats=ZStats.Instance();
+		Instance().WorldState.Player=ZPlayer(Instance().WorldState.PlayerInfo.mo);
 	}
 
 	static
 	void WorldLoaded(WorldEvent e){
 		ZPlayer Player=Instance().WorldState.Player;
+		Player.Stats=ZStats.Instance();
 		String Checksum=Level.GetChecksum();
 		int Seed=0;
 		for(int i=0; i<Checksum.Length(); i++)
