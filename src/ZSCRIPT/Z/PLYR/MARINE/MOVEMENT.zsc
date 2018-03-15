@@ -1,7 +1,7 @@
 extend
 class ZPlayer{
-	bool //Crouch-Jumping
-		 CrouchingJump;
+	transient
+	bool CrouchingJump;
 
 	Default{
 		//Movement
@@ -25,9 +25,9 @@ class ZPlayer{
 		else{
 			MovePlayer();
 			CheckMoveUpDown();
-			for(int i=0; i<Armor.Size(); i++)
-				if(Armor[i])Armor[i].HandleArmorMovement(self);
-			if(!Armor[AMR_FEET])CheckJump();
+			for(int i=0; i<Stats.MArmor.Size(); i++)
+				if(Stats.MArmor[i])Stats.MArmor[i].HandleArmorMovement(self);
+			if(!Stats.MArmor[AMR_FEET])CheckJump();
 			//Crouch-jumping and reduce crouch step height
 			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?12:18;
 			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
@@ -68,13 +68,13 @@ class ZPlayer{
 			BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
 			if (!Player.OnGround && !bNoGravity && !waterlevel){
 				// [RH] allow very limited Movement if not on ground.
-				if(Armor[AMR_TORSO]){
-					MoveFactor*=Armor[AMR_TORSO].CheckAirControl();
-					BobFactor*=Armor[AMR_TORSO].CheckAirControl();
+				if(Stats.MArmor[AMR_TORSO]){
+					MoveFactor*=Stats.MArmor[AMR_TORSO].CheckAirControl();
+					BobFactor*=Stats.MArmor[AMR_TORSO].CheckAirControl();
 				}
-				if(Armor[AMR_FEET]){
-					MoveFactor*=Armor[AMR_FEET].CheckAirControl();
-					BobFactor*=Armor[AMR_FEET].CheckAirControl();
+				if(Stats.MArmor[AMR_FEET]){
+					MoveFactor*=Stats.MArmor[AMR_FEET].CheckAirControl();
+					BobFactor*=Stats.MArmor[AMR_FEET].CheckAirControl();
 				}
 			}
 
@@ -94,9 +94,9 @@ class ZPlayer{
 			ForwardMove*=MoveFactor*(35/TICRATE);
 			SideMove*=MoveFactor*(35/TICRATE);
 
-			if(Armor[AMR_TORSO]){
-				ForwardMove*=Armor[AMR_TORSO].CheckSprint(self, Player);
-				ForwardMove*=Armor[AMR_TORSO].CheckCharge(self, Player);
+			if(Stats.MArmor[AMR_TORSO]){
+				ForwardMove*=Stats.MArmor[AMR_TORSO].CheckSprint(self, Player);
+				ForwardMove*=Stats.MArmor[AMR_TORSO].CheckCharge(self, Player);
 			}else if(Player.cmd.buttons & BT_BACK)ForwardMove*=SideMove1;
 
 			if (ForwardMove){

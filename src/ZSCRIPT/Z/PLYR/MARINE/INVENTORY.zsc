@@ -1,15 +1,13 @@
 extend
 class ZPlayer{
-	ZArmor Armor[5];
-	
 	virtual
 	clearscope
 	int, int GetPlate(){
 		int Durability, MaxDurability,
 			d,		md;
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i]){
-				[d, md]=Armor[i].GetDurability();
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i]){
+				[d, md]=Stats.MArmor[i].GetDurability();
 				Durability+=d;
 				MaxDurability+=md;
 			}
@@ -21,9 +19,9 @@ class ZPlayer{
 	int, int GetEnergy(){
 		int Energy, MaxEnergy,
 			e,		me;
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i]){
-				[e, me]=Armor[i].GetEnergy();
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i]){
+				[e, me]=Stats.MArmor[i].GetEnergy();
 				Energy+=e;
 				MaxEnergy+=me;
 			}
@@ -35,9 +33,9 @@ class ZPlayer{
 	int, int GetMagnet(){
 		int Magnet, MaxMagnet,
 			m,		mm;
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i]){
-				[m, mm]=Armor[i].GetMagnet();
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i]){
+				[m, mm]=Stats.MArmor[i].GetMagnet();
 				Magnet+=m;
 				MaxMagnet+=mm;
 			}
@@ -49,9 +47,9 @@ class ZPlayer{
 	int, int GetShield(){
 		int Shield, MaxShield,
 			s,		ms;
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i]){
-				[s, ms]=Armor[i].GetShield();
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i]){
+				[s, ms]=Stats.MArmor[i].GetShield();
 				Shield+=s;
 				MaxShield+=ms;
 			}
@@ -63,9 +61,9 @@ class ZPlayer{
 	int, int GetLight(){
 		int Light, MaxLight,
 			l,		ml;
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i]){
-				[l, ml]=Armor[i].GetLight();
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i]){
+				[l, ml]=Stats.MArmor[i].GetLight();
 				Light+=l;
 				MaxLight+=ml;
 			}
@@ -75,18 +73,18 @@ class ZPlayer{
 	virtual
 	void DrainEnergy(int Amount){
 		if(Amount<=0)return;
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i] && Armor[i].GetEnergy()>0){
-				Armor[i].DrainEnergy(Amount, self);
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i] && Stats.MArmor[i].GetEnergy()>0){
+				Stats.MArmor[i].DrainEnergy(Amount, self);
 				return;
 			}
 	}
 
 	override
 	int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i] && Armor[i].GetEnergy()>0)
-				Damage=Armor[i].ModifyDamage(Damage, Mod);
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i] && Stats.MArmor[i].GetEnergy()>0)
+				Damage=Stats.MArmor[i].ModifyDamage(Damage, Mod);
 		Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
 		return Damage;
 	}

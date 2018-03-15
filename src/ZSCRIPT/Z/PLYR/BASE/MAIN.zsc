@@ -1,12 +1,17 @@
 class ZPlayerBase:PlayerPawn{
 	protected
+	transient
 	int //Player inputs
 		Buttons,
 		OldButtons,
 		NewButtons,
 		SameButtons;
 
+	transient
 	Actor AimTarget;
+
+	transient
+	ZStats Stats;
 
 	Default{
         Species "Player";
@@ -17,8 +22,8 @@ class ZPlayerBase:PlayerPawn{
 		super.PostBeginPlay();
 		//View
 		ShakeLevel=1;
-		double XYLength=Cos(ActualPitch=Pitch);
-		Orientation=ZQuaternion.FromAngleAxis(ActualRoll=Roll=0, ViewVector=(Cos(ActualYaw=Angle)*XYLength, Sin(ActualYaw)*XYLength, -Sin(ActualPitch)));
+		double XYLength=Cos(Stats.ActualPitch=Pitch);
+		Stats.Orientation=ZQuaternion.FromAngleAxis(Stats.ActualRoll=Roll=0, ViewVector=(Cos(Stats.ActualYaw=Angle)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch)));
 		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
 	}
 
@@ -48,7 +53,7 @@ class ZPlayerBase:PlayerPawn{
     virtual
 	void SetAimTarget(){
 		FLineTraceData Data;
-		Trace(Data, 2048, ActualPitch);
+		Trace(Data, 2048, Stats.ActualPitch);
 		AimTarget=Data.HitActor;
 	}
 
@@ -62,7 +67,7 @@ class ZPlayerBase:PlayerPawn{
 
 	virtual
 	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-	{return LineTrace(ActualYaw, Distance, Pitch, Data: Data);}
+	{return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

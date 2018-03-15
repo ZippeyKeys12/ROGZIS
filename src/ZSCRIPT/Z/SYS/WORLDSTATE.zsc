@@ -11,7 +11,8 @@ class ZManager{
 	static
 	void PlayerSetup(PlayerEvent e){
 		Instance().WorldState.PlayerInfo=Players[e.PlayerNumber];
-		Instance().WorldState.Player=ZPlayer(Instance().WorldState.PlayerInfo.mo);
+		ZPlayer Player=Instance().WorldState.Player=ZPlayer(Instance().WorldState.PlayerInfo.mo);
+		Player.Stats=ZStats.Instance();
 	}
 
 	static

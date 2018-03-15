@@ -1,0 +1,23 @@
+class ZStats:Thinker{
+    double ActualYaw,
+	       ActualPitch,
+		   ActualRoll;
+
+	ZQuaternion Orientation;
+
+    ZArmor MArmor[5];
+
+    static
+	ZStats Instance(){
+		ThinkerIterator it=ThinkerIterator.Create("ZStats", STAT_STATIC);
+		ZStats p=ZStats(it.Next());
+		if(!p)p=new("ZStats").Init();
+		return p;
+	}
+
+	private
+	ZStats Init(){
+		ChangeStatNum(STAT_STATIC);
+        return self;
+    }
+}

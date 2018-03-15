@@ -1,14 +1,7 @@
-class ZPlayer:ZPlayerBase{	
-	int //Oxygen
-		Oxygen,
-		MaxOxygen;
-
+class ZPlayer:ZPlayerBase{
+	transient
 	double LastVelLength;
 
-	//Oxygen
-	Property Oxygen: Oxygen;
-	Property MaxOxygen: MaxOxygen;
-	
 	Default{
 		//Descriptors
 		Player.DisplayName "Marine";
@@ -21,9 +14,6 @@ class ZPlayer:ZPlayerBase{
 		//Weapons
 		Player.WeaponSlot 1, "Fist";
 		Player.WeaponSlot 2, "Pistol";
-		//Oxygen
-		ZPlayer.Oxygen ZPlayerDefaults.MAX_OXYGEN;
-		ZPlayer.MaxOxygen ZPlayerDefaults.MAX_OXYGEN;
 	}
 
 	override
@@ -49,10 +39,10 @@ class ZPlayer:ZPlayerBase{
 			jetpack.JetpackPower=5;
 			jetpack.JetpackControl=.5;
 			jetpack.JetpackCost=30;
-			Armor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
-			Armor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
-			Armor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
-			Armor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
+			Stats.MArmor[AMR_TORSO]=ZArmor.Create("", "", AMR_TORSO, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
+			Stats.MArmor[AMR_HANDS]=ZArmor.Create("", "", AMR_HANDS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+			Stats.MArmor[AMR_LEGS]=ZArmor.Create("", "", AMR_LEGS, AMR_ENERGY|AMR_THRUST, stts, thrust, jetpack);
+			Stats.MArmor[AMR_FEET]=ZArmor.Create("", "", AMR_FEET, AMR_ENERGY|AMR_THRUST|AMR_JETPACK, stts, thrust, jetpack);
 	}
 
 	override
@@ -61,12 +51,12 @@ class ZPlayer:ZPlayerBase{
 		super.Tick();
 		if(!player || !player.mo || player.mo!=self)return;
 		//Armor Ticks
-		for(int i=0; i<Armor.Size(); i++)
-			if(Armor[i])Armor[i].OnArmorTick(self);
+		for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i])Stats.MArmor[i].OnArmorTick(self);
 	}
 
 	override
-	void CheatGive (String name, int amount)
+	void CheatGive(String name, int amount)
 	{console.printf("WIP");}
 }
 
