@@ -29,9 +29,9 @@ class ZPlayer{
 				if(Armor[i])Armor[i].HandleArmorMovement(self);
 			if(!Armor[AMR_FEET])CheckJump();
 			//Crouch-jumping and reduce crouch step height
-			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?9:18;
+			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?12:18;
 			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
-			//Other checks
+			//Other Checks
 			LowerFriction();
 			CheckCollisionDamage();
 		}
@@ -46,8 +46,7 @@ class ZPlayer{
 		if (Player.turnticks){
 			Player.turnticks--;
 			Angle+=(180./TURN180_TICKS);
-		}
-		else Angle+=cmd.yaw*(360./65536.);
+		}else Angle+=cmd.yaw*(360./65536.);
 
 		Player.OnGround=(Pos.Z<=FloorZ) || bOnMobj || bMBFBouncer || (Player.Cheats & CF_NOCLIP2);
 
