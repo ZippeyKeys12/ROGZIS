@@ -54,7 +54,7 @@ class ZPlayerBase{
         //Sync Camera with ZQuaternion
 		Orientation=Orientation.Unit();
 		[ActualYaw, ActualPitch, ActualRoll]=Orientation.GetEulerAngles();
-		ActualYaw=abs(Angle)>179?ActualYaw:ZCalc.TransferSign(ActualYaw, Angle);
+		ActualYaw=abs(Angle)>=179.9999?ActualYaw:ZCalc.TransferSign(ActualYaw, Angle);
 		A_SetAngle(ActualYaw+ActiveYaw, SPF_INTERPOLATE);
 		A_SetPitch(ActualPitch+ActivePitch, SPF_INTERPOLATE);
 		A_SetRoll(ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
