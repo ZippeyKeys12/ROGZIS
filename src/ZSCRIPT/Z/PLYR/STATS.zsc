@@ -76,7 +76,7 @@ class ZStats:Thinker{
         EnergyRechargeAmount=20;
         IdleRechargeBonus=2;
     	ThrustPower=10;
-        DashTimer=12;
+        DashTimer=18;
         DashCooldown=50;
         JetpackPower=5;
         JetpackControl=.5;
