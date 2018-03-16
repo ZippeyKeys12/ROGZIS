@@ -1,7 +1,4 @@
-class ZPlayer:ZPlayerBase{
-	transient
-	double LastVelLength;
-
+class ZMarine:ZPlayerBase{
 	Default{
 		//Descriptors
 		Player.DisplayName "Marine";
@@ -28,19 +25,8 @@ class ZPlayer:ZPlayerBase{
 	}
 
 	override
-	void Tick(){
-		//Handle Voodoo Dolls
-		super.Tick();
-		if(!player || !player.mo || player.mo!=self)return;
-		//Armor Ticks
-		for(int i=0; i<Stats.MArmor.Size(); i++)
-			if(Stats.MArmor[i])Stats.MArmor[i].OnArmorTick(self);
-	}
-
-	override
 	void CheatGive(String name, int amount)
 	{console.printf("WIP");}
 }
 
-#include "ZSCRIPT/Z/PLYR/MARINE/INVENTORY.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/MOVEMENT.zsc"

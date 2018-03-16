@@ -37,9 +37,12 @@ class ZPlayerBase:PlayerPawn{
 		super.Tick();
 		if(!player || !player.mo || player.mo!=self || Health<=0)return;
 		//Actual Stuff
+		Stats.Health=Health;
 		RecordInput();
 		SetAimTarget();
 		HandleView();
+		CheckCollisionDamage();
+		Stats.Recharge(self);
     }
 
 	virtual
@@ -68,6 +71,16 @@ class ZPlayerBase:PlayerPawn{
 	virtual
 	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
 	{return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
+
+	override
+	int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
+		if(self is "ZMarine")for(int i=0; i<Stats.MArmor.Size(); i++)
+			if(Stats.MArmor[i] && Stats.Energy>0)
+				Damage=Stats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
+		Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
+		return Damage;
+	}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"
+#include "ZSCRIPT/Z/PLYR/BASE/MOVEMENT.zsc"

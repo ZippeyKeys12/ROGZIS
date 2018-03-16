@@ -1,6 +1,6 @@
 struct ZWorldState{
 	//Player
-	ZPlayer		Player;
+	ZMarine		Player;
 	PlayerInfo	PlayerInfo;
 }
 
@@ -11,12 +11,12 @@ class ZManager{
 	static
 	void PlayerSetup(PlayerEvent e){
 		Instance().WorldState.PlayerInfo=Players[e.PlayerNumber];
-		Instance().WorldState.Player=ZPlayer(Instance().WorldState.PlayerInfo.mo);
+		Instance().WorldState.Player=ZMarine(Instance().WorldState.PlayerInfo.mo);
 	}
 
 	static
 	void WorldLoaded(WorldEvent e){
-		ZPlayer Player=Instance().WorldState.Player;
+		ZMarine Player=Instance().WorldState.Player;
 		Player.Stats=ZStats.Instance();
 		String Checksum=Level.GetChecksum();
 		int Seed=0;

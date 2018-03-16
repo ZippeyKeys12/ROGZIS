@@ -27,6 +27,6 @@ version "3.2.5"
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"
 //Armor
-#include "ZSCRIPT/Z/INV/ARMOR/MAIN.zsc"
+#include "ZSCRIPT/Z/INV/ARMOR.zsc"
 //Weapons
 #include "ZSCRIPT/Z/INV/WEAPON.zsc"

@@ -1,0 +1,15 @@
+class ZArmor{
+    ArmorSlot Slot;
+
+    ArmorInfo Info;
+
+    static
+    ZArmor Create(ArmorInfo Info)
+    {return new("ZArmor").Init(Info);}
+
+    private
+    ZArmor Init(ArmorInfo Info){
+        self.Info=Info;
+        return self;
+    }
+}

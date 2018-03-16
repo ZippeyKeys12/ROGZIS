@@ -29,25 +29,18 @@ enum ArmorSlot{
 }
 
 enum ArmorInfo{
-	//Armor Types	-	Multiple
+	//Armor Types	-	Player-based
 	AMR_PLATE		=	1<<0,
 	AMR_MAGNET		=	1<<1,	//Also provides abilties
 	AMR_SHIELD		=	1<<2,
 	AMR_LIGHT		=	1<<3,
 
-	//Attributes
+	//Attributes	-	Slot-based
 	AMR_ENERGY		=	1<<4,	//Needed for AMR_MAGNET, AMR_PLASMA and AMR_LIGHT and any abilities
 	AMR_SEALED		=	1<<5,	//Not needed for AMR_LIGHT
 	AMR_THRUST		=	1<<6,
 	AMR_JETPACK		=	1<<7,	//Evolution of AMR_THRUST
 	AMR_MAGNIFY		=	1<<8,	//Binoculars
-
-	//Energy Store
-	AMR_MOWNPOWER	=	1<<9,	//Dedicated power for armor systems
-	AMR_SOWNPOWER	=	1<<10,
-	AMR_LOWNPOWER	=	1<<11,
-
-	AMR_HEAVY		=	1<<12,	//Prevents jumping without using power
 }
 
 //Weapon

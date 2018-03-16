@@ -3,7 +3,8 @@ Class ZStatusBar : BaseStatusBar{
 		aDraw, aMax,
 		sDraw, sMax,
 		eDraw, eMax, erMax;
-	ZPlayer playerInst;
+	ZStats Stats;
+	ZMarine playerInst;
 	LinearValueInterpolator health,
 							armor,
 							shield,
@@ -44,7 +45,7 @@ Class ZStatusBar : BaseStatusBar{
 		//if(!(playerInst.shield>=sMax && playerInst.energy>=eMax))
 		//{DrawBar("BDYNRGY2", "BDYNRGYO", erMax-energyRecharger.getValue(), erMax, (-110.5, -7.5), 0, 0);}
 	}
-	
+
 	override
 	void Tick(){
 		super.Tick();
@@ -52,8 +53,9 @@ Class ZStatusBar : BaseStatusBar{
 		if(!playerInst||hMax!=playerInst.maxHealth/*||aMax!=playerInst.maxArmor||
 		   sMax!=playerInst.maxShield||eMax!=playerInst.maxEnergy||
 		   erMax!=playerInst.energyRechargeRate*/){
-			playerInst=ZPlayer(CPlayer.mo);
+			playerInst=ZMarine(CPlayer.mo);
 			if(!playerInst)return;
+			Stats=playerInst.Stats;
 			//Health
 			hMax=playerInst.maxHealth;
 			health=LinearValueInterpolator.Create(0, .03*hMax);
@@ -68,9 +70,9 @@ Class ZStatusBar : BaseStatusBar{
 			//shield.Reset(playerInst.shield);
 			//Energy
 			int temp;
-			[temp, eMax]=playerInst.GetEnergy();
+			eMax=Stats.MaxEnergy;
 			energy=LinearValueInterpolator.Create(0, .03*eMax);
-			energy.Reset(playerInst.GetEnergy());
+			energy.Reset(Stats.Energy);
 			//erMax=playerInst.energyRechargeRate;
 			//energyRecharger=LinearValueInterpolator.Create(0, .03*erMax);
 			//energyRecharger.Reset(playerInst.energyRecharger);
@@ -83,7 +85,7 @@ Class ZStatusBar : BaseStatusBar{
 			//Shield
 			//shield.Update(playerInst.shield);
 			//Energy
-			energy.Update(playerInst.GetEnergy());
+			energy.Update(Stats.Energy);
 			//energyRecharger.Update(playerInst.energyRecharger);
 		}
 		

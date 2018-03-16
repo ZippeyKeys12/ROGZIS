@@ -40,7 +40,7 @@ class Item:RegistryItem play{
 	}
 
 	virtual
-	void OnInventoryTick(ZPlayer Player){}
+	void OnInventoryTick(ZMarine Player){}
 
 	override
 	Name GetName() const

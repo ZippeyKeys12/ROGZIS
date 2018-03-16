@@ -1,7 +1,5 @@
 extend
-class ZPlayer{
-	transient
-	bool CrouchingJump;
+class ZMarine{
 
 	Default{
 		//Movement
@@ -11,168 +9,8 @@ class ZPlayer{
 		MaxStepHeight 12;
 		Player.JumpZ 8;
 	}
+
 	
-	override
-	void HandleMovement(){
-		let Player = self.Player;
-		// [RH] Check for fast turn around
-		if ((Player.cmd.buttons & ~Player.oldbuttons) & BT_TURN180)
-			Player.turnticks = TURN180_TICKS;
-		// Handle Movement
-		if (ReactionTime)
-			// Player is frozen
-			ReactionTime--;
-		else{
-			MovePlayer();
-			CheckMoveUpDown();
-			for(int i=0; i<Stats.MArmor.Size(); i++)
-				if(Stats.MArmor[i])Stats.MArmor[i].HandleArmorMovement(self);
-			if(!Stats.MArmor[AMR_FEET])CheckJump();
-			//Crouch-jumping and reduce crouch step height
-			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?12:18;
-			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
-			//Other Checks
-			LowerFriction();
-			CheckCollisionDamage();
-		}
-	}
-
-	override
-	void MovePlayer(){
-		let Player = self.Player;
-		UserCmd cmd = Player.cmd;
-
-		// [RH] 180-degree turn overrides all other yaws
-		if (Player.turnticks){
-			Player.turnticks--;
-			Angle+=(180./TURN180_TICKS);
-		}else Angle+=cmd.yaw*(360./65536.);
-
-		Player.OnGround=(Pos.Z<=FloorZ) || bOnMobj || bMBFBouncer || (Player.Cheats & CF_NOCLIP2);
-
-		// killough 10/98:
-		//
-		// We must apply thrust to the Player and bobbing separately, to avoid
-		// anomalies. The thrust applied to bobbing is always the same strength on
-		// ice, because the Player still "works just as hard" to Move, while the
-		// thrust applied to the Movement varies with 'MoveFactor'.
-
-		if (cmd.forwardMove|cmd.sideMove){
-			double MoveFactor,
-				   BobFactor,
-				   Friction,
-				   ForwardMove,
-				   SideMove;
-
-			[Friction, MoveFactor]=GetFriction();
-			BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
-			if (!Player.OnGround && !bNoGravity && !waterlevel){
-				// [RH] allow very limited Movement if not on ground.
-				if(Stats.MArmor[AMR_TORSO]){
-					MoveFactor*=Stats.MArmor[AMR_TORSO].CheckAirControl();
-					BobFactor*=Stats.MArmor[AMR_TORSO].CheckAirControl();
-				}
-				if(Stats.MArmor[AMR_FEET]){
-					MoveFactor*=Stats.MArmor[AMR_FEET].CheckAirControl();
-					BobFactor*=Stats.MArmor[AMR_FEET].CheckAirControl();
-				}
-			}
-
-			ForwardMove=cmd.ForwardMove;
-			SideMove=cmd.SideMove;
-			[ForwardMove, SideMove]=TweakSpeeds(ForwardMove, SideMove);
-			ForwardMove*=Speed/256;
-			SideMove*=Speed/256;
-
-			// When crouching, speed and bobbing have to be reduced
-			if (CanCrouch() && Player.CrouchFactor!=1){
-				ForwardMove*=Player.CrouchFactor;
-				SideMove*=Player.CrouchFactor;
-				BobFactor*=Player.CrouchFactor;
-			}
-
-			ForwardMove*=MoveFactor*(35/TICRATE);
-			SideMove*=MoveFactor*(35/TICRATE);
-
-			if(Stats.MArmor[AMR_TORSO]){
-				ForwardMove*=Stats.MArmor[AMR_TORSO].CheckSprint(self, Player);
-				ForwardMove*=Stats.MArmor[AMR_TORSO].CheckCharge(self, Player);
-			}else if(Player.cmd.buttons & BT_BACK)ForwardMove*=SideMove1;
-
-			if (ForwardMove){
-				Bob(Angle, cmd.ForwardMove * BobFactor / 256., true);
-				ForwardThrust(ForwardMove, Angle);
-			}
-			if (SideMove){
-				let a=Angle-90;
-				Bob(a, cmd.SideMove*BobFactor/256., false);
-				Thrust(SideMove, a);
-			}
-
-			if ((~Player.Cheats & CF_PREDICTING) && (ForwardMove!=0 || SideMove!=0))PlayRunning ();
-
-			if (Player.Cheats & CF_REVERTPLEASE){
-				Player.Cheats &= ~CF_REVERTPLEASE;
-				Player.Camera=Player.Mo;
-			}
-		}
-	}
-
-	override
-	void CheckJump(){
-		let Player=self.Player;
-		// [RH] check for jump
-		if(Player.cmd.buttons & BT_JUMP)
-			if(Player.CrouchOffset!=0)Player.Crouching=1;
-			else if(WaterLevel>=2)Vel.Z=4*Speed;
-			else if(bNoGravity)Vel.Z=3.;
-			else if(level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics == 0){
-				double JumpVelZ=JumpZ*17.5/TICRATE;
-				double JumpFac=0;
-				CrouchingJump=Player.cmd.buttons & BT_CROUCH;
-
-				// [BC] If the Player has the high jump power, double his jump velocity.
-				// (actually, pick the best factors from all active items.)
-				for(PowerHighJump p=PowerHighJump(Inv); p!=null; p=PowerHighJump(p.Inv))
-					if(p && p.Strength>JumpFac)JumpFac=p.Strength;
-
-				if(JumpFac>0)JumpVelZ*=JumpFac;
-
-				Vel.Z+=JumpVelZ;
-				bOnMobj=false;
-				Player.JumpTics=-1;
-				if(~Player.Cheats & CF_PREDICTING)A_PlaySound("*jump", CHAN_BODY);
-			}
-	}
-
-	override
-	void CheckCrouch(bool totallyfrozen){
-		UserCmd cmd=Player.cmd;
-		bool CrouchBtn=cmd.buttons & BT_CROUCH;
-
-		if(CrouchBtn)cmd.buttons&=~BT_JUMP;
-		if(CanCrouch() && Player.Health>0 && level.IsCrouchingAllowed())
-			if(!TotallyFrozen){
-				int CrouchDir=Player.Crouching;
-
-				if(CrouchDir==0)CrouchDir=CrouchBtn?-1:1;
-				else if(CrouchBtn)Player.Crouching=0;
-
-				if(CrouchDir==1 && Player.CrouchFactor<1 && Pos.Z+Height<ceilingz)CrouchMove(1);
-				else if(CrouchDir==-1 && Player.CrouchFactor>0.5)CrouchMove(-1);
-			}
-		else Player.Uncrouch();
-		Player.CrouchOffset=-ViewHeight*(1-Player.CrouchFactor);
-	}
-
-	virtual
-	void CheckCollisionDamage(){
-		int Dam;
-		if((Dam=LastVelLength-Vel.Length())>40)
-			if(bSkullfly)A_ChangeVelocity(-50, flags: CVF_REPLACE|CVF_RELATIVE);
-			else DamageMobj(self, self, 100, 'Plasma', DMG_THRUSTLESS);
-		LastVelLength=Vel.Length();
-	}
 
 	override
 	bool CanCollideWith(Actor Other, bool Passive){
@@ -186,8 +24,4 @@ class ZPlayer{
 		}
 		return Result;
 	}
-
-	virtual
-	void LowerFriction()
-	{Friction=(Player.OnGround && !(Player.cmd.buttons & (BT_FORWARD|BT_BACK|BT_MOVELEFT|BT_MOVERIGHT)))?.75:1;}
 }
