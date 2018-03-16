@@ -18,7 +18,7 @@ class ZMarine{
 		if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
 			Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
 			//TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
-			A_ChangeVelocity(0, flags: CVF_REPLACE|CVF_RELATIVE);
+			Vel.xy=Vel.xy dot SideVector*SideVector;
 			CheckCollisionDamage();
 			bSkullfly=false;
 		}

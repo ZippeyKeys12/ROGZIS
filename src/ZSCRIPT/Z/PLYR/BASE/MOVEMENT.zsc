@@ -152,10 +152,8 @@ class ZPlayerBase{
 							MidAirBoost=0;
 							Power*=2;
 						}
-						A_ChangeVelocity(
-							(DashKeys[i] & (BT_FORWARD|BT_BACK		))?Power:0,
-							(DashKeys[i] & (BT_MOVELEFT|BT_MOVERIGHT))?Power:0,
-							MidAirBoost, CVF_RELATIVE);
+						Vel.xy+=Power*((i>1)?-SideVector:ViewVector.xy);
+						Vel.z+=MidAirBoost;
 						DashCountdown=Stats.DashCooldown;
 						DashOppurt=0;
 					}else{
@@ -248,7 +246,7 @@ class ZPlayerBase{
 	void CheckCollisionDamage(){
 		int Dam;
 		if((Dam=LastVelLength-Vel.Length())>40)
-			if(bSkullfly)A_ChangeVelocity(-50, flags: CVF_REPLACE|CVF_RELATIVE);
+			if(bSkullfly)Vel.xy=-50*ViewVector.xy;
 			else DamageMobj(self, self, 100, 'Collision', DMG_THRUSTLESS);
 		LastVelLength=Vel.Length();
 	}
