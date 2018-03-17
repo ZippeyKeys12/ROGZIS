@@ -1,6 +1,4 @@
 class ZArmor{
-    ArmorSlot Slot;
-
     ArmorInfo Info;
 
     static
