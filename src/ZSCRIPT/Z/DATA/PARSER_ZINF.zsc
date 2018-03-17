@@ -67,7 +67,7 @@ class Parser_Zinf{
 			for(int j=0; j<Entries[i].Size(); j++){
 				MapEntry CurrEntry=Entries[i].Index(j);
 				String Value=CurrEntry.Value;
-				if(Value.IndexOf("<")>-1){
+				while(Value.IndexOf("<")>-1){
 					bool VarNotFound=true;
 					int Starter=Value.IndexOf("<"),
 						Ender=Value.IndexOf(">", Starter),
