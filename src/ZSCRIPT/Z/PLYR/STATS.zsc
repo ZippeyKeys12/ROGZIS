@@ -102,7 +102,7 @@ class ZStats:Thinker{
 
     virtual
 	void Recharge(ZPlayerBase Player){
-		if(!Player || Player.Health<=0 || ~Info & AMR_ENERGY)return;
+		if(!Player || Player.Health<=0 || ~Info & AMR_ENERGY || Plate<=0)return;
 		//This Tick
 		int CurrentStats=Status();
 		if(CurrentStats>=OldStats){
