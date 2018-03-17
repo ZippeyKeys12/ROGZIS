@@ -100,15 +100,27 @@ class Parser_Zinf{
 						CurrEntry.Value.Replace("<"..VarName..">", IterEntry.Value);
 					Value=CurrEntry.Value;
 				}
-				if(Value.IndexOf("*")>-1||Value.IndexOf("/")>-1){
+				if(Value.IndexOf("+")>-1||Value.IndexOf("*")>-1||Value.IndexOf("/")>-1){
 					Array<String> Meth; Meth.Clear();
-					Value.Split(Meth, "*", TOK_SKIPEMPTY);
+					Value.Split(Meth, "+", TOK_SKIPEMPTY);
+					for(int k=0; k<Meth.Size(); k++){
+						if(Meth[k].IndexOf("*")>-1){
+							Array<String> Meth2; Meth2.Clear();
+							Meth[k].Split(Meth2, "*", TOK_SKIPEMPTY);
+							while(Meth2.Size()>1){
+								if(Meth2[0].ToDouble()!=0 && Meth2[1].ToDouble()!=0)
+									Meth2[0]=Meth2[0].ToDouble()*Meth2[1].ToDouble().."";
+								Meth2.Delete(1);
+							}
+							Meth[k]=Meth2[0];
+						}
+					}
 					for(int k=0; k<Meth.Size(); k++){
 						if(Meth[k].IndexOf("/")>-1){
 							Array<String> Meth2; Meth2.Clear();
 							Meth[k].Split(Meth2, "/", TOK_SKIPEMPTY);
 							while(Meth2.Size()>1){
-								if(Meth2[0].ToDouble()!=0&&Meth2[1].ToDouble()!=0)
+								if(Meth2[0].ToDouble()!=0 && Meth2[1].ToDouble()!=0)
 									Meth2[0]=Meth2[0].ToDouble()/Meth2[1].ToDouble().."";
 								Meth2.Delete(1);
 							}
@@ -116,8 +128,7 @@ class Parser_Zinf{
 						}
 					}
 					while(Meth.Size()>1){
-						if(Meth[0].ToDouble()!=0&&Meth[1].ToDouble()!=0)
-							Meth[0]=Meth[0].ToDouble()*Meth[1].ToDouble().."";
+						Meth[0]=Meth[0].ToDouble()+Meth[1].ToDouble().."";
 						Meth.Delete(1);
 					}
 					CurrEntry.Value=Meth[0];
