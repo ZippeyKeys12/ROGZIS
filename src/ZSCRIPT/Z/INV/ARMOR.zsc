@@ -1,12 +1,12 @@
 class ZArmor{
-    ArmorInfo Info;
+    ZArmorInfo Info;
 
     static
-    ZArmor Create(ArmorInfo Info)
+    ZArmor Create(ZArmorInfo Info=AMR_NONE)
     {return new("ZArmor").Init(Info);}
 
     private
-    ZArmor Init(ArmorInfo Info){
+    ZArmor Init(ZArmorInfo Info){
         self.Info=Info;
         return self;
     }

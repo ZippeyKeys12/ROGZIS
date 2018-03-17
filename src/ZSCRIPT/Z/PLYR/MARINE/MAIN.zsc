@@ -28,4 +28,5 @@ class ZMarine:ZPlayerBase{
 	{console.printf("WIP");}
 }
 
+#include "ZSCRIPT/Z/PLYR/MARINE/STATS.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/MOVEMENT.zsc"
