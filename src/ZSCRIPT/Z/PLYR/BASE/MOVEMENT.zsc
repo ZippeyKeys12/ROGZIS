@@ -72,7 +72,7 @@ class ZPlayerBase{
 			BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
 			if (!Player.OnGround && !bNoGravity && !waterlevel){
 				//[RH] allow very limited Movement if not on ground.
-                double AirControl=Min(.5*(Stats.ThrustPower/(Stats.ThrustPower+1.)+Stats.JetpackPower/(Stats.JetpackPower+1.)), 1.25);
+                double AirControl=Min(.5*(MStats.ThrustPower/(MStats.ThrustPower+1.)), 1.25);
                 MoveFactor*=AirControl;
 				BobFactor*=AirControl;
 			}
@@ -118,15 +118,15 @@ class ZPlayerBase{
 	double CheckSprint(){
 		if(!Player.OnGround)return 1;
 		//Sprinting
-		ZArmor ChestPiece=Stats.MArmor[AMR_TORSO];
+		ZArmor ChestPiece=MStats.Armor[AMR_TORSO];
 		if((ChestPiece.Info & AMR_THRUST) && (~Buttons & BT_BACK) &&
 		   (Buttons & BT_SPEED) &&
 		   (Buttons & BT_FORWARD) &&
-		   (Stats.Energy>Stats.SprintCost) &&
+		   (MStats.Energy>MStats.SprintCost) &&
 		   (Health>RunHealth)){
-			Stats.Recharger=0;
-			Stats.Energy-=Stats.SprintCost;
-			return Stats.ThrustPower/3.5;
+			MStats.Recharger=0;
+			MStats.Energy-=MStats.SprintCost;
+			return MStats.ThrustPower/3.5;
 		//Backstep
 		}else if((~ChestPiece.Info & AMR_THRUST) && (Buttons & BT_BACK))return SideMove1;
 		else return 1;
@@ -149,22 +149,22 @@ class ZPlayerBase{
 			for(int i=Player.OnGround; i<DashKeys.Size(); i++){
 				if(((NewButtons & DashKeys[i]) ||
 				   ((NewButtons & BT_SPEED) && (Vel.Z!=0 || (~Buttons & BT_FORWARD)) && (Buttons & DashKeys[i]))) &&
-				   (Stats.Energy>Stats.DashCost)){
+				   (MStats.Energy>MStats.DashCost)){
 					if((CurrentDashButton==DashKeys[i] && DashOppurt>0) || ((Buttons & ~OldButtons) & BT_SPEED)){
-						Stats.Energy-=Stats.DashCost;
-						int MidAirBoost=JumpZ,
-							Power=Stats.ThrustPower*ZCalc.Alternate(i);
+						MStats.Energy-=MStats.DashCost;
+						int MidAirBoost=MStats.JumpPower,
+							Power=MStats.ThrustPower*ZCalc.Alternate(i);
 						if(Vel.Z==0){
 							MidAirBoost=0;
 							Power*=2;
 						}
 						Vel.xy+=Power*((i>1)?-SideVector:ViewVector.xy);
 						Vel.z+=MidAirBoost;
-						DashCountdown=Stats.DashCooldown;
+						DashCountdown=MStats.DashCooldown;
 						DashOppurt=0;
 					}else{
 						CurrentDashButton=DashKeys[i];
-						DashOppurt=Stats.DashTimer;
+						DashOppurt=MStats.DashTimer;
 					}
 					return;
 				}
@@ -174,24 +174,24 @@ class ZPlayerBase{
 
     override
 	void CheckJump(){
-		ZArmor Boots=Stats.MArmor[AMR_FEET];
+		ZArmor Boots=MStats.Armor[AMR_FEET];
 		if(DashCountdown>0)DashCountdown--;
 		else if(DashOppurt>0)DashOppurt--;
 		else CurrentDashButton=666;
 		//[RH] check for jump
 		if(Buttons & BT_JUMP){
-			if((Boots.Info & AMR_THRUST)  && DashCountdown==0 && (~OldButtons & BT_JUMP) && Stats.Energy>Stats.DashCost){
+			if((Boots.Info & AMR_THRUST)  && DashCountdown==0 && (~OldButtons & BT_JUMP) && MStats.Energy>MStats.DashCost){
 				if(DashOppurt>0 || !Player.OnGround){
-					Stats.Energy-=Stats.DashCost;
-					Vel.Z+=Stats.ThrustPower;
-					DashCountdown=Stats.DashCooldown;
+					MStats.Energy-=MStats.DashCost;
+					Vel.Z+=MStats.ThrustPower;
+					DashCountdown=MStats.DashCooldown;
 					DashOppurt=0;
-				}else if(Player.OnGround)DashOppurt=Stats.DashTimer;
+				}else if(Player.OnGround)DashOppurt=MStats.DashTimer;
 			}
 			if(WaterLevel>=2)Vel.Z=4*Speed;
 			else if(bNoGravity)Vel.Z=3.;
 			else if(Level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics==0){
-				double JumpVelZ=JumpZ*35/TICRATE,
+				double JumpVelZ=MStats.JumpPower*35/TICRATE,
 					   JumpFac=0;
 				CrouchingJump=Buttons & BT_CROUCH;
 
@@ -232,13 +232,13 @@ class ZPlayerBase{
 
     virtual
 	void SoftenFall(){
-		if(Vel.Z<=-Stats.ThrustPower){
+		if(Vel.Z<=-MStats.ThrustPower){
 			FLineTraceData Data;
 			Trace(Data, 128, 90);
 			if (Data.Distance+Vel.Z<=30)
 				if (MidAir){
 					MidAir=false;
-					Vel.Z+=Stats.ThrustPower;
+					Vel.Z+=MStats.ThrustPower;
 				}
 			else MidAir=true;
 		}

@@ -3,7 +3,7 @@ Class ZStatusBar : BaseStatusBar{
 		aDraw, aMax,
 		sDraw, sMax,
 		eDraw, eMax, erMax;
-	ZStats Stats;
+	ZMStats MStats;
 	ZMarine playerInst;
 	LinearValueInterpolator health,
 							armor,
@@ -55,7 +55,7 @@ Class ZStatusBar : BaseStatusBar{
 		   erMax!=playerInst.energyRechargeRate*/){
 			playerInst=ZMarine(CPlayer.mo);
 			if(!playerInst)return;
-			Stats=playerInst.Stats;
+			MStats=playerInst.MStats;
 			//Health
 			hMax=playerInst.maxHealth;
 			health=LinearValueInterpolator.Create(0, .03*hMax);
@@ -70,9 +70,9 @@ Class ZStatusBar : BaseStatusBar{
 			//shield.Reset(playerInst.shield);
 			//Energy
 			int temp;
-			eMax=Stats.MaxEnergy;
+			eMax=MStats.MaxEnergy;
 			energy=LinearValueInterpolator.Create(0, .03*eMax);
-			energy.Reset(Stats.Energy);
+			energy.Reset(MStats.Energy);
 			//erMax=playerInst.energyRechargeRate;
 			//energyRecharger=LinearValueInterpolator.Create(0, .03*erMax);
 			//energyRecharger.Reset(playerInst.energyRecharger);
@@ -85,7 +85,7 @@ Class ZStatusBar : BaseStatusBar{
 			//Shield
 			//shield.Update(playerInst.shield);
 			//Energy
-			energy.Update(Stats.Energy);
+			energy.Update(MStats.Energy);
 			//energyRecharger.Update(playerInst.energyRecharger);
 		}
 		

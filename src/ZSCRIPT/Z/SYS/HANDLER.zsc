@@ -3,7 +3,7 @@ class ZHandler:StaticEventHandler{
 	void WorldLoaded(WorldEvent e){
 		if(e.IsSaveGame)return;
 		ZManager.StatNum(STAT_STATIC);
-		ZStats.StatNum(STAT_STATIC);
+		ZMStats.StatNum(STAT_STATIC);
 		ZManager.WorldLoaded(e);
 	}
 
@@ -11,7 +11,7 @@ class ZHandler:StaticEventHandler{
 	void WorldUnloaded(WorldEvent e){
 		if(e.IsSaveGame)return;
 		ZManager.StatNum(STAT_NUM2: STAT_STATIC);
-		ZStats.StatNum(STAT_NUM2: STAT_STATIC);
+		ZMStats.StatNum(STAT_NUM2: STAT_STATIC);
 	}
 
 	override

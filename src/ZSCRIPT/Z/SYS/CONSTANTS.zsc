@@ -2,7 +2,7 @@
 // Systems //
 /////////////
 enum ZErrorLevel{
-	ERR_INFO=0,
+	ERR_INFO,
 	ERR_WARNING,
 	ERR_ERROR,
 	ERR_FATAL,
@@ -20,16 +20,17 @@ enum ZStatNum{
 // Inventory //
 ///////////////
 //Armor
-enum ArmorSlot{
-	AMR_HEAD		=	0,
-	AMR_TORSO		=	1,
-	AMR_HANDS		=	2,
-	AMR_LEGS		=	3,
-	AMR_FEET		=	4,
+enum ZArmorSlot{
+	AMR_HEAD,
+	AMR_TORSO,
+	AMR_HANDS,
+	AMR_LEGS,
+	AMR_FEET,
 }
 
-enum ArmorInfo{
+enum ZArmorInfo{
 	//Armor Types	-	Player-based
+	AMR_NONE		=	0,
 	AMR_PLATE		=	1<<0,
 	AMR_MAGNET		=	1<<1,	//Also provides abilties
 	AMR_SHIELD		=	1<<2,

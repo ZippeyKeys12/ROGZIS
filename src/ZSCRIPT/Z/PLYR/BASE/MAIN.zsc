@@ -11,7 +11,7 @@ class ZPlayerBase:PlayerPawn{
 	Actor AimTarget;
 
 	transient
-	ZStats Stats;
+	ZMStats MStats;
 
 	Default{
         Species "Player";
@@ -20,10 +20,11 @@ class ZPlayerBase:PlayerPawn{
 	override
 	void PostBeginPlay(){
 		super.PostBeginPlay();
+		MaxHealth=MStats.MaxHealth;
 		//View
 		ShakeLevel=1;
-		double XYLength=Cos(Stats.ActualPitch=Pitch);
-		Stats.Orientation=ZQuaternion.FromAngleAxis(Stats.ActualRoll=Roll=0, ViewVector=(Cos(Stats.ActualYaw=Angle)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch)));
+		double XYLength=Cos(MStats.ActualPitch=Pitch);
+		MStats.Orientation=ZQuaternion.FromAngleAxis(MStats.ActualRoll=Roll=0, ViewVector=(Cos(MStats.ActualYaw=Angle)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch)));
 		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
 	}
 
@@ -37,12 +38,12 @@ class ZPlayerBase:PlayerPawn{
 		super.Tick();
 		if(!player || !player.mo || player.mo!=self || Health<=0)return;
 		//Actual Stuff
-		Stats.Health=Health;
+		MStats.Health=Health;
 		RecordInput();
 		SetAimTarget();
 		HandleView();
 		CheckCollisionDamage();
-		Stats.Recharge(self);
+		MStats.Recharge(self);
     }
 
 	virtual
@@ -56,7 +57,7 @@ class ZPlayerBase:PlayerPawn{
     virtual
 	void SetAimTarget(){
 		FLineTraceData Data;
-		Trace(Data, 2048, Stats.ActualPitch);
+		Trace(Data, 2048, MStats.ActualPitch);
 		AimTarget=Data.HitActor;
 	}
 
@@ -70,13 +71,13 @@ class ZPlayerBase:PlayerPawn{
 
 	virtual
 	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-	{return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
+	{return LineTrace(MStats.ActualYaw, Distance, Pitch, Data: Data);}
 
 	override
 	int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
-		if(self is "ZMarine")for(int i=0; i<Stats.MArmor.Size(); i++)
-			if(Stats.MArmor[i] && Stats.Energy>0)
-				Damage=Stats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
+		if(self is "ZMarine")for(int i=0; i<MStats.Armor.Size(); i++)
+			if(MStats.Armor[i] && MStats.Energy>0)
+				Damage=MStats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
 		Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
 		return Damage;
 	}
