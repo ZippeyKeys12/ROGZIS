@@ -1,13 +1,18 @@
 class ZHandler:StaticEventHandler{
 	override
 	void WorldLoaded(WorldEvent e){
+		if(e.IsSaveGame)return;
 		ZManager.StatNum(STAT_STATIC);
+		ZStats.StatNum(STAT_STATIC);
 		ZManager.WorldLoaded(e);
 	}
 
 	override
-	void WorldUnloaded(WorldEvent e)
-	{ZManager.StatNum(STAT_NUM2: STAT_STATIC);}
+	void WorldUnloaded(WorldEvent e){
+		if(e.IsSaveGame)return;
+		ZManager.StatNum(STAT_NUM2: STAT_STATIC);
+		ZStats.StatNum(STAT_NUM2: STAT_STATIC);
+	}
 
 	override
 	void PlayerEntered(PlayerEvent e)

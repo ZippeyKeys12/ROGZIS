@@ -60,8 +60,8 @@ class ZStats:Thinker{
     ZArmor MArmor[5];
 
     static
-	ZStats Instance(){
-		ThinkerIterator it=ThinkerIterator.Create("ZStats", STAT_STATIC);
+	ZStats Instance(ZStatNum STAT_NUM=STAT_ZDATA){
+		ThinkerIterator it=ThinkerIterator.Create("ZStats", STAT_NUM);
 		ZStats p=ZStats(it.Next());
 		if(!p)p=new("ZStats").Init();
 		return p;
@@ -88,6 +88,13 @@ class ZStats:Thinker{
         MArmor[AMR_FEET]=ZArmor.Create(AMR_THRUST);
         return self;
     }
+
+	static
+	void StatNum(ZStatNum STAT_NUM1=STAT_ZDATA, ZStatNum STAT_NUM2=STAT_ZDATA){
+		ZStats Stats;
+		if(Stats=Instance(STAT_NUM1))
+			Stats.ChangeStatNum(STAT_NUM2);
+	}
 
     virtual
     int Status()
