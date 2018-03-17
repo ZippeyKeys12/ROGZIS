@@ -48,7 +48,7 @@ struct ZCalc{
 
 	static
 	int IRangeMap(int Value, int OldStart, int OldEnd, int NewStart, int NewEnd)
-	{return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
+	{return ANormRangeMap(NormRange((Value-OldStart)/(OldEnd-OldStart)), NewStart, NewEnd);}
 
 	static
 	double DRangeMap(double Value, double OldStart, double OldEnd, double NewStart, double NewEnd)
