@@ -45,6 +45,13 @@ class ZMStats:Thinker{
 		DashTimer,
 		DashCooldown;
 
+	double ForwardMove1,
+		   ForwardMove2,
+		   SideMove1,
+		   SideMove2,
+		   ViewBob,
+		   JumpPower;
+
     double ActualYaw,
 	       ActualPitch,
 		   ActualRoll,
@@ -68,6 +75,12 @@ class ZMStats:Thinker{
         ChangeStatNum(STAT_STATIC);
         Parser_Zinf Config=ZManager.Config();
         //Inventory
+        ForwardMove1=.65;
+        ForwardMove2=ForwardMove1/2;
+        SideMove1=.52;
+        SideMove2=SideMove1/2;
+        ViewBob=ForwardMove1;
+        JumpPower=7;
         MaxPlate=Plate=100;
         MaxEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
         EnergyRechargeRate=200;

@@ -13,11 +13,7 @@ class ZPlayerBase{
 	double LastVelLength;
 
 	Default{
-		Player.ForwardMove ZPlayerDefaults.WALK_SPEED, ZPlayerDefaults.WALK_SPEED/2;
-		Player.SideMove ZPlayerDefaults.STRAFE_SPEED, ZPlayerDefaults.STRAFE_SPEED/2;
-		Player.ViewBob ZPlayerDefaults.WALK_SPEED;
 		MaxStepHeight 18;
-		Player.JumpZ 7;
 	}
 
     override
@@ -29,6 +25,7 @@ class ZPlayerBase{
 		//Handle Movement
 		if(ReactionTime)ReactionTime--;
 		else{
+			UpdateMovementStats();
 			MovePlayer();
 			CheckMoveUpDown();
             CheckDash();
@@ -40,6 +37,15 @@ class ZPlayerBase{
 			LowerFriction();
 			CheckCollisionDamage();
 		}
+	}
+
+	virtual
+	void UpdateMovementStats(){
+		ForwardMove1=MStats.ForwardMove1;
+		ForwardMove2=MStats.ForwardMove2;
+		SideMove1=MStats.SideMove1;
+		SideMove2=MStats.SideMove2;
+		ViewBob=MStats.ViewBob;
 	}
 
 	override

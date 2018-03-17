@@ -1,3 +1,2 @@
-#include "ZSCRIPT/Z/PLYR/STATS.zsc"
 #include "ZSCRIPT/Z/PLYR/BASE/MAIN.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/MAIN.zsc"
