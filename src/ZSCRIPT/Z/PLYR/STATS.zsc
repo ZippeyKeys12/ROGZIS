@@ -147,7 +147,7 @@ class ZStats:Thinker{
 		if(Info & AMR_ENERGY){
 			if(Info & AMR_MAGNET)
 				if((Dam=TempDamage*DamageType.Factor(AMR_MAGNET))>0)
-					if(Ceil(Dam)>Magnet){
+					if(Ceil(Dam)<=Magnet){
 						Magnet-=Dam;
 						return 0;
 					}else{
@@ -155,7 +155,7 @@ class ZStats:Thinker{
 						Magnet=0;
 					}
 				else if(Dam<0){
-					Magnet=Clamp(Magnet-Ceil(Dam), 0, MaxMagnet);
+					Magnet=Floor(Magnet-Ceil(Dam), MaxMagnet);
 					return 0;
 				}
 			if(Info & AMR_LIGHT)
@@ -168,7 +168,7 @@ class ZStats:Thinker{
 						Light=0;
 					}
 				else if(Dam<0){
-					Light=Clamp(Light-Ceil(Dam), 0, MaxLight);
+					Light=Floor(Light-Ceil(Dam), MaxLight);
 					return 0;
 				}
 			if(Info & AMR_SHIELD)
@@ -181,7 +181,7 @@ class ZStats:Thinker{
 						Shield=0;
 					}
 				else if(Dam<0){
-					Shield=Clamp(Shield-Ceil(Dam), 0, MaxShield);
+					Shield=Floor(Shield-Ceil(Dam), MaxShield);
 					return 0;
 				}
 		}
@@ -189,10 +189,10 @@ class ZStats:Thinker{
 		//Armor Plating
 		if((Info & AMR_PLATE)){
 			if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
-				TempDamage*=1-Floor(PlateHit=PlateAbsorption*Sqrt(Clamp(Plate/MaxPlate, 0, 2)));
-				Plate-=PlateHit;
+				TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
+				Plate=Max(Plate-PlateHit, 0);
 			}
-		}else Plate-Ceil(TempDamage/2);
+		}else Plate=Max(Plate-Ceil(TempDamage/2), 0);
 		return Ceil(TempDamage);
 	}
 }
