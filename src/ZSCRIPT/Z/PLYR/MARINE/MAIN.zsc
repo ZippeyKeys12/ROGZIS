@@ -2,8 +2,7 @@ class ZMarine:ZPlayerBase{
 	Default{
 		//Descriptors
 		Player.DisplayName "Marine";
-		Player.ViewHeight 48;
-		Player.AttackZOffset 26;
+		Player.AttackZOffset 13;
 		//Start Items
 		Player.StartItem "Pistol";
 		Player.StartItem "Fist";
@@ -15,7 +14,7 @@ class ZMarine:ZPlayerBase{
 
 	override
 	void PostBeginPlay(){
-		super.PostBeginPlay();
+		super.PostBeginPlay();	
 		Parser_Zinf Config=ZManager.Config();
 		//Player
 			//Health

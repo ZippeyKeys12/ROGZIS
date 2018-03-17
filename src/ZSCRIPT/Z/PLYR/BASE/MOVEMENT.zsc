@@ -12,24 +12,30 @@ class ZPlayerBase{
 	transient
 	double LastVelLength;
 
+	Default{
+		Player.ForwardMove ZPlayerDefaults.WALK_SPEED, ZPlayerDefaults.WALK_SPEED/2;
+		Player.SideMove ZPlayerDefaults.STRAFE_SPEED, ZPlayerDefaults.STRAFE_SPEED/2;
+		Player.ViewBob ZPlayerDefaults.WALK_SPEED;
+		MaxStepHeight 18;
+		Player.JumpZ 7;
+	}
+
     override
 	void HandleMovement(){
 		let Player = self.Player;
 		// [RH] Check for fast turn around
-		if ((Player.cmd.buttons & ~Player.oldbuttons) & BT_TURN180)
+		if((Player.cmd.buttons & ~Player.oldbuttons) & BT_TURN180)
 			Player.turnticks = TURN180_TICKS;
 		// Handle Movement
-		if (ReactionTime)
-			// Player is frozen
-			ReactionTime--;
+		if(ReactionTime)ReactionTime--;
 		else{
 			MovePlayer();
 			CheckMoveUpDown();
             CheckDash();
 			CheckJump();
 			//Crouch-jumping and reduce crouch step height
-			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?12:18;
-			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?12:0;
+			if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?14:18;
+			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?4:0;
 			//Other Checks
 			LowerFriction();
 			CheckCollisionDamage();

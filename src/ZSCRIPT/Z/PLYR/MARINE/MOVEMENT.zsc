@@ -1,17 +1,5 @@
 extend
 class ZMarine{
-
-	Default{
-		//Movement
-		Player.ForwardMove ZPlayerDefaults.WALK_SPEED, ZPlayerDefaults.WALK_SPEED/2;
-		Player.SideMove ZPlayerDefaults.STRAFE_SPEED, ZPlayerDefaults.STRAFE_SPEED/2;
-		Player.ViewBob ZPlayerDefaults.WALK_SPEED;
-		MaxStepHeight 12;
-		Player.JumpZ 8;
-	}
-
-	
-
 	override
 	bool CanCollideWith(Actor Other, bool Passive){
 		bool Result=super.CanCollideWith(Other, Passive);
