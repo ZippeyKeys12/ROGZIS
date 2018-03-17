@@ -155,7 +155,7 @@ class ZStats:Thinker{
 						Magnet=0;
 					}
 				else if(Dam<0){
-					Magnet=Floor(Magnet-Ceil(Dam), MaxMagnet);
+					Magnet=Min(Magnet-Ceil(Dam), MaxMagnet);
 					return 0;
 				}
 			if(Info & AMR_LIGHT)
@@ -168,7 +168,7 @@ class ZStats:Thinker{
 						Light=0;
 					}
 				else if(Dam<0){
-					Light=Floor(Light-Ceil(Dam), MaxLight);
+					Light=Min(Light-Ceil(Dam), MaxLight);
 					return 0;
 				}
 			if(Info & AMR_SHIELD)
@@ -181,7 +181,7 @@ class ZStats:Thinker{
 						Shield=0;
 					}
 				else if(Dam<0){
-					Shield=Floor(Shield-Ceil(Dam), MaxShield);
+					Shield=Min(Shield-Ceil(Dam), MaxShield);
 					return 0;
 				}
 		}
