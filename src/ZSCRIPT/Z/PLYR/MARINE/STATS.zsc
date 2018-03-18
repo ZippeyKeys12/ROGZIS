@@ -54,8 +54,7 @@ class ZMStats:Thinker{
 
     double ActualYaw,
            ActualPitch,
-           ActualRoll,
-           JetpackControl;
+           ActualRoll;
 
     ZArmorInfo Info;
     ZArmor Armor[5];

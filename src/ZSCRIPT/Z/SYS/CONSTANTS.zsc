@@ -40,8 +40,7 @@ enum ZArmorInfo{
     AMR_ENERGY        =    1<<4,    //Needed for AMR_MAGNET, AMR_PLASMA and AMR_LIGHT and any abilities
     AMR_SEALED        =    1<<5,    //Not needed for AMR_LIGHT
     AMR_THRUST        =    1<<6,
-    AMR_JETPACK        =    1<<7,    //Evolution of AMR_THRUST
-    AMR_MAGNIFY        =    1<<8,    //Binoculars
+    AMR_MAGNIFY        =    1<<7,    //Binoculars
 }
 
 //Weapon
