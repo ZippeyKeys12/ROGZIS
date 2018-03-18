@@ -81,7 +81,7 @@ class ZMStats:Thinker{
         JumpPower=7;
         MaxPlate=Plate=100;
         MaxEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
-        EnergyRechargeRate=200;
+        EnergyRechargeRate=MaxEnergy/10;
         EnergyRechargeAmount=20;
         IdleRechargeBonus=2;
         SprintCost=Config.GetInt("ABILITIES", "iSPRINT_COST");
