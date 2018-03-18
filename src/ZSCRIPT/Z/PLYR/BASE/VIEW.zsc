@@ -23,7 +23,7 @@ class ZPlayerBase{
 
     virtual
 	void HandleScreenShake(){
-		Shake+=ZCalc.NormRangeMap(Vel.Z-LastVel.Z, 35, 50);
+		AddScreenShake(ZCalc.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
 		double CurrentShake=ShakeLevel*ZCalc.NormRange(ZCalc.SmoothStart(Shake));
 		if(CurrentShake>0){
 			ActiveYaw=CurrentShake*ZCalc.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
