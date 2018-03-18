@@ -10,7 +10,7 @@ class ZPlayerBase{
 		CurrentDashButton;
 
 	transient
-	double LastVelLength;
+	Vector3 LastVel;
 
 	Default{
 		MaxStepHeight 18;
@@ -35,7 +35,6 @@ class ZPlayerBase{
 			else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?4:0;
 			//Other Checks
 			LowerFriction();
-			CheckCollisionDamage();
 		}
 	}
 
@@ -238,13 +237,13 @@ class ZPlayerBase{
 
     virtual
 	void SoftenFall(){
-		if(Vel.Z<=-MStats.ThrustPower){
+		if(Vel.Z<-25){
 			FLineTraceData Data;
 			Trace(Data, 128, 90);
-			if (Data.Distance+Vel.Z<=30)
+			if(Data.Distance+Vel.Z<=30)
 				if (MidAir){
 					MidAir=false;
-					Vel.Z+=MStats.ThrustPower;
+					LastVel.Z=Vel.Z=Min(Vel.Z+MStats.ThrustPower, 0);
 				}
 			else MidAir=true;
 		}
@@ -255,11 +254,11 @@ class ZPlayerBase{
 	{Friction=(Player.OnGround && !(Player.cmd.buttons & (BT_FORWARD|BT_BACK|BT_MOVELEFT|BT_MOVERIGHT)))?.75:1;}
 
     virtual
-	void CheckCollisionDamage(){
+	void CheckCollisionEffects(){
 		int Dam;
-		if((Dam=LastVelLength-Vel.Length())>40)
+		if((Dam=LastVel.Length()-Vel.Length())>20)
 			if(bSkullfly)Vel.xy=-50*ViewVector.xy;
-			else DamageMobj(self, self, 100, 'Collision', DMG_THRUSTLESS);
-		LastVelLength=Vel.Length();
+			else DamageMobj(self, self, Dam-20, 'Collision', DMG_THRUSTLESS);
+		LastVel=Vel;
 	}
 }

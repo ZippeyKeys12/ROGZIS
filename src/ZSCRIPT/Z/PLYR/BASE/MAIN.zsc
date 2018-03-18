@@ -41,8 +41,9 @@ class ZPlayerBase:PlayerPawn{
 		MStats.Health=Health;
 		RecordInput();
 		SetAimTarget();
+		if(MStats.Armor[AMR_FEET].Info & AMR_THRUST)SoftenFall();
 		HandleView();
-		CheckCollisionDamage();
+		CheckCollisionEffects();
 		MStats.Recharge(self);
     }
 
