@@ -1,15 +1,15 @@
 extend
 class ZMarine{
-	override
-	bool CanCollideWith(Actor Other, bool Passive){
-		bool Result=super.CanCollideWith(Other, Passive);
-		if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
-			Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
-			//TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
-			Vel.xy=Vel.xy dot SideVector*SideVector;
-			CheckCollisionEffects();
-			bSkullfly=false;
-		}
-		return Result;
-	}
+    override
+    bool CanCollideWith(Actor Other, bool Passive){
+        bool Result=super.CanCollideWith(Other, Passive);
+        if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
+            Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
+            //TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
+            Vel.xy=Vel.xy dot SideVector*SideVector;
+            CheckCollisionEffects();
+            bSkullfly=false;
+        }
+        return Result;
+    }
 }

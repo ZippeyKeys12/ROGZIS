@@ -1,11 +1,11 @@
 AddOptionMenu "OptionsMenu"{
-	StaticText " "
-	Submenu "$ZMENU_TITLE", "ZMenu"
+    StaticText " "
+    Submenu "$ZMENU_TITLE", "ZMenu"
 }
 
 OptionMenu "ZMenu"{
-	Title "$ZMENU_TITLE"
-	StaticText "Debugging Settings:"
-	Option "$ZMENU_DEBUGMODE_HEALTH", "z_debug_health", "OnOff"
-	Option "$ZMENU_DEBUGMODE_MOVEMENT", "z_debug_movement", "OnOff"
+    Title "$ZMENU_TITLE"
+    StaticText "Debugging Settings:"
+    Option "$ZMENU_DEBUGMODE_HEALTH", "z_debug_health", "OnOff"
+    Option "$ZMENU_DEBUGMODE_MOVEMENT", "z_debug_movement", "OnOff"
 }

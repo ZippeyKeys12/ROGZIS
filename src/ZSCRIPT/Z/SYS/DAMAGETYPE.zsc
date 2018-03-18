@@ -1,49 +1,49 @@
 enum DamageTypeInfo{
-	//Effects	-	Multiple
-	DMG_ZONE	=	1<<0,
+    //Effects    -    Multiple
+    DMG_ZONE    =    1<<0,
 }
 
 class ZDamageTypes:Registry{
-	bool Add(ZDamageType DamageType)
-	{return DamageType && super.Add(DamageType);}
+    bool Add(ZDamageType DamageType)
+    {return DamageType && super.Add(DamageType);}
 
-	ZDamageType Get(Name Name) const
-	{return ZDamageType(super.Get(Name));}
+    ZDamageType Get(Name Name) const
+    {return ZDamageType(super.Get(Name));}
 }
 
 class ZDamageType:RegistryItem{
-	private
-	int DamageFlags;
-	
-	private
-	Name Name;
-	
-	private
-	DataMap Factors;
-	
-	static
-	ZDamageType Create(Name Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, int DamageFlags=0){
-		return new("ZDamageType").Init(Name, ArmorPlating.."", MagneticShield.."", PlasmaShield.."", HardLight.."", DamageFlags);
-	}
-	
-	ZDamageType Init(Name Name, String ArmorPlating, String MagneticShield, String PlasmaShield, String HardLight, int DamageFlags=0){
-		self.Name=Name;
-		Factors=new("DataMap");
-		Factors.Put(AMR_PLATE.."",		ArmorPlating);
-		Factors.Put(AMR_MAGNET.."",	MagneticShield);
-		Factors.Put(AMR_SHIELD.."",		PlasmaShield);
-		Factors.Put(AMR_LIGHT.."",		HardLight);
-		self.DamageFlags=DamageFlags;
-		return self;
-	}
-	
-	override
-	Name GetName() const
-	{return Name;}
-	
-	double Factor(int ArmorType) const
-	{return Factors.GetDouble(ArmorType.."");}
-	
-	int Flags() const
-	{return DamageFlags;}
+    private
+    int DamageFlags;
+    
+    private
+    Name Name;
+    
+    private
+    DataMap Factors;
+    
+    static
+    ZDamageType Create(Name Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, int DamageFlags=0){
+        return new("ZDamageType").Init(Name, ArmorPlating.."", MagneticShield.."", PlasmaShield.."", HardLight.."", DamageFlags);
+    }
+    
+    ZDamageType Init(Name Name, String ArmorPlating, String MagneticShield, String PlasmaShield, String HardLight, int DamageFlags=0){
+        self.Name=Name;
+        Factors=new("DataMap");
+        Factors.Put(AMR_PLATE.."",        ArmorPlating);
+        Factors.Put(AMR_MAGNET.."",    MagneticShield);
+        Factors.Put(AMR_SHIELD.."",        PlasmaShield);
+        Factors.Put(AMR_LIGHT.."",        HardLight);
+        self.DamageFlags=DamageFlags;
+        return self;
+    }
+    
+    override
+    Name GetName() const
+    {return Name;}
+    
+    double Factor(int ArmorType) const
+    {return Factors.GetDouble(ArmorType.."");}
+    
+    int Flags() const
+    {return DamageFlags;}
 }

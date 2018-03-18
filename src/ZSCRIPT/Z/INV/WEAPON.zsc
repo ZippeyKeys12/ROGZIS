@@ -1,14 +1,14 @@
 class ZWeapons:Registry{
-	bool Add(ZWeapon ZWeapon)
-	{return ZWeapon && super.Add(ZWeapon);}
-	
-	ZWeapon Get(Name Name) const
-	{return ZWeapon(super.Get(Name));}
-	
-	ZWeapon GetRand() const
-	{return ZWeapon(super.GetRand());}
+    bool Add(ZWeapon ZWeapon)
+    {return ZWeapon && super.Add(ZWeapon);}
+    
+    ZWeapon Get(Name Name) const
+    {return ZWeapon(super.Get(Name));}
+    
+    ZWeapon GetRand() const
+    {return ZWeapon(super.GetRand());}
 }
 
 class ZWeapon:Item{
-	int Damage;
+    int Damage;
 }

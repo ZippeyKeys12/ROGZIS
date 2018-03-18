@@ -1,173 +1,173 @@
 class Parser_Zinf{
-	private
-	Array<String> Sections;
-	
-	private
-	Array<DataMap> Entries;
+    private
+    Array<String> Sections;
+    
+    private
+    Array<DataMap> Entries;
 
-	static
-	Parser_Zinf Create(String LumpName)
-	{return new("Parser_Zinf").LoadLumps(LumpName);}
+    static
+    Parser_Zinf Create(String LumpName)
+    {return new("Parser_Zinf").LoadLumps(LumpName);}
 
-	Parser_Zinf LoadLumps(String LumpName){
-		static
-		const String limiters[]={
-			//Beginnings
-			"@",
-			"<!--",
-			//Endings
-			"\n",
-			"-->"
-		};
-		static
-		const String charsToDestroy[]={
-			"\t",
-			"\v",
-			"\n",
-			"\f",
-			"\r"
-		};
-		int lump = -1;
-		until(-1==(lump=Wads.FindLump(LumpName, lump + 1))){
-			String InputFile=Wads.ReadLump(lump);
-			int LimiterOfB,
-				LimiterOfE;
-			for(int i=0; i<limiters.Size()/2; i++)
-				while(InputFile.IndexOf(limiters[i])>-1){
-					LimiterOfB=InputFile.IndexOf(limiters[i]);
-					LimiterOfE=InputFile.IndexOf(limiters[i+2], LimiterOfB)+limiters[i+2].Length();
-					InputFile.Remove(LimiterOfB, LimiterOfE-LimiterOfB);
-				}
-			for(int i=0; i<charsToDestroy.Size(); i++)
-				InputFile.Replace(charsToDestroy[i],"");
-			Array<String> InputString; InputString.Clear();
-			InputFile.Split(InputString,"[", TOK_SKIPEMPTY);
-			for(int i=0; i<InputString.Size(); i++){
-				String CurrString=InputString[i];
-				String Section=CurrString.Left(CurrString.IndexOf("]"));
-				if(Find(Section)==-1){
-					Sections.Push(Section);
-					Entries.Push(new("DataMap"));
-				}
-				CurrString=CurrString.Mid(CurrString.IndexOf("]")+1);
-				Array<String> Values; Values.Clear();
-				CurrString.Split(Values, ";", TOK_SKIPEMPTY);
-				for(int j=0; j<Values.Size(); j++)
-					if(Values[j].Length()>0){
-						Array<String> entry; entry.Clear();
-						Values[j].Split(entry, ":", TOK_SKIPEMPTY);
-						String Key=Values[j].Left(Values[j].IndexOf(":")),
-							   Value=Values[j].Mid(Values[j].IndexOf(":")+1);
-						if(Value)
-						Entries[Find(Section)].Put(Key, Value);
-					}
-			}
-		}
-		for(int i=0; i<Entries.Size(); i++)
-			for(int j=0; j<Entries[i].Size(); j++){
-				MapEntry CurrEntry=Entries[i].Index(j);
-				String Value=CurrEntry.Value;
-				while(Value.IndexOf("<")>-1){
-					bool VarNotFound=true;
-					int Starter=Value.IndexOf("<"),
-						Ender=Value.IndexOf(">", Starter),
-						SectionIndex, ScanLength;
-					String VarName=Value.Mid(Starter+1, Ender-Starter-1),
-						   VarKey;
-					MapEntry IterEntry;
-					if(VarName.IndexOf(".")==-1){
-						SectionIndex=i;
-						VarKey=VarName;
-						ScanLength=j;
-					}else{
-						Array<String> entry; entry.Clear();
-						VarName.Split(entry, ".", TOK_SKIPEMPTY);
-						SectionIndex=Find(entry[0]);
-						VarKey=entry[1];
-						ScanLength=Entries[SectionIndex].Size();
-					}
-					for(int k=0; k<ScanLength; k++){
-						if(SectionIndex==-1)break;
-						IterEntry=Entries[SectionIndex].Index(k);
-						if(IterEntry.Key~==VarKey){
-							VarNotFound=false;
-							break;
-						}
-					}
-					if(VarNotFound)
-						CurrEntry.Value.Replace("<"..VarName..">", "N/@");
-					else
-						CurrEntry.Value.Replace("<"..VarName..">", IterEntry.Value);
-					Value=CurrEntry.Value;
-				}
-				if(Value.IndexOf("+")>-1||Value.IndexOf("*")>-1||Value.IndexOf("/")>-1){
-					Array<String> Meth; Meth.Clear();
-					Value.Split(Meth, "+", TOK_SKIPEMPTY);
-					for(int k=0; k<Meth.Size(); k++){
-						if(Meth[k].IndexOf("*")>-1){
-							Array<String> Meth2; Meth2.Clear();
-							Meth[k].Split(Meth2, "*", TOK_SKIPEMPTY);
-							while(Meth2.Size()>1){
-								if(Meth2[0].ToDouble()!=0 && Meth2[1].ToDouble()!=0)
-									Meth2[0]=Meth2[0].ToDouble()*Meth2[1].ToDouble().."";
-								Meth2.Delete(1);
-							}
-							Meth[k]=Meth2[0];
-						}
-					}
-					for(int k=0; k<Meth.Size(); k++){
-						if(Meth[k].IndexOf("/")>-1){
-							Array<String> Meth2; Meth2.Clear();
-							Meth[k].Split(Meth2, "/", TOK_SKIPEMPTY);
-							while(Meth2.Size()>1){
-								if(Meth2[0].ToDouble()!=0 && Meth2[1].ToDouble()!=0)
-									Meth2[0]=Meth2[0].ToDouble()/Meth2[1].ToDouble().."";
-								Meth2.Delete(1);
-							}
-							Meth[k]=Meth2[0];
-						}
-					}
-					while(Meth.Size()>1){
-						Meth[0]=Meth[0].ToDouble()+Meth[1].ToDouble().."";
-						Meth.Delete(1);
-					}
-					CurrEntry.Value=Meth[0];
-				}
-			}
-		return self;
-	}
-	
-	bool GetBool(String Section, String Key) const
-	{return GetInt(Section, Key);}
-	
-	int GetInt(String Section, String Key) const
-	{return Get(Section, Key).ToInt();}
-	
-	double GetDouble(String Section, String Key) const
-	{return Get(Section, Key).ToDouble();}
-	
-	String Get(String Section, String Key) const
-	{return (Find(Section)!=-1)?Entries[Find(Section)].Get(Key):"N/@";}
-	
-	bool GetBoolFromArray(String Section, String Key, int index) const
-	{return GetFromArray(Section, Key, index).ToInt();}
-	
-	int GetIntFromArray(String Section, String Key, int index) const
-	{return GetFromArray(Section, Key, index).ToInt();}
-	
-	double GetDoubleFromArray(String Section, String Key, int index) const
-	{return GetFromArray(Section, Key, index).ToDouble();}
-	
-	String GetFromArray(String Section, String Key, int index) const{
-		Array<String> info;
-		Entries[Find(Section)].Get(Key).Split(info, ",", TOK_SKIPEMPTY);
-		return (0<=index && index<info.Size())?info[index]:"N/@";
-	}
-	
-	protected int Find(String Section) const{
-		for(int i=0; i<Sections.Size(); i++)
-			if(Sections[i]~==Section)
-				return i;
-		return -1;
-	}
+    Parser_Zinf LoadLumps(String LumpName){
+        static
+        const String limiters[]={
+            //Beginnings
+            "@",
+            "<!--",
+            //Endings
+            "\n",
+            "-->"
+        };
+        static
+        const String charsToDestroy[]={
+            "\t",
+            "\v",
+            "\n",
+            "\f",
+            "\r"
+        };
+        int lump = -1;
+        until(-1==(lump=Wads.FindLump(LumpName, lump + 1))){
+            String InputFile=Wads.ReadLump(lump);
+            int LimiterOfB,
+                LimiterOfE;
+            for(int i=0; i<limiters.Size()/2; i++)
+                while(InputFile.IndexOf(limiters[i])>-1){
+                    LimiterOfB=InputFile.IndexOf(limiters[i]);
+                    LimiterOfE=InputFile.IndexOf(limiters[i+2], LimiterOfB)+limiters[i+2].Length();
+                    InputFile.Remove(LimiterOfB, LimiterOfE-LimiterOfB);
+                }
+            for(int i=0; i<charsToDestroy.Size(); i++)
+                InputFile.Replace(charsToDestroy[i],"");
+            Array<String> InputString; InputString.Clear();
+            InputFile.Split(InputString,"[", TOK_SKIPEMPTY);
+            for(int i=0; i<InputString.Size(); i++){
+                String CurrString=InputString[i];
+                String Section=CurrString.Left(CurrString.IndexOf("]"));
+                if(Find(Section)==-1){
+                    Sections.Push(Section);
+                    Entries.Push(new("DataMap"));
+                }
+                CurrString=CurrString.Mid(CurrString.IndexOf("]")+1);
+                Array<String> Values; Values.Clear();
+                CurrString.Split(Values, ";", TOK_SKIPEMPTY);
+                for(int j=0; j<Values.Size(); j++)
+                    if(Values[j].Length()>0){
+                        Array<String> entry; entry.Clear();
+                        Values[j].Split(entry, ":", TOK_SKIPEMPTY);
+                        String Key=Values[j].Left(Values[j].IndexOf(":")),
+                               Value=Values[j].Mid(Values[j].IndexOf(":")+1);
+                        if(Value)
+                        Entries[Find(Section)].Put(Key, Value);
+                    }
+            }
+        }
+        for(int i=0; i<Entries.Size(); i++)
+            for(int j=0; j<Entries[i].Size(); j++){
+                MapEntry CurrEntry=Entries[i].Index(j);
+                String Value=CurrEntry.Value;
+                while(Value.IndexOf("<")>-1){
+                    bool VarNotFound=true;
+                    int Starter=Value.IndexOf("<"),
+                        Ender=Value.IndexOf(">", Starter),
+                        SectionIndex, ScanLength;
+                    String VarName=Value.Mid(Starter+1, Ender-Starter-1),
+                           VarKey;
+                    MapEntry IterEntry;
+                    if(VarName.IndexOf(".")==-1){
+                        SectionIndex=i;
+                        VarKey=VarName;
+                        ScanLength=j;
+                    }else{
+                        Array<String> entry; entry.Clear();
+                        VarName.Split(entry, ".", TOK_SKIPEMPTY);
+                        SectionIndex=Find(entry[0]);
+                        VarKey=entry[1];
+                        ScanLength=Entries[SectionIndex].Size();
+                    }
+                    for(int k=0; k<ScanLength; k++){
+                        if(SectionIndex==-1)break;
+                        IterEntry=Entries[SectionIndex].Index(k);
+                        if(IterEntry.Key~==VarKey){
+                            VarNotFound=false;
+                            break;
+                        }
+                    }
+                    if(VarNotFound)
+                        CurrEntry.Value.Replace("<"..VarName..">", "N/@");
+                    else
+                        CurrEntry.Value.Replace("<"..VarName..">", IterEntry.Value);
+                    Value=CurrEntry.Value;
+                }
+                if(Value.IndexOf("+")>-1||Value.IndexOf("*")>-1||Value.IndexOf("/")>-1){
+                    Array<String> Meth; Meth.Clear();
+                    Value.Split(Meth, "+", TOK_SKIPEMPTY);
+                    for(int k=0; k<Meth.Size(); k++){
+                        if(Meth[k].IndexOf("*")>-1){
+                            Array<String> Meth2; Meth2.Clear();
+                            Meth[k].Split(Meth2, "*", TOK_SKIPEMPTY);
+                            while(Meth2.Size()>1){
+                                if(Meth2[0].ToDouble()!=0 && Meth2[1].ToDouble()!=0)
+                                    Meth2[0]=Meth2[0].ToDouble()*Meth2[1].ToDouble().."";
+                                Meth2.Delete(1);
+                            }
+                            Meth[k]=Meth2[0];
+                        }
+                    }
+                    for(int k=0; k<Meth.Size(); k++){
+                        if(Meth[k].IndexOf("/")>-1){
+                            Array<String> Meth2; Meth2.Clear();
+                            Meth[k].Split(Meth2, "/", TOK_SKIPEMPTY);
+                            while(Meth2.Size()>1){
+                                if(Meth2[0].ToDouble()!=0 && Meth2[1].ToDouble()!=0)
+                                    Meth2[0]=Meth2[0].ToDouble()/Meth2[1].ToDouble().."";
+                                Meth2.Delete(1);
+                            }
+                            Meth[k]=Meth2[0];
+                        }
+                    }
+                    while(Meth.Size()>1){
+                        Meth[0]=Meth[0].ToDouble()+Meth[1].ToDouble().."";
+                        Meth.Delete(1);
+                    }
+                    CurrEntry.Value=Meth[0];
+                }
+            }
+        return self;
+    }
+    
+    bool GetBool(String Section, String Key) const
+    {return GetInt(Section, Key);}
+    
+    int GetInt(String Section, String Key) const
+    {return Get(Section, Key).ToInt();}
+    
+    double GetDouble(String Section, String Key) const
+    {return Get(Section, Key).ToDouble();}
+    
+    String Get(String Section, String Key) const
+    {return (Find(Section)!=-1)?Entries[Find(Section)].Get(Key):"N/@";}
+    
+    bool GetBoolFromArray(String Section, String Key, int index) const
+    {return GetFromArray(Section, Key, index).ToInt();}
+    
+    int GetIntFromArray(String Section, String Key, int index) const
+    {return GetFromArray(Section, Key, index).ToInt();}
+    
+    double GetDoubleFromArray(String Section, String Key, int index) const
+    {return GetFromArray(Section, Key, index).ToDouble();}
+    
+    String GetFromArray(String Section, String Key, int index) const{
+        Array<String> info;
+        Entries[Find(Section)].Get(Key).Split(info, ",", TOK_SKIPEMPTY);
+        return (0<=index && index<info.Size())?info[index]:"N/@";
+    }
+    
+    protected int Find(String Section) const{
+        for(int i=0; i<Sections.Size(); i++)
+            if(Sections[i]~==Section)
+                return i;
+        return -1;
+    }
 }

@@ -1,67 +1,67 @@
 extend
 class ZPlayerBase{
-	protected
-	transient
-	double ActiveYaw,
-		   ActivePitch,
-		   ActiveRoll,
-		   PassiveRoll,
-		   Shake,
-		   ShakeLevel,
-		   RunOscillation;
+    protected
+    transient
+    double ActiveYaw,
+           ActivePitch,
+           ActiveRoll,
+           PassiveRoll,
+           Shake,
+           ShakeLevel,
+           RunOscillation;
 
-	transient
-	Vector2 SideVector;
+    transient
+    Vector2 SideVector;
 
-	transient
-	Vector3 ViewVector;
+    transient
+    Vector3 ViewVector;
 
-	transient
-	ZPerlin YawShake,
-			PitchShake,
-			RollShake;
+    transient
+    ZPerlin YawShake,
+            PitchShake,
+            RollShake;
 
     virtual
-	void HandleScreenShake(){
-		AddScreenShake(ZCalc.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
-		double CurrentShake=ShakeLevel*ZCalc.NormRange(ZCalc.SmoothStart(Shake));
-		if(CurrentShake>0){
-			ActiveYaw=CurrentShake*ZCalc.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
-			ActivePitch=CurrentShake*ZCalc.DRangeMap(PitchShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
-			ActiveRoll=CurrentShake*ZCalc.DRangeMap(RollShake.Get(Level.MapTime%1000, 1), 2, 7, -5, 5);
-			AddScreenShake(-.02);
-		}else ActiveYaw=ActivePitch=ActiveRoll=0;
-	}
+    void HandleScreenShake(){
+        AddScreenShake(ZCalc.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
+        double CurrentShake=ShakeLevel*ZCalc.NormRange(ZCalc.SmoothStart(Shake));
+        if(CurrentShake>0){
+            ActiveYaw=CurrentShake*ZCalc.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+            ActivePitch=CurrentShake*ZCalc.DRangeMap(PitchShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+            ActiveRoll=CurrentShake*ZCalc.DRangeMap(RollShake.Get(Level.MapTime%1000, 1), 2, 7, -5, 5);
+            AddScreenShake(-.02);
+        }else ActiveYaw=ActivePitch=ActiveRoll=0;
+    }
 
-	virtual
-	void HandleViewTilt(){
-		if(Player.OnGround){
-			//Walking
-			PassiveRoll+=Sin(RunOscillation+=5*ZCalc.PI)*(Vel dot ViewVector)/50.;
-			//Strafing
-			PassiveRoll+=(Vel.XY dot SideVector)/25.;
-		}
-		PassiveRoll*=(abs(PassiveRoll)>.00001)?.75:0;
-	}
+    virtual
+    void HandleViewTilt(){
+        if(Player.OnGround){
+            //Walking
+            PassiveRoll+=Sin(RunOscillation+=5*ZCalc.PI)*(Vel dot ViewVector)/50.;
+            //Strafing
+            PassiveRoll+=(Vel.XY dot SideVector)/25.;
+        }
+        PassiveRoll*=(abs(PassiveRoll)>.00001)?.75:0;
+    }
 
-	virtual
-	void HandleViewChange(){
-		UserCmd cmd=Player.cmd;
-		MStats.Orientation.SetEulerAngles(MStats.ActualYaw+cmd.Yaw*(360/65536.), Clamp(MStats.ActualPitch-cmd.Pitch*(360/65536.), -90, 90), MStats.ActualRoll);
-	}
+    virtual
+    void HandleViewChange(){
+        UserCmd cmd=Player.cmd;
+        MStats.Orientation.SetEulerAngles(MStats.ActualYaw+cmd.Yaw*(360/65536.), Clamp(MStats.ActualPitch-cmd.Pitch*(360/65536.), -90, 90), MStats.ActualRoll);
+    }
 
-	virtual
-	void HandleOrientation(){
+    virtual
+    void HandleOrientation(){
         //Sync Camera with ZQuaternion
-		MStats.Orientation=MStats.Orientation.Unit();
-		[MStats.ActualYaw, MStats.ActualPitch, MStats.ActualRoll]=MStats.Orientation.GetEulerAngles();
-		MStats.ActualYaw=abs(Angle)>=179.9999?MStats.ActualYaw:ZCalc.TransferSign(MStats.ActualYaw, Angle);
-		A_SetAngle(MStats.ActualYaw+ActiveYaw, SPF_INTERPOLATE);
-		A_SetPitch(MStats.ActualPitch+ActivePitch, SPF_INTERPOLATE);
-		A_SetRoll(MStats.ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
+        MStats.Orientation=MStats.Orientation.Unit();
+        [MStats.ActualYaw, MStats.ActualPitch, MStats.ActualRoll]=MStats.Orientation.GetEulerAngles();
+        MStats.ActualYaw=abs(Angle)>=179.9999?MStats.ActualYaw:ZCalc.TransferSign(MStats.ActualYaw, Angle);
+        A_SetAngle(MStats.ActualYaw+ActiveYaw, SPF_INTERPOLATE);
+        A_SetPitch(MStats.ActualPitch+ActivePitch, SPF_INTERPOLATE);
+        A_SetRoll(MStats.ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
         //Direction Vectors
-		double XYLength=Cos(MStats.ActualPitch);
-		ViewVector=(Cos(MStats.ActualYaw)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch));
-		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
-	}
+        double XYLength=Cos(MStats.ActualPitch);
+        ViewVector=(Cos(MStats.ActualYaw)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch));
+        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+    }
 }

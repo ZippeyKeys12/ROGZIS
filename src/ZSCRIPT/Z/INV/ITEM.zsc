@@ -1,64 +1,64 @@
 class ZItems:Registry{
-	bool Add(Item Item)
-	{return Item && super.Add(Item);}
+    bool Add(Item Item)
+    {return Item && super.Add(Item);}
 
-	Item Get(Name Name) const
-	{return Item(super.Get(Name));}
+    Item Get(Name Name) const
+    {return Item(super.Get(Name));}
 
-	Item GetRand() const
-	{return Item(super.GetRand());}
+    Item GetRand() const
+    {return Item(super.GetRand());}
 }
 
 class Item:RegistryItem play{
-	protected
-	int Price,
-		Durability,
-		MaxDurability;
+    protected
+    int Price,
+        Durability,
+        MaxDurability;
 
-	protected
-	Name Name;
-	
-	protected
-	String	Description;
+    protected
+    Name Name;
+    
+    protected
+    String    Description;
 
-	protected
-	Vector2 Size;
-	
-	static
-	Item Create(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0)
-	{return new("Item").Init(Name, Description, Price, Durability, Width, Height);}
-	
-	Item Init(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
-		self.Name=Name;
-		self.Description=Description;
-		if(Price>0) self.Price=Price;
-		if(Durability>0) self.Durability=MaxDurability=Durability;
-		if(Width<=0) Width=1;
-		if(Height<=0) Height=1;
-		self.Size=(Width, Height);
-		return self;
-	}
+    protected
+    Vector2 Size;
+    
+    static
+    Item Create(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0)
+    {return new("Item").Init(Name, Description, Price, Durability, Width, Height);}
+    
+    Item Init(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
+        self.Name=Name;
+        self.Description=Description;
+        if(Price>0) self.Price=Price;
+        if(Durability>0) self.Durability=MaxDurability=Durability;
+        if(Width<=0) Width=1;
+        if(Height<=0) Height=1;
+        self.Size=(Width, Height);
+        return self;
+    }
 
-	virtual
-	void OnInventoryTick(ZMarine Player){}
+    virtual
+    void OnInventoryTick(ZMarine Player){}
 
-	override
-	Name GetName() const
-	{return Name;}
+    override
+    Name GetName() const
+    {return Name;}
 
-	clearscope
-	int GetPrice() const
-	{return Price;}
+    clearscope
+    int GetPrice() const
+    {return Price;}
 
-	clearscope
-	int, int GetDurability() const
-	{return Durability, MaxDurability;}
+    clearscope
+    int, int GetDurability() const
+    {return Durability, MaxDurability;}
 
-	clearscope
-	String GetDesc() const
-	{return Description;}
+    clearscope
+    String GetDesc() const
+    {return Description;}
 
-	clearscope
-	Vector2 GetSize() const
-	{return (Size.X, Size.Y);}
+    clearscope
+    Vector2 GetSize() const
+    {return (Size.X, Size.Y);}
 }

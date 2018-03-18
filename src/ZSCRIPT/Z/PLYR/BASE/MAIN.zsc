@@ -1,87 +1,87 @@
 class ZPlayerBase:PlayerPawn{
-	protected
-	transient
-	int //Player inputs
-		Buttons,
-		OldButtons,
-		NewButtons,
-		SameButtons;
+    protected
+    transient
+    int //Player inputs
+        Buttons,
+        OldButtons,
+        NewButtons,
+        SameButtons;
 
-	transient
-	Actor AimTarget;
+    transient
+    Actor AimTarget;
 
-	transient
-	ZMStats MStats;
+    transient
+    ZMStats MStats;
 
-	Default{
+    Default{
         Species "Player";
-	}
-
-	override
-	void PostBeginPlay(){
-		super.PostBeginPlay();
-		MaxHealth=MStats.MaxHealth;
-		//View
-		ShakeLevel=1;
-		double XYLength=Cos(MStats.ActualPitch=Pitch);
-		MStats.Orientation=ZQuaternion.FromAngleAxis(MStats.ActualRoll=Roll=0, ViewVector=(Cos(MStats.ActualYaw=Angle)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch)));
-		SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
-	}
-
-	virtual
-	void AddScreenShake(double Amount)
-	{Shake=ZCalc.NormRange(Shake+Amount);}
-
-	override
-	void Tick(){
-		//Handle Voodoo Dolls
-		super.Tick();
-		if(!player || !player.mo || player.mo!=self || Health<=0)return;
-		//Actual Stuff
-		MStats.Health=Health;
-		RecordInput();
-		SetAimTarget();
-		if(MStats.Armor[AMR_FEET].Info & AMR_THRUST)SoftenFall();
-		HandleView();
-		CheckCollisionEffects();
-		MStats.Recharge(self);
     }
 
-	virtual
-	void RecordInput(){
-		Buttons=Player.cmd.buttons;
-		OldButtons=Player.oldbuttons;
-		NewButtons=Buttons & ~OldButtons;
-		SameButtons=Buttons & OldButtons;
-	}
+    override
+    void PostBeginPlay(){
+        super.PostBeginPlay();
+        MaxHealth=MStats.MaxHealth;
+        //View
+        ShakeLevel=1;
+        double XYLength=Cos(MStats.ActualPitch=Pitch);
+        MStats.Orientation=ZQuaternion.FromAngleAxis(MStats.ActualRoll=Roll=0, ViewVector=(Cos(MStats.ActualYaw=Angle)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch)));
+        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+    }
 
     virtual
-	void SetAimTarget(){
-		FLineTraceData Data;
-		Trace(Data, 2048, MStats.ActualPitch);
-		AimTarget=Data.HitActor;
-	}
+    void AddScreenShake(double Amount)
+    {Shake=ZCalc.NormRange(Shake+Amount);}
 
-	virtual
-	void HandleView(){
-		HandleScreenShake();
-		HandleViewTilt();
-		HandleViewChange();
-		HandleOrientation();
-	}
+    override
+    void Tick(){
+        //Handle Voodoo Dolls
+        super.Tick();
+        if(!player || !player.mo || player.mo!=self || Health<=0)return;
+        //Actual Stuff
+        MStats.Health=Health;
+        RecordInput();
+        SetAimTarget();
+        if(MStats.Armor[AMR_FEET].Info & AMR_THRUST)SoftenFall();
+        HandleView();
+        CheckCollisionEffects();
+        MStats.Recharge(self);
+    }
 
-	virtual
-	bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-	{return LineTrace(MStats.ActualYaw, Distance, Pitch, Data: Data);}
+    virtual
+    void RecordInput(){
+        Buttons=Player.cmd.buttons;
+        OldButtons=Player.oldbuttons;
+        NewButtons=Buttons & ~OldButtons;
+        SameButtons=Buttons & OldButtons;
+    }
 
-	override
-	int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
-		if(self is "ZMarine")for(int i=0; i<MStats.Armor.Size(); i++)
-			if(MStats.Armor[i] && MStats.Energy>0)
-				Damage=MStats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
-		Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
-		return Damage;
-	}
+    virtual
+    void SetAimTarget(){
+        FLineTraceData Data;
+        Trace(Data, 2048, MStats.ActualPitch);
+        AimTarget=Data.HitActor;
+    }
+
+    virtual
+    void HandleView(){
+        HandleScreenShake();
+        HandleViewTilt();
+        HandleViewChange();
+        HandleOrientation();
+    }
+
+    virtual
+    bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
+    {return LineTrace(MStats.ActualYaw, Distance, Pitch, Data: Data);}
+
+    override
+    int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
+        if(self is "ZMarine")for(int i=0; i<MStats.Armor.Size(); i++)
+            if(MStats.Armor[i] && MStats.Energy>0)
+                Damage=MStats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
+        Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
+        return Damage;
+    }
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

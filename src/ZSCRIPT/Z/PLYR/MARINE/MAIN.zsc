@@ -1,31 +1,31 @@
 class ZMarine:ZPlayerBase{
-	Default{
-		//Descriptors
-		Player.DisplayName "Marine";
-		Player.AttackZOffset 13;
-		//Start Items
-		Player.StartItem "Pistol";
-		Player.StartItem "Fist";
-		Player.StartItem "Clip", 50;
-		//Weapons
-		Player.WeaponSlot 1, "Fist";
-		Player.WeaponSlot 2, "Pistol";
-	}
+    Default{
+        //Descriptors
+        Player.DisplayName "Marine";
+        Player.AttackZOffset 13;
+        //Start Items
+        Player.StartItem "Pistol";
+        Player.StartItem "Fist";
+        Player.StartItem "Clip", 50;
+        //Weapons
+        Player.WeaponSlot 1, "Fist";
+        Player.WeaponSlot 2, "Pistol";
+    }
 
-	override
-	void PostBeginPlay(){
-		super.PostBeginPlay();	
-		Parser_Zinf Config=ZManager.Config();
-		//Player
-			//Health
-			A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
-			MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
-			RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
-	}
+    override
+    void PostBeginPlay(){
+        super.PostBeginPlay();    
+        Parser_Zinf Config=ZManager.Config();
+        //Player
+            //Health
+            A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
+            MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
+            RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
+    }
 
-	override
-	void CheatGive(String Name, int Amount)
-	{console.printf("WIP");}
+    override
+    void CheatGive(String Name, int Amount)
+    {console.printf("WIP");}
 }
 
 #include "ZSCRIPT/Z/PLYR/MARINE/STATS.zsc"

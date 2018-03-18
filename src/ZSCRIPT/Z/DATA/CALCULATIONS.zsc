@@ -1,488 +1,488 @@
 struct ZCalc{
-	///////////////
-	// Constants //
-	///////////////
-	const E=2.718281828459;
-	const PI=3.14159265359;
+    ///////////////
+    // Constants //
+    ///////////////
+    const E=2.718281828459;
+    const PI=3.14159265359;
 
-	/////////////
-	// Numbers //
-	/////////////
-	static
-	bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
-	{return abs(FirstValue-SecondValue)<=Epsilon;}
+    /////////////
+    // Numbers //
+    /////////////
+    static
+    bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
+    {return abs(FirstValue-SecondValue)<=Epsilon;}
 
-	static
-	int ShiftOf(int Value){
-		int Shifts=0;
-		while(Value>1){
-			Value>>=1;
- 			Shifts++;
-		}
-		return Shifts;
-	}
+    static
+    int ShiftOf(int Value){
+        int Shifts=0;
+        while(Value>1){
+            Value>>=1;
+             Shifts++;
+        }
+        return Shifts;
+    }
 
-	static
-	int Sign(double Value)
-	{return (Equals(Value, 0))?0:(Value<0)?-1:1;}
+    static
+    int Sign(double Value)
+    {return (Equals(Value, 0))?0:(Value<0)?-1:1;}
 
-	static
-	double TransferSign(double Value, double Sign)
-	{return abs(Value)*Sign(Sign);}
+    static
+    double TransferSign(double Value, double Sign)
+    {return abs(Value)*Sign(Sign);}
 
-	static
-	int Alternate(int n, bool Offset=false)
-	{return -1**(n-Offset);}
+    static
+    int Alternate(int n, bool Offset=false)
+    {return -1**(n-Offset);}
 
-	static
-	double NormRange(double Value)
-	{return Clamp(Value, 0, 1);}
+    static
+    double NormRange(double Value)
+    {return Clamp(Value, 0, 1);}
 
-	static
-	double NormRangeMap(double Value, double Start, double End)
-	{return NormRange((Value-Start)/(End-Start));}
+    static
+    double NormRangeMap(double Value, double Start, double End)
+    {return NormRange((Value-Start)/(End-Start));}
 
-	static
-	double ANormRangeMap(double Value, double Start, double End)
-	{return clamp(Value*(End-Start)+Start, Start, End);}
+    static
+    double ANormRangeMap(double Value, double Start, double End)
+    {return clamp(Value*(End-Start)+Start, Start, End);}
 
-	static
-	int IRangeMap(int Value, int OldStart, int OldEnd, int NewStart, int NewEnd)
-	{return ANormRangeMap(NormRange((Value-OldStart)/(OldEnd-OldStart)), NewStart, NewEnd);}
+    static
+    int IRangeMap(int Value, int OldStart, int OldEnd, int NewStart, int NewEnd)
+    {return ANormRangeMap(NormRange((Value-OldStart)/(OldEnd-OldStart)), NewStart, NewEnd);}
 
-	static
-	double DRangeMap(double Value, double OldStart, double OldEnd, double NewStart, double NewEnd)
-	{return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
+    static
+    double DRangeMap(double Value, double OldStart, double OldEnd, double NewStart, double NewEnd)
+    {return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
 
-	static
-	double AMean(ZArray_String Array){
-		double Total=0;
-		for(int i=0; i<Array._.Size(); i++)
-			Total+=Array._[i].ToDouble();
-		return Total/Array._.Size();
-	}
+    static
+    double AMean(ZArray_String Array){
+        double Total=0;
+        for(int i=0; i<Array._.Size(); i++)
+            Total+=Array._[i].ToDouble();
+        return Total/Array._.Size();
+    }
 
-	static
-	double GMean(ZArray_String Array){
-		double Total=1;
-		for(int i=0; i<Array._.Size(); i++)
-			Total*=Array._[i].ToDouble();
-		return Total**(1/Array._.Size());
-	}
+    static
+    double GMean(ZArray_String Array){
+        double Total=1;
+        for(int i=0; i<Array._.Size(); i++)
+            Total*=Array._[i].ToDouble();
+        return Total**(1/Array._.Size());
+    }
 
-	static
-	double HMean(ZArray_String Array){
-		double Total=0;
-		for(int i=0; i<Array._.Size(); i++)
-			Total+=1/Array._[i].ToDouble();
-		return Array._.Size()/Total;
-	}
+    static
+    double HMean(ZArray_String Array){
+        double Total=0;
+        for(int i=0; i<Array._.Size(); i++)
+            Total+=1/Array._[i].ToDouble();
+        return Array._.Size()/Total;
+    }
 
-	static
-	double AsymptoticMean(double X, double Target, double Weight=.1)
-	{return (Target-X)*(1-Weight);}
+    static
+    double AsymptoticMean(double X, double Target, double Weight=.1)
+    {return (Target-X)*(1-Weight);}
 
-	static
-	int Factorial(int N){
-		if(N>0)return N*Factorial(N-1);
-		else if(N==0)return 1;
-		else ZManager.Error("Attempted factorial of a negative number", ERR_FATAL);
-		return 0;
-	}
+    static
+    int Factorial(int N){
+        if(N>0)return N*Factorial(N-1);
+        else if(N==0)return 1;
+        else ZManager.Error("Attempted factorial of a negative number", ERR_FATAL);
+        return 0;
+    }
 
-	static
-	int nCr(int N, int K)
-	{return Factorial(N)/(Factorial(K)*Factorial(N-K));}
+    static
+    int nCr(int N, int K)
+    {return Factorial(N)/(Factorial(K)*Factorial(N-K));}
 
-	static
-	double Bernstein(double Time, int N, int V)
-	{return nCr(N, V)*Time**V*(1-Time)**(N-V);}
+    static
+    double Bernstein(double Time, int N, int V)
+    {return nCr(N, V)*Time**V*(1-Time)**(N-V);}
 
-	static
-	double Lerp(double Time, double Start=0, double End=1){
-		Time=NormRange(Time);
-		return (1-Time)*Start+Time*End;
-	}
+    static
+    double Lerp(double Time, double Start=0, double End=1){
+        Time=NormRange(Time);
+        return (1-Time)*Start+Time*End;
+    }
 
-	static
-	double SmoothStart(double Time, double Start=0, double End=1, double Degree=2)
-	{return ANormRangeMap(NormRangeMap(Time, Start, End)**Degree, Start, End);}
+    static
+    double SmoothStart(double Time, double Start=0, double End=1, double Degree=2)
+    {return ANormRangeMap(NormRangeMap(Time, Start, End)**Degree, Start, End);}
 
-	static
-	double SmoothStop(double Time, double Start=0, double End=1, double Degree=2)
-	{return ANormRangeMap(1-(1-NormRangeMap(Time, Start, End))**Degree, Start, End);}
+    static
+    double SmoothStop(double Time, double Start=0, double End=1, double Degree=2)
+    {return ANormRangeMap(1-(1-NormRangeMap(Time, Start, End))**Degree, Start, End);}
 
-	static
-	double SmoothStep(double Time, double Start=0, double End=1, double Degree=2)
-	{return Lerp(Time, SmoothStart(Time, Start, End, Degree), SmoothStop(Time, Start, End, Degree));}
+    static
+    double SmoothStep(double Time, double Start=0, double End=1, double Degree=2)
+    {return Lerp(Time, SmoothStart(Time, Start, End, Degree), SmoothStop(Time, Start, End, Degree));}
 
-	/////////////
-	// Vector2 //
-	/////////////
-	static
-	Vector2 V2Rotate(Vector2 Vector, double Angle){
-		double X=Vector.X,
-			   Y=Vector.Y;
-		return (X*Cos(Angle)-Y*Sin(Angle), X*Sin(Angle)+Y*Cos(Angle));
-	}
+    /////////////
+    // Vector2 //
+    /////////////
+    static
+    Vector2 V2Rotate(Vector2 Vector, double Angle){
+        double X=Vector.X,
+               Y=Vector.Y;
+        return (X*Cos(Angle)-Y*Sin(Angle), X*Sin(Angle)+Y*Cos(Angle));
+    }
 
-	static
-	Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
-		Time=NormRange(Time);
-		return (1-Time)*Start+Time*End;
-	}
+    static
+    Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
+        Time=NormRange(Time);
+        return (1-Time)*Start+Time*End;
+    }
 
-	static
-	Vector2 V2SmoothStart(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStart(Time, Start.X, End.X, Degree), SmoothStart(Time, Start.Y, End.Y, Degree));}
+    static
+    Vector2 V2SmoothStart(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
+    {return (SmoothStart(Time, Start.X, End.X, Degree), SmoothStart(Time, Start.Y, End.Y, Degree));}
 
-	static
-	Vector2 V2SmoothStop(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStop(Time, Start.X, End.X, Degree), SmoothStop(Time, Start.Y, End.Y, Degree));}
+    static
+    Vector2 V2SmoothStop(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
+    {return (SmoothStop(Time, Start.X, End.X, Degree), SmoothStop(Time, Start.Y, End.Y, Degree));}
 
-	static
-	Vector2 V2SmoothStep(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
-	{return (SmoothStep(Time, Start.X, End.X, Degree), SmoothStep(Time, Start.Y, End.Y, Degree));}
+    static
+    Vector2 V2SmoothStep(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
+    {return (SmoothStep(Time, Start.X, End.X, Degree), SmoothStep(Time, Start.Y, End.Y, Degree));}
 
-	static
-	Vector2 V2Bezier(double Time, ZArray_String Points){
-		Vector2 Total=(0, 0);
-		for(int j=0; j<Points._.Size(); j++)
-			Total+=(Points._[j].ToDouble(), Points.__[j].ToDouble())*Bernstein(Time, Points._.Size(), j);
-		return Total;
-	}
+    static
+    Vector2 V2Bezier(double Time, ZArray_String Points){
+        Vector2 Total=(0, 0);
+        for(int j=0; j<Points._.Size(); j++)
+            Total+=(Points._[j].ToDouble(), Points.__[j].ToDouble())*Bernstein(Time, Points._.Size(), j);
+        return Total;
+    }
 
-	static
-	bool IsInTriangle(Vector2 Point, Vector2 A, Vector2 B, Vector2 C){
-		Vector2 C2A=C-A,
-				B2A=B-A,
-				P2A=Point-A;
-		int C2C=C2A dot C2A,
-			C2B=C2A dot B2A,
-			C2P=C2A dot P2A,
-			B2B=B2A dot B2A,
-			B2P=B2A dot P2A,
-			InverseDenominator=1/(C2C*B2B-C2B**2),
-			U=InverseDenominator*(B2B*C2P-C2B*B2P),
-			V=InverseDenominator*(C2C*B2P-C2B*C2P);
-			return U>=0 && V>=0 && U+V<1;
-	}
+    static
+    bool IsInTriangle(Vector2 Point, Vector2 A, Vector2 B, Vector2 C){
+        Vector2 C2A=C-A,
+                B2A=B-A,
+                P2A=Point-A;
+        int C2C=C2A dot C2A,
+            C2B=C2A dot B2A,
+            C2P=C2A dot P2A,
+            B2B=B2A dot B2A,
+            B2P=B2A dot P2A,
+            InverseDenominator=1/(C2C*B2B-C2B**2),
+            U=InverseDenominator*(B2B*C2P-C2B*B2P),
+            V=InverseDenominator*(C2C*B2P-C2B*C2P);
+            return U>=0 && V>=0 && U+V<1;
+    }
 
-	static
-	Vector2	V2CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
-	{return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
+    static
+    Vector2    V2CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
+    {return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 
-	/////////////
-	// Vector3 //
-	/////////////
-	static
-	Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1)){
-		Time=NormRange(Time);
-		return (1-Time)*Start+Time*End;
-	}
+    /////////////
+    // Vector3 //
+    /////////////
+    static
+    Vector3 V3Lerp(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1)){
+        Time=NormRange(Time);
+        return (1-Time)*Start+Time*End;
+    }
 
-	static
-	Vector3 V3SmoothStart(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
-	{return (SmoothStart(Time, Start.x, End.x, Degree), SmoothStart(Time, Start.y, End.y, Degree), SmoothStart(Time, Start.z, End.z, Degree));}
+    static
+    Vector3 V3SmoothStart(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1,1, 1), double Degree=2)
+    {return (SmoothStart(Time, Start.x, End.x, Degree), SmoothStart(Time, Start.y, End.y, Degree), SmoothStart(Time, Start.z, End.z, Degree));}
 
-	static
-	Vector3 V3SmoothStop(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
-	{return (SmoothStop(Time, Start.x, End.x, Degree), SmoothStop(Time, Start.y, End.y, Degree), SmoothStop(Time, Start.z, End.z, Degree));}
+    static
+    Vector3 V3SmoothStop(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
+    {return (SmoothStop(Time, Start.x, End.x, Degree), SmoothStop(Time, Start.y, End.y, Degree), SmoothStop(Time, Start.z, End.z, Degree));}
 
-	static
-	Vector3 V3SmoothStep(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
-	{return (SmoothStep(Time, Start.x, End.x, Degree), SmoothStep(Time, Start.y, End.y, Degree), SmoothStep(Time, Start.z, End.z, Degree));}
+    static
+    Vector3 V3SmoothStep(double Time, Vector3 Start=(0, 0, 0), Vector3 End=(1, 1, 1), double Degree=2)
+    {return (SmoothStep(Time, Start.x, End.x, Degree), SmoothStep(Time, Start.y, End.y, Degree), SmoothStep(Time, Start.z, End.z, Degree));}
 
-	static
-	Vector3	V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
-	{return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
+    static
+    Vector3    V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
+    {return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 
-	/////////////////
-	// ZQuaternion //
-	/////////////////
-	static
-	ZQuaternion ZQLerp(double Time, ZQuaternion Start, ZQuaternion End)
-	{return Start.SMultiply(1-Time).Add(End.SMultiply(Time)).Unit();}
+    /////////////////
+    // ZQuaternion //
+    /////////////////
+    static
+    ZQuaternion ZQLerp(double Time, ZQuaternion Start, ZQuaternion End)
+    {return Start.SMultiply(1-Time).Add(End.SMultiply(Time)).Unit();}
 
-	static
-	ZQuaternion ZQSlerp(double Time, ZQuaternion Start, ZQuaternion End){
-		double SEDot=Start.DotProduct(End);
-		ZQuaternion Temp;
-		if(SEDot<0){
-			SEDot=-SEDot;
-			Temp=End.Negative();
-		}else Temp=End;
-		if(SEDot<.95){
-			double Angle=ACos(SEDot);
-			return Start.SMultiply(Sin(Angle*(1-Time))).Add(Temp.SMultiply(Sin(Angle*Time))).SMultiply(1/Sin(Angle));
-		}else return ZQLerp(Time, Start, Temp);
-	}
+    static
+    ZQuaternion ZQSlerp(double Time, ZQuaternion Start, ZQuaternion End){
+        double SEDot=Start.DotProduct(End);
+        ZQuaternion Temp;
+        if(SEDot<0){
+            SEDot=-SEDot;
+            Temp=End.Negative();
+        }else Temp=End;
+        if(SEDot<.95){
+            double Angle=ACos(SEDot);
+            return Start.SMultiply(Sin(Angle*(1-Time))).Add(Temp.SMultiply(Sin(Angle*Time))).SMultiply(1/Sin(Angle));
+        }else return ZQLerp(Time, Start, Temp);
+    }
 }
 
 class ZPerlin{
-	private
-	ZMatrix Noise;
+    private
+    ZMatrix Noise;
 
-	static
-	ZPerlin Create(int Seed=int('NoiseyBoi'), int Height=16, int Width=16, int OctaveCount=8)
-	{return new("ZPerlin").Init(Seed, Height, Width, OctaveCount);}
+    static
+    ZPerlin Create(int Seed=int('NoiseyBoi'), int Height=16, int Width=16, int OctaveCount=8)
+    {return new("ZPerlin").Init(Seed, Height, Width, OctaveCount);}
 
-	private
-	ZPerlin Init(int Seed, int Height, int Width, int OctaveCount){
-		Array<ZMatrix> Noises;
-		ZMatrix BaseNoise=new("ZMatrix").WhiteNoise(Height, Width, Seed);
-		for(int Octave=0; Octave<OctaveCount; Octave++)
-			Noises.Push(BaseNoise.SmoothNoise(Octave));
-		double Amplitude=1,
-			   TotalAmplitude=0;
-		Noise=ZMatrix.Create(Height, Width);
-		for(int Octave=OctaveCount-1; Octave>=0; Octave--){
-			TotalAmplitude+=Amplitude*=.5;
-			for(int i=0; i<Height; i++)
-				for(int j=0; j<Width; j++)
-					Noise.Set(i, j, Noise.Get(i, j)+Noises[Octave].Get(i, j));
-		}
-		for(int i=0; i<Height; i++)
-			for(int j=0; j<Width; j++)
-				Noise.Set(i, j, Noise.Get(i, j)/TotalAmplitude);
-		return self;
-	}
+    private
+    ZPerlin Init(int Seed, int Height, int Width, int OctaveCount){
+        Array<ZMatrix> Noises;
+        ZMatrix BaseNoise=new("ZMatrix").WhiteNoise(Height, Width, Seed);
+        for(int Octave=0; Octave<OctaveCount; Octave++)
+            Noises.Push(BaseNoise.SmoothNoise(Octave));
+        double Amplitude=1,
+               TotalAmplitude=0;
+        Noise=ZMatrix.Create(Height, Width);
+        for(int Octave=OctaveCount-1; Octave>=0; Octave--){
+            TotalAmplitude+=Amplitude*=.5;
+            for(int i=0; i<Height; i++)
+                for(int j=0; j<Width; j++)
+                    Noise.Set(i, j, Noise.Get(i, j)+Noises[Octave].Get(i, j));
+        }
+        for(int i=0; i<Height; i++)
+            for(int j=0; j<Width; j++)
+                Noise.Set(i, j, Noise.Get(i, j)/TotalAmplitude);
+        return self;
+    }
 
-	double Get(int Row, int Column)
-	{return Noise.Get(Row, Column);}
+    double Get(int Row, int Column)
+    {return Noise.Get(Row, Column);}
 }
 
 class ZQuaternion{
-	private
-	double W, X, Y, Z;
+    private
+    double W, X, Y, Z;
 
-	static
-	ZQuaternion Create(double W, double X, double Y, double Z)
-	{return new("ZQuaternion").Init(W, X, Y, Z);}
+    static
+    ZQuaternion Create(double W, double X, double Y, double Z)
+    {return new("ZQuaternion").Init(W, X, Y, Z);}
 
-	static
-	ZQuaternion Zero()
-	{return Create(0, 0, 0, 0);}
+    static
+    ZQuaternion Zero()
+    {return Create(0, 0, 0, 0);}
 
-	static
-	ZQuaternion Identity()
-	{return Create(1, 0, 0, 0);}
+    static
+    ZQuaternion Identity()
+    {return Create(1, 0, 0, 0);}
 
-	static
-	ZQuaternion FromAngleAxis(double Angle, Vector3 Axis){
-		Angle*=.5;
-		Axis=Sin(Angle)*Axis.Unit();
-		return Create(Cos(Angle), Axis.x, Axis.y, Axis.z);
-	}
+    static
+    ZQuaternion FromAngleAxis(double Angle, Vector3 Axis){
+        Angle*=.5;
+        Axis=Sin(Angle)*Axis.Unit();
+        return Create(Cos(Angle), Axis.x, Axis.y, Axis.z);
+    }
 
-	static
-	ZQuaternion FromEulerAngles(double Yaw, double Pitch, double Roll)
-	{return new("ZQuaternion").SetEulerAngles(Yaw, Pitch, Roll);}
+    static
+    ZQuaternion FromEulerAngles(double Yaw, double Pitch, double Roll)
+    {return new("ZQuaternion").SetEulerAngles(Yaw, Pitch, Roll);}
 
-	private
-	ZQuaternion Init(double W, double X, double Y, double Z){
-		self.W=W;
-		self.X=X;
-		self.Y=Y;
-		self.Z=Z;
-		return self;
-	}
+    private
+    ZQuaternion Init(double W, double X, double Y, double Z){
+        self.W=W;
+        self.X=X;
+        self.Y=Y;
+        self.Z=Z;
+        return self;
+    }
 
-	ZQuaternion SetEulerAngles(double Yaw, double Pitch, double Roll)
-	{return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (1, 0, 0))));}
+    ZQuaternion SetEulerAngles(double Yaw, double Pitch, double Roll)
+    {return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMultiply(FromAngleAxis(Pitch, (0, 1, 0))).QMultiply(FromAngleAxis(Roll, (1, 0, 0))));}
 
-	double Length() const
-	{return sqrt(LengthSquared());}
+    double Length() const
+    {return sqrt(LengthSquared());}
 
-	double LengthSquared() const
-	{return W**2+X**2+Y**2+Z**2;}
+    double LengthSquared() const
+    {return W**2+X**2+Y**2+Z**2;}
 
-	ZQuaternion Negative() const
-	{return Create(-W, -X, -Y, -Z);}
+    ZQuaternion Negative() const
+    {return Create(-W, -X, -Y, -Z);}
 
-	ZQuaternion Unit() const
-	{return SMultiply(1/Length());}
+    ZQuaternion Unit() const
+    {return SMultiply(1/Length());}
 
-	ZQuaternion Inverse() const
-	{return Conjugate().SMultiply(1/LengthSquared());}
+    ZQuaternion Inverse() const
+    {return Conjugate().SMultiply(1/LengthSquared());}
 
-	ZQuaternion Conjugate() const
-	{return Create(W, -X, -Y, -Z);}
+    ZQuaternion Conjugate() const
+    {return Create(W, -X, -Y, -Z);}
 
-	ZQuaternion Add(ZQuaternion Other) const
-	{return Create(W+Other.W, X+Other.X, Y+Other.Y, Z+Other.Z);}
+    ZQuaternion Add(ZQuaternion Other) const
+    {return Create(W+Other.W, X+Other.X, Y+Other.Y, Z+Other.Z);}
 
-	ZQuaternion Subtract(ZQuaternion Other) const
-	{return Add(Other.Negative());}
+    ZQuaternion Subtract(ZQuaternion Other) const
+    {return Add(Other.Negative());}
 
-	ZQuaternion SMultiply(double Multiplier) const
-	{return Create(W*Multiplier, X*Multiplier, Y*Multiplier, Z*Multiplier);}
+    ZQuaternion SMultiply(double Multiplier) const
+    {return Create(W*Multiplier, X*Multiplier, Y*Multiplier, Z*Multiplier);}
 
-	ZQuaternion QMultiply(ZQuaternion Other) const
-	{return Create(W*Other.W-X*Other.X-Y*Other.Y-Z*Other.Z,
-				   W*Other.X+X*Other.W+Y*Other.Z-Z*Other.Y,
-				   W*Other.Y+Y*Other.W+Z*Other.X-X*Other.Z,
-				   W*Other.Z+Z*Other.W+X*Other.Y-Y*Other.X);}
+    ZQuaternion QMultiply(ZQuaternion Other) const
+    {return Create(W*Other.W-X*Other.X-Y*Other.Y-Z*Other.Z,
+                   W*Other.X+X*Other.W+Y*Other.Z-Z*Other.Y,
+                   W*Other.Y+Y*Other.W+Z*Other.X-X*Other.Z,
+                   W*Other.Z+Z*Other.W+X*Other.Y-Y*Other.X);}
 
-	double DotProduct(ZQuaternion Other) const
-	{return W*Other.W+X*Other.X+Y*Other.Y+Z*Other.Z;}
+    double DotProduct(ZQuaternion Other) const
+    {return W*Other.W+X*Other.X+Y*Other.Y+Z*Other.Z;}
 
-	ZQuaternion Equal(ZQuaternion Other){
-		W=Other.W;
-		X=Other.X;
-		Y=Other.Y;
-		Z=Other.Z;
-		return self;
-	}
+    ZQuaternion Equal(ZQuaternion Other){
+        W=Other.W;
+        X=Other.X;
+        Y=Other.Y;
+        Z=Other.Z;
+        return self;
+    }
 
-	bool Equals(ZQuaternion Other) const
-	{return ZCalc.Equals(W, Other.W) && ZCalc.Equals(X, Other.X) && ZCalc.Equals(Y, Other.Y) && ZCalc.Equals(Z, Other.Z);}
+    bool Equals(ZQuaternion Other) const
+    {return ZCalc.Equals(W, Other.W) && ZCalc.Equals(X, Other.X) && ZCalc.Equals(Y, Other.Y) && ZCalc.Equals(Z, Other.Z);}
 
-	bool IsZero() const
-	{return ZCalc.Equals(LengthSquared(), 0);}
+    bool IsZero() const
+    {return ZCalc.Equals(LengthSquared(), 0);}
 
-	bool IsIdentity() const
-	{return Equals(Identity());}
+    bool IsIdentity() const
+    {return Equals(Identity());}
 
-	double, double, double GetEulerAngles() const{
-		double SinP=2*(W*Y-Z*X),
-			   YSquared=Y**2,
-			   Pitch=(abs(SinP)>=1)?ZCalc.TransferSign(90, SinP):ASin(SinP);
-		if(abs(Pitch)>=89.9999)return 2*ATan2(X, W), Pitch, 0;
-		return ATan2(2*(W*Z+X*Y), 1-2*(YSquared+Z**2)), Pitch, ATan2(2*(W*X+Y*Z), 1-2*(YSquared+X**2));
-	}
+    double, double, double GetEulerAngles() const{
+        double SinP=2*(W*Y-Z*X),
+               YSquared=Y**2,
+               Pitch=(abs(SinP)>=1)?ZCalc.TransferSign(90, SinP):ASin(SinP);
+        if(abs(Pitch)>=89.9999)return 2*ATan2(X, W), Pitch, 0;
+        return ATan2(2*(W*Z+X*Y), 1-2*(YSquared+Z**2)), Pitch, ATan2(2*(W*X+Y*Z), 1-2*(YSquared+X**2));
+    }
 }
 
 class ZMatrix{
-	private
-	int Columns,
-		Rows;
+    private
+    int Columns,
+        Rows;
 
-	private
-	Array<double> Values;
+    private
+    Array<double> Values;
 
-	static
-	ZMatrix Create(int Rows, int Columns)
-	{return new("ZMatrix").Init(Rows, Columns, false);}
+    static
+    ZMatrix Create(int Rows, int Columns)
+    {return new("ZMatrix").Init(Rows, Columns, false);}
 
-	static
-	ZMatrix Identity(int Size)
-	{return new("ZMatrix").Init(Size, Size, true);}
+    static
+    ZMatrix Identity(int Size)
+    {return new("ZMatrix").Init(Size, Size, true);}
 
-	static
-	ZMatrix WhiteNoise(int Rows, int Columns, int Seed)
-	{return new("ZMatrix").Init(Rows, Columns, true).Noise(Seed);}
+    static
+    ZMatrix WhiteNoise(int Rows, int Columns, int Seed)
+    {return new("ZMatrix").Init(Rows, Columns, true).Noise(Seed);}
 
-	private
-	ZMatrix Init(int Rows, int Columns, bool Ones){
-		if(Rows<=0 || Columns<=0)
-			ZManager.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
-		self.Rows=Rows;
-		self.Columns=Columns;
-		Values.Resize(Rows*Columns);
-		for(int i=0; i<Values.Size(); i++)Values[i]=Ones;
-		return self;
-	}
+    private
+    ZMatrix Init(int Rows, int Columns, bool Ones){
+        if(Rows<=0 || Columns<=0)
+            ZManager.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
+        self.Rows=Rows;
+        self.Columns=Columns;
+        Values.Resize(Rows*Columns);
+        for(int i=0; i<Values.Size(); i++)Values[i]=Ones;
+        return self;
+    }
 
-	double Set(int Row, int Column, double Value)
-	{return Values[Row*Columns+Column]=Value;}
+    double Set(int Row, int Column, double Value)
+    {return Values[Row*Columns+Column]=Value;}
 
-	double Get(int Row, int Column) const
-	{return Values[Row*Columns+Column];}
+    double Get(int Row, int Column) const
+    {return Values[Row*Columns+Column];}
 
-	int Height() const
-	{return Rows;}
+    int Height() const
+    {return Rows;}
 
-	int Width() const
-	{return Columns;}
+    int Width() const
+    {return Columns;}
 
-	ZMatrix Noise(int Seed=int('NoiseyBoi')) const{
-		SetRandomSeed[NoiseyBoi](Seed);
-		ZMatrix Result=ZMatrix.Create(Rows, Columns);
-		for(int i=0; i<Rows; i++)
-			for(int j=0; j<Columns; j++)
-				Result.Set(i, j, Get(i, j)*FRandom[NoiseyBoi](0, 1));
-		return Result;
-	}
+    ZMatrix Noise(int Seed=int('NoiseyBoi')) const{
+        SetRandomSeed[NoiseyBoi](Seed);
+        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        for(int i=0; i<Rows; i++)
+            for(int j=0; j<Columns; j++)
+                Result.Set(i, j, Get(i, j)*FRandom[NoiseyBoi](0, 1));
+        return Result;
+    }
 
-	ZMatrix SmoothNoise(int Octave) const{
-		ZMatrix Result=Create(Rows, Columns);
-		int Period=2**Octave;
-		double Frequency=1/Period;
-		for(int i=0; i<Rows; i++){
-			int i1=i/Period*Period,
-				i2=(i1+Period)%Rows;
-      		float HBlend=(i-i1)*Frequency;
-			for(int j=0; j<Columns; j++){
-				int j1=(j/Period)*Period,
-					j2=(j1+Period)%Columns;
-				Result.Set(i, j, ZCalc.Lerp((j-j1)*Frequency, ZCalc.Lerp(HBlend, Get(i1, j1), Get(i2, j1)), ZCalc.Lerp(HBlend, Get(i1, j2), Get(i2, j2))));
-			}
-		}
-		return Result;
-	}
+    ZMatrix SmoothNoise(int Octave) const{
+        ZMatrix Result=Create(Rows, Columns);
+        int Period=2**Octave;
+        double Frequency=1/Period;
+        for(int i=0; i<Rows; i++){
+            int i1=i/Period*Period,
+                i2=(i1+Period)%Rows;
+              float HBlend=(i-i1)*Frequency;
+            for(int j=0; j<Columns; j++){
+                int j1=(j/Period)*Period,
+                    j2=(j1+Period)%Columns;
+                Result.Set(i, j, ZCalc.Lerp((j-j1)*Frequency, ZCalc.Lerp(HBlend, Get(i1, j1), Get(i2, j1)), ZCalc.Lerp(HBlend, Get(i1, j2), Get(i2, j2))));
+            }
+        }
+        return Result;
+    }
 
-	ZMatrix Add(ZMatrix Other) const{
-		if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
-		ZMatrix Result=ZMatrix.Create(Rows, Columns);
-		for(int Row=0; Row<Rows; Row++)
-			for(int Column=0; Column<Columns; Column++)
-				Result.Set(Row, Column, Get(Row, Column)+Other.Get(Row, Column));
-		return Result;
-	}
+    ZMatrix Add(ZMatrix Other) const{
+        if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        for(int Row=0; Row<Rows; Row++)
+            for(int Column=0; Column<Columns; Column++)
+                Result.Set(Row, Column, Get(Row, Column)+Other.Get(Row, Column));
+        return Result;
+    }
 
-	ZMatrix SMultiply(double Multiplier) const{
-		ZMatrix Result=ZMatrix.Create(Rows, Columns);
-		for(int Row=0; Row<Rows; Row++)
-			for(int Column=0; Column<Columns; Column++)
-				Result.Set(Row, Column, Get(Row, Column)*Multiplier);
-		return Result;
-	}
+    ZMatrix SMultiply(double Multiplier) const{
+        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        for(int Row=0; Row<Rows; Row++)
+            for(int Column=0; Column<Columns; Column++)
+                Result.Set(Row, Column, Get(Row, Column)*Multiplier);
+        return Result;
+    }
 
-	ZMatrix MMultiply(ZMatrix Other) const{
-		if(Columns!=Other.Rows)ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
-		ZMatrix Result=ZMatrix.Create(Rows, Other.Columns);
-		for(int Row=0; Row<Rows; Row++)
-			for(int Column=0; Column<Columns; Column++){
-				double Value;
-				for(int i=0; i<Columns; i++)
-					Value+=Get(Row, i)*Other.Get(i, Column);
-				Result.Set(Row, Column, Value);
-			}
-		return Result;
-	}
+    ZMatrix MMultiply(ZMatrix Other) const{
+        if(Columns!=Other.Rows)ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
+        ZMatrix Result=ZMatrix.Create(Rows, Other.Columns);
+        for(int Row=0; Row<Rows; Row++)
+            for(int Column=0; Column<Columns; Column++){
+                double Value;
+                for(int i=0; i<Columns; i++)
+                    Value+=Get(Row, i)*Other.Get(i, Column);
+                Result.Set(Row, Column, Value);
+            }
+        return Result;
+    }
 }
 
 class ZLeftInterpolator{
-	protected
-	int CurrentValue;
+    protected
+    int CurrentValue;
 
-	static
-	ZLeftInterpolator Create(int DesiredValue){
-		ZLeftInterpolator Interpolator = new("ZLeftInterpolator");
-		Interpolator.Reset(DesiredValue);
-		return Interpolator;
-	}
+    static
+    ZLeftInterpolator Create(int DesiredValue){
+        ZLeftInterpolator Interpolator = new("ZLeftInterpolator");
+        Interpolator.Reset(DesiredValue);
+        return Interpolator;
+    }
 
-	void Reset(int DesiredValue)
-	{CurrentValue=DesiredValue;}
+    void Reset(int DesiredValue)
+    {CurrentValue=DesiredValue;}
 
-	//This must be called peroiodically in the status bar's Tick function.
-	//Do not call this in the Draw function because that may skip some frames!
-	void Update(int DesiredValue){
-		for(int i=9; i>=0; i--){
-			int Place=10**i;
-			if(CurrentValue/Place>DesiredValue/Place){
-				CurrentValue-=Place;
-				break;
-			}else if(CurrentValue/Place<DesiredValue/Place){
-				CurrentValue+=Place;
-				break;
-			}
-		}
-	}
+    //This must be called peroiodically in the status bar's Tick function.
+    //Do not call this in the Draw function because that may skip some frames!
+    void Update(int DesiredValue){
+        for(int i=9; i>=0; i--){
+            int Place=10**i;
+            if(CurrentValue/Place>DesiredValue/Place){
+                CurrentValue-=Place;
+                break;
+            }else if(CurrentValue/Place<DesiredValue/Place){
+                CurrentValue+=Place;
+                break;
+            }
+        }
+    }
 
-	//This must be called in the draw function to retrieve the value for output.
-	int GetValue() const
-	{return CurrentValue;}
+    //This must be called in the draw function to retrieve the value for output.
+    int GetValue() const
+    {return CurrentValue;}
 }

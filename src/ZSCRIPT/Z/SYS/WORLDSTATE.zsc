@@ -1,29 +1,29 @@
 struct ZWorldState{
-	//Player
-	ZMarine		Player;
-	PlayerInfo	PlayerInfo;
+    //Player
+    ZMarine        Player;
+    PlayerInfo    PlayerInfo;
 }
 
 extend
 class ZManager{
-	ZWorldState WorldState;
+    ZWorldState WorldState;
 
-	static
-	void PlayerSetup(PlayerEvent e){
-		Instance().WorldState.PlayerInfo=Players[e.PlayerNumber];
-		Instance().WorldState.Player=ZMarine(Instance().WorldState.PlayerInfo.mo);
-	}
+    static
+    void PlayerSetup(PlayerEvent e){
+        Instance().WorldState.PlayerInfo=Players[e.PlayerNumber];
+        Instance().WorldState.Player=ZMarine(Instance().WorldState.PlayerInfo.mo);
+    }
 
-	static
-	void WorldLoaded(WorldEvent e){
-		ZMarine Player=Instance().WorldState.Player;
-		Player.MStats=ZMStats.Instance();
-		String Checksum=Level.GetChecksum();
-		int Seed=0;
-		for(int i=0; i<Checksum.Length(); i++)
-			Seed^=Checksum.CharCodeAt(i)<<8*(i%4);
-		Player.YawShake=ZPerlin.Create(Seed, 1000, 3);
-		Player.PitchShake=ZPerlin.Create(Seed+1, 1000, 3);
-		Player.RollShake=ZPerlin.Create(Seed+2, 1000, 3);
-	}
+    static
+    void WorldLoaded(WorldEvent e){
+        ZMarine Player=Instance().WorldState.Player;
+        Player.MStats=ZMStats.Instance();
+        String Checksum=Level.GetChecksum();
+        int Seed=0;
+        for(int i=0; i<Checksum.Length(); i++)
+            Seed^=Checksum.CharCodeAt(i)<<8*(i%4);
+        Player.YawShake=ZPerlin.Create(Seed, 1000, 3);
+        Player.PitchShake=ZPerlin.Create(Seed+1, 1000, 3);
+        Player.RollShake=ZPerlin.Create(Seed+2, 1000, 3);
+    }
 }

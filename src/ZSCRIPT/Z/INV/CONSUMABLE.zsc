@@ -1,4 +1,4 @@
 class Consumable:Item{
-	virtual
-	bool, String Consume(){}
+    virtual
+    bool, String Consume(){}
 }

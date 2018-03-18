@@ -1,96 +1,96 @@
 class ZManager:Thinker{
-	private
-	ZItems Items;
+    private
+    ZItems Items;
 
-	private
-	ZWeapons Weapons;
+    private
+    ZWeapons Weapons;
 
-	private
-	ZDamageTypes DamageTypes;
+    private
+    ZDamageTypes DamageTypes;
 
-	private
-	Parser_Zinf ParserZinf;
+    private
+    Parser_Zinf ParserZinf;
 
-	static
-	private
-	ZManager Instance(ZStatNum STAT_NUM=STAT_ZDATA){
-		ThinkerIterator it=ThinkerIterator.Create("ZManager", STAT_NUM);
-		ZManager p=ZManager(it.Next());
-		if(!p)p=new("ZManager").Init();
-		return p;
-	}
+    static
+    private
+    ZManager Instance(ZStatNum STAT_NUM=STAT_ZDATA){
+        ThinkerIterator it=ThinkerIterator.Create("ZManager", STAT_NUM);
+        ZManager p=ZManager(it.Next());
+        if(!p)p=new("ZManager").Init();
+        return p;
+    }
 
-	private
-	ZManager Init(){
-		ChangeStatNum(STAT_ZDATA);
-		Items=ZItems(new("ZItems").Init());
-		Weapons=ZWeapons(new("ZWeapons").Init());
-		ParserZinf=Parser_Zinf.Create("ZCONFIG");
-		//For registration
-		int i=1; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
-		//DamageTypes
-		DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
-		until("N/@"==(LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
-			for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
-				Row=ParserTSV.GetRow(j);
-				//Flags Management
-				Array<String> Flags; Flags.Clear(); int ActualFlags=0;
-				Row.Get(5).Split(Flags, "|", TOK_SKIPEMPTY);
-				for(int k=0; k<Flags.Size(); k++)
-					if(Flags[k]~=="DMG_ZONE")
-						ActualFlags|=DMG_ZONE;
-				//Registration
-				DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetDouble(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), ActualFlags));
-			}
-		}
-		return self;
-	}
+    private
+    ZManager Init(){
+        ChangeStatNum(STAT_ZDATA);
+        Items=ZItems(new("ZItems").Init());
+        Weapons=ZWeapons(new("ZWeapons").Init());
+        ParserZinf=Parser_Zinf.Create("ZCONFIG");
+        //For registration
+        int i=1; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
+        //DamageTypes
+        DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
+        until("N/@"==(LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
+            for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
+                Row=ParserTSV.GetRow(j);
+                //Flags Management
+                Array<String> Flags; Flags.Clear(); int ActualFlags=0;
+                Row.Get(5).Split(Flags, "|", TOK_SKIPEMPTY);
+                for(int k=0; k<Flags.Size(); k++)
+                    if(Flags[k]~=="DMG_ZONE")
+                        ActualFlags|=DMG_ZONE;
+                //Registration
+                DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetDouble(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), ActualFlags));
+            }
+        }
+        return self;
+    }
 
-	static
-	clearscope
-	void Debug(String Output, Name CVarName)
-	{if(CVar.FindCVar(CVarName).GetBool())console.printf(Output);}
+    static
+    clearscope
+    void Debug(String Output, Name CVarName)
+    {if(CVar.FindCVar(CVarName).GetBool())console.printf(Output);}
 
-	static
-	clearscope
-	void Error(String Error, ZErrorLevel Level){
-		switch(Level){
-			case ERR_INFO:break;
-			case ERR_WARNING:
-				Console.PrintF("\cx%s", Error);
-				break;
-			case ERR_ERROR:
-				Console.PrintF("\cr%s", Error);
-				break;
-			case ERR_FATAL:
-				ThrowAbortException("\cy%s", Error);
-				break;
-			default:
-				ThrowAbortException("Unclassified Error: '\cw%s'", Error);
-				break;
-		}
-	}
+    static
+    clearscope
+    void Error(String Error, ZErrorLevel Level){
+        switch(Level){
+            case ERR_INFO:break;
+            case ERR_WARNING:
+                Console.PrintF("\cx%s", Error);
+                break;
+            case ERR_ERROR:
+                Console.PrintF("\cr%s", Error);
+                break;
+            case ERR_FATAL:
+                ThrowAbortException("\cy%s", Error);
+                break;
+            default:
+                ThrowAbortException("Unclassified Error: '\cw%s'", Error);
+                break;
+        }
+    }
 
-	static
-	void StatNum(ZStatNum STAT_NUM1=STAT_ZDATA, ZStatNum STAT_NUM2=STAT_ZDATA){
-		ZManager Manager;
-		if(Manager=Instance(STAT_NUM1))
-			Manager.ChangeStatNum(STAT_NUM2);
-	}
+    static
+    void StatNum(ZStatNum STAT_NUM1=STAT_ZDATA, ZStatNum STAT_NUM2=STAT_ZDATA){
+        ZManager Manager;
+        if(Manager=Instance(STAT_NUM1))
+            Manager.ChangeStatNum(STAT_NUM2);
+    }
 
-	static
-	Parser_Zinf Config()
-	{return Instance().ParserZinf;}
+    static
+    Parser_Zinf Config()
+    {return Instance().ParserZinf;}
 
-	static
-	Item Item(Name Name)
-	{return Instance().Items.Get(Name);}
+    static
+    Item Item(Name Name)
+    {return Instance().Items.Get(Name);}
 
-	static
-	ZWeapon Weapon(Name Name)
-	{return Instance().Weapons.Get(Name);}
+    static
+    ZWeapon Weapon(Name Name)
+    {return Instance().Weapons.Get(Name);}
 
-	static
-	ZDamageType DamageType(Name Name)
-	{return Instance().DamageTypes.Get(Name);}
+    static
+    ZDamageType DamageType(Name Name)
+    {return Instance().DamageTypes.Get(Name);}
 }
