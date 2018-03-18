@@ -37,9 +37,9 @@ class ZPlayerBase{
     void HandleViewTilt(){
         if(Player.OnGround){
             //Walking
-            PassiveRoll+=Sin(RunOscillation+=5*ZCalc.PI)*(Vel dot ViewVector)/50.;
+            PassiveRoll+=Sin(RunOscillation+=10)*(Vel dot ViewVector)/50.;
             //Strafing
-            PassiveRoll+=(Vel.XY dot SideVector)/25.;
+            PassiveRoll+=Clamp((Vel.XY dot SideVector)/7.5, -1, 1);
         }
         PassiveRoll*=(abs(PassiveRoll)>.00001)?.75:0;
     }
