@@ -18,17 +18,17 @@ class ZPlayerBase{
 
     override
     void HandleMovement(){
-        let Player = self.Player;
+        let Player=self.Player;
         //[RH] Check for fast turn around
         if((Player.cmd.buttons & ~Player.oldbuttons) & BT_TURN180)
-            Player.turnticks = TURN180_TICKS;
+            Player.turnticks=TURN180_TICKS;
         //Handle Movement
         if(ReactionTime)ReactionTime--;
         else{
             UpdateMovementStats();
             MovePlayer();
             CheckMoveUpDown();
-            CheckDash();
+            MStats.HandleMovement(ZMarine(self));
             CheckJump();
             //Crouch-jumping and reduce crouch step height
             if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?14:18;
@@ -123,82 +123,27 @@ class ZPlayerBase{
     double CheckSprint(){
         if(!Player.OnGround)return 1;
         //Sprinting
-        ZArmor ChestPiece=MStats.Armor[AMR_TORSO];
-        if((ChestPiece.Info & AMR_THRUST) && (~Buttons & BT_BACK) &&
+        if((~Buttons & BT_BACK) &&
            (Buttons & BT_SPEED) &&
            (Buttons & BT_FORWARD) &&
-           (MStats.Energy>MStats.SprintCost) &&
            (Health>RunHealth)){
             MStats.Recharger=0;
-            MStats.Energy-=MStats.SprintCost;
-            return MStats.ThrustPower/3.5;
+            return MStats.SprintMultiplier;
         //Backstep
-        }else if((~ChestPiece.Info & AMR_THRUST) && (Buttons & BT_BACK))return SideMove1;
+        }else if(Buttons & BT_BACK)return SideMove1;
         else return 1;
-    }
-
-    virtual
-    void CheckDash(){
-        //Dash
-        if(DashCountdown>0)
-            DashCountdown--;
-        else{
-            if(DashOppurt>0)DashOppurt--;
-            else CurrentDashButton=666;
-            static const int DashKeys[]={
-                BT_FORWARD,
-                BT_BACK,
-                BT_MOVELEFT,
-                BT_MOVERIGHT
-            };
-            for(int i=Player.OnGround; i<DashKeys.Size(); i++){
-                if(((NewButtons & DashKeys[i]) ||
-                   ((NewButtons & BT_SPEED) && (Vel.Z!=0 || (~Buttons & BT_FORWARD)) && (Buttons & DashKeys[i]))) &&
-                   (MStats.Energy>MStats.DashCost)){
-                    if((CurrentDashButton==DashKeys[i] && DashOppurt>0) || ((Buttons & ~OldButtons) & BT_SPEED)){
-                        MStats.Energy-=MStats.DashCost;
-                        int MidAirBoost=MStats.JumpPower,
-                            Power=MStats.ThrustPower*ZCalc.Alternate(i);
-                        if(Vel.Z==0){
-                            MidAirBoost=0;
-                            Power*=2;
-                        }
-                        Vel.xy+=Power*((i>1)?-SideVector:ViewVector.xy);
-                        Vel.z+=MidAirBoost;
-                        DashCountdown=MStats.DashCooldown;
-                        DashOppurt=0;
-                    }else{
-                        CurrentDashButton=DashKeys[i];
-                        DashOppurt=MStats.DashTimer;
-                    }
-                    return;
-                }
-            }
-        }
     }
 
     override
     void CheckJump(){
-        ZArmor Boots=MStats.Armor[AMR_FEET];
-        if(DashCountdown>0)DashCountdown--;
-        else if(DashOppurt>0)DashOppurt--;
-        else CurrentDashButton=666;
         //[RH] check for jump
         if(Buttons & BT_JUMP){
-            if((Boots.Info & AMR_THRUST)  && DashCountdown==0 && (~OldButtons & BT_JUMP) && MStats.Energy>MStats.DashCost){
-                if(DashOppurt>0 || !Player.OnGround){
-                    MStats.Energy-=MStats.DashCost;
-                    Vel.Z+=MStats.ThrustPower;
-                    DashCountdown=MStats.DashCooldown;
-                    DashOppurt=0;
-                }else if(Player.OnGround)DashOppurt=MStats.DashTimer;
-            }
             if(WaterLevel>=2)Vel.Z=4*Speed;
             else if(bNoGravity)Vel.Z=3.;
             else if(Level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics==0){
                 double JumpVelZ=MStats.JumpPower*35/TICRATE,
                        JumpFac=0;
-                CrouchingJump=Buttons & BT_CROUCH;
+                CrouchingJump=Player.CrouchOffset!=0;
 
                 //[BC] If the player has the high jump power, double his jump velocity.
                 //(actually, pick the best factors from all active items.)
@@ -220,7 +165,6 @@ class ZPlayerBase{
         UserCmd cmd=Player.cmd;
         bool CrouchBtn=cmd.buttons & BT_CROUCH;
 
-        if(CrouchBtn)cmd.buttons&=~BT_JUMP;
         if(CanCrouch() && Player.Health>0 && level.IsCrouchingAllowed())
             if(!TotallyFrozen){
                 int CrouchDir=Player.Crouching;

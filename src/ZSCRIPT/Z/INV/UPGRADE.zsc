@@ -1,0 +1,32 @@
+class ZArmorUpgrade play{
+    int Cost,
+        MaxHealth,
+        MaxPlate,
+        PlateAbsorption,
+        MaxEnergy;
+
+    virtual
+    ZArmorUpgrade Init()
+    {return null;}
+
+    virtual
+    void Tick(){}
+}
+
+class ZMArmorUpgrade:ZArmorUpgrade{
+    int MaxShield,
+        MaxMagnet,
+        ShieldDivider,
+        MaxLight;
+
+    ZMArmorSlot Slot;
+
+    virtual
+    ZMArmorUpgrade Init()
+    {return null;}
+
+    virtual
+    void HandleMovement(ZMarine Player, PlayerInfo PlayerInfo){}
+}
+
+#include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

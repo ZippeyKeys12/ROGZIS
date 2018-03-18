@@ -1,0 +1,48 @@
+class ZMAU_BoostDash:ZMArmorUpgrade{
+    transient
+    int DashCountdown;
+
+    int DashCost,
+        DashPower,
+        DashCooldown;
+
+    override
+    ZMArmorUpgrade Init(){
+        Parser_Zinf Config=ZManager.Config();
+        DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
+        DashPower=Config.GetInt("ABILITIES", "iDASH_POWER");
+        DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
+        return self;
+    }
+
+    override
+    void Tick()
+    {if(DashCountdown>0)DashCountdown--;}
+
+    override
+    void HandleMovement(ZMarine Player, PlayerInfo PlayerInfo){
+        if(DashCountdown==0){
+            static const int DashKeys[]={
+                BT_FORWARD,
+                BT_BACK,
+                BT_MOVELEFT,
+                BT_MOVERIGHT
+            };
+            ZMStats Stats=Player.MStats;
+            for(int i=PlayerInfo.OnGround; i<DashKeys.Size(); i++){
+                if((Player.NewButtons & BT_SPEED) && (!PlayerInfo.OnGround || (~Player.Buttons & BT_FORWARD)) && (Player.Buttons & DashKeys[i]) &&
+                   (Stats.Energy>DashCost)){
+                    if(Player.NewButtons & BT_SPEED){
+                        Stats.Energy-=DashCost;
+                        int MidAirBoost=DashPower*!PlayerInfo.OnGround,
+                            Power=(PlayerInfo.OnGround?2:1)*DashPower*ZCalc.Alternate(i);
+                        Player.Vel.xy+=Power*((i>1)?-Player.SideVector:Player.ViewVector.xy);
+                        Player.Vel.z+=MidAirBoost;
+                        DashCountdown=Stats.DashCooldown;
+                    }
+                    return;
+                }
+            }
+        }
+    }
+}

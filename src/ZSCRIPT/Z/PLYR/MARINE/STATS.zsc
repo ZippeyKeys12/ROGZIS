@@ -40,6 +40,7 @@ class ZMStats:Thinker{
         LightRechargeAmount,
 
         SprintCost,
+        SprintMultiplier,
         ThrustPower,
         DashCost,
         DashTimer,
@@ -57,7 +58,7 @@ class ZMStats:Thinker{
            ActualRoll;
 
     ZArmorInfo Info;
-    ZArmor Armor[5];
+    Array<ZMArmorUpgrade> Upgrades;
 
     ZQuaternion Orientation;
 
@@ -84,16 +85,27 @@ class ZMStats:Thinker{
         EnergyRechargeAmount=20;
         IdleRechargeBonus=2;
         SprintCost=Config.GetInt("ABILITIES", "iSPRINT_COST");
+        SprintMultiplier=Config.GetDouble("ABILITIES", "dSPRINT_MULTIPLIER");
         ThrustPower=Config.GetInt("ABILITIES", "iTHRUST_POWER");
         DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
         DashTimer=Config.GetInt("ABILITIES", "iDASH_TIMER");;
         DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
         Info=AMR_ENERGY;
-        Armor[AMR_TORSO]=ZArmor.Create(AMR_THRUST);
-        Armor[AMR_HANDS]=ZArmor.Create(AMR_THRUST);
-        Armor[AMR_LEGS]=ZArmor.Create(AMR_THRUST);
-        Armor[AMR_FEET]=ZArmor.Create(AMR_THRUST);
+        Upgrades.Push(new("ZMAU_BoostJump").Init());
+        Upgrades.Push(new("ZMAU_BoostDash").Init());
         return self;
+    }
+
+    virtual
+    void MArmorTick(){
+        for(int i=0; i<Upgrades.Size(); i++)
+            Upgrades[i].Tick();
+    }
+
+    virtual
+    void HandleMovement(ZMarine Player){
+        for(int i=0; i<Upgrades.Size(); i++)
+            Upgrades[i].HandleMovement(Player, Player.Player);
     }
 
     static
