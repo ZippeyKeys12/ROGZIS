@@ -6,7 +6,7 @@ class ZMAU_LongFall:ZMArmorUpgrade{
     void Tick(ZPlayer Player){
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
-        if(Marine.Vel.Z<-25){
+        if(Marine.Vel.Z<-20){
             FLineTraceData Data;
             Marine.Trace(Data, 128, 90);
             if(Data.Distance+Marine.Vel.Z<=30)
