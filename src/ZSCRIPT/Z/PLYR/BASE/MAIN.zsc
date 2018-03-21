@@ -7,24 +7,30 @@ class ZPlayerBase:PlayerPawn{
         SameButtons;
 
     transient
+    double ActiveYaw,
+           ActivePitch,
+           ActiveRoll,
+           PassiveRoll,
+           Shake,
+           ShakeLevel,
+           RunOscillation;
+
+    transient
+    Vector2 SideVector;
+
+    transient
+    Vector3 ViewVector;
+
+    transient
     Actor AimTarget;
 
     transient
-    ZMStats MStats;
+    ZPerlin YawShake,
+            PitchShake,
+            RollShake;
 
     Default{
         Species "Player";
-    }
-
-    override
-    void PostBeginPlay(){
-        super.PostBeginPlay();
-        MaxHealth=MStats.MaxHealth;
-        //View
-        ShakeLevel=1;
-        double XYLength=Cos(MStats.ActualPitch=Pitch);
-        MStats.Orientation=ZQuaternion.FromAngleAxis(MStats.ActualRoll=Roll=0, ViewVector=(Cos(MStats.ActualYaw=Angle)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch)));
-        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
     }
 
     virtual
@@ -33,20 +39,30 @@ class ZPlayerBase:PlayerPawn{
 
     override
     void Tick(){
-        //Handle Voodoo Dolls
         super.Tick();
+        //Handle Voodoo Dolls
         if(!player || !player.mo || player.mo!=self || Health<=0)return;
-        //Actual Stuff
-        MStats.Health=Health;
-        RecordInput();
-        //CheckDash();
-        SetAimTarget();
-        MStats.MArmorTick();
-        SoftenFall();
-        HandleView();
-        CheckCollisionEffects();
-        MStats.Recharge(self);
+        PreTick();
+        RealTick();
+        PostTick();
     }
+
+    virtual
+    void PreTick(){
+        UpdateStats();
+        RecordInput();
+        SetAimTarget();
+    }
+
+    virtual
+    void RealTick(){}
+
+    virtual
+    void PostTick()
+    {CheckCollisionEffects();}
+
+    virtual
+    void UpdateStats(){}
 
     virtual
     void RecordInput(){
@@ -59,29 +75,13 @@ class ZPlayerBase:PlayerPawn{
     virtual
     void SetAimTarget(){
         FLineTraceData Data;
-        Trace(Data, 2048, MStats.ActualPitch);
+        Trace(Data, 2048, Pitch);
         AimTarget=Data.HitActor;
     }
 
     virtual
-    void HandleView(){
-        HandleScreenShake();
-        HandleViewTilt();
-        HandleViewChange();
-        HandleOrientation();
-    }
-
-    virtual
     bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-    {return LineTrace(MStats.ActualYaw, Distance, Pitch, Data: Data);}
-
-    override
-    int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
-        if(self is "ZMarine")MStats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
-        Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
-        return Damage;
-    }
+    {return LineTrace(Angle, Distance, Pitch, Data: Data);}
 }
 
-#include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"
 #include "ZSCRIPT/Z/PLYR/BASE/MOVEMENT.zsc"

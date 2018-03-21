@@ -25,10 +25,9 @@ class ZPlayerBase{
         //Handle Movement
         if(ReactionTime)ReactionTime--;
         else{
-            UpdateMovementStats();
             MovePlayer();
             CheckMoveUpDown();
-            MStats.HandleMovement(ZMarine(self));
+            HandleArmorMovement();
             CheckJump();
             //Crouch-jumping and reduce crouch step height
             if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?14:18;
@@ -39,13 +38,7 @@ class ZPlayerBase{
     }
 
     virtual
-    void UpdateMovementStats(){
-        ForwardMove1=MStats.ForwardMove1;
-        ForwardMove2=MStats.ForwardMove2;
-        SideMove1=MStats.SideMove1;
-        SideMove2=MStats.SideMove2;
-        ViewBob=MStats.ViewBob;
-    }
+    void HandleArmorMovement(){}
 
     override
     void MovePlayer(){
@@ -77,7 +70,7 @@ class ZPlayerBase{
             BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
             if (!Player.OnGround && !bNoGravity && !waterlevel){
                 //[RH] allow very limited Movement if not on ground.
-                double AirControl=Min(.5*(MStats.ThrustPower/(MStats.ThrustPower+1.)), 1.25);
+                double AirControl=GetAirControl();
                 MoveFactor*=AirControl;
                 BobFactor*=AirControl;
             }
@@ -120,19 +113,12 @@ class ZPlayerBase{
     }
 
     virtual
-    double CheckSprint(){
-        if(!Player.OnGround)return 1;
-        //Sprinting
-        if((~Buttons & BT_BACK) &&
-           (Buttons & BT_SPEED) &&
-           (Buttons & BT_FORWARD) &&
-           (Health>RunHealth)){
-            MStats.Recharger=0;
-            return MStats.SprintMultiplier;
-        //Backstep
-        }else if(Buttons & BT_BACK)return SideMove1;
-        else return 1;
-    }
+    double GetAirControl()
+    {return 1;}
+
+    virtual
+    double CheckSprint()
+    {return 1;}
 
     override
     void CheckJump(){
@@ -141,7 +127,7 @@ class ZPlayerBase{
             if(WaterLevel>=2)Vel.Z=4*Speed;
             else if(bNoGravity)Vel.Z=3.;
             else if(Level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics==0){
-                double JumpVelZ=MStats.JumpPower*35/TICRATE,
+                double JumpVelZ=GetJumpVelocity()*35/TICRATE,
                        JumpFac=0;
                 CrouchingJump=Player.CrouchOffset!=0;
 
@@ -160,6 +146,10 @@ class ZPlayerBase{
         }
     }
 
+    virtual
+    double GetJumpVelocity()
+    {return 0;}
+
     override
     void CheckCrouch(bool totallyfrozen){
         UserCmd cmd=Player.cmd;
@@ -177,20 +167,6 @@ class ZPlayerBase{
             }
         else Player.Uncrouch();
         Player.CrouchOffset=-ViewHeight*(1-Player.CrouchFactor);
-    }
-
-    virtual
-    void SoftenFall(){
-        if(Vel.Z<-25){
-            FLineTraceData Data;
-            Trace(Data, 128, 90);
-            if(Data.Distance+Vel.Z<=30)
-                if (MidAir){
-                    MidAir=false;
-                    LastVel.Z=Vel.Z=Min(Vel.Z+MStats.ThrustPower, 0);
-                }
-            else MidAir=true;
-        }
     }
 
     virtual

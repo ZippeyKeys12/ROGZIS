@@ -1,4 +1,7 @@
 class ZMarine:ZPlayerBase{
+    transient
+    ZMStats MStats;
+
     Default{
         //Descriptors
         Player.DisplayName "Marine";
@@ -14,13 +17,63 @@ class ZMarine:ZPlayerBase{
 
     override
     void PostBeginPlay(){
-        super.PostBeginPlay();    
-        Parser_Zinf Config=ZManager.Config();
-        //Player
-            //Health
-            A_SetHealth(Config.GetInt("HEALTH","iSTART_HEALTH"));
-            MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
-            RunHealth=floor(Config.GetInt("HEALTH","iRUN_HEALTH")*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
+        super.PostBeginPlay();
+        MaxHealth=MStats.MaxHealth;
+        //View
+        ShakeLevel=1;
+        double XYLength=Cos(MStats.ActualPitch=Pitch);
+        MStats.ActualRoll=Roll=0;
+        ViewVector=(Cos(MStats.ActualYaw=Angle)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch));
+        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+    }
+
+    override
+    void PreTick(){
+        super.PreTick();
+        MStats.ArmorTick(self);
+        MStats.Recharge(self);
+    }
+
+    override
+    void PostTick(){
+        HandleView();
+        super.PostTick();
+    }
+
+    override
+    void UpdateStats(){
+        A_SetHealth(MStats.Health);
+        MaxHealth=MStats.MaxHealth;
+        RunHealth=MStats.RunHealth;
+        ForwardMove1=MStats.ForwardMove1;
+        ForwardMove2=MStats.ForwardMove2;
+        SideMove1=MStats.SideMove1;
+        SideMove2=MStats.SideMove2;
+        ViewBob=MStats.ViewBob;
+    }
+
+    override
+    void SetAimTarget(){
+        FLineTraceData Data;
+        Trace(Data, 2048, MStats.ActualPitch);
+        AimTarget=Data.HitActor;
+    }
+
+    override
+    bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
+    {return LineTrace(MStats.ActualYaw, Distance, Pitch, Data: Data);}
+
+    override
+    int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
+        Damage=MStats.ModifyDamage(Inflictor, Source, Damage, Mod, Flags, Angle);
+        Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags|DMG_NO_ARMOR|DMG_NO_FACTOR, Angle);
+        return Damage;
+    }
+
+    override
+    int TakeSpecialDamage(Actor Inflictor, Actor Source, int Damage, Name DamageType){
+        MStats.Health-=Damage;
+        return 0;
     }
 
     override
@@ -28,5 +81,6 @@ class ZMarine:ZPlayerBase{
     {console.printf("WIP");}
 }
 
+#include "ZSCRIPT/Z/PLYR/MARINE/VIEW.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/STATS.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/MOVEMENT.zsc"

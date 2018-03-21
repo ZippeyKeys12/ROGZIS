@@ -1,13 +1,39 @@
 extend
 class ZMarine{
     override
+    void HandleArmorMovement()
+    {MStats.HandleMovement(ZMarine(self));}
+
+    override
+    double GetAirControl()
+    {return Min(.5*(MStats.ThrustPower/(MStats.ThrustPower+1.)), 1.25);}
+
+    override
+    double CheckSprint(){
+        if(!Player.OnGround)return 1;
+        //Sprinting
+        if((~Buttons & BT_BACK) &&
+           (Buttons & BT_SPEED) &&
+           (Buttons & BT_FORWARD) &&
+           (Health>=RunHealth)){
+            MStats.Recharger=0;
+            return MStats.SprintMultiplier;
+        //Backstep
+        }else if(Buttons & BT_BACK)return SideMove1;
+        else return 1;
+    }
+
+    override
+    double GetJumpVelocity()
+    {return MStats.JumpPower;}
+
+    override
     bool CanCollideWith(Actor Other, bool Passive){
         bool Result=super.CanCollideWith(Other, Passive);
         if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
             Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
             //TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
             Vel.xy=Vel.xy dot SideVector*SideVector;
-            CheckCollisionEffects();
             bSkullfly=false;
         }
         return Result;

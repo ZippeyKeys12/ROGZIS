@@ -7,6 +7,7 @@ class ZMStats:Thinker{
 
     int Health,
         MaxHealth,
+        RunHealth,
 
         Plate,
         MaxPlate,
@@ -60,8 +61,6 @@ class ZMStats:Thinker{
     ZArmorInfo Info;
     Array<ZMArmorUpgrade> Upgrades;
 
-    ZQuaternion Orientation;
-
     static
     ZMStats Instance(ZStatNum STAT_NUM=STAT_ZDATA){
         ThinkerIterator it=ThinkerIterator.Create("ZMStats", STAT_NUM);
@@ -79,6 +78,9 @@ class ZMStats:Thinker{
         SideMove2=(SideMove1=.52)/2;
         ViewBob=ForwardMove1;
         JumpPower=7;
+        Health=Config.GetInt("HEALTH","iSTART_HEALTH");
+        MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
+        RunHealth=floor(MaxHealth*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
         MaxPlate=Plate=100;
         MaxEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
         EnergyRechargeRate=MaxEnergy/10;
@@ -97,9 +99,9 @@ class ZMStats:Thinker{
     }
 
     virtual
-    void MArmorTick(){
+    void ArmorTick(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)
-            Upgrades[i].Tick();
+            Upgrades[i].Tick(Player);
     }
 
     virtual

@@ -1,25 +1,13 @@
 extend
-class ZPlayerBase{
-    protected
-    transient
-    double ActiveYaw,
-           ActivePitch,
-           ActiveRoll,
-           PassiveRoll,
-           Shake,
-           ShakeLevel,
-           RunOscillation;
+class ZMarine{
 
-    transient
-    Vector2 SideVector;
-
-    transient
-    Vector3 ViewVector;
-
-    transient
-    ZPerlin YawShake,
-            PitchShake,
-            RollShake;
+    virtual
+    void HandleView(){
+        HandleScreenShake();
+        HandleViewTilt();
+        HandleViewChange();
+        HandleOrientation();
+    }
 
     virtual
     void HandleScreenShake(){
@@ -43,15 +31,12 @@ class ZPlayerBase{
     virtual
     void HandleViewChange(){
         UserCmd cmd=Player.cmd;
-        MStats.Orientation.SetEulerAngles(MStats.ActualYaw+cmd.Yaw*(360/65536.), Clamp(MStats.ActualPitch-cmd.Pitch*(360/65536.), -90, 90), MStats.ActualRoll);
+        MStats.ActualYaw+=cmd.Yaw*(360/65536.);
+        MStats.ActualPitch=Clamp(MStats.ActualPitch-cmd.Pitch*(360/65536.), -90, 90);
     }
 
     virtual
     void HandleOrientation(){
-        //Sync Camera with ZQuaternion
-        MStats.Orientation=MStats.Orientation.Unit();
-        [MStats.ActualYaw, MStats.ActualPitch, MStats.ActualRoll]=MStats.Orientation.GetEulerAngles();
-        MStats.ActualYaw=abs(Angle)>=179.9999?MStats.ActualYaw:ZCalc.TransferSign(MStats.ActualYaw, Angle);
         A_SetAngle(MStats.ActualYaw+ActiveYaw, SPF_INTERPOLATE);
         A_SetPitch(MStats.ActualPitch+ActivePitch, SPF_INTERPOLATE);
         A_SetRoll(MStats.ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
