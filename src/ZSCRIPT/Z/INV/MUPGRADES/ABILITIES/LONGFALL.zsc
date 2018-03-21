@@ -1,0 +1,20 @@
+class ZMAU_LongFall:ZMArmorUpgrade{
+    transient
+    bool MidAir;
+
+    override
+    void Tick(ZPlayerBase Player){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        if(Marine.Vel.Z<-25){
+            FLineTraceData Data;
+            Marine.Trace(Data, 128, 90);
+            if(Data.Distance+Marine.Vel.Z<=30)
+                if (MidAir){
+                    MidAir=false;
+                    Marine.LastVel.Z=Marine.Vel.Z=Min(Marine.Vel.Z+Marine.MStats.ThrustPower, 0);
+                }
+            else MidAir=true;
+        }
+    }
+}
