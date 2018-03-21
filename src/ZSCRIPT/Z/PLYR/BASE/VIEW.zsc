@@ -37,10 +37,12 @@ class ZPlayer{
 
     virtual
     void HandleOrientation(){
+        Angle-=.01;
+        Pitch-=.01;
+        Roll-=.01;
         A_SetAngle(Stats.ActualYaw+ActiveYaw, SPF_INTERPOLATE);
         A_SetPitch(Stats.ActualPitch+ActivePitch, SPF_INTERPOLATE);
         A_SetRoll(Stats.ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
-        
     }
 
     virtual
