@@ -6,6 +6,7 @@ class ZPlayer{
         HandleViewTilt();
         HandleViewChange();
         HandleOrientation();
+        HandleDirectionVectors();
     }
 
     virtual
@@ -39,7 +40,11 @@ class ZPlayer{
         A_SetAngle(Stats.ActualYaw+ActiveYaw, SPF_INTERPOLATE);
         A_SetPitch(Stats.ActualPitch+ActivePitch, SPF_INTERPOLATE);
         A_SetRoll(Stats.ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
-        //Direction Vectors
+        
+    }
+
+    virtual
+    void HandleDirectionVectors(){
         double XYLength=Cos(Stats.ActualPitch);
         ViewVector=(Cos(Stats.ActualYaw)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch));
         SideVector=ZCalc.V2Rotate(ViewVector.XY, -90).Unit();
