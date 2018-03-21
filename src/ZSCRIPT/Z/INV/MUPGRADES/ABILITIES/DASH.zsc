@@ -16,11 +16,11 @@ class ZMAU_BoostDash:ZMArmorUpgrade{
     }
 
     override
-    void Tick(ZPlayerBase Player)
+    void Tick(ZPlayer Player)
     {if(DashCountdown>0)DashCountdown--;}
 
     override
-    void HandleMovement(ZPlayerBase Player, PlayerInfo PlayerInfo){
+    void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
         if(DashCountdown==0){

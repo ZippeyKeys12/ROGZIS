@@ -1,4 +1,4 @@
-class ZPlayerBase:PlayerPawn{
+class ZPlayer:PlayerPawn{
     transient
     int //Player inputs
         Buttons,
@@ -78,6 +78,9 @@ class ZPlayerBase:PlayerPawn{
         Trace(Data, 2048, Pitch);
         AimTarget=Data.HitActor;
     }
+
+    override
+    void CheckPitch(){}
 
     virtual
     bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)

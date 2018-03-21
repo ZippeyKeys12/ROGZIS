@@ -1,5 +1,5 @@
 extend
-class ZPlayerBase{
+class ZPlayer{
     transient
     bool MidAir,
          CrouchingJump;

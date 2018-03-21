@@ -10,10 +10,10 @@ class ZArmorUpgrade play{
     {return null;}
 
     virtual
-    void Tick(ZPlayerBase Player){}
+    void Tick(ZPlayer Player){}
 
     virtual
-    void HandleMovement(ZPlayerBase Player, PlayerInfo PlayerInfo){}
+    void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}
 }
 
 class ZMArmorUpgrade:ZArmorUpgrade{

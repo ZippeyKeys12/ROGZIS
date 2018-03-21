@@ -1,4 +1,4 @@
-class ZMarine:ZPlayerBase{
+class ZMarine:ZPlayer{
     transient
     ZMStats MStats;
 

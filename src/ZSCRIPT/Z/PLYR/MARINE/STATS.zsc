@@ -122,7 +122,7 @@ class ZMStats:Thinker{
     {return Health+Energy+Plate+Magnet+Shield+Light;}
 
     virtual
-    void Recharge(ZPlayerBase Player){
+    void Recharge(ZPlayer Player){
         if(!Player || Player.Health<=0 || ~Info & AMR_ENERGY || Plate<=0)return;
         //This Tick
         int CurrentStats=Status();
