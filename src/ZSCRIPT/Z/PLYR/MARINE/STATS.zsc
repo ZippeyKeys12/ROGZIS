@@ -91,6 +91,7 @@ class ZMStats:Thinker{
         Info=AMR_ENERGY;
         Upgrades.Push(new("ZMAU_BoostJump").Init());
         Upgrades.Push(new("ZMAU_BoostDash").Init());
+        Upgrades.Push(new("ZMAU_LongFall").Init());
         return self;
     }
 
