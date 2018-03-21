@@ -1,7 +1,4 @@
 class ZMarine:ZPlayer{
-    transient
-    ZMStats MStats;
-
     Default{
         //Descriptors
         Player.DisplayName "Marine";
@@ -19,12 +16,6 @@ class ZMarine:ZPlayer{
     void PostBeginPlay(){
         super.PostBeginPlay();
         MaxHealth=MStats.MaxHealth;
-        //View
-        ShakeLevel=1;
-        double XYLength=Cos(MStats.ActualPitch=Pitch);
-        MStats.ActualRoll=Roll=0;
-        ViewVector=(Cos(MStats.ActualYaw=Angle)*XYLength, Sin(MStats.ActualYaw)*XYLength, -Sin(MStats.ActualPitch));
-        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
     }
 
     override
@@ -55,13 +46,13 @@ class ZMarine:ZPlayer{
     override
     void SetAimTarget(){
         FLineTraceData Data;
-        Trace(Data, 2048, MStats.ActualPitch);
+        Trace(Data, 2048, Stats.ActualPitch);
         AimTarget=Data.HitActor;
     }
 
     override
     bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-    {return LineTrace(MStats.ActualYaw, Distance, Pitch, Data: Data);}
+    {return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
 
     override
     int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){

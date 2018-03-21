@@ -1,7 +1,6 @@
 class ZPlayer:PlayerPawn{
     transient
-    int //Player inputs
-        Buttons,
+    int Buttons,
         OldButtons,
         NewButtons,
         SameButtons;
@@ -11,8 +10,6 @@ class ZPlayer:PlayerPawn{
            ActivePitch,
            ActiveRoll,
            PassiveRoll,
-           Shake,
-           ShakeLevel,
            RunOscillation;
 
     transient
@@ -29,13 +26,30 @@ class ZPlayer:PlayerPawn{
             PitchShake,
             RollShake;
 
+    transient
+    ZStats Stats;
+
+    transient
+    ZMStats MStats;
+
     Default{
         Species "Player";
     }
 
+    override
+    void PostBeginPlay(){
+        super.PostBeginPlay();
+        //View
+        Stats.ShakeLevel=1;
+        double XYLength=Cos(Stats.ActualPitch=Pitch);
+        Stats.ActualRoll=Roll=0;
+        ViewVector=(Cos(Stats.ActualYaw=Angle)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch));
+        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+    }
+
     virtual
     void AddScreenShake(double Amount)
-    {Shake=ZCalc.NormRange(Shake+Amount);}
+    {Stats.Shake=ZCalc.NormRange(Stats.Shake+Amount);}
 
     override
     void Tick(){
@@ -87,4 +101,6 @@ class ZPlayer:PlayerPawn{
     {return LineTrace(Angle, Distance, Pitch, Data: Data);}
 }
 
+#include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"
+#include "ZSCRIPT/Z/PLYR/BASE/STATS.zsc"
 #include "ZSCRIPT/Z/PLYR/BASE/MOVEMENT.zsc"

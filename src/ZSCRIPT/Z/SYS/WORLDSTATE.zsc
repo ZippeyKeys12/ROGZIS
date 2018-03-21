@@ -17,7 +17,8 @@ class ZManager{
     static
     void WorldLoaded(WorldEvent e){
         ZPlayer Player=Instance().WorldState.Player;
-        if(ZMarine(Player))ZMarine(Player).MStats=ZMStats.Instance();
+        Player.Stats=ZStats.Instance();
+        Player.MStats=ZMStats.Instance();
         String Checksum=Level.GetChecksum();
         int Seed=0;
         for(int i=0; i<Checksum.Length(); i++)

@@ -54,10 +54,6 @@ class ZMStats:Thinker{
            ViewBob,
            JumpPower;
 
-    double ActualYaw,
-           ActualPitch,
-           ActualRoll;
-
     ZArmorInfo Info;
     Array<ZMArmorUpgrade> Upgrades;
 

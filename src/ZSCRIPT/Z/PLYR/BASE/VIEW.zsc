@@ -1,0 +1,47 @@
+extend
+class ZPlayer{
+    virtual
+    void HandleView(){
+        HandleScreenShake();
+        HandleViewTilt();
+        HandleViewChange();
+        HandleOrientation();
+    }
+
+    virtual
+    void HandleScreenShake(){
+        AddScreenShake(ZCalc.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
+        double CurrentShake=Stats.ShakeLevel*ZCalc.NormRange(ZCalc.SmoothStart(Stats.Shake));
+        if(CurrentShake>0){
+            ActiveYaw=CurrentShake*ZCalc.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+            ActivePitch=CurrentShake*ZCalc.DRangeMap(PitchShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+            ActiveRoll=CurrentShake*ZCalc.DRangeMap(RollShake.Get(Level.MapTime%1000, 1), 2, 7, -5, 5);
+            AddScreenShake(-.02);
+        }else ActiveYaw=ActivePitch=ActiveRoll=0;
+    }
+
+    virtual
+    void HandleViewTilt(){
+        if(Player.OnGround)PassiveRoll+=Sin(RunOscillation+=11.25)*(Vel dot ViewVector)/30;
+        PassiveRoll+=Clamp((Vel.XY dot SideVector)/7.5, -1, 1);
+        PassiveRoll*=ZCalc.Equals(PassiveRoll, 0, .0001)?0:.75;
+    }
+
+    virtual
+    void HandleViewChange(){
+        UserCmd cmd=Player.cmd;
+        Stats.ActualYaw+=cmd.Yaw*(360/65536.);
+        Stats.ActualPitch=Clamp(Stats.ActualPitch-cmd.Pitch*(360/65536.), -90, 90);
+    }
+
+    virtual
+    void HandleOrientation(){
+        A_SetAngle(Stats.ActualYaw+ActiveYaw, SPF_INTERPOLATE);
+        A_SetPitch(Stats.ActualPitch+ActivePitch, SPF_INTERPOLATE);
+        A_SetRoll(Stats.ActualRoll+ActiveRoll+PassiveRoll, SPF_INTERPOLATE);
+        //Direction Vectors
+        double XYLength=Cos(Stats.ActualPitch);
+        ViewVector=(Cos(Stats.ActualYaw)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch));
+        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+    }
+}
