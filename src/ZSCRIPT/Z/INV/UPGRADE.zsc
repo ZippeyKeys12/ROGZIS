@@ -7,7 +7,7 @@ class ZArmorUpgrade play{
 
     virtual
     ZArmorUpgrade Init()
-    {return null;}
+    {return self;}
 
     virtual
     void Tick(ZPlayer Player){}
@@ -26,7 +26,7 @@ class ZMArmorUpgrade:ZArmorUpgrade{
 
     virtual
     ZMArmorUpgrade Init()
-    {return null;}
+    {return self;}
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"
