@@ -72,6 +72,5 @@ class ZMarine:ZPlayer{
     {console.printf("WIP");}
 }
 
-#include "ZSCRIPT/Z/PLYR/MARINE/VIEW.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/STATS.zsc"
 #include "ZSCRIPT/Z/PLYR/MARINE/MOVEMENT.zsc"
