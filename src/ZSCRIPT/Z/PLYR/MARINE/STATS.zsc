@@ -67,7 +67,7 @@ class ZMStats:Thinker{
 
     private
     ZMStats Init(){
-        ChangeStatNum(STAT_STATIC);
+        ChangeStatNum(STAT_ZDATA);
         Parser_Zinf Config=ZManager.Config();
         //Inventory
         ForwardMove2=(ForwardMove1=.65)/2;
