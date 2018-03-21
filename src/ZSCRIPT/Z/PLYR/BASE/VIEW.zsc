@@ -42,6 +42,6 @@ class ZPlayer{
         //Direction Vectors
         double XYLength=Cos(Stats.ActualPitch);
         ViewVector=(Cos(Stats.ActualYaw)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch));
-        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90);
+        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90).Unit();
     }
 }
