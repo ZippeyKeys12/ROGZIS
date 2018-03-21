@@ -26,12 +26,6 @@ class ZMarine:ZPlayer{
     }
 
     override
-    void PostTick(){
-        HandleView();
-        super.PostTick();
-    }
-
-    override
     void UpdateStats(){
         A_SetHealth(MStats.Health);
         MaxHealth=MStats.MaxHealth;

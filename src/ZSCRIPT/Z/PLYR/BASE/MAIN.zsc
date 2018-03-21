@@ -72,8 +72,10 @@ class ZPlayer:PlayerPawn{
     void RealTick(){}
 
     virtual
-    void PostTick()
-    {CheckCollisionEffects();}
+    void PostTick(){
+        HandleView();
+        CheckCollisionEffects();
+    }
 
     virtual
     void UpdateStats(){}
