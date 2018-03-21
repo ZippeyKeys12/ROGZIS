@@ -10,7 +10,10 @@ class ZArmorUpgrade play{
     {return null;}
 
     virtual
-    void Tick(){}
+    void Tick(ZPlayerBase Player){}
+
+    virtual
+    void HandleMovement(ZPlayerBase Player, PlayerInfo PlayerInfo){}
 }
 
 class ZMArmorUpgrade:ZArmorUpgrade{
@@ -24,9 +27,6 @@ class ZMArmorUpgrade:ZArmorUpgrade{
     virtual
     ZMArmorUpgrade Init()
     {return null;}
-
-    virtual
-    void HandleMovement(ZMarine Player, PlayerInfo PlayerInfo){}
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

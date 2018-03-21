@@ -16,17 +16,18 @@ class ZMAU_BoostJump:ZMArmorUpgrade{
     }
 
     override
-    void Tick()
+    void Tick(ZPlayerBase Player)
     {if(DashCountdown>0)DashCountdown--;}
 
     override
-    void HandleMovement(ZMarine Player, PlayerInfo PlayerInfo){
-        //[RH] check for jump
-        ZMStats Stats=Player.MStats;
-        if(Player.Buttons & BT_JUMP){
-            if(!PlayerInfo.OnGround && DashCountdown==0 && (~Player.OldButtons & BT_JUMP) && Stats.Energy>DashCost){
+    void HandleMovement(ZPlayerBase Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        ZMStats Stats=Marine.MStats;
+        if(Marine.Buttons & BT_JUMP){
+            if(!PlayerInfo.OnGround && DashCountdown==0 && (~Marine.OldButtons & BT_JUMP) && Stats.Energy>DashCost){
                 Stats.Energy-=DashCost;
-                Player.Vel.Z+=DashPower;
+                Marine.Vel.Z+=DashPower;
                 DashCountdown=DashCooldown;
             }
             if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0)DashCountdown=0;
