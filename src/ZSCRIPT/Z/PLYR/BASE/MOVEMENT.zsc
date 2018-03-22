@@ -2,6 +2,7 @@ extend
 class ZPlayer{
     transient
     bool MidAir,
+         MidClamber,
          CrouchingJump;
 
     transient
@@ -12,8 +13,13 @@ class ZPlayer{
     transient
     Vector3 LastVel;
 
+    double MaxLedgeHeight;
+
+    Property MaxLedgeHeight: MaxLedgeHeight;
+
     Default{
         MaxStepHeight 18;
+        ZPlayer.MaxLedgeHeight 35;
     }
 
     override
@@ -29,9 +35,10 @@ class ZPlayer{
             CheckMoveUpDown();
             HandleArmorMovement();
             CheckJump();
+            CheckClamber();
             //Crouch-jumping and reduce crouch step height
             if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?14:18;
-            else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)?4:0;
+            else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)*5;
             //Other Checks
             LowerFriction();
         }
@@ -127,7 +134,7 @@ class ZPlayer{
             if(WaterLevel>=2)Vel.Z=4*Speed;
             else if(bNoGravity)Vel.Z=3.;
             else if(Level.IsJumpingAllowed() && Player.OnGround && Player.JumpTics==0){
-                double JumpVelZ=GetJumpVelocity()*35/TICRATE,
+                double JumpVelZ=JumpZ*35/TICRATE,
                        JumpFac=0;
                 CrouchingJump=Player.CrouchOffset!=0;
 
@@ -147,8 +154,23 @@ class ZPlayer{
     }
 
     virtual
-    double GetJumpVelocity()
-    {return 0;}
+    void CheckClamber(){
+        Vector3 LastPos=Pos;
+        SetXYZ(Pos+(0, 0, MaxLedgeHeight));
+        double LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
+        SetXYZ(LastPos);
+        bool Jumping=Buttons & BT_JUMP;
+        if(!MidClamber){
+            MidClamber=Jumping && Vel.Z<=0 && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
+        }else{
+            if(!Jumping || LedgeHeight>MaxLedgeHeight)MidClamber=false;
+            else if(LedgeHeight<=MaxStepHeight){
+                MidClamber=false;
+                Vel.xy+=2*ViewVector.XY.Unit();
+            }
+        }
+        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:1);
+    }
 
     override
     void CheckCrouch(bool totallyfrozen){
@@ -177,7 +199,7 @@ class ZPlayer{
     void CheckCollisionEffects(){
         int Dam;
         if((Dam=LastVel.Length()-Vel.Length())>20)
-            if(bSkullfly)Vel.xy=-50*ViewVector.xy;
+            if(bSkullfly)Vel.XY=-50*ViewVector.XY.Unit();
             else DamageMobj(self, self, Dam-20, 'Collision', DMG_THRUSTLESS);
         LastVel=Vel;
     }
