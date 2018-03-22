@@ -164,16 +164,17 @@ class ZPlayer{
         LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
         SetXYZ(LastPos);
         bool Jumping=Buttons & BT_JUMP;
+        console.printf(Player.JumpTics.."");
         if(!MidClamber){
-            MidClamber=Jumping && Vel.Z<=0 && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
+            MidClamber=Player.JumpTics!=0 && (Vel.Z<=0) && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
         }else{
-            if(!Jumping || LedgeHeight>MaxLedgeHeight)MidClamber=false;
+            if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
             else if(LedgeHeight<=MaxStepHeight){
                 MidClamber=false;
                 Vel.xy+=2*ViewVector.XY.Unit();
             }
         }
-        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:1);
+        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:4);
     }
 
     override
