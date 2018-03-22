@@ -164,7 +164,6 @@ class ZPlayer{
         LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
         SetXYZ(LastPos);
         bool Jumping=Buttons & BT_JUMP;
-        console.printf(Player.JumpTics.."");
         if(!MidClamber){
             MidClamber=Player.JumpTics!=0 && (Vel.Z<=0) && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
         }else{
