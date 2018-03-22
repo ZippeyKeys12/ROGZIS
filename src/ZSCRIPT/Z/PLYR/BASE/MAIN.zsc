@@ -43,7 +43,7 @@ class ZPlayer:PlayerPawn{
         Stats.ShakeLevel=1;
         double XYLength=Cos(Stats.ActualPitch=Pitch);
         Stats.ActualRoll=Roll=0;
-        ViewVector=(Cos(Stats.ActualYaw=Angle)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch));
+        ViewVector=(Cos(Stats.ActualYaw=Angle)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch)).Unit();
         SideVector=ZCalc.V2Rotate(ViewVector.XY, -90).Unit();
     }
 
