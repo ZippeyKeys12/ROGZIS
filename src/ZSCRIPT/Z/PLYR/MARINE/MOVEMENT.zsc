@@ -24,10 +24,6 @@ class ZMarine{
     }
 
     override
-    double GetJumpVelocity()
-    {return MStats.JumpPower;}
-
-    override
     bool CanCollideWith(Actor Other, bool Passive){
         bool Result=super.CanCollideWith(Other, Passive);
         if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){

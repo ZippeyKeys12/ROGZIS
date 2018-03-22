@@ -52,7 +52,7 @@ class ZMStats:Thinker{
            SideMove1,
            SideMove2,
            ViewBob,
-           JumpPower;
+           JumpZ;
 
     ZArmorInfo Info;
     Array<ZMArmorUpgrade> Upgrades;
@@ -73,7 +73,7 @@ class ZMStats:Thinker{
         ForwardMove2=(ForwardMove1=.65)/2;
         SideMove2=(SideMove1=.52)/2;
         ViewBob=ForwardMove1;
-        JumpPower=7;
+        JumpZ=7;
         Health=Config.GetInt("HEALTH","iSTART_HEALTH");
         MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
         RunHealth=floor(MaxHealth*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));

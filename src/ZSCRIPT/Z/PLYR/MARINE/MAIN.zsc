@@ -35,6 +35,7 @@ class ZMarine:ZPlayer{
         SideMove1=MStats.SideMove1;
         SideMove2=MStats.SideMove2;
         ViewBob=MStats.ViewBob;
+        JumpZ=MStats.JumpZ;
     }
 
     override
@@ -58,7 +59,8 @@ class ZMarine:ZPlayer{
     override
     int TakeSpecialDamage(Actor Inflictor, Actor Source, int Damage, Name DamageType){
         MStats.Health-=Damage;
-        return 0;
+        Damage=(Damage>=TELEFRAG_DAMAGE || MStats.Health<=0)?Damage:0;
+        return Damage;
     }
 
     override
