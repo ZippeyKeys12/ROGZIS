@@ -95,6 +95,10 @@ struct ZCalc{
     {return Factorial(N)/(Factorial(K)*Factorial(N-K));}
 
     static
+    int NthTriNumber(int N)
+    {return N*(N+1)/2;}
+
+    static
     double Bernstein(double Time, int N, int V)
     {return nCr(N, V)*Time**V*(1-Time)**(N-V);}
 
