@@ -24,13 +24,11 @@ class ZMAU_BoostJump:ZMArmorUpgrade{
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
         ZMStats Stats=Marine.MStats;
-        if(Marine.Buttons & BT_JUMP){
-            if(!PlayerInfo.OnGround && DashCountdown==0 && (~Marine.OldButtons & BT_JUMP) && Stats.Energy>DashCost){
+        if(!Marine.MidClamber && (Marine.NewButtons & BT_JUMP) && !PlayerInfo.OnGround && DashCountdown==0 && Stats.Energy>DashCost){
                 Stats.Energy-=DashCost;
                 Marine.Vel.Z+=DashPower;
                 DashCountdown=DashCooldown;
-            }
-            if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0)DashCountdown=0;
         }
+        if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0)DashCountdown=0;
     }
 }

@@ -11,8 +11,12 @@ class ZPlayer{
         CurrentDashButton;
 
     transient
+    double LedgeHeight;
+
+    transient
     Vector3 LastVel;
 
+    meta
     double MaxLedgeHeight;
 
     Property MaxLedgeHeight: MaxLedgeHeight;
@@ -33,9 +37,9 @@ class ZPlayer{
         else{
             MovePlayer();
             CheckMoveUpDown();
-            HandleArmorMovement();
             CheckJump();
             CheckClamber();
+            HandleArmorMovement();
             //Crouch-jumping and reduce crouch step height
             if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?14:18;
             else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)*5;
@@ -157,7 +161,7 @@ class ZPlayer{
     void CheckClamber(){
         Vector3 LastPos=Pos;
         SetXYZ(Pos+(0, 0, MaxLedgeHeight));
-        double LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
+        LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
         SetXYZ(LastPos);
         bool Jumping=Buttons & BT_JUMP;
         if(!MidClamber){
