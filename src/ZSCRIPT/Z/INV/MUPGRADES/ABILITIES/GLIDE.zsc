@@ -1,0 +1,14 @@
+class ZMAU_Glide:ZMArmorUpgrade{
+    transient
+    int Charge;
+
+    override
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
+        if(!PlayerInfo.OnGround && Charge>0 && (Player.Buttons & BT_USER1)){
+            Player.Vel.Z=-.5;
+            Charge--;
+        }else if(PlayerInfo.OnGround){
+            Charge=Min(Charge+1, Player.TICRATE*2);
+        }
+    }
+}

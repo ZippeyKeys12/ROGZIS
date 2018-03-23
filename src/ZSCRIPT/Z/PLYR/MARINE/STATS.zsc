@@ -92,6 +92,7 @@ class ZMStats:Thinker{
         Upgrades.Push(new("ZMAU_BoostJump").Init());
         Upgrades.Push(new("ZMAU_BoostDash").Init());
         Upgrades.Push(new("ZMAU_LongFall").Init());
+        Upgrades.Push(new("ZMAU_Glide").Init());
         return self;
     }
 
