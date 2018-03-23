@@ -10,7 +10,7 @@ class ZArmorUpgrade play{
     {return self;}
 
     virtual
-    void Tick(ZPlayer Player){}
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){}
 
     virtual
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}
@@ -23,10 +23,6 @@ class ZMArmorUpgrade:ZArmorUpgrade{
         MaxLight;
 
     ZMArmorSlot Slot;
-
-    virtual
-    ZMArmorUpgrade Init()
-    {return self;}
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

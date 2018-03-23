@@ -7,7 +7,7 @@ class ZMAU_BoostDash:ZMArmorUpgrade{
         DashCooldown;
 
     override
-    ZMArmorUpgrade Init(){
+    ZArmorUpgrade Init(){
         Parser_Zinf Config=ZManager.Config();
         DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
         DashPower=Config.GetInt("ABILITIES", "iDASH_POWER");
@@ -16,7 +16,7 @@ class ZMAU_BoostDash:ZMArmorUpgrade{
     }
 
     override
-    void Tick(ZPlayer Player)
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo)
     {if(DashCountdown>0)DashCountdown--;}
 
     override

@@ -98,7 +98,7 @@ class ZMStats:Thinker{
     virtual
     void ArmorTick(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)
-            Upgrades[i].Tick(Player);
+            Upgrades[i].Tick(Player, Player.Player);
     }
 
     virtual

@@ -91,7 +91,7 @@ class ZPlayer:PlayerPawn{
     virtual
     void SetAimTarget(){
         FLineTraceData Data;
-        Trace(Data, 2048, Pitch);
+        Trace(Data, 2048, Stats.ActualPitch);
         AimTarget=Data.HitActor;
     }
 
@@ -100,7 +100,7 @@ class ZPlayer:PlayerPawn{
 
     virtual
     bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-    {return LineTrace(Angle, Distance, Pitch, Data: Data);}
+    {return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

@@ -3,7 +3,7 @@ class ZMAU_LongFall:ZMArmorUpgrade{
     bool MidAir;
 
     override
-    void Tick(ZPlayer Player){
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
         if(Marine.Vel.Z<-20){
