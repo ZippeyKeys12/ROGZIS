@@ -5,10 +5,14 @@ class ZMStats:Thinker{
 
     bool DashAvailable;
 
-    int Health,
+    int UpgradeMax,
+
+        //Health
+        Health,
         MaxHealth,
         RunHealth,
 
+        //Plating
         Plate,
         MaxPlate,
         PlateAbsorption,
@@ -55,6 +59,7 @@ class ZMStats:Thinker{
            JumpZ;
 
     ZArmorInfo Info;
+    Array<bool> UpgradesActivated;
     Array<ZMArmorUpgrade> Upgrades;
 
     static
@@ -90,22 +95,28 @@ class ZMStats:Thinker{
         DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
         Info=AMR_ENERGY;
         Upgrades.Push(new("ZMAU_BoostJump").Init());
+        UpgradesActivated.Push(true);
         Upgrades.Push(new("ZMAU_BoostDash").Init());
+        UpgradesActivated.Push(true);
         Upgrades.Push(new("ZMAU_LongFall").Init());
+        UpgradesActivated.Push(true);
         Upgrades.Push(new("ZMAU_Glide").Init());
+        UpgradesActivated.Push(true);
         return self;
     }
 
     virtual
     void ArmorTick(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)
-            Upgrades[i].Tick(Player, Player.Player);
+            if(UpgradesActivated[i])
+                Upgrades[i].Tick(Player, Player.Player);
     }
 
     virtual
     void HandleMovement(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)
-            Upgrades[i].HandleMovement(Player, Player.Player);
+            if(UpgradesActivated[i])
+                Upgrades[i].HandleMovement(Player, Player.Player);
     }
 
     virtual

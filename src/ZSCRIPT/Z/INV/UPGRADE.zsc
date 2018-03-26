@@ -5,6 +5,10 @@ class ZArmorUpgrade play{
         PlateAbsorption,
         MaxEnergy;
 
+    Name ID;
+
+    String Name;
+
     virtual
     ZArmorUpgrade Init()
     {return self;}
