@@ -31,6 +31,7 @@ enum ZMArmorSlot{
 enum ZArmorInfo{
     //Armor Types   -   Player-based
     AMR_NONE        =   0,
+    AMR_TYPES       =   4,      //No. of Armor Types
     AMR_PLATE       =   1<<0,
     AMR_MAGNET      =   1<<1,   //Also provides abilties
     AMR_SHIELD      =   1<<2,
@@ -57,4 +58,10 @@ enum WeaponInfo{
     WPN_HITSCAN     =   1<<5,
     WPN_RAIL        =   1<<6,
     WPN_FLAMER      =   1<<7,
+}
+
+//Damage
+enum DamageTypeInfo{
+    //Effects   -   Multiple
+    DMG_ZONE    =   1<<0,
 }

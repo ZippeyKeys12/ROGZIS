@@ -16,19 +16,23 @@ class Item:RegistryItem play{
         MaxDurability;
 
     protected
-    Name Name;
+    Name ID;
+
+    protected
+    String Name;
     
     protected
-    String    Description;
+    String Description;
 
     protected
     Vector2 Size;
     
     static
-    Item Create(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0)
-    {return new("Item").Init(Name, Description, Price, Durability, Width, Height);}
+    Item Create(Name ID, String Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0)
+    {return new("Item").Init(ID, Name, Description, Price, Durability, Width, Height);}
     
-    Item Init(Name Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
+    Item Init(Name ID, String Name, String Description, int Price=0, int Durability=0, int Width=0, int Height=0){
+        self.ID=ID;
         self.Name=Name;
         self.Description=Description;
         if(Price>0) self.Price=Price;
@@ -43,7 +47,11 @@ class Item:RegistryItem play{
     void OnInventoryTick(ZMarine Player){}
 
     override
-    Name GetName() const
+    Name GetID() const
+    {return ID;}
+
+    override
+    String GetName() const
     {return Name;}
 
     clearscope

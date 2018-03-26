@@ -30,18 +30,18 @@ class ZManager:Thinker{
         int i=1; String LumpName; Parser_TSV ParserTSV; TSVRow Row;
         //DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
-        until("N/@"==(LumpName=ParserZinf.GetFromArray("EXTERNAL", "tDAMAGE_TYPES", i++))){
-            for(int j=0; j<(ParserTSV=Parser_TSV.Create(LumpName)).Size(); j++){
-                Row=ParserTSV.GetRow(j);
-                //Flags Management
-                Array<String> Flags; Flags.Clear(); int ActualFlags=0;
-                Row.Get(5).Split(Flags, "|", TOK_SKIPEMPTY);
-                for(int k=0; k<Flags.Size(); k++)
-                    if(Flags[k]~=="DMG_ZONE")
-                        ActualFlags|=DMG_ZONE;
-                //Registration
-                DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.GetDouble(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), ActualFlags));
-            }
+        ParserTSV=Parser_TSV.Create(ParserZinf.Get("EXTERNAL", "tDAMAGE_TYPES"));
+        for(int j=1; j<ParserTSV.Size(); j++){
+            Row=ParserTSV.GetRow(j);
+            //Flags Management
+            Array<String> Flags; Flags.Clear(); int ActualFlags=0;
+            Row.Get(6).Split(Flags, "|", TOK_SKIPEMPTY);
+            for(int k=0; k<Flags.Size(); k++)
+                if(Flags[k]~=="DMG_ZONE")
+                    ActualFlags|=DMG_ZONE;
+            //Registration
+            console.printf(Row.Get(0));
+            DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.Get(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), Row.GetDouble(5), ActualFlags));
         }
         return self;
     }
@@ -91,6 +91,6 @@ class ZManager:Thinker{
     {return Instance().Weapons.Get(Name);}
 
     static
-    ZDamageType DamageType(Name Name)
-    {return Instance().DamageTypes.Get(Name);}
+    ZDamageType DamageType(Name ID)
+    {return Instance().DamageTypes.Get(ID);}
 }

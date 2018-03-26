@@ -8,14 +8,14 @@ class Registry{
     }
 
     bool Add(RegistryItem RegistryItem){
-        if(!RegistryItem || Get(RegistryItem.GetName()))return false;
+        if(!RegistryItem || Get(RegistryItem.GetID()))return false;
         RegistryItems._.Push(RegistryItem);
         return true;
     }
 
-    RegistryItem Get(Name Name) const{
+    RegistryItem Get(Name ID) const{
         for(int i=0; i<RegistryItems._.Size(); i++)
-            if(RegistryItem(RegistryItems._[i]).GetName()==Name)
+            if(RegistryItem(RegistryItems._[i]).GetID()==ID)
                 return RegistryItem(RegistryItems._[i]);
         return null;
     }
@@ -23,13 +23,18 @@ class Registry{
     RegistryItem GetRand() const
     {return RegistryItems._.Size()==0?null:RegistryItem(RegistryItems._[random(0, RegistryItems._.Size()-1)]);}
 
-    ZIterator Iterator()
+    ZIterator Iterator() const
     {return ZIterator.Create(RegistryItems);}
 }
 
 class RegistryItem{
     virtual
     clearscope
-    Name GetName() const
+    Name GetID() const
     {return '';}
+
+    virtual
+    clearscope
+    String GetName() const
+    {return "";}
 }
