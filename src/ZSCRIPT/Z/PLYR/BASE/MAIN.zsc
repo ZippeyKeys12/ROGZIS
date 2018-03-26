@@ -39,12 +39,11 @@ class ZPlayer:PlayerPawn{
     override
     void PostBeginPlay(){
         super.PostBeginPlay();
-        //View
+        UpdateStats();
         Stats.ShakeLevel=1;
-        double XYLength=Cos(Stats.ActualPitch=Pitch);
-        Stats.ActualRoll=Roll=0;
-        ViewVector=(Cos(Stats.ActualYaw=Angle)*XYLength, Sin(Stats.ActualYaw)*XYLength, -Sin(Stats.ActualPitch)).Unit();
-        SideVector=ZCalc.V2Rotate(ViewVector.XY, -90).Unit();
+        Stats.ActualPitch=Pitch;
+        Stats.ActualYaw=Angle;
+        Stats.ActualRoll=Roll;
     }
 
     virtual

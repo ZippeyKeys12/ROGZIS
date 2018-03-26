@@ -13,12 +13,6 @@ class ZMarine:ZPlayer{
     }
 
     override
-    void PostBeginPlay(){
-        super.PostBeginPlay();
-        MaxHealth=MStats.MaxHealth;
-    }
-
-    override
     void PreTick(){
         super.PreTick();
         MStats.ArmorTick(self);
