@@ -340,10 +340,10 @@ class ZQuaternion{
     }
 
     bool Equals(ZQuaternion Other) const
-    {return ZCalc.Equals(W, Other.W) && ZCalc.Equals(X, Other.X) && ZCalc.Equals(Y, Other.Y) && ZCalc.Equals(Z, Other.Z);}
+    {return W~==Other.W && X~==Other.X && Y~==Other.Y && Z~==Other.Z;}
 
     bool IsZero() const
-    {return ZCalc.Equals(LengthSquared(), 0);}
+    {return LengthSquared()~==0;}
 
     bool IsIdentity() const
     {return Equals(Identity());}
