@@ -8,22 +8,22 @@ class ZDamageTypes:Registry{
 
 class ZDamageType:RegistryItem{
     private
-    int DamageFlags;
-
-    private
     Name ID;
 
     private
     String Name;
 
     private
+    ZDamageTypeInfo DamageFlags;
+
+    private
     Array<double> Factors;
 
     static
-    ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, int DamageFlags=0)
+    ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZDamageTypeInfo DamageFlags=DMG_NONE)
     {return new("ZDamageType").Init(ID, Name, ArmorPlating, MagneticShield, PlasmaShield, HardLight, DamageFlags);}
 
-    ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, int DamageFlags=0){
+    ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZDamageTypeInfo DamageFlags=DMG_NONE){
         self.ID=ID;
         self.Name=Name;
         Factors.Resize(4);

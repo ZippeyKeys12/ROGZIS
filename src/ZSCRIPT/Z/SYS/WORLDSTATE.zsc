@@ -18,6 +18,9 @@ class ZManager{
     void WorldLoaded(WorldEvent e){
         ZPlayer Player=Instance().WorldState.Player;
         Player.Stats=ZStats.Instance();
+        Player.Stats.ActualYaw=Player.Angle;
+        Player.Stats.ActualPitch=Player.Pitch;
+        Player.Stats.ActualRoll=Player.Roll;
         Player.MStats=ZMStats.Instance();
         String Checksum=Level.GetChecksum();
         int Seed=0;

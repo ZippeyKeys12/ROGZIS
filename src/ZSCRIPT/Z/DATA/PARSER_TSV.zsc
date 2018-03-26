@@ -7,8 +7,8 @@ class Parser_TSV{
     {return new("Parser_TSV").LoadLumps(LumpName);}
     
     Parser_TSV LoadLumps(String LumpName){
-        int Lump = -1;
-        until(-1==(Lump=Wads.FindLump(LumpName, Lump + 1))){
+        int Lump=-1;
+        until(-1==(Lump=Wads.FindLump(LumpName, Lump+1))){
             String InputFile=Wads.ReadLump(Lump);
             Array<String> Temp; Temp.Clear();
             InputFile.Split(Temp, "\n", TOK_SKIPEMPTY);

@@ -45,7 +45,7 @@ enum ZArmorInfo{
 }
 
 //Weapon
-enum WeaponInfo{
+enum ZWeaponInfo{
     //Weapon Type
     WPN_MELEE       =   1<<0,
     WPN_RANGED      =   1<<1,
@@ -61,7 +61,8 @@ enum WeaponInfo{
 }
 
 //Damage
-enum DamageTypeInfo{
+enum ZDamageTypeInfo{
     //Effects   -   Multiple
+    DMG_NONE    =   0,
     DMG_ZONE    =   1<<0,
 }
