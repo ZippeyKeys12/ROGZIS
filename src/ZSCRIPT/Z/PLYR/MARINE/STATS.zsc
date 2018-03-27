@@ -5,21 +5,33 @@ class ZMStats:Thinker{
 
     bool DashAvailable;
 
-    int MaxStrain,
+    int Intelligence,
+        Willpower,
+        Endurance,
+        Strength,
+        Defense,
+        Agility,
+        Luck,
+        
+        MaxStrain,
 
         //Health
         Health,
         MaxHealth,
         RunHealth,
+        BaseHealth,
 
         //Plating
         Plate,
         MaxPlate,
+        BasePlate,
         PlateAbsorption,
+        BasePlateAbsorption,
 
         //Energy
         Energy,
         MaxEnergy,
+        BaseEnergy,
         IdleRechargeBonus,
         EnergyRechargeRate,
         EnergyRechargeAmount,
@@ -49,10 +61,15 @@ class ZMStats:Thinker{
 
     double ForwardMove1,
            ForwardMove2,
+           BaseForwardMove,
            SideMove1,
            SideMove2,
+           BaseSideMove,
            ViewBob,
-           JumpZ;
+           JumpZ,
+
+           ShakeLevel,
+           BaseShakeLevel;
 
     ZArmorInfo Info;
     Array<bool> UpgradesActivated;
@@ -70,23 +87,34 @@ class ZMStats:Thinker{
     ZMStats Init(){
         ChangeStatNum(STAT_STATIC);
         Parser_Zinf Config=ZManager.Config();
-        //Inventory
-        MaxStrain=20;
-        ForwardMove2=(ForwardMove1=.65)/2;
-        SideMove2=(SideMove1=.52)/2;
+        //Attributes
+        Intelligence=
+        Willpower=
+        Endurance=
+        Strength=
+        Defense=
+        Agility=
+        Luck=0;
+        //Stats
+        ForwardMove2=(ForwardMove1=BaseForwardMove=.65)/2;
+        SideMove2=(SideMove1=BaseSideMove=.52)/2;
         ViewBob=ForwardMove1;
         JumpZ=7;
         Health=Config.GetInt("HEALTH","iSTART_HEALTH");
-        MaxHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
+        MaxHealth=BaseHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
         RunHealth=floor(MaxHealth*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
-        MaxPlate=Plate=100;
-        MaxEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
+        MaxPlate=BasePlate=Plate=Config.GetInt("ARMOR", "iSTART_PLATE");
+        PlateAbsorption=BasePlateAbsorption=Config.GetDouble("ARMOR","dPLATE_ABSORPTION");
+        MaxEnergy=BaseEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
         EnergyRechargeRate=MaxEnergy/2;
         EnergyRechargeAmount=20;
         IdleRechargeBonus=2;
         SprintCost=Config.GetInt("ABILITIES", "iSPRINT_COST");
         SprintMultiplier=Config.GetDouble("ABILITIES", "dSPRINT_MULTIPLIER");
+        ShakeLevel=BaseShakeLevel=5;
         Info=AMR_ENERGY;
+        //Inventory
+        MaxStrain=20;
         AddUpgrade("BoostJump");
         AddUpgrade("BoostDash");
         AddUpgrade("LongFall");
@@ -113,6 +141,13 @@ class ZMStats:Thinker{
             if(UpgradesActivated[i])
                 TotalStrain+=Upgrades[i].Strain;
         return TotalStrain;
+    }
+
+    void UpdateStats(){
+        MaxHealth=(1+.025*Clamp(Endurance-60, 0, 40))*BaseHealth;
+        PlateAbsorption=(1+.1*Clamp(Defense, 0, 40))*BasePlateAbsorption;
+        MaxEnergy=(1+.025*Min(Endurance, 60))*BaseEnergy;
+        ShakeLevel=(1-.001*(Willpower+Strength))*BaseShakeLevel;
     }
 
     bool AddUpgrade(Name ID){

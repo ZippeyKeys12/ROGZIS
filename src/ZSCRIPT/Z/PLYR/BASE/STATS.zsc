@@ -2,8 +2,7 @@ class ZStats:Thinker{
     double ActualYaw,
            ActualPitch,
            ActualRoll,
-           Shake,
-           ShakeLevel;
+           Shake;
 
     static
     ZStats Instance(){
