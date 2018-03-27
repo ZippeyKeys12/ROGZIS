@@ -1,12 +1,9 @@
 class ZManager:Thinker{
     private
-    ZItems Items;
-
-    private
-    ZWeapons Weapons;
-
-    private
     ZDamageTypes DamageTypes;
+
+    private
+    ZArmorUpgrades ArmorUpgrades;
 
     private
     Parser_Zinf ParserZinf;
@@ -23,24 +20,20 @@ class ZManager:Thinker{
     private
     ZManager Init(){
         ChangeStatNum(STAT_STATIC);
-        Items=ZItems(new("ZItems").Init());
-        Weapons=ZWeapons(new("ZWeapons").Init());
         ParserZinf=Parser_Zinf.Create("ZCONFIG");
         //For registration
-        String LumpName; Parser_TSV ParserTSV; TSVRow Row;
         //DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
         ParserTSV=Parser_TSV.Create(ParserZinf.Get("EXTERNAL", "tDAMAGE_TYPES"));
-        for(int j=1; j<ParserTSV.Size(); j++){
-            Row=ParserTSV.GetRow(j);
+        for(int i=1; i<ParserTSV.Size(); i++){
+            Row=ParserTSV.GetRow(i);
             //Flags Management
-            Array<String> Flags; Flags.Clear(); int ActualFlags=0;
+            Array<String> Flags; Flags.Clear(); ZDamageInfo ActualFlags=0;
             Row.Get(6).Split(Flags, "|", TOK_SKIPEMPTY);
-            for(int k=0; k<Flags.Size(); k++)
-                if(Flags[k]~=="DMG_ZONE")
+            for(int j=0; j<Flags.Size(); j++)
+                if(Flags[j]~=="DMG_ZONE")
                     ActualFlags|=DMG_ZONE;
             //Registration
-            console.printf(Row.Get(0));
             DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.Get(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), Row.GetDouble(5), ActualFlags));
         }
         return self;
@@ -74,14 +67,6 @@ class ZManager:Thinker{
     static
     Parser_Zinf Config()
     {return Instance().ParserZinf;}
-
-    static
-    Item Item(Name Name)
-    {return Instance().Items.Get(Name);}
-
-    static
-    ZWeapon Weapon(Name Name)
-    {return Instance().Weapons.Get(Name);}
 
     static
     ZDamageType DamageType(Name ID)

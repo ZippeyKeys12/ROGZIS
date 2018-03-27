@@ -1,20 +1,24 @@
-class ZArmorUpgrade play{
-    int Cost,
-        MaxHealth,
-        MaxPlate,
-        PlateAbsorption,
-        MaxEnergy;
+class ZArmorUpgrades:ZRegistry{
+    bool Add(ZArmorUpgrade Upgrade)
+    {return Upgrade && super.Add(Upgrade);}
 
-    Name ID;
+    ZArmorUpgrade Get(Name ID) const
+    {return ZArmorUpgrade(super.Get(ID));}
 
-    String Name;
+    ZArmorUpgrade GetRand() const
+    {return ZArmorUpgrade(super.GetRand());}
+}
+
+class ZUpgrade:ZItem{}
+
+class ZArmorUpgrade:ZUpgrade{
+    int Strain;
 
     virtual
-    ZArmorUpgrade Init()
-    {return self;}
-
-    virtual
-    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){}
+    ZArmorUpgrade Init(){
+        ID=GetClassName();
+        return self;
+    }
 
     virtual
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}
@@ -25,8 +29,6 @@ class ZMArmorUpgrade:ZArmorUpgrade{
         MaxMagnet,
         ShieldDivider,
         MaxLight;
-
-    ZMArmorSlot Slot;
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

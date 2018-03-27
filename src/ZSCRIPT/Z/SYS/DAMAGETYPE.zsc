@@ -1,4 +1,4 @@
-class ZDamageTypes:Registry{
+class ZDamageTypes:ZRegistry{
     bool Add(ZDamageType DamageType)
     {return DamageType && super.Add(DamageType);}
 
@@ -6,24 +6,18 @@ class ZDamageTypes:Registry{
     {return ZDamageType(super.Get(ID));}
 }
 
-class ZDamageType:RegistryItem{
+class ZDamageType:ZRegistryItem{
     private
-    Name ID;
-
-    private
-    String Name;
-
-    private
-    ZDamageTypeInfo DamageFlags;
+    ZDamageInfo DamageFlags;
 
     private
     Array<double> Factors;
 
     static
-    ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZDamageTypeInfo DamageFlags=DMG_NONE)
+    ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZDamageInfo DamageFlags=DMG_NONE)
     {return new("ZDamageType").Init(ID, Name, ArmorPlating, MagneticShield, PlasmaShield, HardLight, DamageFlags);}
 
-    ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZDamageTypeInfo DamageFlags=DMG_NONE){
+    ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZDamageInfo DamageFlags=DMG_NONE){
         self.ID=ID;
         self.Name=Name;
         Factors.Resize(4);
@@ -34,14 +28,6 @@ class ZDamageType:RegistryItem{
         self.DamageFlags=DamageFlags;
         return self;
     }
-
-    override
-    Name GetID() const
-    {return ID;}
-
-    override
-    String GetName() const
-    {return Name;}
 
     double Factor(ZArmorInfo AMR_TYPE) const
     {return Factors[ZCalc.ShiftOf(AMR_TYPE)];}

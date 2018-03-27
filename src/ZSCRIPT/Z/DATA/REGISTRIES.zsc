@@ -1,40 +1,34 @@
-class Registry{
+class ZRegistry{
     private
     ZArray RegistryItems;
 
-    Registry Init(){
+    ZRegistry Init(){
         RegistryItems=new("ZArray");
         return self;
     }
 
-    bool Add(RegistryItem RegistryItem){
-        if(!RegistryItem || Get(RegistryItem.GetID()))return false;
+    bool Add(ZRegistryItem RegistryItem){
+        if(!RegistryItem || Get(RegistryItem.ID))return false;
         RegistryItems._.Push(RegistryItem);
         return true;
     }
 
-    RegistryItem Get(Name ID) const{
+    ZRegistryItem Get(Name ID) const{
         for(int i=0; i<RegistryItems._.Size(); i++)
-            if(RegistryItem(RegistryItems._[i]).GetID()==ID)
-                return RegistryItem(RegistryItems._[i]);
+            if(ZRegistryItem(RegistryItems._[i]).ID==ID)
+                return ZRegistryItem(RegistryItems._[i]);
         return null;
     }
 
-    RegistryItem GetRand() const
-    {return RegistryItems._.Size()==0?null:RegistryItem(RegistryItems._[random(0, RegistryItems._.Size()-1)]);}
+    ZRegistryItem GetRand() const
+    {return RegistryItems._.Size()==0?null:ZRegistryItem(RegistryItems._[random(0, RegistryItems._.Size()-1)]);}
 
     ZIterator Iterator() const
     {return ZIterator.Create(RegistryItems);}
 }
 
-class RegistryItem{
-    virtual
-    clearscope
-    Name GetID() const
-    {return '';}
+class ZRegistryItem{
+    Name ID;
 
-    virtual
-    clearscope
-    String GetName() const
-    {return "";}
+    String Name;
 }
