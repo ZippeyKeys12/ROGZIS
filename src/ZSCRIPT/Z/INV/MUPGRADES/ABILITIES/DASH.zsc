@@ -8,11 +8,12 @@ class ZMAU_BoostDash:ZMArmorUpgrade{
 
     override
     ZArmorUpgrade Init(){
+        Strain=3;
         Parser_Zinf Config=ZManager.Config();
         DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
         DashPower=Config.GetInt("ABILITIES", "iDASH_POWER");
         DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
-        return self;
+        return super.Init();
     }
 
     override
@@ -40,7 +41,7 @@ class ZMAU_BoostDash:ZMArmorUpgrade{
                             Power=(PlayerInfo.OnGround?2:1)*DashPower*ZCalc.Alternate(i);
                         Marine.Vel.xy+=Power*((i>1)?-Marine.SideVector:Marine.ViewVector.xy);
                         Marine.Vel.z+=MidAirBoost;
-                        DashCountdown=Stats.DashCooldown;
+                        DashCountdown=DashCooldown;
                     }
                     return;
                 }

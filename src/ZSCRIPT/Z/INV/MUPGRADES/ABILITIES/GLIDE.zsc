@@ -3,6 +3,12 @@ class ZMAU_Glide:ZMArmorUpgrade{
     int Charge;
 
     override
+    ZArmorUpgrade Init(){
+        Strain=1;
+        return super.Init();
+    }
+
+    override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         if(!PlayerInfo.OnGround && Charge>0 && (Player.Buttons & BT_USER1)){
             Player.Vel.Z=-.5;

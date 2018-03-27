@@ -22,6 +22,22 @@ class ZManager:Thinker{
         ChangeStatNum(STAT_STATIC);
         ParserZinf=Parser_Zinf.Create("ZCONFIG");
         //For registration
+        Parser_TSV ParserTSV; TSVRow Row;
+        //Upgrades
+        ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
+        ParserTSV=Parser_TSV.Create(ParserZinf.Get("EXTERNAL", "tUPGRADES"));
+        for(int i=0; i<1; i++){
+            Row=ParserTSV.GetRow(i);
+            Name Type=Row.Get(0);
+            for(int j=1; j<5; j++)
+                switch(Type){
+                    case 'Armor':
+                        ArmorUpgrades.Add(ZArmorUpgrade(new(Row.Get(j))).Init());
+                        break;
+                    default:
+                        break;
+                }
+        }
         //DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
         ParserTSV=Parser_TSV.Create(ParserZinf.Get("EXTERNAL", "tDAMAGE_TYPES"));
@@ -71,4 +87,14 @@ class ZManager:Thinker{
     static
     ZDamageType DamageType(Name ID)
     {return Instance().DamageTypes.Get(ID);}
+
+    static
+    ZUpgrade Upgrade(ZUpgradeInfo Type, Name ID){
+        switch(Type){
+            case UPR_MARMOR:
+                return ZUpgrade(Instance().ArmorUpgrades.Get("ZMAU_"..ID));
+                break;
+        }
+        return null;
+    }
 }

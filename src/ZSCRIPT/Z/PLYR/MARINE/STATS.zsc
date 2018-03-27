@@ -87,14 +87,14 @@ class ZMStats:Thinker{
         SprintCost=Config.GetInt("ABILITIES", "iSPRINT_COST");
         SprintMultiplier=Config.GetDouble("ABILITIES", "dSPRINT_MULTIPLIER");
         Info=AMR_ENERGY;
-        Upgrades.Push(new("ZMAU_BoostJump").Init());
-        UpgradesActivated.Push(true);
-        Upgrades.Push(new("ZMAU_BoostDash").Init());
-        UpgradesActivated.Push(true);
-        Upgrades.Push(new("ZMAU_LongFall").Init());
-        UpgradesActivated.Push(true);
-        Upgrades.Push(new("ZMAU_Glide").Init());
-        UpgradesActivated.Push(true);
+        AddUpgrade("BoostJump");
+        AddUpgrade("BoostDash");
+        AddUpgrade("LongFall");
+        AddUpgrade("Glide");
+        ToggleUpgrade("BoostJump");
+        ToggleUpgrade("BoostDash");
+        ToggleUpgrade("LongFall");
+        ToggleUpgrade("Glide");
         return self;
     }
 
@@ -114,6 +114,23 @@ class ZMStats:Thinker{
                 TotalStrain+=Upgrades[i].Strain;
         return TotalStrain;
     }
+
+    bool AddUpgrade(Name ID){
+        ZMArmorUpgrade Upgrade=ZMArmorUpgrade(ZManager.Upgrade(UPR_MARMOR, ID));
+        if(Upgrades.Find(Upgrade)!=Upgrades.Size())return false;
+        Upgrades.Push(Upgrade);
+        UpgradesActivated.Push(false);
+        return true;
+    }
+
+    bool ToggleUpgrade(Name ID){
+        int Index;
+        ZMArmorUpgrade Upgrade=ZMArmorUpgrade(ZManager.Upgrade(UPR_MARMOR, ID));
+        if(!Upgrade || Upgrade.Strain+GetStrain()>MaxStrain || (Index=Upgrades.Find(Upgrade))==Upgrades.Size())return false;
+        UpgradesActivated[Index]=!UpgradesActivated[Index];
+        return true;
+    }
+
     virtual
     void ArmorTick(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)
@@ -129,7 +146,7 @@ class ZMStats:Thinker{
     }
 
     virtual
-    int Status()
+    int Status() const
     {return Health+Energy+Plate+Magnet+Shield+Light;}
 
     virtual

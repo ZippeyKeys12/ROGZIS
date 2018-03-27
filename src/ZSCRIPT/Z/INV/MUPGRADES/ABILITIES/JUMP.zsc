@@ -8,11 +8,12 @@ class ZMAU_BoostJump:ZMArmorUpgrade{
 
     override
     ZArmorUpgrade Init(){
+        Strain=4;
         Parser_Zinf Config=ZManager.Config();
         DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
         DashPower=Config.GetInt("ABILITIES", "iDASH_POWER");
         DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
-        return self;
+        return super.Init();;
     }
 
     override
