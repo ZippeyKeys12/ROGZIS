@@ -21,13 +21,10 @@ class ZMarine:ZPlayer{
 
     override
     void UpdateStats(){
-        A_SetHealth(MStats.Health);
-        MaxHealth=MStats.MaxHealth;
-        RunHealth=MStats.RunHealth;
-        ForwardMove1=MStats.ForwardMove1;
-        ForwardMove2=MStats.ForwardMove2;
-        SideMove1=MStats.SideMove1;
-        SideMove2=MStats.SideMove2;
+        [Health, MaxHealth, RunHealth]=MStats.GetHealth();
+        A_SetHealth(Health);
+        [ForwardMove1, ForwardMove2]=MStats.GetForwardMove();
+        [SideMove1, SideMove2]=MStats.GetSideMove();
         ViewBob=MStats.ViewBob;
         JumpZ=MStats.JumpZ;
     }

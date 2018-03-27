@@ -5,7 +5,7 @@ class ZMStats:Thinker{
 
     bool DashAvailable;
 
-    int UpgradeMax,
+    int MaxStrain,
 
         //Health
         Health,
@@ -45,11 +45,7 @@ class ZMStats:Thinker{
         LightRechargeAmount,
 
         SprintCost,
-        SprintMultiplier,
-        ThrustPower,
-        DashCost,
-        DashTimer,
-        DashCooldown;
+        SprintMultiplier;
 
     double ForwardMove1,
            ForwardMove2,
@@ -75,6 +71,7 @@ class ZMStats:Thinker{
         ChangeStatNum(STAT_STATIC);
         Parser_Zinf Config=ZManager.Config();
         //Inventory
+        MaxStrain=20;
         ForwardMove2=(ForwardMove1=.65)/2;
         SideMove2=(SideMove1=.52)/2;
         ViewBob=ForwardMove1;
@@ -84,15 +81,11 @@ class ZMStats:Thinker{
         RunHealth=floor(MaxHealth*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
         MaxPlate=Plate=100;
         MaxEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
-        EnergyRechargeRate=MaxEnergy/10;
+        EnergyRechargeRate=MaxEnergy/2;
         EnergyRechargeAmount=20;
         IdleRechargeBonus=2;
         SprintCost=Config.GetInt("ABILITIES", "iSPRINT_COST");
         SprintMultiplier=Config.GetDouble("ABILITIES", "dSPRINT_MULTIPLIER");
-        ThrustPower=Config.GetInt("ABILITIES", "iTHRUST_POWER");
-        DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
-        DashTimer=Config.GetInt("ABILITIES", "iDASH_TIMER");;
-        DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
         Info=AMR_ENERGY;
         Upgrades.Push(new("ZMAU_BoostJump").Init());
         UpgradesActivated.Push(true);
@@ -105,6 +98,22 @@ class ZMStats:Thinker{
         return self;
     }
 
+    int, int, int GetHealth() const
+    {return Health, MaxHealth, RunHealth;}
+
+    double, double, double GetForwardMove() const
+    {return ForwardMove1, ForwardMove2, SprintMultiplier;}
+
+    double, double GetSideMove() const
+    {return SideMove1, SideMove2;}
+
+    int GetStrain() const{
+        int TotalStrain=0;
+        for(int i=0; i<Upgrades.Size(); i++)
+            if(UpgradesActivated[i])
+                TotalStrain+=Upgrades[i].Strain;
+        return TotalStrain;
+    }
     virtual
     void ArmorTick(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)

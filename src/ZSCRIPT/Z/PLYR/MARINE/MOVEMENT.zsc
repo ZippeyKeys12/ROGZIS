@@ -2,21 +2,19 @@ extend
 class ZMarine{
     override
     void HandleArmorMovement()
-    {MStats.HandleMovement(ZMarine(self));}
+    {MStats.HandleMovement(self);}
 
     override
     double GetAirControl()
-    {return Min(.5*(MStats.ThrustPower/(MStats.ThrustPower+1.)), 1.25);}
+    {return 5/11.;}
 
     override
     double CheckSprint(){
         if(!Player.OnGround)return 1;
         //Sprinting
-        if((~Buttons & BT_BACK) &&
-           (Buttons & BT_SPEED) &&
-           (Buttons & BT_FORWARD) &&
-           (Health>=RunHealth)){
+        if((~Buttons & BT_BACK) && (Buttons & BT_SPEED) && (Buttons & BT_FORWARD) && (Health>=RunHealth) && (MStats.Energy>MStats.SprintCost)){
             MStats.Recharger=0;
+            MStats.Energy-=MStats.SprintCost;
             return MStats.SprintMultiplier;
         //Backstep
         }else if(Buttons & BT_BACK)return SideMove1;
