@@ -7,13 +7,23 @@ class Parser_TSV{
     {return new("Parser_TSV").LoadLumps(LumpName);}
     
     Parser_TSV LoadLumps(String LumpName){
+        static
+        const String charsToDestroy[]={
+            "\v",
+            "\n",
+            "\f",
+            "\r"
+        };
         int Lump=-1;
         until(-1==(Lump=Wads.FindLump(LumpName, Lump+1))){
             String InputFile=Wads.ReadLump(Lump);
             Array<String> Temp; Temp.Clear();
             InputFile.Split(Temp, "\n", TOK_SKIPEMPTY);
-            for(int i=0; i<Temp.Size(); i++)
+            for(int i=0; i<Temp.Size(); i++){
+                for(int j=0; j<charsToDestroy.Size(); j++)
+                    Temp[i].Replace(charsToDestroy[j], "");
                 Rows.Push(TSVRow.Create(Temp[i]));
+            }
         }
         return self;
     }
