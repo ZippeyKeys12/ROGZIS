@@ -12,9 +12,16 @@ class ZWeapons:ZRegistry{
 class ZWeapon:ZItem{
     int Damage,
         Durability,
-        MaxDurability;
+        MaxDurability,
+        CriticalDamage;
+
+    double BaseCriticalMultiplier;
 
     clearscope
     int, int GetDurability() const
     {return Durability, MaxDurability;}
+
+    clearscope
+    double CriticalMultiplier() const
+    {return BaseCriticalMultiplier*Durability/MaxDurability;}
 }

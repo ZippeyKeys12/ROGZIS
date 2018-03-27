@@ -24,7 +24,6 @@ class ZMStats:Thinker{
         //Plating
         Plate,
         MaxPlate,
-        BasePlate,
         PlateAbsorption,
         BasePlateAbsorption,
 
@@ -67,6 +66,9 @@ class ZMStats:Thinker{
            BaseSideMove,
            ViewBob,
            JumpZ,
+           BaseJumpZ,
+           ClamberSpeed,
+           CriticalChance,
 
            ShakeLevel,
            BaseShakeLevel;
@@ -96,14 +98,14 @@ class ZMStats:Thinker{
         Agility=
         Luck=0;
         //Stats
-        ForwardMove2=(ForwardMove1=BaseForwardMove=.65)/2;
+        ForwardMove2=(ViewBob=ForwardMove1=BaseForwardMove=.65)/2;
         SideMove2=(SideMove1=BaseSideMove=.52)/2;
-        ViewBob=ForwardMove1;
-        JumpZ=7;
+        JumpZ=BaseJumpZ=7;
+        ClamberSpeed=1;
         Health=Config.GetInt("HEALTH","iSTART_HEALTH");
         MaxHealth=BaseHealth=Config.GetInt("HEALTH","iMAX_HEALTH");
         RunHealth=floor(MaxHealth*Config.GetDouble("HEALTH","dRUN_HEALTH_PERC"));
-        MaxPlate=BasePlate=Plate=Config.GetInt("ARMOR", "iSTART_PLATE");
+        MaxPlate=Plate=Config.GetInt("ARMOR", "iSTART_PLATE");
         PlateAbsorption=BasePlateAbsorption=Config.GetDouble("ARMOR","dPLATE_ABSORPTION");
         MaxEnergy=BaseEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
         EnergyRechargeRate=MaxEnergy/2;
@@ -144,10 +146,17 @@ class ZMStats:Thinker{
     }
 
     void UpdateStats(){
-        MaxHealth=(1+.025*Clamp(Endurance-60, 0, 40))*BaseHealth;
-        PlateAbsorption=(1+.1*Clamp(Defense, 0, 40))*BasePlateAbsorption;
-        MaxEnergy=(1+.025*Min(Endurance, 60))*BaseEnergy;
+        PlateAbsorption=(1+.12*Min(Defense, 25))*BasePlateAbsorption;
+        MaxMagnet=4*Clamp(Defense-25, 0, 25);
+        MaxShield=4*Clamp(Defense-50, 0, 25);
+        MaxLight=4*Clamp(Defense-75, 0, 25);
+        MaxEnergy=(1+.04*Endurance)*BaseEnergy;
         ShakeLevel=(1-.001*(Willpower+Strength))*BaseShakeLevel;
+        ForwardMove2=(ViewBob=ForwardMove1=(1+.01*Agility)*BaseForwardMove)/2;
+        SideMove2=(SideMove1=(1+.01*Agility)*BaseSideMove)/2;
+        JumpZ=.015*(Strength+Agility)+BaseJumpZ;
+        ClamberSpeed=1+.02*(Strength+Agility);
+        CriticalChance=.001*Luck;
     }
 
     bool AddUpgrade(Name ID){
@@ -220,7 +229,17 @@ class ZMStats:Thinker{
     }
 
     virtual
-    int ModifyDamage(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
+    int ModifyDamageGiven(ZWeapon Weapon, int Damage, Name Mod, int Flags=0){
+        switch(Mod){
+            case 'Melee':
+                Damage*=1+.02*Strength;
+                break;
+        }
+        return Damage+(FRandom(0, 1)<=CriticalChance*Weapon.CriticalMultiplier())*Weapon.CriticalDamage;
+    }
+
+    virtual
+    int ModifyDamageTaken(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
         ZDamageType DamageType=ZManager.DamageType(Mod);
         if(!DamageType){
             ZManager.Error(String.Format("Undefined ZDamageType: %s", Mod), ERR_ERROR);
@@ -228,47 +247,45 @@ class ZMStats:Thinker{
         }
         double Dam, TempDamage=Damage;
         //Powered Armor
-        if(Info & AMR_ENERGY){
-            if(Info & AMR_MAGNET)
-                if((Dam=TempDamage*DamageType.Factor(AMR_MAGNET))>0)
-                    if(Ceil(Dam)<=Magnet){
-                        Magnet-=Dam;
-                        return 0;
-                    }else{
-                        TempDamage-=Floor(Magnet/DamageType.Factor(AMR_MAGNET));
-                        Magnet=0;
-                    }
-                else if(Dam<0){
-                    Magnet=Min(Magnet-Ceil(Dam), MaxMagnet);
+        if(MaxMagnet>0)
+            if((Dam=TempDamage*DamageType.Factor(AMR_MAGNET))>0)
+                if(Ceil(Dam)<=Magnet){
+                    Magnet-=Dam;
                     return 0;
+                }else{
+                    TempDamage-=Floor(Magnet/DamageType.Factor(AMR_MAGNET));
+                    Magnet=0;
                 }
-            if(Info & AMR_LIGHT)
-                if((Dam=TempDamage*DamageType.Factor(AMR_LIGHT))>0)
-                    if(Ceil(Dam)<=Light){
-                        Light-=Dam;
-                        return 0;
-                    }else{
-                        TempDamage-=Floor(Light/DamageType.Factor(AMR_LIGHT));
-                        Light=0;
-                    }
-                else if(Dam<0){
-                    Light=Min(Light-Ceil(Dam), MaxLight);
+            else if(Dam<0){
+                Magnet=Min(Magnet-Ceil(Dam), MaxMagnet);
+                return 0;
+            }
+        if(MaxLight>0)
+            if((Dam=TempDamage*DamageType.Factor(AMR_LIGHT))>0)
+                if(Ceil(Dam)<=Light){
+                    Light-=Dam;
                     return 0;
+                }else{
+                    TempDamage-=Floor(Light/DamageType.Factor(AMR_LIGHT));
+                    Light=0;
                 }
-            if(Info & AMR_SHIELD)
-                if((Dam=TempDamage*DamageType.Factor(AMR_SHIELD))>0)
-                    if(Ceil(Dam)<=Shield){
-                        Shield-=Dam;
-                        return 0;
-                    }else{
-                        TempDamage-=Floor(Shield/DamageType.Factor(AMR_SHIELD));
-                        Shield=0;
-                    }
-                else if(Dam<0){
-                    Shield=Min(Shield-Ceil(Dam), MaxShield);
+            else if(Dam<0){
+                Light=Min(Light-Ceil(Dam), MaxLight);
+                return 0;
+            }
+        if(MaxShield>0)
+            if((Dam=TempDamage*DamageType.Factor(AMR_SHIELD))>0)
+                if(Ceil(Dam)<=Shield){
+                    Shield-=Dam;
                     return 0;
+                }else{
+                    TempDamage-=Floor(Shield/DamageType.Factor(AMR_SHIELD));
+                    Shield=0;
                 }
-        }
+            else if(Dam<0){
+                Shield=Min(Shield-Ceil(Dam), MaxShield);
+                return 0;
+            }
         int PlateHit;
         //Armor Plating
         if((Info & AMR_PLATE)){

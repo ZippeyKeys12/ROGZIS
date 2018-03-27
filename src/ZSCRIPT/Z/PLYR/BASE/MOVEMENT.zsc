@@ -173,7 +173,7 @@ class ZPlayer{
                 Vel.xy+=2*ViewVector.XY.Unit();
             }
         }
-        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:4);
+        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:1);
     }
 
     override

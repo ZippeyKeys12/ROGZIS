@@ -22,6 +22,25 @@ class ZMarine{
     }
 
     override
+    void CheckClamber(){
+        Vector3 LastPos=Pos;
+        SetXYZ(Pos+(0, 0, MaxLedgeHeight));
+        LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
+        SetXYZ(LastPos);
+        bool Jumping=Buttons & BT_JUMP;
+        if(!MidClamber){
+            MidClamber=Player.JumpTics!=0 && (Vel.Z<=0) && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
+        }else{
+            if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
+            else if(LedgeHeight<=MaxStepHeight){
+                MidClamber=false;
+                Vel.xy+=2*ViewVector.XY.Unit();
+            }
+        }
+        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:MStats.ClamberSpeed);
+    }
+
+    override
     bool CanCollideWith(Actor Other, bool Passive){
         bool Result=super.CanCollideWith(Other, Passive);
         if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
