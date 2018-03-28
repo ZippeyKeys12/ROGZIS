@@ -30,7 +30,7 @@ class ZMAU_Light:ZArmorUpgrade{
     }
 
     override
-    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0){
+    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags, double Angle){
         double Dam, DamageFactor=DamageType.Factor(AMR_Light);
         if((Dam=Damage*DamageFactor)>0)
             if(Ceil(Dam)<=Light){

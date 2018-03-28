@@ -1,0 +1,51 @@
+class ZMAU_Jetpack:ZArmorUpgrade{
+    int Charge,
+        MaxCharge,
+        JetCost,
+        Cooldown,
+        Countdown;
+
+    override
+    ZUpgrade Init(Parser_Zinf Config){
+        Order=70;
+        Strain=1;
+        JetCost=Config.GetInt("ABILITIES", "iJET_COST");
+        MaxCharge=Charge=3*TICRATE;
+        Cooldown=Countdown=7*TICRATE;
+        return super.Init(Config);
+    }
+
+    override
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        if(Marine.CheckInventory("JetFlight", 1))Marine.MStats.Recharger=0;
+    }
+
+    override
+    void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        if(Countdown<Cooldown){
+            Countdown++;
+            if(Countdown==Cooldown)
+                Charge=MaxCharge;
+        }
+        if(!PlayerInfo.OnGround && Countdown==Cooldown && Charge>0 && Marine.MStats.Energy>=JetCost && (Marine.Buttons & BT_USER1)){
+            Marine.GiveInventory("JetFlight", 1);
+            Marine.Vel+=15*Player.ViewVector;
+            if(abs(Marine.Vel.X)>15 || abs(Marine.Vel.Y)>15 || Marine.Vel.Z>15)
+                Marine.Vel=15*Marine.Vel/Max(abs(Marine.Vel.X), abs(Marine.Vel.Y), Marine.Vel.Z);
+            Charge--;
+            Marine.MStats.Energy-=JetCost;
+            if(Charge==0)Countdown=0;
+        }
+    }
+}
+
+class JetFlight:PowerFlight{
+    Default{
+        -INVENTORY.HUBPOWER
+        Powerup.Duration 1;
+    }
+}

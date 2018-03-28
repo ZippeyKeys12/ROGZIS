@@ -1,6 +1,8 @@
 /////////////
 // Systems //
 /////////////
+const TICRATE=35;
+
 enum ZErrorLevel{
     ERR_INFO,
     ERR_WARNING,

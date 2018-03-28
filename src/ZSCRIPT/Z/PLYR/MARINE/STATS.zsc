@@ -103,12 +103,12 @@ class ZMStats:Thinker{
         AddUpgrade("Shield");
         AddUpgrade("BoostJump");
         AddUpgrade("Magnet");
-        //AddUpgrade("Glide");
+        AddUpgrade("Jetpack");
         ToggleUpgrade("BoostJump");
         ToggleUpgrade("BoostDash");
         ToggleUpgrade("LongFall");
         //ToggleUpgrade("Magnet");
-        //ToggleUpgrade("Glide");
+        ToggleUpgrade("Jetpack");
         for(int i=0; i<Upgrades.Size(); i++)
             console.printf(Upgrades[i].Order.."");
         return self;
