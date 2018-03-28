@@ -1,0 +1,48 @@
+class ZMAU_Shield:ZArmorUpgrade{
+    int Shield,
+        MaxShield,
+        ShieldGoal,
+        ShieldDivider,
+        ShieldRechargeRate,
+        ShieldRechargeAmount;
+
+    override
+    ZUpgrade Init(Parser_Zinf Config){
+        Order=30;
+        Strain=10;
+        ShieldRechargeRate=ShieldRechargeAmount=0;//TODO: Values?
+        return super.Init(Config);
+    }
+
+    override
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        MaxShield=Max(Player.MStats.Defense-50, 0);
+        if(Marine.MStats.RechargeQueue && Shield<(ShieldGoal=int(Shield/ShieldDivider+1)*ShieldDivider)){
+            Marine.MStats.RechargeQueue=false;
+            if(Marine.MStats.Recharger==ShieldRechargeRate){
+                Shield=Min(Shield+ShieldRechargeAmount*(Player.Vel==(0,0,0)?Marine.MStats.IdleRechargeBonus:1), ShieldGoal);
+                if(Shield==ShieldGoal)Marine.MStats.Recharger=0;
+            }else Marine.MStats.Recharger++;
+        }
+    }
+
+    override
+    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0){
+        double Dam, DamageFactor=DamageType.Factor(AMR_SHIELD);
+        if((Dam=Damage*DamageFactor)>0)
+            if(Ceil(Dam)<=Shield){
+                Shield-=Dam;
+                return 0;
+            }else{
+                Damage-=Floor(Shield/DamageFactor);
+                Shield=0;
+            }
+        else if(Dam<0){
+            Shield=Min(Shield-Ceil(Dam), MaxShield);
+            return 0;
+        }
+        return Damage;
+    }
+}

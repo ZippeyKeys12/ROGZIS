@@ -1,11 +1,15 @@
 class ZHandler:StaticEventHandler{
+    ZManager Manager;
+
     override
     void WorldLoaded(WorldEvent e){
         if(e.IsSaveGame)return;
-        ZManager.WorldLoaded(e);
+        Manager.WorldLoaded(e);
     }
 
     override
-    void PlayerEntered(PlayerEvent e)
-    {ZManager.PlayerSetup(e);}
+    void PlayerEntered(PlayerEvent e){
+        if(!Manager)Manager=ZManager.Instance();
+        Manager.PlayerSetup(e);
+    }
 }

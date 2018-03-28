@@ -56,5 +56,5 @@ enum ZWeaponInfo{
 
 enum ZUpgradeInfo{
     UPR_NONE    =   0,
-    UPR_MARMOR   =   1,
+    UPR_MARMOR  =   1,
 }

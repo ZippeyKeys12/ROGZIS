@@ -9,26 +9,27 @@ class ZArmorUpgrades:ZRegistry{
     {return ZArmorUpgrade(super.GetRand());}
 }
 
-class ZUpgrade:ZItem{}
-
-class ZArmorUpgrade:ZUpgrade{
-    int Strain;
+class ZUpgrade:ZItem{
+    bool Activated;
 
     virtual
-    ZArmorUpgrade Init(){
+    ZUpgrade Init(Parser_Zinf Config){
+        Activated=false;
         ID=GetClassName();
         return self;
     }
+}
+
+class ZArmorUpgrade:ZUpgrade{
+    int Order,
+        Strain;
 
     virtual
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}
-}
 
-class ZMArmorUpgrade:ZArmorUpgrade{
-    int MaxShield,
-        MaxMagnet,
-        ShieldDivider,
-        MaxLight;
+    virtual
+    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0)
+    {return Damage;}
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

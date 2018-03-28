@@ -1,0 +1,49 @@
+class ZMAU_Light:ZArmorUpgrade{
+    int Light,
+        MaxLight,
+        LightChargeUp,
+        LightRechargeRate,
+        LightRechargeAmount;
+
+    override
+    ZUpgrade Init(Parser_Zinf Config){
+        Order=40;
+        Strain=6;
+        LightRechargeRate=LightRechargeAmount=0;//TODO: Values?
+        return super.Init(Config);
+    }
+
+    override
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        MaxLight=Max(Player.MStats.Defense-75, 0);
+        if(Marine.MStats.RechargeQueue && Light==0){
+            Marine.MStats.RechargeQueue=false;
+            if(LightChargeUp==MaxLight){
+                Light=MaxLight;
+                Marine.MStats.Recharger=LightChargeUp=0;
+            }else if(Marine.MStats.Recharger==LightRechargeRate)
+                LightChargeUp=Min(LightChargeUp+LightRechargeAmount*(Player.Vel==(0,0,0)?Marine.MStats.IdleRechargeBonus:1), MaxLight);
+            else Marine.MStats.Recharger++;
+        }
+    }
+
+    override
+    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0){
+        double Dam, DamageFactor=DamageType.Factor(AMR_Light);
+        if((Dam=Damage*DamageFactor)>0)
+            if(Ceil(Dam)<=Light){
+                Light-=Dam;
+                return 0;
+            }else{
+                Damage-=Floor(Light/DamageFactor);
+                Light=0;
+            }
+        else if(Dam<0){
+            Light=Min(Light-Ceil(Dam), MaxLight);
+            return 0;
+        }
+        return Damage;
+    }
+}

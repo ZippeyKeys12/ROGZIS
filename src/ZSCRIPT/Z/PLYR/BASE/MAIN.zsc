@@ -10,7 +10,8 @@ class ZPlayer:PlayerPawn{
            ActivePitch,
            ActiveRoll,
            PassiveRoll,
-           RunOscillation;
+           RunOscillation,
+           RelativeZ;
 
     transient
     Vector2 SideVector;
@@ -64,6 +65,7 @@ class ZPlayer:PlayerPawn{
         UpdateStats();
         RecordInput();
         SetAimTarget();
+        SetRelativeZ();
     }
 
     virtual
@@ -92,6 +94,10 @@ class ZPlayer:PlayerPawn{
         Trace(Data, 2048, Stats.ActualPitch);
         AimTarget=Data.HitActor;
     }
+
+    virtual
+    void SetRelativeZ()
+    {RelativeZ=Pos.Z-GetZAt();}
 
     override
     void CheckPitch(){}

@@ -5,11 +5,9 @@ class ZManager:Thinker{
     private
     ZArmorUpgrades ArmorUpgrades;
 
-    private
     Parser_Zinf ParserZinf;
 
     static
-    private
     ZManager Instance(){
         ThinkerIterator it=ThinkerIterator.Create("ZManager", STAT_STATIC);
         ZManager p=ZManager(it.Next());
@@ -24,19 +22,17 @@ class ZManager:Thinker{
         //For registration
         Parser_TSV ParserTSV; TSVRow Row;
         //Upgrades
+        static const String ArmorUpgradeNames[]={
+            "ZMAU_BoostJump",
+            "ZMAU_BoostDash",
+            "ZMAU_LongFall",
+            "ZMAU_Magnet",
+            "ZMAU_Shield",
+            "ZMAU_Glide"
+        };
         ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
-        ParserTSV=Parser_TSV.Create(ParserZinf.Get("EXTERNAL", "tUPGRADES"));
-        for(int i=0; i<1; i++){
-            Row=ParserTSV.GetRow(i);
-            Name Type=Row.Get(0);
-            for(int j=1; j<5; j++)
-                switch(Type){
-                    case 'Armor':
-                        ArmorUpgrades.Add(ZArmorUpgrade(new(Row.Get(j))).Init());
-                        break;
-                    default:
-                        break;
-                }
+        for(int i=0; i<ArmorUpgradeNames.Size(); i++){
+            ArmorUpgrades.Add(ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init(ParserZinf)));
         }
         //DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
@@ -84,15 +80,15 @@ class ZManager:Thinker{
     Parser_Zinf Config()
     {return Instance().ParserZinf;}
 
-    static
+    clearscope
     ZDamageType DamageType(Name ID)
-    {return Instance().DamageTypes.Get(ID);}
+    {return DamageTypes.Get(ID);}
 
-    static
+    clearscope
     ZUpgrade Upgrade(ZUpgradeInfo Type, Name ID){
         switch(Type){
             case UPR_MARMOR:
-                return ZUpgrade(Instance().ArmorUpgrades.Get("ZMAU_"..ID));
+                return ZUpgrade(ArmorUpgrades.Get("ZMAU_"..ID));
                 break;
         }
         return null;

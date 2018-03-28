@@ -1,9 +1,10 @@
 class ZMStats:Thinker{
     transient
+    bool RechargeQueue;
+
+    transient
     int OldStats,
         Recharger;
-
-    bool DashAvailable;
 
     int Intelligence,
         Willpower,
@@ -35,26 +36,6 @@ class ZMStats:Thinker{
         EnergyRechargeRate,
         EnergyRechargeAmount,
 
-        //Magnetic Repulsion
-        Magnet,
-        MaxMagnet,
-        MagnetRechargeRate,
-        MagnetRechargeAmount,
-
-        //Plasma Shield
-        Shield,
-        MaxShield,
-        ShieldDivider,
-        ShieldRechargeRate,
-        ShieldRechargeAmount,
-
-        //Hard Light Construct
-        Light,
-        MaxLight,
-        LightChargeUp,
-        LightRechargeRate,
-        LightRechargeAmount,
-
         SprintCost,
         SprintMultiplier;
 
@@ -73,9 +54,9 @@ class ZMStats:Thinker{
            ShakeLevel,
            BaseShakeLevel;
 
-    ZArmorInfo Info;
-    Array<bool> UpgradesActivated;
-    Array<ZMArmorUpgrade> Upgrades;
+    ZManager Manager;
+
+    Array<ZArmorUpgrade> Upgrades;
 
     static
     ZMStats Instance(){
@@ -88,7 +69,8 @@ class ZMStats:Thinker{
     private
     ZMStats Init(){
         ChangeStatNum(STAT_STATIC);
-        Parser_Zinf Config=ZManager.Config();
+        Manager=ZManager.Instance();
+        Parser_Zinf Config=Manager.Config();
         //Attributes
         Intelligence=
         Willpower=
@@ -108,23 +90,27 @@ class ZMStats:Thinker{
         MaxPlate=Plate=Config.GetInt("ARMOR", "iSTART_PLATE");
         PlateAbsorption=BasePlateAbsorption=Config.GetDouble("ARMOR","dPLATE_ABSORPTION");
         MaxEnergy=BaseEnergy=Energy=Config.GetInt("ABILITIES", "iMAX_ENERGY");
-        EnergyRechargeRate=MaxEnergy/2;
-        EnergyRechargeAmount=20;
+        EnergyRechargeRate=Config.GetInt("ABILITIES", "iENERGY_RECHARGE_RATE");
+        EnergyRechargeAmount=Config.GetInt("ABILITIES", "iENERGY_RECHARGE_AMOUNT");;
         IdleRechargeBonus=2;
         SprintCost=Config.GetInt("ABILITIES", "iSPRINT_COST");
         SprintMultiplier=Config.GetDouble("ABILITIES", "dSPRINT_MULTIPLIER");
         ShakeLevel=BaseShakeLevel=5;
-        Info=AMR_ENERGY;
         //Inventory
         MaxStrain=20;
-        AddUpgrade("BoostJump");
-        AddUpgrade("BoostDash");
         AddUpgrade("LongFall");
-        AddUpgrade("Glide");
+        AddUpgrade("BoostDash");
+        AddUpgrade("Shield");
+        AddUpgrade("BoostJump");
+        AddUpgrade("Magnet");
+        //AddUpgrade("Glide");
         ToggleUpgrade("BoostJump");
         ToggleUpgrade("BoostDash");
         ToggleUpgrade("LongFall");
-        ToggleUpgrade("Glide");
+        //ToggleUpgrade("Magnet");
+        //ToggleUpgrade("Glide");
+        for(int i=0; i<Upgrades.Size(); i++)
+            console.printf(Upgrades[i].Order.."");
         return self;
     }
 
@@ -140,16 +126,15 @@ class ZMStats:Thinker{
     int GetStrain() const{
         int TotalStrain=0;
         for(int i=0; i<Upgrades.Size(); i++)
-            if(UpgradesActivated[i])
+            if(Upgrades[i].Activated)
                 TotalStrain+=Upgrades[i].Strain;
         return TotalStrain;
     }
 
     void UpdateStats(){
         PlateAbsorption=(1+.12*Min(Defense, 25))*BasePlateAbsorption;
-        MaxMagnet=4*Clamp(Defense-25, 0, 25);
-        MaxShield=4*Clamp(Defense-50, 0, 25);
-        MaxLight=4*Clamp(Defense-75, 0, 25);
+        //MaxShield=4*(Clamp(Defense-50, 0, 25)+Max(Defense-100, 0));
+        //MaxLight=4*Max(Defense-75, 0);
         MaxEnergy=(1+.04*Endurance)*BaseEnergy;
         ShakeLevel=(1-.001*(Willpower+Strength))*BaseShakeLevel;
         ForwardMove2=(ViewBob=ForwardMove1=(1+.01*Agility)*BaseForwardMove)/2;
@@ -159,80 +144,73 @@ class ZMStats:Thinker{
         CriticalChance=.001*Luck;
     }
 
+    void SortUpgrades(){
+        int N=Upgrades.Size();
+        for(int i=0; i<Upgrades.Size(); i++){
+            int IndexOfMax=i;
+            for(int j=i+1; j<N; j++){
+                if(Upgrades[j].Order>Upgrades[IndexOfMax].Order)
+                    IndexOfMax=j;
+            }
+            if(IndexOfMax!=i){
+                ZArmorUpgrade Temp=Upgrades[i];
+                Upgrades[i]=Upgrades[IndexOfMax];
+                Upgrades[IndexOfMax]=Temp;
+            }
+        }
+    }
+
     bool AddUpgrade(Name ID){
-        ZMArmorUpgrade Upgrade=ZMArmorUpgrade(ZManager.Upgrade(UPR_MARMOR, ID));
+        ZArmorUpgrade Upgrade=ZArmorUpgrade(Manager.Upgrade(UPR_MARMOR, ID));
         if(Upgrades.Find(Upgrade)!=Upgrades.Size())return false;
         Upgrades.Push(Upgrade);
-        UpgradesActivated.Push(false);
+        SortUpgrades();
         return true;
     }
 
     bool ToggleUpgrade(Name ID){
         int Index;
-        ZMArmorUpgrade Upgrade=ZMArmorUpgrade(ZManager.Upgrade(UPR_MARMOR, ID));
-        if(!Upgrade || Upgrade.Strain+GetStrain()>MaxStrain || (Index=Upgrades.Find(Upgrade))==Upgrades.Size())return false;
-        UpgradesActivated[Index]=!UpgradesActivated[Index];
+        ZArmorUpgrade Upgrade=ZArmorUpgrade(Manager.Upgrade(UPR_MARMOR, ID));
+        if(!Upgrade || (!Upgrade.Activated && Upgrade.Strain+GetStrain()>MaxStrain) || (Index=Upgrades.Find(Upgrade))==Upgrades.Size())return false;
+        Upgrades[Index].Activated=!Upgrades[Index].Activated;
         return true;
     }
 
     virtual
     void ArmorTick(ZMarine Player){
-        for(int i=0; i<Upgrades.Size(); i++)
-            if(UpgradesActivated[i])
-                Upgrades[i].Tick(Player, Player.Player);
+        if(!Player || Player.Health<=0 || Plate<=0)return;
+        RechargeQueue=true;
+        Recharge(Player);
+        for(int i=0; i<Upgrades.Size(); i++){
+            if(Upgrades[i].Activated)
+                Upgrades[i].Tick(Player, Player.Player);}
     }
 
     virtual
     void HandleMovement(ZMarine Player){
         for(int i=0; i<Upgrades.Size(); i++)
-            if(UpgradesActivated[i])
+            if(Upgrades[i].Activated)
                 Upgrades[i].HandleMovement(Player, Player.Player);
     }
 
     virtual
-    int Status() const
-    {return Health+Energy+Plate+Magnet+Shield+Light;}
-
-    virtual
+    private
     void Recharge(ZPlayer Player){
-        if(!Player || Player.Health<=0 || ~Info & AMR_ENERGY || Plate<=0)return;
-        //This Tick
-        int CurrentStats=Status();
-        if(CurrentStats>=OldStats){
-            int ShieldGoal;
-            if(Energy<MaxEnergy){
-                if(Recharger==EnergyRechargeRate){
-                    Energy=Min(Energy+EnergyRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), MaxEnergy);
-                    if(Energy==MaxEnergy)Recharger=0;
-                }else Recharger++;
-            }else if((Info & AMR_MAGNET) && Magnet<MaxMagnet){
-                if(Recharger==MagnetRechargeRate){
-                    Magnet=Min(Magnet+MagnetRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), MaxMagnet);
-                    if(Magnet==MaxMagnet)Recharger=0;
-                }else Recharger++;
-            }else if((Info & AMR_SHIELD) && Shield<(ShieldGoal=int(Shield/ShieldDivider+1)*ShieldDivider)){
-                if(Recharger==ShieldRechargeRate){
-                    Shield=Min(Shield+ShieldRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), ShieldGoal);
-                    if(Shield==ShieldGoal)Recharger=0;
-                }else Recharger++;
-            }else if((Info & AMR_LIGHT) && Light==0){
-                if(LightChargeUp==MaxLight){
-                    Light=MaxLight;
-                    Recharger=LightChargeUp=0;
-                }else if(Recharger==LightRechargeRate)
-                    LightChargeUp=Min(LightChargeUp+LightRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), MaxLight);
-                else Recharger++;
-            }
-        }else Recharger=0;
-        //Last Tick
-        OldStats=Status();
+        int ShieldGoal;
+        if(Energy<MaxEnergy){
+            RechargeQueue=false;
+            if(Recharger==EnergyRechargeRate){
+                Energy=Min(Energy+EnergyRechargeAmount*(Player.Vel==(0,0,0)?IdleRechargeBonus:1), MaxEnergy);
+                if(Energy==MaxEnergy)Recharger=0;
+            }else Recharger++;
+        }
     }
 
     virtual
     int ModifyDamageGiven(ZWeapon Weapon, int Damage, Name Mod, int Flags=0){
         switch(Mod){
             case 'Melee':
-                Damage*=1+.02*Strength;
+                Damage*=1+.03*Strength;
                 break;
         }
         return Damage+(FRandom(0, 1)<=CriticalChance*Weapon.CriticalMultiplier())*Weapon.CriticalDamage;
@@ -240,55 +218,19 @@ class ZMStats:Thinker{
 
     virtual
     int ModifyDamageTaken(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
-        ZDamageType DamageType=ZManager.DamageType(Mod);
+        ZDamageType DamageType=Manager.DamageType(Mod);
         if(!DamageType){
             ZManager.Error(String.Format("Undefined ZDamageType: %s", Mod), ERR_ERROR);
             return Damage;
         }
         double Dam, TempDamage=Damage;
-        //Powered Armor
-        if(MaxMagnet>0)
-            if((Dam=TempDamage*DamageType.Factor(AMR_MAGNET))>0)
-                if(Ceil(Dam)<=Magnet){
-                    Magnet-=Dam;
-                    return 0;
-                }else{
-                    TempDamage-=Floor(Magnet/DamageType.Factor(AMR_MAGNET));
-                    Magnet=0;
-                }
-            else if(Dam<0){
-                Magnet=Min(Magnet-Ceil(Dam), MaxMagnet);
-                return 0;
-            }
-        if(MaxLight>0)
-            if((Dam=TempDamage*DamageType.Factor(AMR_LIGHT))>0)
-                if(Ceil(Dam)<=Light){
-                    Light-=Dam;
-                    return 0;
-                }else{
-                    TempDamage-=Floor(Light/DamageType.Factor(AMR_LIGHT));
-                    Light=0;
-                }
-            else if(Dam<0){
-                Light=Min(Light-Ceil(Dam), MaxLight);
-                return 0;
-            }
-        if(MaxShield>0)
-            if((Dam=TempDamage*DamageType.Factor(AMR_SHIELD))>0)
-                if(Ceil(Dam)<=Shield){
-                    Shield-=Dam;
-                    return 0;
-                }else{
-                    TempDamage-=Floor(Shield/DamageType.Factor(AMR_SHIELD));
-                    Shield=0;
-                }
-            else if(Dam<0){
-                Shield=Min(Shield-Ceil(Dam), MaxShield);
-                return 0;
-            }
+        Array<ZArmorUpgrade> Upgrades;
+        for(int i=0; i<Upgrades.Size(); i++)
+            if(Upgrades[i].Activated)
+                TempDamage=Upgrades[i].ModifyDamage(Inflictor, Source, TempDamage, DamageType, Flags, Angle);
         int PlateHit;
         //Armor Plating
-        if((Info & AMR_PLATE)){
+        if(/*(Info & AMR_PLATE)*/true){
             if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
                 TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
                 Plate=Max(Plate-PlateHit, 0);

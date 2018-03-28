@@ -165,7 +165,7 @@ class ZPlayer{
         SetXYZ(LastPos);
         bool Jumping=Buttons & BT_JUMP;
         if(!MidClamber){
-            MidClamber=Player.JumpTics!=0 && (Vel.Z<=0) && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
+            MidClamber=Player.JumpTics!=0 && Vel.Z<=0 && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
         }else{
             if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
             else if(LedgeHeight<=MaxStepHeight){

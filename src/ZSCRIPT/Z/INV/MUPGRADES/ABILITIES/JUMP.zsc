@@ -1,4 +1,4 @@
-class ZMAU_BoostJump:ZMArmorUpgrade{
+class ZMAU_BoostJump:ZArmorUpgrade{
     transient
     int DashCountdown;
 
@@ -7,13 +7,13 @@ class ZMAU_BoostJump:ZMArmorUpgrade{
         DashCooldown;
 
     override
-    ZArmorUpgrade Init(){
+    ZUpgrade Init(Parser_Zinf Config){
+        Order=100;
         Strain=4;
-        Parser_Zinf Config=ZManager.Config();
         DashCost=Config.GetInt("ABILITIES", "iDASH_COST");
         DashPower=Config.GetInt("ABILITIES", "iDASH_POWER");
         DashCooldown=Config.GetInt("ABILITIES", "iDASH_COOLDOWN");
-        return super.Init();;
+        return super.Init(Config);;
     }
 
     override

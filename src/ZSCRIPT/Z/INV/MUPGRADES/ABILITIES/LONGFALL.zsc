@@ -1,11 +1,12 @@
-class ZMAU_LongFall:ZMArmorUpgrade{
+class ZMAU_LongFall:ZArmorUpgrade{
     transient
     bool MidAir;
 
     override
-    ZArmorUpgrade Init(){
+    ZUpgrade Init(Parser_Zinf Config){
+        Order=80;
         Strain=1;
-        return super.Init();
+        return super.Init(Config);
     }
 
     override
@@ -13,9 +14,7 @@ class ZMAU_LongFall:ZMArmorUpgrade{
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
         if(Marine.Vel.Z<-20){
-            FLineTraceData Data;
-            Marine.Trace(Data, 128, 90);
-            if(Data.Distance+Marine.Vel.Z<=30){
+            if(Marine.RelativeZ+Marine.Vel.Z<=30){
                 if (MidAir){
                     MidAir=false;
                     Marine.LastVel.Z=Marine.Vel.Z=Min(Marine.Vel.Z+10, 0);
