@@ -32,8 +32,10 @@ class ZManager:Thinker{
             "ZMAU_Jetpack"
         };
         ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
+        ZArmorUpgrade Upgrade;
         for(int i=0; i<ArmorUpgradeNames.Size(); i++){
-            ArmorUpgrades.Add(ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init(ParserZinf)));
+            ArmorUpgrades.Add(Upgrade=ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init(ParserZinf)));
+            if(!Upgrade)Error(Upgrade.ID.." doesn't have an order", ERR_ERROR);
         }
         //DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
