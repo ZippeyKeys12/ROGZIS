@@ -3,7 +3,7 @@ import os, re, shutil
 from distutils.dir_util import copy_tree
 
 def ZRead(BuildFolder, LumpName):
-    # Replacements
+    # Includes
     IncludePattern=re.compile("#include\\s+\"(.+)\"", re.IGNORECASE)
     Lines=[]
     with open(BuildFolder+"/"+LumpName) as Input:
@@ -15,22 +15,30 @@ def ZRead(BuildFolder, LumpName):
             else: Lines.append(Line)
     return Lines
 
-def ZStrip(Lines):
+def ZStript(BuildFolder, StartLump):
     # Comments
-    FullFile=re.sub("\/\/.*", " ", re.sub("(?s)\/\\*.*?\\*\/", " ", "\n".join(Lines)))
+    Lines=ZRead(BuildFolder, StartLump)
+    FullFile="\n".join(Lines)
+    ## Multi-line
+    FullFile=re.sub("(?s)\\/\\*.*?\\*\\/", " ", FullFile)
+    ## Single-line
+    FullFile=re.sub("\\/\\/.*", " ", FullFile)
+
     # Other points of minimization
-    Tokens={"{", "}", "\(", "\)", "\[", "\]", "=", ";"}
+    Tokens={"{", "}", "\\(", "\\)", "\\[", "\\]", "=", ";"}
     for Token in Tokens:
         FullFile=re.sub("\\s*"+Token+"\\s*", Token.replace("\\", ""), FullFile)
+
     # Whitespace
     FullFile=re.sub("\\s+", " ", FullFile)
     return FullFile
 
-def ZBuild(ModName):
+def ZBuild(ModName, Compress):
     # Clean build destination
     print("Cleaning Build Destination: ", end="")
     BuildFolder="dist/"+ModName
-    if os.path.exists(BuildFolder): shutil.rmtree(BuildFolder)
+    if os.path.exists(BuildFolder):
+        shutil.rmtree(BuildFolder)
 
     # Make build destination and duplicate files
     os.makedirs(BuildFolder)
@@ -43,24 +51,31 @@ def ZBuild(ModName):
     # Compact ZScript
     print("Compacting ZScript:")
     StartLump="ZSCRIPT.zsc"
-    FullFile=ZStrip(ZRead(BuildFolder, StartLump))
+    FullFile=ZStript(BuildFolder, StartLump)
     os.remove("ROGZIS/ZSCRIPT.zsc")
     with open(BuildFolder+"/"+StartLump, "w+") as Output:
         Output.write(FullFile)
     shutil.rmtree(BuildFolder+"/ZSCRIPT")
     print("Compacting ZScript: Successful")
-    
+
     # Compression
-    print("Compressing PK3 Archive: ", end="")
     if os.path.isfile(BuildFolder+"/"+ModName+".zip"):
         os.remove(BuildFolder+"/"+ModName+".zip")
     ArchiveName=ModName+".pk3"
     if os.path.isfile(ArchiveName):
         os.remove(ArchiveName)
-    shutil.make_archive(ModName, "zip", BuildFolder)
-    shutil.rmtree(BuildFolder)
-    os.rename(ModName+".zip", ArchiveName)
+    if Compress:
+        print("Compressing PK3 Archive: ", end="")
+        shutil.make_archive(ModName, "zip", BuildFolder)
+        shutil.rmtree(BuildFolder)
+        os.rename(ModName+".zip", ArchiveName)
     print("Successful")
 
 if __name__ == "__main__":
-    ZBuild("ROGZIS")
+    from sys import argv
+    Compress=False
+    while argv:
+        if argv[0]=='-c':
+            Compress=True
+        argv=argv[1:]
+    ZBuild("ROGZIS", Compress)
