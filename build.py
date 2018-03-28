@@ -4,19 +4,29 @@ from distutils.dir_util import copy_tree
 
 def ZRead(BuildFolder, LumpName):
     # Replacements
-    IncludePattern=re.compile("#include\\s+\"(\\S.+\\S)\"")
+    IncludePattern=re.compile("#include\\s+\"(.+)\"", re.IGNORECASE)
     Lines=[]
     with open(BuildFolder+"/"+LumpName) as Input:
         for Line in Input:
-            Include=IncludePattern.match(Line)
+            Include=IncludePattern.search(Line)
             if Include:
                 print("  Including: "+Include.group(1))
                 Lines.extend(ZRead(BuildFolder, Include.group(1)))
             else: Lines.append(Line)
-    os.remove(BuildFolder+"/"+LumpName)
     return Lines
 
-def Build(ModName):
+def ZStrip(Lines):
+    # Comments
+    FullFile=re.sub("\/\/.*", " ", re.sub("(?s)\/\\*.*?\\*\/", " ", "\n".join(Lines)))
+    # Other points of minimization
+    Tokens={"{", "}", "\(", "\)", "\[", "\]", "=", ";"}
+    for Token in Tokens:
+        FullFile=re.sub("\\s*"+Token+"\\s*", Token.replace("\\", ""), FullFile)
+    # Whitespace
+    FullFile=re.sub("\\s+", " ", FullFile)
+    return FullFile
+
+def ZBuild(ModName):
     # Clean build destination
     print("Cleaning Build Destination: ", end="")
     BuildFolder="dist/"+ModName
@@ -30,31 +40,27 @@ def Build(ModName):
     os.chdir("dist/")
     BuildFolder=ModName
 
-    #Compact
+    # Compact ZScript
     print("Compacting ZScript:")
     StartLump="ZSCRIPT.zsc"
-    Tokens={"{", "}", "\(", "\)", "\[", "\]", "=", ";"}
-    Lines=ZRead(BuildFolder, StartLump)
-    OneLiner=""
+    FullFile=ZStrip(ZRead(BuildFolder, StartLump))
+    os.remove("ROGZIS/ZSCRIPT.zsc")
     with open(BuildFolder+"/"+StartLump, "w+") as Output:
-        for Line in Lines:
-            Line=re.sub("\/\/.*", " ", Line)
-            OneLiner+=Line+" "
-        OneLiner=re.sub("\/\\*(\\S|\\s)*\\*\/", " ", OneLiner)
-        for Token in Tokens: OneLiner=re.sub("\\s*"+Token+"\\s*", Token.replace("\\", ""), OneLiner)
-        Output.write(re.sub("(\\s)+", " ", OneLiner))
+        Output.write(FullFile)
     shutil.rmtree(BuildFolder+"/ZSCRIPT")
     print("Compacting ZScript: Successful")
     
-    #Compression
+    # Compression
     print("Compressing PK3 Archive: ", end="")
-    if os.path.isfile(BuildFolder+"/ .zip"): os.remove(BuildFolder+"/ .zip")
-    shutil.make_archive("z", "zip", BuildFolder)
-    shutil.rmtree(BuildFolder)
+    if os.path.isfile(BuildFolder+"/"+ModName+".zip"):
+        os.remove(BuildFolder+"/"+ModName+".zip")
     ArchiveName=ModName+".pk3"
-    os.remove(ArchiveName)
-    os.rename("z.zip", ArchiveName)
+    if os.path.isfile(ArchiveName):
+        os.remove(ArchiveName)
+    shutil.make_archive(ModName, "zip", BuildFolder)
+    shutil.rmtree(BuildFolder)
+    os.rename(ModName+".zip", ArchiveName)
     print("Successful")
 
 if __name__ == "__main__":
-    Build("ROGZIS")
+    ZBuild("ROGZIS")

@@ -52,5 +52,6 @@ Temporary Items
 # Specific
 dist/
 src/GRAPHICS/
-!tools/7za.exe
 .vscode
+__pycache__/
+test.py

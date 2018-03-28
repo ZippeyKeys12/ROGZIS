@@ -109,8 +109,6 @@ class ZMStats:Thinker{
         ToggleUpgrade("LongFall");
         //ToggleUpgrade("Magnet");
         ToggleUpgrade("Jetpack");
-        for(int i=0; i<Upgrades.Size(); i++)
-            console.printf(Upgrades[i].Order.."");
         return self;
     }
 
@@ -133,8 +131,6 @@ class ZMStats:Thinker{
 
     void UpdateStats(){
         PlateAbsorption=(1+.12*Min(Defense, 25))*BasePlateAbsorption;
-        //MaxShield=4*(Clamp(Defense-50, 0, 25)+Max(Defense-100, 0));
-        //MaxLight=4*Max(Defense-75, 0);
         MaxEnergy=(1+.04*Endurance)*BaseEnergy;
         ShakeLevel=(1-.001*(Willpower+Strength))*BaseShakeLevel;
         ForwardMove2=(ViewBob=ForwardMove1=(1+.01*Agility)*BaseForwardMove)/2;
