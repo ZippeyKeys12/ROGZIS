@@ -6,7 +6,7 @@ class ZMStats:Thinker{
     int OldStats,
         Recharger;
 
-    const BaseHealth=#config "Stats", "iStart_Health";
+    const BaseHealth=#config "Stats", "iMax_Health";
     const MaxPlate=#config "Stats", "iStart_Plate";
     const BasePlateAbsorption=#config "Stats", "dPlate_Absorption";
     const BaseEnergy=#config "Abilities", "iMax_Energy";
