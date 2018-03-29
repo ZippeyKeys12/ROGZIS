@@ -5,11 +5,11 @@ class ZMAU_Magnet:ZArmorUpgrade{
         MagnetRechargeAmount;
 
     override
-    ZUpgrade Init(Parser_Zinf Config){
+    ZUpgrade Init(){
         Order=50;
         Strain=6;
         MagnetRechargeRate=MagnetRechargeAmount=0;//TODO: Values?
-        return super.Init(Config);
+        return super.Init();
     }
 
     override

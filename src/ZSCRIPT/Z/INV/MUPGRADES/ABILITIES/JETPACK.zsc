@@ -1,18 +1,18 @@
 class ZMAU_Jetpack:ZArmorUpgrade{
+    const JetCost=#config "Abilities", "iJet_Cost";
+
     int Charge,
         MaxCharge,
-        JetCost,
         Cooldown,
         Countdown;
 
     override
-    ZUpgrade Init(Parser_Zinf Config){
+    ZUpgrade Init(){
         Order=70;
         Strain=1;
-        JetCost=Config.GetInt("ABILITIES", "iJET_COST");
         MaxCharge=Charge=3*TICRATE;
         Cooldown=Countdown=7*TICRATE;
-        return super.Init(Config);
+        return super.Init();
     }
 
     override

@@ -6,11 +6,11 @@ class ZMAU_Light:ZArmorUpgrade{
         LightRechargeAmount;
 
     override
-    ZUpgrade Init(Parser_Zinf Config){
+    ZUpgrade Init(){
         Order=40;
         Strain=6;
         LightRechargeRate=LightRechargeAmount=0;//TODO: Values?
-        return super.Init(Config);
+        return super.Init();
     }
 
     override

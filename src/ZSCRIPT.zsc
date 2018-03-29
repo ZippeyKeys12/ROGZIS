@@ -12,7 +12,6 @@ version "3.3"
 #include "ZSCRIPT/Z/DATA/PATTERNS.zsc"
 #include "ZSCRIPT/Z/DATA/REGISTRIES.zsc"
 #include "ZSCRIPT/Z/DATA/PARSER_TSV.zsc"
-#include "ZSCRIPT/Z/DATA/PARSER_ZINF.zsc"
 #include "ZSCRIPT/Z/DATA/CALCULATIONS.zsc"
 
 //UI

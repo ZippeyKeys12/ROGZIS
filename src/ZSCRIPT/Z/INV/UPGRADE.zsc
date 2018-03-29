@@ -13,7 +13,7 @@ class ZUpgrade:ZItem{
     bool Activated;
 
     virtual
-    ZUpgrade Init(Parser_Zinf Config){
+    ZUpgrade Init(){
         Activated=false;
         ID=GetClassName();
         return self;

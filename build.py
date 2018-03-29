@@ -1,6 +1,7 @@
 #! /usr/bin/env python
-import os, re, shutil
+import os, re, ast, shutil
 from distutils.dir_util import copy_tree
+from configparser import SafeConfigParser
 
 def ZRead(BuildFolder, LumpName):
     # Includes
@@ -14,6 +15,31 @@ def ZRead(BuildFolder, LumpName):
                 Lines.extend(ZRead(BuildFolder, Include.group(1)))
             else: Lines.append(Line)
     return Lines
+
+def ZReplace(BuildFolder, FullFile):
+    # INI Loading
+    IniFiles=[
+        "ZCONFIG"
+    ]
+    print("Injecting INI Settings")
+    Config=SafeConfigParser()
+    IniFiles=(BuildFolder+"\\/"+Ini+".ini" for Ini in IniFiles)
+    InisFound=Config.read(IniFiles)
+    for Ini in InisFound:
+        print("  Loading: ", Ini[len(BuildFolder)+2:])
+    for Section in Config.sections():
+        for Option in Config.options(Section):
+            if Option[0] in ["i", "d"]:
+                Config[Section][Option]=str(eval(compile(ast.parse(Config[Section][Option], mode="eval"), "<string>", "eval")))
+    ConfigPattern=re.compile("#config\s+\"([^\"\r\n]+)\"\s*(\s|,)\s*\"([^\"\r\n]+)\"", re.IGNORECASE)
+    while True:
+        ConfigCall=ConfigPattern.search(FullFile)
+        if ConfigCall:
+            Section=ConfigCall.group(1)
+            Option=ConfigCall.group(3)
+            FullFile=re.sub("#config\s+\""+Section+"\"\s*(\s|,)\s*\""+Option+"\"", Config[Section][Option], FullFile)
+        else: break
+    return FullFile
 
 def ZStript(BuildFolder, StartLump):
     # Comments
@@ -30,7 +56,7 @@ def ZStript(BuildFolder, StartLump):
         FullFile=re.sub("\\s*"+Token+"\\s*", Token.replace("\\", ""), FullFile)
 
     # Whitespace
-    FullFile=re.sub("\\s+", " ", FullFile)
+    #FullFile=re.sub("\\s+", " ", FullFile)
     return FullFile
 
 def ZBuild(ModName, Compress):
@@ -49,9 +75,10 @@ def ZBuild(ModName, Compress):
     BuildFolder=ModName
 
     # Compact ZScript
-    print("Compacting ZScript:")
+    print("Compacting ZScript")
     StartLump="ZSCRIPT.zsc"
     FullFile=ZStript(BuildFolder, StartLump)
+    FullFile=ZReplace(BuildFolder, FullFile)
     os.remove("ROGZIS/ZSCRIPT.zsc")
     with open(BuildFolder+"/"+StartLump, "w+") as Output:
         Output.write(FullFile)
@@ -69,7 +96,7 @@ def ZBuild(ModName, Compress):
         shutil.make_archive(ModName, "zip", BuildFolder)
         shutil.rmtree(BuildFolder)
         os.rename(ModName+".zip", ArchiveName)
-    print("Successful")
+        print("Successful")
 
 if __name__ == "__main__":
     from sys import argv

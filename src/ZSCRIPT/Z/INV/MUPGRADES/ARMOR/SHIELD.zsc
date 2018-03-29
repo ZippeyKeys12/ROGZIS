@@ -7,11 +7,11 @@ class ZMAU_Shield:ZArmorUpgrade{
         ShieldRechargeAmount;
 
     override
-    ZUpgrade Init(Parser_Zinf Config){
+    ZUpgrade Init(){
         Order=30;
         Strain=10;
         ShieldRechargeRate=ShieldRechargeAmount=0;//TODO: Values?
-        return super.Init(Config);
+        return super.Init();
     }
 
     override

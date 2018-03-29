@@ -3,10 +3,10 @@ class ZMAU_LongFall:ZArmorUpgrade{
     bool MidAir;
 
     override
-    ZUpgrade Init(Parser_Zinf Config){
+    ZUpgrade Init(){
         Order=80;
         Strain=1;
-        return super.Init(Config);
+        return super.Init();
     }
 
     override
