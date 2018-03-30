@@ -34,12 +34,13 @@ class ZMStats:Thinker{
 
         //Plating
         Plate,
-        PlateAbsorption,
 
         //Energy
         Energy,
         MaxEnergy,
-        IdleRechargeBonus;
+        LastEnergy,
+        IdleRechargeBonus,
+        EnergyRechargeRate;
 
     double ForwardMove1,
            ForwardMove2,
@@ -52,6 +53,7 @@ class ZMStats:Thinker{
            BaseJumpZ,
            ClamberSpeed,
            CriticalChance,
+           PlateAbsorption,
 
            ShakeLevel;
 
@@ -90,6 +92,7 @@ class ZMStats:Thinker{
         Plate=MaxPlate;
         PlateAbsorption=BasePlateAbsorption;
         MaxEnergy=Energy=BaseEnergy;
+        EnergyRechargeRate=MaxEnergy/2;
         IdleRechargeBonus=2;
         ShakeLevel=BaseShakeLevel;
         //Inventory
@@ -129,6 +132,7 @@ class ZMStats:Thinker{
         RunHealth=MaxHealth*RunHealthPercent;
         PlateAbsorption=(1+.12*Min(Defense, 25))*BasePlateAbsorption;
         MaxEnergy=(1+.04*Endurance)*BaseEnergy;
+        EnergyRechargeRate=MaxEnergy/2;
         ShakeLevel=(1-.001*(Willpower+Strength))*BaseShakeLevel;
         ForwardMove2=(ViewBob=ForwardMove1=(1+.01*Agility)*BaseForwardMove)/2;
         SideMove2=(SideMove1=(1+.01*Agility)*BaseSideMove)/2;
@@ -190,6 +194,10 @@ class ZMStats:Thinker{
     private
     void Recharge(ZPlayer Player){
         int ShieldGoal;
+        if(Energy!=LastEnergy){
+            Recharger=0;
+            RechargeQueue=false;
+        }
         if(Energy<MaxEnergy){
             RechargeQueue=false;
             if(Recharger==EnergyRechargeRate){
@@ -197,6 +205,7 @@ class ZMStats:Thinker{
                 if(Energy==MaxEnergy)Recharger=0;
             }else Recharger++;
         }
+        LastEnergy=Energy;
     }
 
     virtual
