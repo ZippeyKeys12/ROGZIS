@@ -1,0 +1,35 @@
+extend
+class ZMAU_PoweredSlide{
+    override
+    void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        if(Sliding){
+            SlideTics--;
+            PlayerInfo.CrouchFactor=SlideFactor;
+            PlayerInfo.ViewHeight=Marine.ViewHeight*SlideFactor;
+            Marine.LastVel.XY=Marine.Vel.XY;
+            Marine.MStats.Energy-=SlideCost/SlideLength;
+            Marine.LastVel.XY=Marine.Vel.XY=SlidePower*Direction;
+            Marine.A_SetSize(-1, newheight: Marine.FullHeight*SlideFactor);
+            if((~Marine.Buttons & BT_CROUCH) || SlideTics==0){
+                PlayerInfo.CrouchFactor=.51;
+                SlideCountdown=SlideCooldown;
+                Marine.LockMovement=Sliding=SlideTics=false;
+                Marine.A_SetSize(-1, newheight: Marine.FullHeight);
+            }
+        }else if(SlideCountdown>0)
+            SlideCountdown--;
+    }
+
+    override
+    void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){
+        ZMarine Marine=ZMarine(Player);
+        if(!Marine)return;
+        if(!Sliding && SlideCountdown==0 && PlayerInfo.OnGround && (Marine.SameButtons & BT_SPEED) && (Marine.NewButtons & BT_CROUCH) && Marine.MStats.Energy>SlideCost){
+            Marine.LockMovement=Marine.LockTilt=Sliding=true;
+            Direction=Marine.ViewVector.XY.Unit();
+            SlideTics=SlideLength;
+        }
+    }
+}

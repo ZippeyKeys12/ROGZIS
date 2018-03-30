@@ -2,18 +2,18 @@ extend
 class ZMAU_BoostJump{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo)
-    {if(DashCountdown>0)DashCountdown--;}
+    {if(JumpCountdown>0)JumpCountdown--;}
 
     override
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
         ZMStats Stats=Marine.MStats;
-        if(!Marine.MidClamber && (Marine.NewButtons & BT_JUMP) && !PlayerInfo.OnGround && DashCountdown==0 && Stats.Energy>DashCost){
-                Stats.Energy-=DashCost;
-                Marine.Vel.Z+=DashPower;
-                DashCountdown=DashCooldown;
+        if(!Marine.MidClamber && (Marine.NewButtons & BT_JUMP) && !PlayerInfo.OnGround && JumpCountdown==0 && Stats.Energy>JumpCost){
+                Stats.Energy-=JumpCost;
+                Marine.Vel.Z+=JumpPower;
+                JumpCountdown=JumpCooldown;
         }
-        if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0)DashCountdown=0;
+        if(Level.IsJumpingAllowed() && PlayerInfo.OnGround && PlayerInfo.JumpTics==0)JumpCountdown=0;
     }
 }

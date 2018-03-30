@@ -92,8 +92,9 @@ def ZReplace(BuildFolder, FullFile):
             Zsc+="\t    return super.Init();\n\t\t}\n"
         Zsc+="\t    }\n"
         FullFile=Zsc+FullFile
-    print("    Inserting Marine Upgrades:")
+    print("    Inserting Marine Upgrades:", end=" ")
     FullFile=FullFile.replace("@ZMAUpgrades", str(MAUpgrades).replace("'", "\"")[1:-1])
+    print("Successful")
     print("Generating ZScript: Successful")
     return FullFile
 

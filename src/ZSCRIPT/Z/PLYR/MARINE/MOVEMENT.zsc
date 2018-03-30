@@ -12,7 +12,7 @@ class ZMarine{
     double CheckSprint(){
         if(!Player.OnGround)return 1;
         //Sprinting
-        if((~Buttons & BT_BACK) && (Buttons & BT_SPEED) && (Buttons & BT_FORWARD) && (Health>=RunHealth) && (MStats.Energy>MStats.SprintCost)){
+        if((~Buttons & BT_BACK) && (~Buttons & BT_CROUCH) && (Buttons & BT_SPEED) && (Buttons & BT_FORWARD) && (Health>=RunHealth) && (MStats.Energy>MStats.SprintCost)){
             MStats.Recharger=0;
             MStats.Energy-=MStats.SprintCost;
             return MStats.SprintMultiplier;

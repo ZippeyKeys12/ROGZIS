@@ -1,11 +1,9 @@
 class ZPlayer:PlayerPawn{
-    transient
     int Buttons,
         OldButtons,
         NewButtons,
         SameButtons;
 
-    transient
     double ActiveYaw,
            ActivePitch,
            ActiveRoll,
@@ -13,24 +11,19 @@ class ZPlayer:PlayerPawn{
            RunOscillation,
            RelativeZ;
 
-    transient
-    Vector2 SideVector;
+    Vector2 SideVector,
+            ViewVectorXY;
 
-    transient
     Vector3 ViewVector;
 
-    transient
     Actor AimTarget;
 
-    transient
     ZPerlin YawShake,
             PitchShake,
             RollShake;
 
-    transient
     ZStats Stats;
 
-    transient
     ZMStats MStats;
 
     Default{

@@ -1,28 +1,26 @@
 class ZMStats:Thinker{
-    transient
+    const BaseHealth=#config "STATS", "iMaxHealth";
+    const MaxPlate=#config "STATS", "iStartPlate";
+    const BasePlateAbsorption=#config "STATS", "dPlateAbsorption";
+    const BaseEnergy=#config "STATS", "iMaxEnergy";
+    const EnergyRechargeAmount=#config "STATS", "iEnergyRechargeAmount";
+    const SprintCost=#config "ABILITIES", "iSprintCost";
+    const SprintMultiplier=#config "ABILITIES", "dSprintMultiplier";
+    const RunHealthPercent=#config "STATS", "dRunHealthPerc";
+    const BaseShakeLevel=#config "STATS", "iShakeLevel";
+
     bool RechargeQueue;
 
-    transient
-    int Recharger;
+    int Recharger,
 
-    const BaseHealth=#config "STATS", "iMax_Health";
-    const MaxPlate=#config "STATS", "iStart_Plate";
-    const BasePlateAbsorption=#config "STATS", "dPlate_Absorption";
-    const BaseEnergy=#config "STATS", "iMax_Energy";
-    const EnergyRechargeAmount=#config "STATS", "iEnergy_Recharge_Amount";
-    const SprintCost=#config "ABILITIES", "iSprint_Cost";
-    const SprintMultiplier=#config "ABILITIES", "dSprint_Multiplier";
-    const RunHealthPercent=#config "STATS", "dRun_Health_Perc";
-    const BaseShakeLevel=#config "STATS", "iShake_Level";
-
-    int Intelligence,
+        Intelligence,
         Willpower,
         Endurance,
         Strength,
         Defense,
         Agility,
         Luck,
-        
+
         MaxStrain,
 
         //Health
@@ -84,7 +82,7 @@ class ZMStats:Thinker{
         SideMove2=(SideMove1=BaseSideMove=.52)/2;
         JumpZ=BaseJumpZ=7;
         ClamberSpeed=1;
-        Health=#config "STATS","iStart_Health";
+        Health=#config "STATS","iStartHealth";
         MaxHealth=BaseHealth;
         RunHealth=MaxHealth*RunHealthPercent;
         Plate=MaxPlate;
@@ -101,9 +99,11 @@ class ZMStats:Thinker{
         AddUpgrade("BoostJump");
         AddUpgrade("Magnet");
         AddUpgrade("Jetpack");
+        AddUpgrade("PoweredSlide");
         ToggleUpgrade("BoostJump");
         ToggleUpgrade("BoostDash");
         ToggleUpgrade("LongFall");
+        ToggleUpgrade("PoweredSlide");
         //ToggleUpgrade("Magnet");
         ToggleUpgrade("Jetpack");
         return self;

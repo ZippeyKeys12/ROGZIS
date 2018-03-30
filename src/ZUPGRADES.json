@@ -8,12 +8,12 @@
             },
             "Variables":{
                 "Config":{
-                    "DashCost":"ABILITIES.iDash_Cost",
-                    "DashPower":"ABILITIES.iDash_Power",
-                    "DashCooldown":"ABILITIES.iDash_Cooldown"
+                    "JumpCost":"ABILITIES.iDashCost",
+                    "JumpPower":"ABILITIES.iDashPower",
+                    "JumpCooldown":"ABILITIES.iDashCooldown"
                 },
                 "General":[
-                    "int DashCountdown"
+                    "int JumpCountdown"
                 ]
             }
         },
@@ -25,9 +25,9 @@
             },
             "Variables":{
                 "Config":{
-                    "DashCost":"ABILITIES.iDash_Cost",
-                    "DashPower":"ABILITIES.iDash_Power",
-                    "DashCooldown":"ABILITIES.iDash_Cooldown"
+                    "DashCost":"ABILITIES.iDashCost",
+                    "DashPower":"ABILITIES.iDashPower",
+                    "DashCooldown":"ABILITIES.iDashCooldown"
                 },
                 "General":[
                     "int DashCountdown"
@@ -42,9 +42,9 @@
             },
             "Variables":{
                 "Config":{
-                    "JetCost":"ABILITIES.iJet_Cost",
-                    "MaxCharge":"ABILITIES.iJet_Max_Charge",
-                    "Cooldown":"ABILITIES.iJet_Cooldown"
+                    "JetCost":"ABILITIES.iJetCost",
+                    "MaxCharge":"ABILITIES.iJetMaxCharge",
+                    "Cooldown":"ABILITIES.iJetCooldown"
                 },
                 "General":[
                     "int Charge",
@@ -66,6 +66,32 @@
                 "General":[
                     "bool MidAir"
                 ]
+            }
+        },
+        {
+            "Info":{
+                "ID":"PoweredSlide",
+                "Order":110,
+                "Strain":3
+            },
+            "Variables":{
+                "Config":{
+                    "SlideCost":"ABILITIES.iSlideCost",
+                    "SlidePower":"ABILITIES.iSlidePower",
+                    "SlideLength":"ABILITIES.iSlideLength",
+                    "SlideCooldown":"ABILITIES.iSlideCooldown",
+                    "SlideFactor":"ABILITIES.dSlideHeightFactor"
+                },
+                "General":[
+                    "bool Sliding",
+                    "int SlideTics",
+                    "int SlideCountdown",
+                    "Vector2 Direction"
+                ],
+                "Default":{
+                    "Sliding":false,
+                    "SlideTics":0
+                }
             }
         },
         {
