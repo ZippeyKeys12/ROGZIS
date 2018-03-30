@@ -1,14 +1,5 @@
-class ZMAU_LongFall:ZArmorUpgrade{
-    transient
-    bool MidAir;
-
-    override
-    ZUpgrade Init(){
-        Order=80;
-        Strain=1;
-        return super.Init();
-    }
-
+extend
+class ZMAU_LongFall{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

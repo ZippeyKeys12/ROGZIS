@@ -1,18 +1,5 @@
-class ZMAU_BoostJump:ZArmorUpgrade{
-    transient
-    int DashCountdown;
-
-    const DashCost=#config "Abilities", "iDash_Cost";
-    const DashPower=#config "Abilities", "iDash_Power";
-    const DashCooldown=#config "Abilities", "iDash_Cooldown";
-
-    override
-    ZUpgrade Init(){
-        Order=100;
-        Strain=4;
-        return super.Init();;
-    }
-
+extend
+class ZMAU_BoostJump{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo)
     {if(DashCountdown>0)DashCountdown--;}

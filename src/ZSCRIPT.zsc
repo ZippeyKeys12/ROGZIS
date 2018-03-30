@@ -1,5 +1,3 @@
-version "3.3"
-
 //SYSTEM
 #include "ZSCRIPT/Z/SYS/CONSTANTS.zsc"
 #include "ZSCRIPT/Z/SYS/DAMAGETYPE.zsc"

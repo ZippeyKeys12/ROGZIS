@@ -1,0 +1,132 @@
+{
+    "MAUpgrades":[
+        {
+            "Info":{
+                "ID":"BoostJump",
+                "Order":100,
+                "Strain":4
+            },
+            "Variables":{
+                "Config":{
+                    "DashCost":"ABILITIES.iDash_Cost",
+                    "DashPower":"ABILITIES.iDash_Power",
+                    "DashCooldown":"ABILITIES.iDash_Cooldown"
+                },
+                "General":[
+                    "int DashCountdown"
+                ]
+            }
+        },
+        {
+            "Info":{
+                "ID":"BoostDash",
+                "Order":90,
+                "Strain":3
+            },
+            "Variables":{
+                "Config":{
+                    "DashCost":"ABILITIES.iDash_Cost",
+                    "DashPower":"ABILITIES.iDash_Power",
+                    "DashCooldown":"ABILITIES.iDash_Cooldown"
+                },
+                "General":[
+                    "int DashCountdown"
+                ]
+            }
+        },
+        {
+            "Info":{
+                "ID":"Jetpack",
+                "Order":70,
+                "Strain":8
+            },
+            "Variables":{
+                "Config":{
+                    "JetCost":"ABILITIES.iJet_Cost",
+                    "MaxCharge":"ABILITIES.iJet_Max_Charge",
+                    "Cooldown":"ABILITIES.iJet_Cooldown"
+                },
+                "General":[
+                    "int Charge",
+                    "int Countdown"
+                ],
+                "Default":{
+                    "Charge":"MaxCharge",
+                    "Countdown":"Cooldown"
+                }
+            }
+        },
+        {
+            "Info":{
+                "ID":"LongFall",
+                "Order":80,
+                "Strain":6
+            },
+            "Variables":{
+                "General":[
+                    "bool MidAir"
+                ]
+            }
+        },
+        {
+            "Info":{
+                "ID":"Magnet",
+                "Order":50,
+                "Strain":10
+            },
+            "Variables":{
+                "General":[
+                    "int Magnet",
+                    "int MaxMagnet",
+                    "int MagnetRechargeRate",
+                    "int MagnetRechargeAmount"
+                ],
+                "Default":{
+                    "MagnetRechargeRate":0,
+                    "MagnetRechargeAmount":0
+                }
+            }
+        },
+        {
+            "Info":{
+                "ID":"Shield",
+                "Order":30,
+                "Strain":15
+            },
+            "Variables":{
+                "General":[
+                    "int Shield",
+                    "int MaxShield",
+                    "int ShieldGoal",
+                    "int ShieldDivider",
+                    "int ShieldRechargeRate",
+                    "int ShieldRechargeAmount"
+                ],
+                "Default":{
+                    "ShieldRechargeRate":0,
+                    "ShieldRechargeAmount":0
+                }
+            }
+        },
+        {
+            "Info":{
+                "ID":"Light",
+                "Order":40,
+                "Strain":20
+            },
+            "Variables":{
+                "General":[
+                    "int Light",
+                    "int MaxLight",
+                    "int LightChargeUp",
+                    "int LightRechargeRate",
+                    "int LightRechargeAmount"
+                ],
+                "Default":{
+                    "LightRechargeRate":0,
+                    "LightRechargeAmount":0
+                }
+            }
+        }
+    ]
+}

@@ -20,13 +20,7 @@ class ZManager:Thinker{
         Parser_TSV ParserTSV; TSVRow Row;
         //Upgrades
         static const String ArmorUpgradeNames[]={
-            "ZMAU_BoostJump",
-            "ZMAU_BoostDash",
-            "ZMAU_LongFall",
-            "ZMAU_Magnet",
-            "ZMAU_Shield",
-            "ZMAU_Light",
-            "ZMAU_Jetpack"
+            @ZMAUpgrades
         };
         ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
         ZArmorUpgrade Upgrade;
@@ -36,7 +30,7 @@ class ZManager:Thinker{
         }
         //DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
-        ParserTSV=Parser_TSV.Create(#config "External", "tDamage_Types");
+        ParserTSV=Parser_TSV.Create(#config "DATA", "tDamage_Types");
         for(int i=1; i<ParserTSV.Size(); i++){
             Row=ParserTSV.GetRow(i);
             //Flags Management

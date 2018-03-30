@@ -1,18 +1,5 @@
-class ZMAU_Light:ZArmorUpgrade{
-    int Light,
-        MaxLight,
-        LightChargeUp,
-        LightRechargeRate,
-        LightRechargeAmount;
-
-    override
-    ZUpgrade Init(){
-        Order=40;
-        Strain=6;
-        LightRechargeRate=LightRechargeAmount=0;//TODO: Values?
-        return super.Init();
-    }
-
+extend
+class ZMAU_Light{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

@@ -1,17 +1,5 @@
-class ZMAU_Magnet:ZArmorUpgrade{
-    int Magnet,
-        MaxMagnet,
-        MagnetRechargeRate,
-        MagnetRechargeAmount;
-
-    override
-    ZUpgrade Init(){
-        Order=50;
-        Strain=6;
-        MagnetRechargeRate=MagnetRechargeAmount=0;//TODO: Values?
-        return super.Init();
-    }
-
+extend
+class ZMAU_Magnet{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

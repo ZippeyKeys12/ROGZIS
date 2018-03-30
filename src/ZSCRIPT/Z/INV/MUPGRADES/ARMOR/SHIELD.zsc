@@ -1,19 +1,5 @@
-class ZMAU_Shield:ZArmorUpgrade{
-    int Shield,
-        MaxShield,
-        ShieldGoal,
-        ShieldDivider,
-        ShieldRechargeRate,
-        ShieldRechargeAmount;
-
-    override
-    ZUpgrade Init(){
-        Order=30;
-        Strain=10;
-        ShieldRechargeRate=ShieldRechargeAmount=0;//TODO: Values?
-        return super.Init();
-    }
-
+extend
+class ZMAU_Shield{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

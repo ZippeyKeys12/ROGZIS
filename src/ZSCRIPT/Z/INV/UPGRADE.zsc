@@ -21,8 +21,8 @@ class ZUpgrade:ZItem{
 }
 
 class ZArmorUpgrade:ZUpgrade{
-    int Order,
-        Strain;
+    const Order=0;
+    const Strain=0;
 
     virtual
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}

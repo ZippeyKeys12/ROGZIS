@@ -1,20 +1,5 @@
-class ZMAU_Jetpack:ZArmorUpgrade{
-    const JetCost=#config "Abilities", "iJet_Cost";
-
-    int Charge,
-        MaxCharge,
-        Cooldown,
-        Countdown;
-
-    override
-    ZUpgrade Init(){
-        Order=70;
-        Strain=1;
-        MaxCharge=Charge=3*TICRATE;
-        Cooldown=Countdown=7*TICRATE;
-        return super.Init();
-    }
-
+extend
+class ZMAU_Jetpack{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

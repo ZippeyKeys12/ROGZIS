@@ -1,18 +1,5 @@
-class ZMAU_BoostDash:ZArmorUpgrade{
-    transient
-    int DashCountdown;
-
-    const DashCost=#config "Abilities", "iDash_Cost";
-    const DashPower=#config "Abilities", "iDash_Power";
-    const DashCooldown=#config "Abilities", "iDash_Cooldown";
-
-    override
-    ZUpgrade Init(){
-        Order=90;
-        Strain=3;
-        return super.Init();
-    }
-
+extend
+class ZMAU_BoostDash{
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo)
     {if(DashCountdown>0)DashCountdown--;}
@@ -36,7 +23,7 @@ class ZMAU_BoostDash:ZArmorUpgrade{
                         Stats.Energy-=DashCost;
                         int MidAirBoost=DashPower*!PlayerInfo.OnGround,
                             Power=(PlayerInfo.OnGround?2:1)*DashPower*ZCalc.Alternate(i);
-                        Marine.Vel.xy+=Power*((i>1)?-Marine.SideVector:Marine.ViewVector.xy);
+                        Marine.Vel.xy+=Power*((i>1)?-Marine.SideVector:Marine.ViewVector.xy.Unit());
                         Marine.Vel.z+=MidAirBoost;
                         DashCountdown=DashCooldown;
                     }
