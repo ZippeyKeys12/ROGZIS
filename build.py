@@ -88,6 +88,8 @@ def ZReplace(BuildFolder, FullFile):
         if "Default" in VarSections:
             Zsc+="\toverride ZUpgrade Init(){\n\t"
             for Key, Value in VarSections["Default"].items():
+                if Value is None:
+                    Value="null"
                 Zsc+="\t    {}={};\n\t".format(Key, Value)
             Zsc+="\t    return super.Init();\n\t\t}\n"
         Zsc+="\t    }\n"

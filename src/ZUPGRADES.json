@@ -14,7 +14,10 @@
                 },
                 "General":[
                     "int JumpCountdown"
-                ]
+                ],
+                "Default":{
+                    "JumpCountdown":0
+                }
             }
         },
         {
@@ -31,7 +34,10 @@
                 },
                 "General":[
                     "int DashCountdown"
-                ]
+                ],
+                "Default":{
+                    "DashCountdown":0
+                }
             }
         },
         {
@@ -65,7 +71,10 @@
             "Variables":{
                 "General":[
                     "bool MidAir"
-                ]
+                ],
+                "Default":{
+                    "MidAir":false
+                }
             }
         },
         {
@@ -89,6 +98,8 @@
                     "Vector2 Direction"
                 ],
                 "Default":{
+                    "Direction":"(0, 0)",
+                    "SlideCountdown":0,
                     "Sliding":false,
                     "SlideTics":0
                 }
@@ -151,6 +162,21 @@
                 "Default":{
                     "LightRechargeRate":0,
                     "LightRechargeAmount":0
+                }
+            }
+        },
+        {
+            "Info":{
+                "ID":"Morph",
+                "Order":20,
+                "Strain":10
+            },
+            "Variables":{
+                "General":[
+                    "ZDamageType LastDmgType"
+                ],
+                "Default":{
+                    "LastDmgType":null
                 }
             }
         }

@@ -1,0 +1,10 @@
+extend
+class ZMAU_Morph{
+    override
+    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags, double Angle){
+        if(LastDmgType==DamageType)
+            Damage/=2;
+        else LastDmgType=DamageType;
+        return Damage;
+    }
+}
