@@ -183,6 +183,7 @@ class ZMStats:Thinker{
 
     virtual
     void HandleMovement(ZMarine Player){
+        if(!Player || Player.Health<=0 || Plate<=0)return;
         for(int i=0; i<Upgrades.Size(); i++)
             if(Upgrades[i].Activated)
                 Upgrades[i].HandleMovement(Player, Player.Player);
@@ -218,6 +219,7 @@ class ZMStats:Thinker{
 
     virtual
     int ModifyDamageTaken(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
+        if(Plate<=0)return Damage;
         ZDamageType DamageType=Manager.DamageType(Mod);
         if(!DamageType){
             ZManager.Error(String.Format("Undefined ZDamageType: %s", Mod), ERR_ERROR);
