@@ -232,12 +232,10 @@ class ZMStats:Thinker{
                 TempDamage=Upgrades[i].ModifyDamage(Inflictor, Source, TempDamage, DamageType, Flags, Angle);
         int PlateHit;
         //Armor Plating
-        if(/*(Info & AMR_PLATE)*/true){
-            if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
-                TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
-                Plate=Max(Plate-PlateHit, 0);
-            }
-        }else Plate=Max(Plate-Ceil(TempDamage/2), 0);
+        if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
+            TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
+            Plate=Max(Plate-PlateHit, 0);
+        }
         return Ceil(TempDamage);
     }
 }
