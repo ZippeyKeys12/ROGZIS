@@ -172,6 +172,9 @@
                 "Strain":10
             },
             "Variables":{
+                "Config":{
+                    "MorphAbsorption":"STATS.dMorphAbsorption"
+                },
                 "General":[
                     "ZDamageType LastDmgType"
                 ],
