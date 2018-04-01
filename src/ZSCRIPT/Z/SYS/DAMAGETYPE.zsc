@@ -11,7 +11,7 @@ class ZDamageType:ZRegistryItem{
     ZDamageInfo DamageFlags;
 
     private
-    Array<double> Factors;
+    double Factors[4];
 
     static
     ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZDamageInfo DamageFlags=DMG_NONE)
@@ -20,7 +20,6 @@ class ZDamageType:ZRegistryItem{
     ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZDamageInfo DamageFlags=DMG_NONE){
         self.ID=ID;
         self.Name=Name;
-        Factors.Resize(4);
         Factors[ZCalc.ShiftOf(AMR_PLATE)]=ArmorPlating;
         Factors[ZCalc.ShiftOf(AMR_MAGNET)]=MagneticShield;
         Factors[ZCalc.ShiftOf(AMR_SHIELD)]=PlasmaShield;
