@@ -1,5 +1,2 @@
-GameInfo {
-    PlayerClasses   =   "ZMarine"
-    StatusBarClass  =   "ZStatusBar"
-    EventHandlers   =   "ZHandler"
-}
+include MapInfo/GameInfo.txt
+include MapInfo/DoomEdNums.txt

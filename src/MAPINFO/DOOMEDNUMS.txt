@@ -1,0 +1,3 @@
+DoomEdNums{
+    15000   =   ZPathNode
+}
