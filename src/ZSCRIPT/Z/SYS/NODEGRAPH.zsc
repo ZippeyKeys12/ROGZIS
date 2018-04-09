@@ -1,0 +1,123 @@
+class ZNodeGraph play{
+    ZPathPlan Path;
+
+    void AStar(ZPathNode StartNode, ZPathNode TargetNode){
+        Path=new("ZPathPlan");
+        Array<ZPathNode> Stack;
+        Array<double> Costs;
+        Array<double> TotalCosts;
+        Array<ZPathNode> Closed;
+        ZPathNode LastNode=StartNode;
+        Path.Push(LastNode, 0);
+        until(LastNode==TargetNode){
+            for(int i=0; i<LastNode.Edges.Size(); i++){
+                ZPathEdge CurrentEdge=LastNode.Edges[i];
+                ZPathNode CurrentNode=CurrentEdge.To;
+                if(Closed.Find(CurrentNode)!=Closed.Size()){
+                    continue;
+                }
+                double CurrentCost=CurrentEdge.Cost+Path.Cost,
+                       HeuristicCost=CurrentEdge.CostTo(TargetNode)+Path.Cost;
+                if(Stack.Size()==0){
+                    Stack.Push(CurrentNode);
+                    Costs.Push(CurrentCost);
+                    TotalCosts.Push(HeuristicCost);
+                }else{
+                    int Index=Stack.Find(CurrentNode);
+                    if(Index!=Stack.Size()){
+                        if(CurrentCost<Costs[Index]){
+                            Stack.Delete(Index);
+                            Costs.Delete(Index);
+                            TotalCosts.Delete(Index);
+                        }else continue;
+                    }
+                    bool Inserted=false;
+                    for(int j=0; j<Stack.Size(); j++){
+                        if(HeuristicCost>TotalCosts[j]){
+                            Stack.Insert(j, CurrentNode);
+                            Costs.Insert(j, CurrentCost);
+                            TotalCosts.Insert(j, HeuristicCost);
+                            Inserted=true;
+                            break;
+                        }
+                    }
+                    if(!Inserted){
+                        Stack.Push(CurrentNode);
+                        Costs.Push(CurrentCost);
+                        TotalCosts.Push(HeuristicCost);
+                    }
+                }
+            }
+            Closed.Push(LastNode);
+            int LastIndex=Stack.Size()-1;
+            Path.Push(LastNode=Stack[LastIndex], Costs[LastIndex]);
+            Stack.Pop();
+            Costs.Pop();
+            TotalCosts.Pop();
+        }
+    }
+}
+
+class ZPathPlan play{
+    double Cost;
+
+    Array<ZPathNode> Nodes;
+
+    void Push(ZPathNode Node, double Cost){
+        Nodes.Push(Node);
+        Cost+=Cost;
+    }
+}
+
+class ZPathNode:Actor{
+    Array<ZPathEdge> Edges;
+
+    Default{
+        //$Category Pickups/Useless
+        //$Title Useless Powerup
+        //$Color 17
+        //$Arg0 "hmm"
+        +NOINTERACTION
+    }
+
+    override
+    void BeginPlay(){
+        super.BeginPlay();
+        ChangeStatNum(STAT_ZNODES);
+    }
+
+    override
+    void PostBeginPlay(){
+        super.PostBeginPlay();
+        ThinkerIterator it=ThinkerIterator.Create("ZPathNode", STAT_ZNODES);
+        ZPathNode Node;
+        while(Node=ZPathNode(it.Next())){
+            if(self==Node)
+                continue;
+            if(CheckSight(Node))
+                Edges.Push(ZPathEdge.Create(self, Node));
+            console.printf(Node.Args[0].."");
+        }
+    }
+
+    virtual
+    double DistanceTo(ZPathNode Other)
+    {return Distance2D(Other);}
+}
+
+class ZPathEdge play{
+    double Cost;
+
+    ZPathNode To;
+
+    static
+    ZPathEdge Create(ZPathNode From, ZPathNode To){
+        ZPathEdge Result=new("ZPathEdge");
+        Result.To=To;
+        Result.Cost=From.DistanceTo(To);
+        return Result;
+    }
+
+    double CostTo(ZPathNode Target)
+    {return Cost+To.DistanceTo(Target);}
+}
