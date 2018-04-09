@@ -11,12 +11,12 @@ class ZMAU_PoweredSlide{
             Marine.LastVel.XY=Marine.Vel.XY;
             Marine.MStats.Energy-=SlideCost/SlideLength;
             Marine.LastVel.XY=Marine.Vel.XY=SlidePower*Direction;
-            Marine.A_SetSize(-1, newheight: Marine.FullHeight*SlideFactor);
+            Marine.A_SetSize(NewHeight: Marine.FullHeight*SlideFactor);
             if((~Marine.Buttons & BT_CROUCH) || SlideTics==0){
                 PlayerInfo.CrouchFactor=.51;
                 SlideCountdown=SlideCooldown;
                 Marine.LockMovement=Sliding=SlideTics=false;
-                Marine.A_SetSize(-1, newheight: Marine.FullHeight);
+                Marine.A_SetSize(NewHeight: Marine.FullHeight);
             }
         }else if(SlideCountdown>0)
             SlideCountdown--;

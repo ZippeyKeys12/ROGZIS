@@ -16,6 +16,8 @@ class ZManager:Thinker{
     private
     ZManager Init(){
         ChangeStatNum(STAT_STATIC);
+        //World State
+        WorldState=new("ZWorldState");
         //For registration
         Parser_TSV ParserTSV; TSVRow Row;
         //Upgrades

@@ -1,4 +1,4 @@
-struct ZWorldState{
+class ZWorldState{
     //Player
     ZPlayer Player;
     PlayerInfo  PlayerInfo;

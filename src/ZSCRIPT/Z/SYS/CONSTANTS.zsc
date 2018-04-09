@@ -16,6 +16,7 @@ enum ZStatNum{
 
     //Ticking thinkers
     STAT_ZDATA  =   Thinker.STAT_USER,      //Thinkers storing world data
+    STAT_ZNODES,                            //For ZPathNode
 }
 
 enum ZDamageInfo{
