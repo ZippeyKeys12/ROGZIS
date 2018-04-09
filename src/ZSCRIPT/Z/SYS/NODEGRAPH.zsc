@@ -96,7 +96,6 @@ class ZPathNode:Actor{
                 continue;
             if(CheckSight(Node))
                 Edges.Push(ZPathEdge.Create(self, Node));
-            console.printf(Node.Args[0].."");
         }
     }
 
