@@ -64,18 +64,27 @@ class ZNodeGraph play{
 }
 
 class ZPathPlan play{
-    double Cost;
-
     Array<ZPathNode> Nodes;
 
-    void Push(ZPathNode Node, double Cost){
-        Nodes.Push(Node);
-        Cost+=Cost;
+    ZPathNode Pop(){
+        ZPathNode Node=Nodes[Nodes.Size()-1];
+        Nodes.Pop();
+        return Node;
     }
 }
 
-class ZPathNode:Actor{
+class ZPathNode play{
+    ZPathMarker Marker;
+
     Array<ZPathEdge> Edges;
+
+    virtual
+    double DistanceTo(ZPathNode Other)
+    {return Marker.Distance2D(Other.Marker);}
+}
+
+class ZPathMarker:Actor{
+    ZPathNode Node;
 
     Default{
         //$Category Pickups/Useless
@@ -94,31 +103,40 @@ class ZPathNode:Actor{
     override
     void PostBeginPlay(){
         super.PostBeginPlay();
-        ThinkerIterator it=ThinkerIterator.Create("ZPathNode", STAT_ZNODES);
-        ZPathNode Node;
-        while(Node=ZPathNode(it.Next())){
-            if(self==Node)
+        if(!Node){
+            Node=new("ZPathNode");
+            Node.Marker=self;
+        }
+        ThinkerIterator it=ThinkerIterator.Create("ZPathMarker", STAT_ZNODES);
+        ZPathMarker Marker;
+        while(Marker=ZPathMarker(it.Next())){
+            if(self==Marker)
                 continue;
-            if(CheckSight(Node))
-                Edges.Push(ZPathEdge.Create(self, Node));
+            Vector3 VecTo=Vec3To(Marker);
+            if(/*VecTo.Z<= && */CheckSight(Marker)){
+                if(!Marker.Node){
+                    Marker.Node=new("ZPathNode");
+                    Marker.Node.Marker=Marker;
+                }
+                Node.Edges.Push(ZPathEdge.Create(Node, Marker.Node));
+            }
         }
     }
-
-    virtual
-    double DistanceTo(ZPathNode Other)
-    {return Distance2D(Other);}
 }
 
 class ZPathEdge play{
     double Cost;
 
+    ZPathType Type;
+
     ZPathNode To;
 
     static
-    ZPathEdge Create(ZPathNode From, ZPathNode To){
+    ZPathEdge Create(ZPathNode From, ZPathNode To, ZPathType Type=0){
         ZPathEdge Result=new("ZPathEdge");
-        Result.To=To;
         Result.Cost=From.DistanceTo(To);
+        Result.Type=Type;
+        Result.To=To;
         return Result;
     }
 
