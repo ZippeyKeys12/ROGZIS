@@ -1,60 +1,65 @@
 class ZNodeGraph play{
-    ZPathPlan Path;
+    Array<ZPathNode> Nodes;
 
-    void AStar(ZPathNode StartNode, ZPathNode TargetNode){
-        Path=new("ZPathPlan");
-        Array<ZPathNode> Stack;
-        Array<double> Costs;
-        Array<double> TotalCosts;
-        Array<ZPathNode> Closed;
-        ZPathNode LastNode=StartNode;
-        Path.Push(LastNode, 0);
-        until(LastNode==TargetNode){
-            for(int i=0; i<LastNode.Edges.Size(); i++){
-                ZPathEdge CurrentEdge=LastNode.Edges[i];
-                ZPathNode CurrentNode=CurrentEdge.To;
-                if(Closed.Find(CurrentNode)!=Closed.Size()){
-                    continue;
+    ZPathPlan AStar(ZPathNode StartNode, ZPathNode GoalNode){
+        uint Index=Nodes.Find(StartNode);
+        if(Index==Nodes.Size() || Nodes.Find(GoalNode)==Nodes.Size())
+            ZManager.Error("Node doesn't exist", ERR_ERROR);
+        Array<ZPathNode> Open,
+                         Closed,
+                         CameFrom;
+        Open.Push(StartNode);
+        CameFrom.Resize(Nodes.Size());
+        Array<double> GCosts,
+                      FCosts;
+        for(int i=0; i<Nodes.Size(); i++)
+            GCosts.Push(double.MAX);
+        GCosts[Index]=0;
+        for(int i=0; i<Nodes.Size(); i++)
+            FCosts.Push(double.MAX);
+        FCosts[Index]=StartNode.DistanceTo(GoalNode);
+        while(Open.Size()>0){
+            ZPathNode CurrentNode=Open[Open.Size()-1];
+            if(CurrentNode==GoalNode){
+                ZPathPlan Plan=new("ZPathPlan");
+                while(CurrentNode){
+                    Plan.Nodes.Push(CurrentNode);
+                    CurrentNode=CameFrom[Nodes.Find(CurrentNode)];
                 }
-                double CurrentCost=CurrentEdge.Cost+Path.Cost,
-                       HeuristicCost=CurrentEdge.CostTo(TargetNode)+Path.Cost;
-                if(Stack.Size()==0){
-                    Stack.Push(CurrentNode);
-                    Costs.Push(CurrentCost);
-                    TotalCosts.Push(HeuristicCost);
-                }else{
-                    int Index=Stack.Find(CurrentNode);
-                    if(Index!=Stack.Size()){
-                        if(CurrentCost<Costs[Index]){
-                            Stack.Delete(Index);
-                            Costs.Delete(Index);
-                            TotalCosts.Delete(Index);
-                        }else continue;
-                    }
-                    bool Inserted=false;
-                    for(int j=0; j<Stack.Size(); j++){
-                        if(HeuristicCost>TotalCosts[j]){
-                            Stack.Insert(j, CurrentNode);
-                            Costs.Insert(j, CurrentCost);
-                            TotalCosts.Insert(j, HeuristicCost);
-                            Inserted=true;
-                            break;
-                        }
-                    }
-                    if(!Inserted){
-                        Stack.Push(CurrentNode);
-                        Costs.Push(CurrentCost);
-                        TotalCosts.Push(HeuristicCost);
-                    }
+                return Plan;
+            }
+            Open.Pop();
+            Closed.Push(CurrentNode);
+            Index=Nodes.Find(CurrentNode);
+            for(int i=0; i<CurrentNode.Edges.Size(); i++){
+                ZPathEdge CurrentEdge=CurrentNode.Edges[i];
+                ZPathNode NextNode=CurrentEdge.To;
+                if(Closed.Find(NextNode)!=Closed.Size())
+                    continue;
+                if(Open.Find(NextNode)==Open.Size())
+                    Open.Push(NextNode);
+                uint NextIndex=Nodes.Find(NextNode);
+                double GCost=GCosts[Index]+CurrentEdge.Cost;
+                if(GCost>=GCosts[NextIndex])
+                    continue;
+                CameFrom[NextIndex]=CurrentNode;
+                GCosts[NextIndex]=GCost;
+                FCosts[NextIndex]=GCost+NextNode.DistanceTo(GoalNode);
+            }
+            for(int i=0; i<Open.Size(); i++){
+                int IndexOfMax=i;
+                for(int j=i+1; j<Open.Size(); j++){
+                    if(FCosts[Nodes.Find(Open[j])]>FCosts[Nodes.Find(Open[IndexOfMax])])
+                        IndexOfMax=j;
+                }
+                if(IndexOfMax!=i){
+                    ZPathNode Temp=Open[i];
+                    Open[i]=Open[IndexOfMax];
+                    Open[IndexOfMax]=Temp;
                 }
             }
-            Closed.Push(LastNode);
-            int LastIndex=Stack.Size()-1;
-            Path.Push(LastNode=Stack[LastIndex], Costs[LastIndex]);
-            Stack.Pop();
-            Costs.Pop();
-            TotalCosts.Pop();
         }
+        return null;
     }
 }
 
