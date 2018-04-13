@@ -25,6 +25,13 @@ enum ZDamageInfo{
     DMG_ZONE    =   1<<0,
 }
 
+enum ZNodeType{}
+
+enum ZPathType{
+    PATH_LAND   =   1<<0,
+    PATH_WATER  =   1<<1,
+}
+
 ///////////////
 // Inventory //
 ///////////////

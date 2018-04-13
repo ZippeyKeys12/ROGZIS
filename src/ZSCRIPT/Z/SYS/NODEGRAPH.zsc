@@ -1,88 +1,3 @@
-class ZNodeGraph play{
-    Array<ZPathNode> Nodes;
-
-    ZPathPlan AStar(ZPathNode StartNode, ZPathNode GoalNode){
-        uint Index=Nodes.Find(StartNode);
-        if(Index==Nodes.Size() || Nodes.Find(GoalNode)==Nodes.Size())
-            ZManager.Error("Node doesn't exist", ERR_ERROR);
-        Array<ZPathNode> Open,
-                         Closed,
-                         CameFrom;
-        Open.Push(StartNode);
-        CameFrom.Resize(Nodes.Size());
-        Array<double> GCosts,
-                      FCosts;
-        for(int i=0; i<Nodes.Size(); i++)
-            GCosts.Push(double.MAX);
-        GCosts[Index]=0;
-        for(int i=0; i<Nodes.Size(); i++)
-            FCosts.Push(double.MAX);
-        FCosts[Index]=StartNode.DistanceTo(GoalNode);
-        while(Open.Size()>0){
-            ZPathNode CurrentNode=Open[Open.Size()-1];
-            if(CurrentNode==GoalNode){
-                ZPathPlan Plan=new("ZPathPlan");
-                while(CurrentNode){
-                    Plan.Nodes.Push(CurrentNode);
-                    CurrentNode=CameFrom[Nodes.Find(CurrentNode)];
-                }
-                return Plan;
-            }
-            Open.Pop();
-            Closed.Push(CurrentNode);
-            Index=Nodes.Find(CurrentNode);
-            for(int i=0; i<CurrentNode.Edges.Size(); i++){
-                ZPathEdge CurrentEdge=CurrentNode.Edges[i];
-                ZPathNode NextNode=CurrentEdge.To;
-                if(Closed.Find(NextNode)!=Closed.Size())
-                    continue;
-                if(Open.Find(NextNode)==Open.Size())
-                    Open.Push(NextNode);
-                uint NextIndex=Nodes.Find(NextNode);
-                double GCost=GCosts[Index]+CurrentEdge.Cost;
-                if(GCost>=GCosts[NextIndex])
-                    continue;
-                CameFrom[NextIndex]=CurrentNode;
-                GCosts[NextIndex]=GCost;
-                FCosts[NextIndex]=GCost+NextNode.DistanceTo(GoalNode);
-            }
-            for(int i=0; i<Open.Size(); i++){
-                int IndexOfMax=i;
-                for(int j=i+1; j<Open.Size(); j++){
-                    if(FCosts[Nodes.Find(Open[j])]>FCosts[Nodes.Find(Open[IndexOfMax])])
-                        IndexOfMax=j;
-                }
-                if(IndexOfMax!=i){
-                    ZPathNode Temp=Open[i];
-                    Open[i]=Open[IndexOfMax];
-                    Open[IndexOfMax]=Temp;
-                }
-            }
-        }
-        return null;
-    }
-}
-
-class ZPathPlan play{
-    Array<ZPathNode> Nodes;
-
-    ZPathNode Pop(){
-        ZPathNode Node=Nodes[Nodes.Size()-1];
-        Nodes.Pop();
-        return Node;
-    }
-}
-
-class ZPathNode play{
-    ZPathMarker Marker;
-
-    Array<ZPathEdge> Edges;
-
-    virtual
-    double DistanceTo(ZPathNode Other)
-    {return Marker.Distance2D(Other.Marker);}
-}
-
 class ZPathMarker:Actor{
     ZPathNode Node;
 
@@ -118,28 +33,16 @@ class ZPathMarker:Actor{
                     Marker.Node=new("ZPathNode");
                     Marker.Node.Marker=Marker;
                 }
-                Node.Edges.Push(ZPathEdge.Create(Node, Marker.Node));
+                Node.Edges.Push(ZEdge.Create(Node, Marker.Node));
             }
         }
     }
 }
 
-class ZPathEdge play{
-    double Cost;
+class ZPathNode:ZNode{
+    ZPathMarker Marker;
 
-    ZPathType Type;
-
-    ZPathNode To;
-
-    static
-    ZPathEdge Create(ZPathNode From, ZPathNode To, ZPathType Type=0){
-        ZPathEdge Result=new("ZPathEdge");
-        Result.Cost=From.DistanceTo(To);
-        Result.Type=Type;
-        Result.To=To;
-        return Result;
-    }
-
-    double CostTo(ZPathNode Target)
-    {return Cost+To.DistanceTo(Target);}
+    override
+    double DistanceTo(ZNode Other)
+    {return Marker.Distance2D(ZPathNode(Other).Marker);}
 }
