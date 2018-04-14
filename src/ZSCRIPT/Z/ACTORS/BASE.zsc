@@ -1,0 +1,96 @@
+class ZActor:Actor{
+    meta
+    double WalkSpeed;
+
+    Property WalkSpeed: WalkSpeed;
+
+    Default{
+        ZActor.WalkSpeed 10;
+    }
+
+    void A_Seek(Actor Target=null, bool Urgent=false){
+        double MaxForce=3;
+        if(!Target)
+            Target=self.Target;
+        Vector2 DesVel=self.WalkSpeed*Vec2To(Target).Unit();
+        Vector2 Steer=(DesVel-Vel.XY)/Mass;
+        if(Steer.Length()>MaxForce)
+            Steer=MaxForce*Steer.Unit();
+        Vel+=Steer;
+        return;
+    }
+}
+
+class ZZZ:Zombieman{
+    meta
+    double WalkSpeed;
+
+    ZPlan Plan;
+
+    Property WalkSpeed: WalkSpeed;
+
+    Default{
+        ZZZ.WalkSpeed 50;
+    }
+
+    States{
+        Spawn:
+            POSS A 1{
+                if(CheckSight(ZManager.Instance().WorldState.Player)){
+                    Plan=null;
+                    A_Seek(ZManager.Instance().WorldState.Player);
+                }else{
+                    A_Star(ZManager.Instance().WorldState.Player);
+                    if(Plan && Plan.Size()>0 && Plan.Peek()){
+                        if(Distance3DSquared(ZPathNode(Plan.Peek()).Marker)<1){
+                            Plan.Pop();
+                            console.printf("yesx!");
+                        }
+                        if(Plan.Size()>0)
+                            A_Seek(ZPathNode(Plan.Peek()).Marker);
+                    }else
+                        Plan=null;
+                }
+            }
+            loop;
+    }
+
+    void A_Seek(Actor Target=null, bool Urgent=false){
+        double MaxForce=3;
+        if(!Target)
+            Target=self.Target;
+        Vector2 DesVel=self.WalkSpeed*Vec2To(Target).Unit();
+        Vector2 Steer=(DesVel-Vel.XY)/Mass;
+        if(Steer.Length()>MaxForce)
+            Steer=MaxForce*Steer.Unit();
+        Vel+=Steer;
+        return;
+    }
+
+    void A_Star(Actor Target=null, ZPathType Type=PATH_ALL){
+        if(!Target)
+            Target=self.Target;
+        ThinkerIterator it=ThinkerIterator.Create("ZPathMarker", STAT_ZNODES);
+        double New,
+               LastStart=double.MAX,
+               LastTarget=double.MAX;
+        ZPathMarker Start, Goal, Marker;
+        
+        ZGraph test=new("ZGraph");
+        while(Marker=ZPathMarker(it.Next())){
+            test.Nodes.Push(Marker.Node);
+            if((New=Distance2D(Marker)+Marker.Distance2D(Target))<LastStart && CheckSight(Marker)){
+                Start=Marker;
+                LastStart=New;
+            }
+            if(New<LastTarget && Target.CheckSight(Marker)){
+                Goal=Marker;
+                LastTarget=New;
+            }
+        }
+        console.printf(Start.Args[0].."");
+        console.printf(Goal.Args[0].."");
+        //Plan=test.GetPlan(Start.Node, Goal.Node);
+        Plan=ZManager.Instance().Graph(0).GetPlan(Start.Node, Goal.Node);
+    }
+}

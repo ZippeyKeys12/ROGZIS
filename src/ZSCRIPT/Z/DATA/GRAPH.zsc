@@ -1,10 +1,12 @@
 class ZGraph play{
     Array<ZNode> Nodes;
 
-    ZPlan GetPath(ZNode StartNode, ZNode GoalNode){
+    ZPlan GetPlan(ZNode StartNode, ZNode GoalNode){
+        if(StartNode==GoalNode)
+            return null;
         uint Index=Nodes.Find(StartNode);
         if(Index==Nodes.Size() || Nodes.Find(GoalNode)==Nodes.Size())
-            ZManager.Error("Node doesn't exist", ERR_ERROR);
+            ZManager.Error("Node doesn't exist", ERR_FATAL);
         Array<ZNode> Open,
                          Closed,
                          CameFrom;
@@ -34,7 +36,7 @@ class ZGraph play{
             for(int i=0; i<CurrentNode.Edges.Size(); i++){
                 ZEdge CurrentEdge=CurrentNode.Edges[i];
                 ZNode NextNode=CurrentEdge.To;
-                if(Closed.Find(NextNode)!=Closed.Size())
+                if(Closed.Find(NextNode)!=Closed.Size() || Nodes.Find(NextNode)==Nodes.Size())
                     continue;
                 if(Open.Find(NextNode)==Open.Size())
                     Open.Push(NextNode);
@@ -66,15 +68,29 @@ class ZGraph play{
 class ZPlan play{
     Array<ZNode> Nodes;
 
+    ZNode Peek()
+    {return Nodes[Nodes.Size()-1];}
+
     ZNode Pop(){
-        ZNode Node=Nodes[Nodes.Size()-1];
+        ZNode Node=Peek();
         Nodes.Pop();
         return Node;
     }
+
+    uint Size()
+    {return Nodes.Size();}
 }
 
 class ZNode play{
+    ZNodeType Type;
+
     Array<ZEdge> Edges;
+
+    virtual
+    ZNode Init(ZNodeType Type=0){
+        self.Type=Type;
+        return self;
+    }
 
     virtual
     double DistanceTo(ZNode Other)
@@ -84,15 +100,12 @@ class ZNode play{
 class ZEdge play{
     double Cost;
 
-    ZNodeType Type;
-
     ZNode To;
 
     static
-    ZEdge Create(ZNode From, ZNode To, ZNodeType Type=0){
+    ZEdge Create(ZNode From, ZNode To){
         ZEdge Result=new("ZEdge");
         Result.Cost=From.DistanceTo(To);
-        Result.Type=Type;
         Result.To=To;
         return Result;
     }

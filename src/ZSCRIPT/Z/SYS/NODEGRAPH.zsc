@@ -15,9 +15,8 @@ class ZPathMarker:Actor{
         ChangeStatNum(STAT_ZNODES);
     }
 
-    override
-    void PostBeginPlay(){
-        super.PostBeginPlay();
+    virtual
+    ZPathMarker Init(){
         if(!Node){
             Node=new("ZPathNode");
             Node.Marker=self;
@@ -36,6 +35,7 @@ class ZPathMarker:Actor{
                 Node.Edges.Push(ZEdge.Create(Node, Marker.Node));
             }
         }
+        return self;
     }
 }
 

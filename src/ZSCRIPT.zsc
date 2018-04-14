@@ -4,6 +4,7 @@
 #include "ZSCRIPT/Z/SYS/MANAGER.zsc"
 #include "ZSCRIPT/Z/SYS/HANDLER.zsc"
 #include "ZSCRIPT/Z/SYS/WORLDSTATE.zsc"
+#include "ZSCRIPT/Z/SYS/REGISTRIES.zsc"
 #include "ZSCRIPT/Z/SYS/NODEGRAPH.zsc"
 
 //DATA MANAGEMENT
@@ -19,6 +20,9 @@
 
 //PLAYER
 #include "ZSCRIPT/Z/PLYR/INCLUDES.zsc"
+
+//ACTORS
+#include "ZSCRIPT/Z/ACTORS/BASE.zsc"
 
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"

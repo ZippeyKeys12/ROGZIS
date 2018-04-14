@@ -1,0 +1,76 @@
+extend
+class ZManager{
+    private
+    ZDamageTypes DamageTypes;
+
+    private
+    ZArmorUpgrades ArmorUpgrades;
+
+    private
+    Array<ZGraph> NodeGraphs;
+
+    private
+    void InitRegistries(){
+        //Node Graphs
+        ThinkerIterator it=ThinkerIterator.Create("ZPathMarker", STAT_ZNODES);
+        ZPathNode StartNode, TargetNode, Node;
+        ZPathMarker Marker;
+        static const uint NodeGraphTypes[]={
+            PATH_ALL
+        };
+        for(int i=0; i<NodeGraphTypes.Size(); i++){
+            ZGraph Graph=new("ZGraph");
+            while(Marker=ZPathMarker(it.Next())){
+                Marker.Init();
+                if((Node=Marker.Node) && (i==PATH_ALL || Node.Type==NodeGraphTypes[i]))
+                    Graph.Nodes.Push(Marker.Node);
+            }
+            console.printf("asd");
+            NodeGraphs.Push(Graph);
+        }
+        //For registration
+        Parser_TSV ParserTSV; TSVRow Row;
+        //DamageTypes
+        DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
+        ParserTSV=Parser_TSV.Create(#config "DATA", "tDamageTypes");
+        for(int i=1; i<ParserTSV.Size(); i++){
+            Row=ParserTSV.GetRow(i);
+            //Flags Management
+            Array<String> Flags; Flags.Clear(); ZDamageInfo ActualFlags=0;
+            Row.Get(6).Split(Flags, "|", TOK_SKIPEMPTY);
+            for(int j=0; j<Flags.Size(); j++)
+                if(Flags[j]~=="DMG_ZONE")
+                    ActualFlags|=DMG_ZONE;
+            //Registration
+            DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.Get(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), Row.GetDouble(5), ActualFlags));
+        }
+        //Upgrades
+        static const String ArmorUpgradeNames[]={
+            @ZMAUpgrades
+        };
+        ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
+        ZArmorUpgrade Upgrade;
+        for(int i=0; i<ArmorUpgradeNames.Size(); i++){
+            ArmorUpgrades.Add(Upgrade=ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init()));
+            if(!Upgrade)Error(Upgrade.ID.." doesn't have an order", ERR_ERROR);
+        }
+    }
+
+    clearscope
+    ZGraph Graph(uint Index)
+    {return NodeGraphs[Index];}
+
+    clearscope
+    ZDamageType DamageType(Name ID)
+    {return DamageTypes.Get(ID);}
+
+    clearscope
+    ZUpgrade Upgrade(ZUpgradeInfo Type, Name ID){
+        switch(Type){
+            case UPR_MARMOR:
+                return ZUpgrade(ArmorUpgrades.Get("ZMAU_"..ID));
+                break;
+        }
+        return null;
+    }
+}
