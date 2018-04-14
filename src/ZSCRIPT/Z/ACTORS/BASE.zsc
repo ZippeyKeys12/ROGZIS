@@ -75,10 +75,8 @@ class ZZZ:Zombieman{
                LastStart=double.MAX,
                LastTarget=double.MAX;
         ZPathMarker Start, Goal, Marker;
-        
-        ZGraph test=new("ZGraph");
+
         while(Marker=ZPathMarker(it.Next())){
-            test.Nodes.Push(Marker.Node);
             if((New=Distance2D(Marker)+Marker.Distance2D(Target))<LastStart && CheckSight(Marker)){
                 Start=Marker;
                 LastStart=New;
@@ -90,7 +88,6 @@ class ZZZ:Zombieman{
         }
         console.printf(Start.Args[0].."");
         console.printf(Goal.Args[0].."");
-        //Plan=test.GetPlan(Start.Node, Goal.Node);
         Plan=ZManager.Instance().Graph(0).GetPlan(Start.Node, Goal.Node);
     }
 }

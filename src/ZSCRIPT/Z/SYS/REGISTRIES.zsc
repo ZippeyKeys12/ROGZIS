@@ -25,7 +25,6 @@ class ZManager{
                 if((Node=Marker.Node) && (i==PATH_ALL || Node.Type==NodeGraphTypes[i]))
                     Graph.Nodes.Push(Marker.Node);
             }
-            console.printf("asd");
             NodeGraphs.Push(Graph);
         }
         //For registration
