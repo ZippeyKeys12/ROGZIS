@@ -4,30 +4,17 @@ class ZPlayer:PlayerPawn{
         NewButtons,
         SameButtons;
 
-    double ActiveYaw,
-           ActivePitch,
-           ActiveRoll,
-           PassiveRoll,
-           RunOscillation,
-           RelativeZ;
-
-    Vector2 SideVector,
-            ViewVectorXY;
-
-    Vector3 ViewVector;
+    double RelativeZ;
 
     Actor AimTarget;
-
-    ZPerlin YawShake,
-            PitchShake,
-            RollShake;
 
     ZStats Stats;
 
     ZMStats MStats;
 
-    Default{
-        Species "Player";
+    [Property]{
+        [Default]
+        Species="Player";
     }
 
     override
@@ -84,7 +71,7 @@ class ZPlayer:PlayerPawn{
     virtual
     void SetAimTarget(){
         FLineTraceData Data;
-        Trace(Data, 2048, Stats.ActualPitch);
+        Trace(Data, 2048, Stats.ActualPitch, ViewHeight);
         AimTarget=Data.HitActor;
     }
 
@@ -96,8 +83,8 @@ class ZPlayer:PlayerPawn{
     void CheckPitch(){}
 
     virtual
-    bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0)
-    {return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
+    bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0, double OffsetZ=0)
+    {return LineTrace(Stats.ActualYaw, Distance, Pitch, 0, OffsetZ, Data: Data);}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

@@ -28,9 +28,9 @@ enum ZDamageInfo{
 enum ZNodeType{}
 
 enum ZPathType{
-    PATH_ALL    =   0,
-    PATH_LAND   =   1<<0,
-    PATH_WATER  =   1<<1,
+    PATH_ALL,
+    PATH_LAND,
+    PATH_WATER,
 }
 
 ///////////////

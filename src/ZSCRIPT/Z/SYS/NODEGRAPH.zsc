@@ -1,18 +1,22 @@
 class ZPathMarker:Actor{
     ZPathNode Node;
 
-    Default{
-        //$Category Pickups/Useless
-        //$Title Useless Powerup
-        //$Color 17
-        //$Arg0 "hmm"
-        +NOINTERACTION
+    [Property]{
+        [Info]
+        Category="Pickups/Useless";
+        Title="Useless Powerup";
+        Color=17;
+        Arg0="ID";
+        Arg1="Radius";
+        [Flags]
+        NoInteraction=false;
     }
 
     override
     void BeginPlay(){
         super.BeginPlay();
         ChangeStatNum(STAT_ZNODES);
+        A_SetSize(Args[1]);
     }
 
     virtual

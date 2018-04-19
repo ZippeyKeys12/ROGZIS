@@ -29,8 +29,10 @@ class ZMAU_Jetpack{
 }
 
 class JetFlight:PowerFlight{
-    Default{
-        -INVENTORY.HUBPOWER
-        Powerup.Duration 1;
+    [Property]{
+        [Flags.Inventory]
+        HubPower=false;
+        [Powerup]
+        Duration=1;
     }
 }

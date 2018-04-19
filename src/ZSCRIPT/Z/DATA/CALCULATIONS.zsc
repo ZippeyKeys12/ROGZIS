@@ -124,13 +124,6 @@ struct ZCalc{
     // Vector2 //
     /////////////
     static
-    Vector2 V2Rotate(Vector2 Vector, double Angle){
-        double X=Vector.X,
-               Y=Vector.Y;
-        return (X*Cos(Angle)-Y*Sin(Angle), X*Sin(Angle)+Y*Cos(Angle));
-    }
-
-    static
     Vector2 V2Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
         Time=NormRange(Time);
         return (1-Time)*Start+Time*End;

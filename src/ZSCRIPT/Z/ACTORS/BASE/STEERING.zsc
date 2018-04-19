@@ -1,0 +1,70 @@
+extend
+class ZActor{
+    meta
+    double WalkSpeed,
+           FlightSpeed;
+
+    Property WalkSpeed: WalkSpeed;
+    Property FlightSpeed: FlightSpeed;
+
+    [Property]{
+        [ZActor]
+        WalkSpeed=50;
+        FlightSpeed=0;
+    }
+
+    void A_MoveTo(Actor Target=null){
+        double MaxForce=5.5;
+        Vector3 Steer=(0, 0, 0);
+        if(!Target){
+            if(self.Target)
+                Target=self.Target;
+            else return;
+        }
+        Steer+=.5*Seek(Target);
+        Steer+=CollisionAvoidance(Target);
+        if(Steer.Z>FlightSpeed)
+            Steer.Z=FlightSpeed;
+        if(Steer.Length()>MaxForce)
+            Steer=MaxForce*Steer.Unit();
+        Vel+=Steer/Mass*12.5;
+        if(Vel.Length()>WalkSpeed)
+            Vel=WalkSpeed*Vel.Unit();
+    }
+
+    Vector3 Seek(Actor Target){
+        Vector3 DesVel=Vec3To(Target);
+        double Distance=DesVel.Length();
+        DesVel=WalkSpeed*DesVel.Unit();
+        if(Distance<20)
+            DesVel*Distance/20;
+        return DesVel-Vel;
+    }
+
+    Vector3 Flee(Actor Target)
+    {return -Seek(Target);}
+
+    Vector3 CollisionAvoidance(Actor Target){
+        double MaxRadius=Radius*sqrt(2);
+        Vector2 Additive=AngleToVector(Angle, MaxRadius)+Vel.XY,
+                LeftVector=AngleToVector(Angle+90, MaxRadius),
+                RightVector=AngleToVector(Angle-90, MaxRadius);
+        FCheckPosition LeftD, RightD;
+        bool Left=CheckMove(Pos.XY+LeftVector, 0, LeftD),
+             Right=CheckMove(Pos.XY+RightVector, 0, RightD);
+        Vector3 Change=(0, 0, 0);
+        FLineTraceData Data;
+        bool Hit=false;
+        for(int i=0; i<360; i+=90){
+            Hit=Hit || LineTrace(Angle+i, Additive.Length(), 0, OffsetZ: MaxStepHeight, OffsetSide: MaxRadius, Data)
+                    || LineTrace(Angle+i, Additive.Length(), 0, OffsetZ: MaxStepHeight, OffsetSide: -MaxRadius, Data)
+                    || LineTrace(Angle+i, Additive.Length(), 0, OffsetZ: MaxStepHeight, Data: Data);
+        }
+        if(Hit){
+            Actor HitActor;
+            if((HitActor=Data.HitActor) && HitActor!=Target)
+                Change+=300*(Pos+Additive-HitActor.Pos).Unit();
+        }
+        return Change;
+    }
+}

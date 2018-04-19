@@ -4,8 +4,13 @@ from ast import parse
 from distutils.dir_util import copy_tree
 from configparser import SafeConfigParser
 
-MODNAME="ROGZIS"
-VERSION="3.3"
+SETTINGS={
+    "ModName":"ROGZIS",
+    "Version":"3.3",
+    "IniFiles":[
+        "ZCONFIG"
+    ]
+}
 
 def ZRead(BuildFolder, LumpName):
     # Includes
@@ -20,11 +25,8 @@ def ZRead(BuildFolder, LumpName):
             else: Lines.append(Line)
     return "".join(Lines)
 
-def ZReplace(BuildFolder, FullFile):
+def ZReplace(BuildFolder, FullFile, IniFiles):
     # INI Loading
-    IniFiles=[
-        "ZCONFIG"
-    ]
     print("Loading INI Settings")
     Config=SafeConfigParser()
     IniFiles=(BuildFolder+"\\/"+Ini+".ini" for Ini in IniFiles)
@@ -47,8 +49,7 @@ def ZReplace(BuildFolder, FullFile):
     while ConfigCall:
         Section=ConfigCall.group(1)
         Option=ConfigCall.group(3)
-        FullFile=re.sub("#config\\s+\"{}\"\\s*(\\s|,)\\s*\"{}\"".format(Section, Option), Config[Section][Option], FullFile)
-        #FullFile=re.sub("#config\\s+\""+Section+"\"\\s*(\\s|,)\\s*\""+Option+"\"", Config[Section][Option], FullFile)
+        FullFile=re.sub("#config\\s+\"{}\"\\s*(\\s|,)\\s*\"{}\"".format(Section, Option), Config[Section][Option], FullFile, flags=re.IGNORECASE)
         ConfigCall=ConfigPattern.search(FullFile)
     # JSON Loading
     print("Loading JSON Data")
@@ -62,6 +63,44 @@ def ZReplace(BuildFolder, FullFile):
                     Config[Section][Key]=Value
     # ZScript Generation
     print("Generating ZScript")
+    ## Defaults
+    print("  Generating Defaults:", end=" ")
+    DefaultPattern=re.compile("\\[Property\\](\\s*){([^{}]*)}", re.IGNORECASE)
+    DefaultCall=DefaultPattern.search(FullFile)
+    while DefaultCall:
+        DefaultCall=DefaultCall.group(2)
+        DefaultCall=re.sub("\\s+", " ", DefaultCall)
+        Sections=DefaultCall.split("[")
+        DefaultCall="Default{"
+        for Section in Sections:
+            if len(Section)<2:
+                continue
+            Section=Section.split("]")
+            SectionName=Section[0]
+            for Default in Section[1].split(";"):
+                if SectionName[:5]=="Flags":
+                    Default=Default.split("=")
+                    DefaultCall+="+" if Default[1]=="true" else "-"
+                    if SectionName.find(".")>-1:
+                        SectionName=SectionName.split(".")[1]+"."
+                    else: SectionName=""
+                    DefaultCall+=SectionName+Default[0]+";"
+                else:
+                    if SectionName=="Type":
+                        DefaultCall+=Default+";"
+                    else:
+                        Default=Default.split("=")
+                        if len(Default)<2:
+                            continue
+                        if SectionName=="Info":
+                            DefaultCall+="//$"+Default[0]+" "+Default[1]+"\n"
+                        else:
+                            if not SectionName=="Default":
+                                DefaultCall+=SectionName+"."
+                            DefaultCall+=Default[0]+" "+re.sub("[()]", "", Default[1])+";"
+        FullFile=DefaultPattern.sub(DefaultCall+"}", FullFile, 1)
+        DefaultCall=DefaultPattern.search(FullFile)
+    print("Successful")
     ## Upgrades
     print("  Generating Upgrades:")
     Upgrades=json.loads(Config["DATA"]["jUpgrades"])
@@ -100,25 +139,30 @@ def ZReplace(BuildFolder, FullFile):
     print("Generating ZScript: Successful")
     return FullFile
 
-def ZStript(FullFile):
+def ZComment(FullFile):
     ## Multi-line
-    FullFile=re.sub("(?s)\\/\\*.*?\\*\\/", " ", FullFile)
+    FullFile=re.sub("(?s)\\/\\*.*?\\*\\/", " ", FullFile, flags=re.IGNORECASE)
     ## Single-line
-    FullFile=re.sub("\\/\\/+.*", " ", FullFile)
+    FullFile=re.sub("\\/\\/+.*", " ", FullFile, flags=re.IGNORECASE)
+    return FullFile
 
+def ZStript(FullFile):
+    FullFile=ZComment(FullFile)
     # Other points of minimization
     Tokens={"{", "}", "\\(", "\\)", "\\[", "\\]", "=", ";"}
     for Token in Tokens:
-        FullFile=re.sub("\\s*"+Token+"\\s*", Token.replace("\\", ""), FullFile)
+        FullFile=re.sub("\\s*"+Token+"\\s*", Token.replace("\\", ""), FullFile, flags=re.IGNORECASE)
 
     # Whitespace
-    FullFile=re.sub("\\s+", " ", FullFile)
+    FullFile=re.sub("\\s+", " ", FullFile, flags=re.IGNORECASE)
     return FullFile
 
-def ZBuild(Compress):
+def ZBuild(Settings, Compress):
+    # Build Settings
+    ModName=Settings["ModName"]
     # Clean build destination
     print("Cleaning Build Destination: ", end="")
-    BuildFolder="dist/"+MODNAME
+    BuildFolder="dist/"+ModName
     if os.path.exists(BuildFolder):
         shutil.rmtree(BuildFolder)
 
@@ -128,16 +172,17 @@ def ZBuild(Compress):
     print("Successful")
 
     os.chdir("dist/")
-    BuildFolder=MODNAME
+    BuildFolder=ModName
 
     # Compact ZScript
     print("Compacting ZScript")
     StartLump="ZSCRIPT.zsc"
     FullFile=ZRead(BuildFolder, StartLump)
-    FullFile=ZReplace(BuildFolder, FullFile)
+    FullFile=ZComment(FullFile)
+    FullFile=ZReplace(BuildFolder, FullFile, Settings["IniFiles"].copy())
     if Compress:
         FullFile=ZStript(FullFile)
-    FullFile="version \"{}\"".format(VERSION)+FullFile
+    FullFile="version \"{}\"".format(Settings["Version"])+FullFile
     os.remove("ROGZIS/ZSCRIPT.zsc")
     with open(BuildFolder+"/"+StartLump, "w+") as Output:
         Output.write(FullFile)
@@ -145,16 +190,16 @@ def ZBuild(Compress):
     print("Compacting ZScript: Successful")
 
     # Compression
-    if os.path.isfile(BuildFolder+"/"+MODNAME+".zip"):
-        os.remove(BuildFolder+"/"+MODNAME+".zip")
-    ArchiveName=MODNAME+".pk3"
+    if os.path.isfile(BuildFolder+"/"+ModName+".zip"):
+        os.remove(BuildFolder+"/"+ModName+".zip")
+    ArchiveName=ModName+".pk3"
     if os.path.isfile(ArchiveName):
         os.remove(ArchiveName)
     if Compress:
         print("Compressing PK3 Archive: ", end="")
-        shutil.make_archive(MODNAME, "zip", BuildFolder)
+        shutil.make_archive(ModName, "zip", BuildFolder)
         shutil.rmtree(BuildFolder)
-        os.rename(MODNAME+".zip", ArchiveName)
+        os.rename(ModName+".zip", ArchiveName)
         print("Successful")
 
 if __name__ == "__main__":
@@ -164,4 +209,4 @@ if __name__ == "__main__":
         if argv[0]=='-c':
             Compress=True
         argv=argv[1:]
-    ZBuild(Compress)
+    ZBuild(SETTINGS, Compress)

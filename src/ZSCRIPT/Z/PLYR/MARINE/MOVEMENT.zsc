@@ -34,7 +34,7 @@ class ZMarine{
             if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
             else if(LedgeHeight<=MaxStepHeight){
                 MidClamber=false;
-                Vel.xy+=2*ViewVector.XY.Unit();
+                Vel.xy+=2*FrontVector;
             }
         }
         if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:MStats.ClamberSpeed);

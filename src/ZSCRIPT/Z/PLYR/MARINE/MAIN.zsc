@@ -1,15 +1,16 @@
 class ZMarine:ZPlayer{
-    Default{
+    [Property]{
+        [Player]
         //Descriptors
-        Player.DisplayName "Marine";
-        Player.AttackZOffset 13;
+        DisplayName="Marine";
+        AttackZOffset=13;
         //Start Items
-        Player.StartItem "Pistol";
-        Player.StartItem "Fist";
-        Player.StartItem "Clip", 50;
+        StartItem="Pistol";
+        StartItem="Fist";
+        StartItem=("Clip", 50);
         //Weapons
-        Player.WeaponSlot 1, "Fist";
-        Player.WeaponSlot 2, "Pistol";
+        WeaponSlot=(1, "Fist");
+        WeaponSlot=(2, "Pistol");
     }
 
     override
@@ -34,10 +35,6 @@ class ZMarine:ZPlayer{
         Trace(Data, 2048, Stats.ActualPitch);
         AimTarget=Data.HitActor;
     }
-
-    override
-    bool Trace(out FLineTraceData Data, double Distance, double Pitch)
-    {return LineTrace(Stats.ActualYaw, Distance, Pitch, Data: Data);}
 
     override
     void HandleScreenShake(){

@@ -18,9 +18,11 @@ class ZPlayer{
 
     Property MaxLedgeHeight: MaxLedgeHeight;
 
-    Default{
-        MaxStepHeight 18;
-        ZPlayer.MaxLedgeHeight 35;
+    [Property]{
+        [Default]
+        MaxStepHeight=18;
+        [ZPlayer]
+        MaxLedgeHeight=35;
     }
 
     override
@@ -169,7 +171,7 @@ class ZPlayer{
             if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
             else if(LedgeHeight<=MaxStepHeight){
                 MidClamber=false;
-                Vel.xy+=2*ViewVector.XY.Unit();
+                Vel.xy+=2*FrontVector;
             }
         }
         if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:1);
@@ -202,7 +204,7 @@ class ZPlayer{
     void CheckCollisionEffects(){
         int Dam;
         if((Dam=LastVel.Z-Vel.Z)>20)
-            if(bSkullfly)Vel.XY=-50*ViewVector.XY.Unit();
+            if(bSkullfly)Vel.XY=-50*FrontVector;
             else DamageMobj(self, self, Dam-20, 'Collision', DMG_THRUSTLESS);
         LastVel=Vel;
     }

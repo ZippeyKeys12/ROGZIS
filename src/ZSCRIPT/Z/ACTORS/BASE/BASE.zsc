@@ -1,36 +1,14 @@
-class ZActor:Actor{
-    meta
-    double WalkSpeed;
+class ZActor:Actor{}
 
-    Property WalkSpeed: WalkSpeed;
-
-    Default{
-        ZActor.WalkSpeed 10;
-    }
-
-    void A_Seek(Actor Target=null, bool Urgent=false){
-        double MaxForce=3;
-        if(!Target)
-            Target=self.Target;
-        Vector2 DesVel=self.WalkSpeed*Vec2To(Target).Unit();
-        Vector2 Steer=(DesVel-Vel.XY)/Mass;
-        if(Steer.Length()>MaxForce)
-            Steer=MaxForce*Steer.Unit();
-        Vel+=Steer;
-        return;
-    }
-}
-
-class ZZZ:Zombieman{
-    meta
-    double WalkSpeed;
-
+class ZZZ:ZActor{
     ZPlan Plan;
 
-    Property WalkSpeed: WalkSpeed;
-
-    Default{
-        ZZZ.WalkSpeed 50;
+    [Property]{
+        [Default]
+        Radius=20;
+        Height=56;
+        [Type]
+        Monster;
     }
 
     States{
@@ -38,7 +16,7 @@ class ZZZ:Zombieman{
             POSS A 1{
                 if(CheckSight(ZManager.Instance().WorldState.Player)){
                     Plan=null;
-                    A_Seek(ZManager.Instance().WorldState.Player);
+                    A_MoveTo(ZManager.Instance().WorldState.Player);
                 }else{
                     A_Star(ZManager.Instance().WorldState.Player);
                     if(Plan && Plan.Size()>0 && Plan.Peek()){
@@ -46,25 +24,20 @@ class ZZZ:Zombieman{
                             Plan.Pop();
                             console.printf("yesx!");
                         }
-                        if(Plan.Size()>0)
-                            A_Seek(ZPathNode(Plan.Peek()).Marker);
-                    }else
-                        Plan=null;
+                        if(Plan.Size()>0){
+                            console.printf(ZPathNode(Plan.Peek()).Marker.Args[0].."aa");
+                            A_MoveTo(ZPathNode(Plan.Peek()).Marker);
+                        }
+                    }else Plan=null;
                 }
             }
             loop;
     }
 
-    void A_Seek(Actor Target=null, bool Urgent=false){
-        double MaxForce=3;
-        if(!Target)
-            Target=self.Target;
-        Vector2 DesVel=self.WalkSpeed*Vec2To(Target).Unit();
-        Vector2 Steer=(DesVel-Vel.XY)/Mass;
-        if(Steer.Length()>MaxForce)
-            Steer=MaxForce*Steer.Unit();
-        Vel+=Steer;
-        return;
+    override
+    void Tick(){
+        super.Tick();
+        Angle=ATan2(Vel.Y, Vel.X);
     }
 
     void A_Star(Actor Target=null, ZPathType Type=PATH_ALL){
@@ -90,4 +63,16 @@ class ZZZ:Zombieman{
         console.printf(Goal.Args[0].."");
         Plan=ZManager.Instance().Graph(0).GetPlan(Start.Node, Goal.Node);
     }
+}
+
+class dd:DoomImp{
+    States{
+        Spawn:
+            TROO A 1;
+            loop;
+    }
+    // override
+    // bool CanCollideWith(Actor Other, bool Passive){
+    //     return Distance3D(Other)<=Radius+Other.Radius;
+    // }
 }
