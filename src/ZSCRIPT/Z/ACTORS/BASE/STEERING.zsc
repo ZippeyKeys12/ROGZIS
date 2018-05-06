@@ -21,7 +21,7 @@ class ZActor{
                 Target=self.Target;
             else return;
         }
-        Steer+=.5*Seek(Target);
+        Steer+=.5*Seek(Target, true);
         Steer+=CollisionAvoidance(Target);
         if(Steer.Z>FlightSpeed)
             Steer.Z=FlightSpeed;
@@ -32,12 +32,16 @@ class ZActor{
             Vel=WalkSpeed*Vel.Unit();
     }
 
-    Vector3 Seek(Actor Target){
+    Vector3 Seek(Actor Target, bool Arrive=false){
         Vector3 DesVel=Vec3To(Target);
         double Distance=DesVel.Length();
-        DesVel=WalkSpeed*DesVel.Unit();
-        if(Distance<20)
-            DesVel*Distance/20;
+        DesVel*=WalkSpeed;
+        if(Arrive){
+            if(Distance<Target.Radius)
+                return -Vel;
+            else if(Distance<Target.Radius*2)
+                DesVel/=Target.Radius;
+        }else DesVel/=Distance;
         return DesVel-Vel;
     }
 

@@ -2,14 +2,12 @@ class ZGraph play{
     Array<ZNode> Nodes;
 
     ZPlan GetPlan(ZNode StartNode, ZNode GoalNode){
-        if(StartNode==GoalNode)
-            return null;
         uint Index=Nodes.Find(StartNode);
         if(Index==Nodes.Size() || Nodes.Find(GoalNode)==Nodes.Size())
             ZManager.Error("Node doesn't exist", ERR_FATAL);
         Array<ZNode> Open,
-                         Closed,
-                         CameFrom;
+                     Closed,
+                     CameFrom;
         Open.Push(StartNode);
         CameFrom.Resize(Nodes.Size());
         Array<double> GCosts,

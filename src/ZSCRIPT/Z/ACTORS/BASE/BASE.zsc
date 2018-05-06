@@ -14,11 +14,13 @@ class ZZZ:ZActor{
     States{
         Spawn:
             POSS A 1{
-                if(CheckSight(ZManager.Instance().WorldState.Player)){
+                if(!Target)
+                    Target=ZManager.Instance().WorldState.Player;
+                if(CheckSight(Target)){
                     Plan=null;
-                    A_MoveTo(ZManager.Instance().WorldState.Player);
+                    A_MoveTo();
                 }else{
-                    A_Star(ZManager.Instance().WorldState.Player);
+                    A_Star();
                     if(Plan && Plan.Size()>0 && Plan.Peek()){
                         if(Distance3DSquared(ZPathNode(Plan.Peek()).Marker)<1){
                             Plan.Pop();
@@ -41,8 +43,11 @@ class ZZZ:ZActor{
     }
 
     void A_Star(Actor Target=null, ZPathType Type=PATH_ALL){
-        if(!Target)
-            Target=self.Target;
+        if(!Target){
+            if(self.Target)
+                Target=self.Target;
+            else return;
+        }
         ThinkerIterator it=ThinkerIterator.Create("ZPathMarker", STAT_ZNODES);
         double New,
                LastStart=double.MAX,
@@ -59,8 +64,6 @@ class ZZZ:ZActor{
                 LastTarget=New;
             }
         }
-        console.printf(Start.Args[0].."");
-        console.printf(Goal.Args[0].."");
         Plan=ZManager.Instance().Graph(0).GetPlan(Start.Node, Goal.Node);
     }
 }

@@ -166,7 +166,7 @@ struct ZCalc{
     }
 
     static
-    Vector2    V2CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
+    Vector2 V2CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
     {return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 
     /////////////
@@ -191,7 +191,7 @@ struct ZCalc{
     {return (SmoothStep(Time, Start.x, End.x, Degree), SmoothStep(Time, Start.y, End.y, Degree), SmoothStep(Time, Start.z, End.z, Degree));}
 
     static
-    Vector3    V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
+    Vector3 V3CenterOfMass(Vector3 A, Vector3 B, Vector3 C, double AWeight=1, double BWeight=1, double CWeight=1)
     {return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 
     /////////////////
