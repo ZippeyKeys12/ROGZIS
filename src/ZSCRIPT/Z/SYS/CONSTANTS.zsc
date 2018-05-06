@@ -33,6 +33,11 @@ enum ZPathType{
     PATH_WATER,
 }
 
+enum ZPSpriteType{
+    PSP_RWEAPON=PSP_WEAPON+1,
+    PSP_LWEAPON,
+}
+
 ///////////////
 // Inventory //
 ///////////////

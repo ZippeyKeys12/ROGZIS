@@ -72,9 +72,9 @@ class ZPlan play{
     {return Nodes[Nodes.Size()-1];}
 
     ZNode Pop(){
-        ZNode Node=Peek();
+        ZNode Last=Peek();
         Nodes.Pop();
-        return Node;
+        return Last;
     }
 
     uint Size()

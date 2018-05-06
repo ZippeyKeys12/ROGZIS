@@ -214,7 +214,7 @@ class ZMStats:Thinker{
                 Damage*=1+.03*Strength;
                 break;
         }
-        return Damage+(FRandom(0, 1)<=CriticalChance*Weapon.CriticalMultiplier())*Weapon.CriticalDamage;
+        return Damage+(FRandom(0, 1)<=CriticalChance*Weapon.CriticalMultiplier())*Weapon.CritDmg;
     }
 
     virtual

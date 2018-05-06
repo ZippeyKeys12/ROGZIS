@@ -80,11 +80,12 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
             for Default in Section[1].split(";"):
                 if SectionName[:5]=="Flags":
                     Default=Default.split("=")
+                    if len(Default)<2:
+                        continue
                     DefaultCall+="+" if Default[1]=="true" else "-"
                     if SectionName.find(".")>-1:
-                        SectionName=SectionName.split(".")[1]+"."
-                    else: SectionName=""
-                    DefaultCall+=SectionName+Default[0]+";"
+                        DefaultCall+=SectionName.split(".")[1]+"."
+                    DefaultCall+=Default[0]+";"
                 else:
                     if SectionName=="Type":
                         DefaultCall+=Default+";"
@@ -115,23 +116,23 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
             class ZMAU_{0[ID]}:ZArmorUpgrade{{
                 const Order={0[Order]};
                 const Strain={0[Strain]};
-            """.format(MAUpgrade["Info"])
+        """.format(MAUpgrade["Info"])
         VarSections=MAUpgrade["Variables"]
         if "Config" in VarSections:
             for Key, Value in VarSections["Config"].items():
                 ConfigCall=Value.split(".")
-                Zsc+="\tconst {}={};\n\t".format(Key, Config[ConfigCall[0]][ConfigCall[1]])
+                Zsc+="const {}={};".format(Key, Config[ConfigCall[0]][ConfigCall[1]])
         if "General" in VarSections:
             for Variables in VarSections["General"]:
-                Zsc+="\t{};\n\t".format(Variables)
+                Zsc+="{};".format(Variables)
         if "Default" in VarSections:
-            Zsc+="\toverride ZUpgrade Init(){\n\t"
+            Zsc+="override ZUpgrade Init(){"
             for Key, Value in VarSections["Default"].items():
                 if Value is None:
                     Value="null"
-                Zsc+="\t    {}={};\n\t".format(Key, Value)
-            Zsc+="\t    return super.Init();\n\t\t}\n"
-        Zsc+="\t    }\n"
+                Zsc+="{}={};".format(Key, Value)
+            Zsc+="return super.Init();}"
+        Zsc+="}"
         FullFile=Zsc+FullFile
     print("    Inserting Marine Upgrades:", end=" ")
     FullFile=FullFile.replace("@ZMAUpgrades", str(MAUpgrades).replace("'", "\"")[1:-1])

@@ -1,21 +1,60 @@
-class ZWeapons:ZRegistry{
-    bool Add(ZWeapon ZWeapon)
-    {return ZWeapon && super.Add(ZWeapon);}
-    
-    ZWeapon Get(Name Name) const
-    {return ZWeapon(super.Get(Name));}
-    
-    ZWeapon GetRand() const
-    {return ZWeapon(super.GetRand());}
-}
-
-class ZWeapon:ZItem{
+class ZWeapon:StateProvider{
     int Damage,
+        CritDmg,
         Durability,
-        MaxDurability,
-        CriticalDamage;
+        MaxDurability;
 
-    double BaseCriticalMultiplier;
+    double BaseCritMult;
+
+    ZWeaponInfo Info;
+
+    ZItem Data;
+
+    Property Damage: Damage;
+    Property CritDamage: CritDmg;
+    Property Durability: Durability;
+    Property CritMultiplier: BaseCritMult;
+
+    [Property]{
+        [Flags]
+        NoSector=true;
+        NoInteraction=true;
+        [ZWeapon]
+        Damage=0;
+        CritDamage=0;
+        Durability=0;
+        CritMultiplier=0;
+    }
+
+    States{
+        RSelect:    stop;
+        LSelect:    stop;
+        RDeselect:  stop;
+        LDeselect:  stop;
+        RReady:     stop;
+        LReady:     stop;
+        RFire:      stop;
+        LFire:      stop;
+    }
+
+    static
+    ZWeapon Instance(Class<ZWeapon> Name='ZWeapon'){
+        ThinkerIterator it=ThinkerIterator.Create(Name, STAT_ZDATA);
+        ZWeapon p;
+        if(p=ZWeapon(it.Next()))
+            return p;
+        return ZWeapon(spawn(Name));
+    }
+
+    static
+    ZWeapon Create(Name ID, String Name, String Description, int Price, int Damage, int CritDmg, int Durability, double BaseCritMult){
+        ZWeapon Weapon=ZWeapon(spawn('ZWeapon'));
+        Weapon.Data=ZItem.Create(ID, Name, Description, Price, Weapon);
+        Weapon.Damage=Damage;
+        Weapon.CritDmg=CritDmg;
+        Weapon.Durability=Durability;
+        return Weapon;
+    }
 
     clearscope
     int, int GetDurability() const
@@ -23,5 +62,5 @@ class ZWeapon:ZItem{
 
     clearscope
     double CriticalMultiplier() const
-    {return BaseCriticalMultiplier*Durability/MaxDurability;}
+    {return BaseCritMult*Durability/MaxDurability;}
 }

@@ -6,6 +6,7 @@
 #include "ZSCRIPT/Z/SYS/WORLDSTATE.zsc"
 #include "ZSCRIPT/Z/SYS/REGISTRIES.zsc"
 #include "ZSCRIPT/Z/SYS/NODEGRAPH.zsc"
+#include "ZSCRIPT/Z/SYS/WEAPONS.zsc"
 
 //DATA MANAGEMENT
 #include "ZSCRIPT/Z/DATA/GRAPH.zsc"

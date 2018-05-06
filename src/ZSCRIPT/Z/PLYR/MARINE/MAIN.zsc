@@ -5,12 +5,12 @@ class ZMarine:ZPlayer{
         DisplayName="Marine";
         AttackZOffset=13;
         //Start Items
-        StartItem="Pistol";
+        StartItem="ZWeaponSystem";
         StartItem="Fist";
         StartItem=("Clip", 50);
         //Weapons
         WeaponSlot=(1, "Fist");
-        WeaponSlot=(2, "Pistol");
+        WeaponSlot=(2, "ZWeaponSystem");
     }
 
     override
@@ -62,10 +62,6 @@ class ZMarine:ZPlayer{
         Damage=(Damage>=TELEFRAG_DAMAGE || MStats.Health<=0)?Damage:0;
         return Damage;
     }
-
-    override
-    void CheatGive(String Name, int Amount)
-    {console.printf("WIP");}
 }
 
 #include "ZSCRIPT/Z/PLYR/MARINE/STATS.zsc"

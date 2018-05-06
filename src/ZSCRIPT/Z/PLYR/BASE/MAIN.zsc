@@ -85,6 +85,10 @@ class ZPlayer:PlayerPawn{
     virtual
     bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0, double OffsetZ=0)
     {return LineTrace(Stats.ActualYaw, Distance, Pitch, 0, OffsetZ, Data: Data);}
+
+    override
+    void CheatGive(String Name, int Amount)
+    {console.printf("WIP");}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

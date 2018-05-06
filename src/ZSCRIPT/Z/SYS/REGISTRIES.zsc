@@ -44,7 +44,7 @@ class ZManager{
             DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.Get(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), Row.GetDouble(5), ActualFlags));
         }
         //Upgrades
-        static const String ArmorUpgradeNames[]={
+        static const Class<ZArmorUpgrade> ArmorUpgradeNames[]={
             @ZMAUpgrades
         };
         ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
