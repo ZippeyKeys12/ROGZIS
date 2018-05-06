@@ -88,7 +88,7 @@ class ZPlayer:PlayerPawn{
 
     override
     void CheatGive(String Name, int Amount)
-    {console.printf("WIP");}
+    {ZManager.Error("WIP", ERR_ERROR);}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"
