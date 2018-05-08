@@ -3,8 +3,8 @@ class ZPathMarker:Actor{
 
     [Property]{
         [Info]
-        Category="Pickups/Useless";
-        Title="Useless Powerup";
+        Category="MapInfo/PathNodes";
+        Title="Generic PathNode";
         Color=17;
         Arg0="ID";
         Arg1="Radius";

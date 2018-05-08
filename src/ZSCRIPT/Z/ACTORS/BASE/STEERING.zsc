@@ -32,8 +32,8 @@ class ZActor{
             Vel=WalkSpeed*Vel.Unit();
     }
 
-    Vector3 Seek(Actor Target, bool Arrive=false){
-        Vector3 DesVel=Vec3To(Target);
+    Vector3 Seek(Actor Target, bool Arrive=false, bool Predict=false){
+        Vector3 DesVel=Vec3To(Target)+Predict*Target.Vel;
         double Distance=DesVel.Length();
         DesVel*=WalkSpeed;
         if(Arrive){
@@ -45,8 +45,14 @@ class ZActor{
         return DesVel-Vel;
     }
 
-    Vector3 Flee(Actor Target)
-    {return -Seek(Target);}
+    Vector3 Pursue(Actor Target, bool Arrive=false)
+    {return Seek(Target, Arrive, true);}
+
+    Vector3 Flee(Actor Target, bool Arrive=false, bool Predict=false)
+    {return -Seek(Target, Arrive, Predict);}
+
+    Vector3 Evade(Actor Target, bool Arrive=false)
+    {return Flee(Target, Arrive, true);}
 
     Vector3 CollisionAvoidance(Actor Target){
         double MaxRadius=Radius*sqrt(2);
