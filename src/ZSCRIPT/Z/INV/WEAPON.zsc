@@ -39,7 +39,7 @@ class ZWeapon:StateProvider{
 
     static
     ZWeapon Instance(Class<ZWeapon> Name='ZWeapon'){
-        ThinkerIterator it=ThinkerIterator.Create(Name, STAT_ZDATA);
+        ActorIterator it=ActorIterator.Create(ZTID_WEAPS, Name);
         ZWeapon p;
         if(p=ZWeapon(it.Next()))
             return p;
@@ -54,6 +54,12 @@ class ZWeapon:StateProvider{
         Weapon.CritDmg=CritDmg;
         Weapon.Durability=Durability;
         return Weapon;
+    }
+
+    override
+    void BeginPlay(){
+        super.BeginPlay();
+        ChangeTID(ZTID_WEAPS);
     }
 
     clearscope

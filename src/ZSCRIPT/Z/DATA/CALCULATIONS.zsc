@@ -216,6 +216,25 @@ struct ZCalc{
     }
 }
 
+class ZMapper{
+    double Min,
+           Max;
+
+    static
+    ZMapper Create(double Min, double Max){
+        ZMapper Mapper=new("ZMapper");
+        Mapper.Min=Min;
+        Mapper.Max=Max;
+        return Mapper;
+    }
+
+    double NormRangeMap(double Value)
+    {return ZCalc.NormRange((Value-Min)/(Max-Min));}
+
+    double ANormRangeMap(double Value)
+    {return clamp(Value*(Max-Min)+Min, Min, Max);}
+}
+
 class ZPerlin{
     private
     ZMatrix Noise;

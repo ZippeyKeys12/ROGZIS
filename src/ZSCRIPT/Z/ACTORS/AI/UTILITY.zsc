@@ -1,0 +1,59 @@
+class ZUtility{
+    bool XSign,
+         YSign;
+
+    byte Degree;
+
+    double Misc;
+
+    ZUtilityType Type;
+
+    ZMapper Mapper;
+
+    static
+    ZUtility Create(ZUtilityType Type, double Min, double Max, double Misc=0, int XSign=1, int YSign=1){
+        ZUtility Function=new("ZUtility");
+        Function.XSign=XSign>0;
+        Function.YSign=YSign>0;
+        Function.Type=Type;
+        Function.Mapper=ZMapper.Create(Min, Max);
+        if(Misc==0){
+            switch(Type){
+                case UTL_LINEAR: break;
+                case UTL_POLYNOMIAL:
+                    Misc=2;
+                    break;
+                case UTL_LOGISTIC:
+                case UTL_LOGIT:
+                    Misc=.75;
+                    break;
+            }
+        }
+        Function.Misc=Misc;
+        return Function;
+    }
+
+    double Get(double X){
+        X=Mapper.NormRangeMap(X);
+        if(!XSign)
+            X=1-X;
+        double Y;
+        switch(Type){
+            case UTL_LINEAR:
+                Y=X;
+                break;
+            case UTL_POLYNOMIAL:
+                Y=X**Misc;
+                break;
+            case UTL_LOGISTIC:
+                Y=1/(1+exp(-Misc*(12*X-6)));
+                break;
+            case UTL_LOGIT:
+                Y=log(X/(1-X))/(12*Misc)+.5;
+                break;
+        }
+        if(!YSign)
+            Y=1-Y;
+        return Y;
+    }
+}

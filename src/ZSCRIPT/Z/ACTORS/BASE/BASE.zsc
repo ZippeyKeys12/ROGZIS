@@ -1,4 +1,14 @@
-class ZActor:Actor{}
+class ZActor:Actor{
+    ZBrain Brain;
+
+    override
+    void BeginPlay(){
+        super.BeginPlay();
+        Brain=ZBrain(new("ZBrain_"..GetClassName()));
+    }
+}
+
+class ZBrain_ZZZ:ZBrain{}
 
 class ZZZ:ZActor{
     ZPlan Plan;
@@ -48,7 +58,7 @@ class ZZZ:ZActor{
                 Target=self.Target;
             else return;
         }
-        ThinkerIterator it=ThinkerIterator.Create("ZPathMarker", STAT_ZNODES);
+        ActorIterator it=ActorIterator.Create(ZTID_NODES, "ZPathMarker");
         double New,
                LastStart=double.MAX,
                LastTarget=double.MAX;

@@ -23,8 +23,7 @@
 #include "ZSCRIPT/Z/PLYR/INCLUDES.zsc"
 
 //ACTORS
-#include "ZSCRIPT/Z/ACTORS/BASE/BASE.zsc"
-#include "ZSCRIPT/Z/ACTORS/BASE/STEERING.zsc"
+#include "ZSCRIPT/Z/ACTORS/INCLUDES.zsc"
 
 //INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"

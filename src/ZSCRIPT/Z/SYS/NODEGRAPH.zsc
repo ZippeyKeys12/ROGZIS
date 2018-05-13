@@ -15,8 +15,9 @@ class ZPathMarker:Actor{
     override
     void BeginPlay(){
         super.BeginPlay();
-        ChangeStatNum(STAT_ZNODES);
+        ChangeStatNum(STAT_ZDATA);
         A_SetSize(Args[1]);
+        ChangeTID(ZTID_NODES);
     }
 
     virtual
@@ -25,7 +26,7 @@ class ZPathMarker:Actor{
             Node=new("ZPathNode");
             Node.Marker=self;
         }
-        ThinkerIterator it=ThinkerIterator.Create("ZPathMarker", STAT_ZNODES);
+        ActorIterator it=ActorIterator.Create(ZTID_NODES, "ZPathMarker");
         ZPathMarker Marker;
         while(Marker=ZPathMarker(it.Next())){
             if(self==Marker)

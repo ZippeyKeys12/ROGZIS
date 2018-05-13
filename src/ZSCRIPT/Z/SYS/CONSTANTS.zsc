@@ -3,6 +3,11 @@
 /////////////
 const TICRATE=35;
 
+enum ZTIDs{
+    ZTID_NODES  =   2000,
+    ZTID_WEAPS,
+}
+
 enum ZErrorLevel{
     ERR_INFO,
     ERR_WARNING,
@@ -16,7 +21,6 @@ enum ZStatNum{
 
     //Ticking thinkers
     STAT_ZDATA  =   Thinker.STAT_USER,      //Thinkers storing world data
-    STAT_ZNODES,                            //For ZPathNode
 }
 
 enum ZDamageInfo{
@@ -36,6 +40,13 @@ enum ZPathType{
 enum ZPSpriteType{
     PSP_RWEAPON=PSP_WEAPON+1,
     PSP_LWEAPON,
+}
+
+enum ZUtilityType{
+    UTL_LINEAR,
+    UTL_POLYNOMIAL,
+    UTL_LOGISTIC,
+    UTL_LOGIT,
 }
 
 ///////////////

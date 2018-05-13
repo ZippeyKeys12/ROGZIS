@@ -1,0 +1,20 @@
+class ZBrain abstract{
+    ZActor Owner;
+
+    ZStack Stack;
+
+    Array<ZUtility> Considerations;
+
+    ZBrain Init(ZActor Owner){
+        self.Owner=Owner;
+        Stack=new("ZStack");
+        return self;
+    }
+
+    virtual
+    void Consider(){}
+
+    virtual
+    Name State()
+    {return Stack.Peek();}
+}

@@ -1,0 +1,23 @@
+class ZStack{
+    Array<Name> Stack;
+
+    bool Push(Name SName)
+    {return Stack.Push(int(SName));}
+
+    void Set(Name SName){
+        Stack.Clear();
+        Stack.Push(int(SName));
+    }
+
+    Name Peek(){
+        if(Stack.Size()==0)
+            return 'Ready';
+        return Stack[Stack.Size()-1];
+    }
+
+    Name Pop(){
+        Name Last=Peek();
+        Stack.Pop();
+        return Last;
+    }
+}
