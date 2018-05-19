@@ -54,6 +54,6 @@ class ZUtility{
         }
         if(!YSign)
             Y=1-Y;
-        return Y;
+        return ZCalc.NormRange(Y);
     }
 }

@@ -1,0 +1,53 @@
+class ZGaussian{
+    private
+    bool PreGenerated;
+
+    private
+    int PreGen;
+
+    private
+    double Mean,
+           StdDev;
+
+    private
+    Array<double> CachedValues;
+
+    static
+    ZGaussian Create(int Seed=int('GauseyBoi'), double Mean=0, double StdDev=1)
+    {return new("ZGaussian").Init(Seed, Mean, StdDev);}
+
+    private
+    ZGaussian Init(int Seed, double Mean, double StdDev){
+        self.Mean=Mean;
+        self.StdDev=StdDev;
+        SetRandomSeed[GauseyBoi](Seed);
+        return self;
+    }
+
+    void Simulate(int Amount){
+        for(int i=0; i<Amount; i++)
+            CachedValues.Push(Generate());
+    }
+
+    double Generate(){
+        PreGenerated=!PreGenerated;
+        if(!PreGenerated)
+            return PreGen*StdDev+Mean;
+        else{
+            double u1, u2;
+            do{
+                u1=FRandom[GauseyBoi](0, 1);
+                u2=FRandom[GauseyBoi](0, 1);
+            }while(u1<=double.epsilon);
+            double Gen=sqrt(-2*log(u1))*cos(2*ZCalc.PI*u2);
+            PreGen=sqrt(-2*log(u1))*sin(2*ZCalc.PI*u2);
+            return Gen*StdDev+Mean;
+        }
+    }
+
+    double Get() const
+    {return CachedValues[Random(0, CachedValues.Size())];}
+
+    void Clear()
+    {CachedValues.Clear();}
+}
