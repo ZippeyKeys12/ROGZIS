@@ -1,30 +1,26 @@
 class ZRegistry{
     private
-    ZArray RegistryItems;
+    Array<ZRegistryItem> RegistryItems;
 
     ZRegistry Init(){
-        RegistryItems=new("ZArray");
         return self;
     }
 
     bool Add(ZRegistryItem RegistryItem){
         if(!RegistryItem || Get(RegistryItem.ID))return false;
-        RegistryItems._.Push(RegistryItem);
+        RegistryItems.Push(RegistryItem);
         return true;
     }
 
     ZRegistryItem Get(Name ID) const{
-        for(int i=0; i<RegistryItems._.Size(); i++)
-            if(ZRegistryItem(RegistryItems._[i]).ID==ID)
-                return ZRegistryItem(RegistryItems._[i]);
+        for(int i=0; i<RegistryItems.Size(); i++)
+            if(ZRegistryItem(RegistryItems[i]).ID==ID)
+                return ZRegistryItem(RegistryItems[i]);
         return null;
     }
 
     ZRegistryItem GetRand() const
-    {return RegistryItems._.Size()==0?null:ZRegistryItem(RegistryItems._[random(0, RegistryItems._.Size()-1)]);}
-
-    ZIterator Iterator() const
-    {return ZIterator.Create(RegistryItems);}
+    {return RegistryItems.Size()==0?null:ZRegistryItem(RegistryItems[random(0, RegistryItems.Size()-1)]);}
 }
 
 class ZRegistryItem{

@@ -48,6 +48,9 @@ class ZGaussian{
     double Get() const
     {return CachedValues[Random(0, CachedValues.Size())];}
 
+    double Normalize(double Value)
+    {return (Value-Mean)/StdDev;}
+
     void Clear()
     {CachedValues.Clear();}
 }

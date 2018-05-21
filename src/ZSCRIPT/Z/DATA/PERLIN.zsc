@@ -9,7 +9,7 @@ class ZPerlin{
     private
     ZPerlin Init(int Seed, int Height, int Width, int OctaveCount){
         Array<ZMatrix> Noises;
-        ZMatrix BaseNoise=new("ZMatrix").WhiteNoise(Height, Width, Seed);
+        ZMatrix BaseNoise=ZMatrix.Randomized(Height, Width, Seed, 0, 1);
         for(int Octave=0; Octave<OctaveCount; Octave++)
             Noises.Push(BaseNoise.SmoothNoise(Octave));
         double Amplitude=1,

@@ -59,36 +59,36 @@ struct ZCalc{
     {return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
 
     static
-    double AMean(ZArray_String Array){
+    double AMean(ZMatrix Array){
         double Total=0;
-        for(int i=0; i<Array._.Size(); i++)
-            Total+=Array._[i].ToDouble();
-        return Total/Array._.Size();
+        for(int i=0; i<Array.Height(); i++)
+            Total+=Array.Get(i);
+        return Total/Array.Height();
     }
 
     static
-    double GMean(ZArray_String Array){
+    double GMean(ZMatrix Array){
         double Total=1;
-        for(int i=0; i<Array._.Size(); i++)
-            Total*=Array._[i].ToDouble();
-        return Total**(1/Array._.Size());
+        for(int i=0; i<Array.Height(); i++)
+            Total*=Array.Get(i);
+        return Total**(1/Array.Height());
     }
 
     static
-    double HMean(ZArray_String Array){
+    double HMean(ZMatrix Array){
         double Total=0;
-        for(int i=0; i<Array._.Size(); i++)
-            Total+=1/Array._[i].ToDouble();
-        return Array._.Size()/Total;
+        for(int i=0; i<Array.Height(); i++)
+            Total+=1/Array.Get(i);
+        return Array.Height()/Total;
     }
 
     static
-    double StdDev(ZArray_String Array, bool Statistic=true){
+    double StdDev(ZMatrix Array, bool Statistic=true){
         double Total=0,
                Mean=AMean(Array);
-        for(int i=0; i<Array._.Size(); i++)
-            Total+=(Array._[i].ToDouble()-Mean)**2;
-        return sqrt(Total/(Array._.Size()-Statistic));
+        for(int i=0; i<Array.Height(); i++)
+            Total+=(Array.Get(i)-Mean)**2;
+        return sqrt(Total/(Array.Height()-Statistic));
     }
 
     static
@@ -164,10 +164,10 @@ struct ZCalc{
     {return (SmoothStep(Time, Start.X, End.X, Degree), SmoothStep(Time, Start.Y, End.Y, Degree));}
 
     static
-    Vector2 V2Bezier(double Time, ZArray_String Points){
+    Vector2 V2Bezier(double Time, ZMatrix Points, bool Row=true){
         Vector2 Total=(0, 0);
-        for(int j=0; j<Points._.Size(); j++)
-            Total+=(Points._[j].ToDouble(), Points.__[j].ToDouble())*Bernstein(Time, Points._.Size(), j);
+        for(int i=0; i<(Row)?Points.Height()/2:Points.Width()/2; i++)
+            Total+=Points.V2Get(i*Row, i*!Row, Row)*Bernstein(Time, Points.Height(), i);
         return Total;
     }
 
