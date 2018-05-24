@@ -14,6 +14,7 @@ class ZManager{
     }
 
     void WorldLoaded(WorldEvent e){
+        LoadEvents();
         ZPlayer Player=WorldState.Player;
         Player.Stats=ZStats.Instance();
         Player.Stats.ActualYaw=Player.Angle;

@@ -13,31 +13,7 @@ class ZManager:Thinker{
         //World State
         WorldState=new("ZWorldState");
         InitRegistries();
+        InitEvents();
         return self;
-    }
-
-    static
-    clearscope
-    void Debug(String Output, Name CVarName)
-    {if(CVar.FindCVar(CVarName).GetBool())console.printf(Output);}
-
-    static
-    clearscope
-    void Error(String Error, ZErrorLevel Level){
-        switch(Level){
-            case ERR_INFO:break;
-            case ERR_WARNING:
-                Console.PrintF("\cx%s", Error);
-                break;
-            case ERR_ERROR:
-                Console.PrintF("\cr%s", Error);
-                break;
-            case ERR_FATAL:
-                ThrowAbortException("\cy%s", Error);
-                break;
-            default:
-                ThrowAbortException("Unclassified Error: '\cw%s'", Error);
-                break;
-        }
     }
 }
