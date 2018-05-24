@@ -32,7 +32,7 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
     IniFiles=(BuildFolder+"\\/"+Ini+".ini" for Ini in IniFiles)
     InisFound=Config.read(IniFiles)
     for Ini in InisFound:
-        print("  Loading:", Ini[len(BuildFolder)+2:])
+        print("  ", Ini[len(BuildFolder)+2:])
     # INI Evaluation
     print("Evaluating INI Settings")
     for Section in Config:
@@ -42,6 +42,22 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                 if Key[0] is "i":
                     Temp=int(Temp)
                 Config[Section][Key]=str(Temp)
+    # JSON Loading
+    print("Loading JSON Data")
+    for Section in Config:
+        for Key, Value in Config.items(Section):
+            if Key[0] is "j":
+                JsonFile=Value+".json"
+                print("  ", JsonFile)
+                with open(BuildFolder+"/"+JsonFile) as Input:
+                    Value="".join(Input)
+                    Config[Section][Key]=Value
+    # Dynamic Config
+    print("Generating Dynamic Config")
+    JsonFile=json.loads(Config["AI.EMOTION"]["jEmotions"])
+    Config["AI.EMOTION"]["iTempTraits"]=str(len(JsonFile["Temperament"]))
+    Config["AI.EMOTION"]["iPersDimensions"]=str(len(JsonFile["Personality"].items()))
+    Config["AI.EMOTION"]["iPersFacets"]=str(len(list(JsonFile["Personality"].items())[0]))
     # Config Injection
     print("Injecting INI Settings")
     ConfigPattern=re.compile("#config\\s+\"([^\"\r\n]+)\"\\s*(\\s|,)\\s*\"([^\"\r\n]+)\"", re.IGNORECASE)
@@ -51,20 +67,10 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         Option=ConfigCall.group(3)
         FullFile=re.sub("#config\\s+\"{}\"\\s*(\\s|,)\\s*\"{}\"".format(Section, Option), Config[Section][Option], FullFile, flags=re.IGNORECASE)
         ConfigCall=ConfigPattern.search(FullFile)
-    # JSON Loading
-    print("Loading JSON Data")
-    for Section in Config:
-        for Key, Value in Config.items(Section):
-            if Key[0] is "j":
-                JsonFile=Value+".json"
-                print("  Loading:", JsonFile)
-                with open(BuildFolder+"/"+JsonFile) as Input:
-                    Value="".join(Input)
-                    Config[Section][Key]=Value
     # ZScript Generation
     print("Generating ZScript")
     ## Defaults
-    print("  Generating Defaults:", end=" ")
+    print("  Defaults:", end=" ")
     DefaultPattern=re.compile("\\[Property\\](\\s*){([^{}]*)}", re.IGNORECASE)
     DefaultCall=DefaultPattern.search(FullFile)
     while DefaultCall:
@@ -103,12 +109,12 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         DefaultCall=DefaultPattern.search(FullFile)
     print("Successful")
     ## Upgrades
-    print("  Generating Upgrades:")
-    Upgrades=json.loads(Config["DATA"]["jUpgrades"])
+    print("  Upgrades:")
+    JsonFile=json.loads(Config["DATA"]["jUpgrades"])
     ### Marine Armor
-    print("    Generating Marine Upgrades:")
+    print("    Marine:")
     MAUpgrades=[]
-    for MAUpgrade in Upgrades["MAUpgrades"]:
+    for MAUpgrade in JsonFile["MAUpgrades"]:
         ClassName="ZMAU_{}".format(MAUpgrade["Info"]["ID"])
         MAUpgrades.append(ClassName)
         print("      {}".format(ClassName))
@@ -132,11 +138,42 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                     Value="null"
                 Zsc+="{}={};".format(Key, Value)
             Zsc+="return super.Init();}"
-        Zsc+="}"
-        FullFile=Zsc+FullFile
+        FullFile=Zsc+"}"+FullFile
     print("    Inserting Marine Upgrades:", end=" ")
     FullFile=FullFile.replace("@ZMAUpgrades", str(MAUpgrades).replace("'", "\"")[1:-1])
     print("Successful")
+    ## AI
+    print("  AI:")
+    ### Emotion
+    print("    Emotion:")
+    #### Personality
+    print("      Personality:")
+    JsonFile=json.loads(Config["AI.EMOTION"]["JEmotions"])
+    Zsc="""
+        class ZPersonality{{
+            const DIMENSIONS={0[iPersDimensions]};
+            const FACETCOUNT={0[iPersFacets]};
+    """.format(Config["AI.EMOTION"])
+    print("        Dimensions:")
+    for Dimension in JsonFile["Personality"]:
+        print("          {}".format(Dimension))
+        Zsc+="private double {};".format(Dimension)
+    for Dimension in range(len(JsonFile["Personality"].items())-1):
+        Zsc+="double,"
+    Zsc+="double Summary(){return "
+    for Dimension in JsonFile["Personality"]:
+        Zsc+="{},".format(Dimension)
+    Zsc="{};}}void Update(){{".format(Zsc[:-1])
+    for Index, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
+        Zsc+="{}=Facets.RowSum({})/FACETCOUNT;".format(Dimension, Index)
+    print("        Facets:")
+    Zsc+="}double Facet(Name Facet){switch(Facet){"
+    for Row, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
+        print("          {}:".format(Dimension))
+        for Column, Facet in zip(range(len(JsonFile["Personality"][Dimension])), JsonFile["Personality"][Dimension]):
+            print("            {}".format(Facet))
+            Zsc+="case '{}': return Facets.Get({}, {});".format(Facet, Row, Column)
+    FullFile=Zsc+"}return double.NaN;}}"+FullFile
     print("Generating ZScript: Successful")
     return FullFile
 

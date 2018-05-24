@@ -1,7 +1,7 @@
 class ZMatrix{
     private
-    int Columns,
-        Rows;
+    uint Columns,
+         Rows;
 
     private
     Array<double> Values;
@@ -126,6 +126,9 @@ class ZMatrix{
                 Result.Set(Column, Row, Get(Row, Column));
         return Result;
     }
+
+    ZMatrix Clone() const
+    {return SMultiply(1);}
 
     ZMatrix Noise(int Seed=int('NoiseyBoi'), double Floor=-1, double Ceiling=1) const{
         SetRandomSeed[NoiseyBoi](Seed);

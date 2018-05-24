@@ -1,0 +1,20 @@
+extend
+class ZPersonality{
+    private
+    ZMatrix Facets;
+
+    static
+    ZPersonality Create(ZMatrix Facets)
+    {return new("ZPersonality").Init(Facets.Clone());}
+
+    static
+    ZPersonality Randomized()
+    {return Create(ZMatrix.Randomized(DIMENSIONS, FACETCOUNT, ZCalc.MapSeed()));}
+
+    private
+    ZPersonality Init(ZMatrix Facets){
+        self.Facets=Facets;
+        Update();
+        return self;
+    }
+}
