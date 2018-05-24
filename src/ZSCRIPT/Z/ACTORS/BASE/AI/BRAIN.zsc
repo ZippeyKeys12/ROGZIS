@@ -5,6 +5,7 @@ class ZBrain abstract{
 
     Array<ZUtility> Considerations;
 
+    virtual
     ZBrain Init(ZActor Owner){
         self.Owner=Owner;
         Stack=new("ZStack");
