@@ -72,12 +72,21 @@ class ZEventManager:Thinker{
                 Stimulus.Destroy();
             }
         }
+        for(int i=0; i<Reactors.Size(); i++)
+            Reactors[i].Tick();
     }
 
     void SterStimulus(ZStimulus Stimulus){
         if(Stimuli.Find(Stimulus)!=Stimuli.Size())
-            ZManager.Error(String.Format("Stimulus: %s", Stimulus.ID), ERR_ERROR);
-        Stimuli.Push(Stimulus);
+            ZManager.Error(String.Format("Stimulus: %s is Already Registered", Stimulus.ID), ERR_ERROR);
+        bool Consumed;
+        for(int i=0; i<Reactors.Size(); i++)
+            if(Reactors[i].React(Stimulus))
+                Consumed=true;
+        if(Consumed)
+            Stimuli.Push(Stimulus);
+        else Stimulus.Destroy();
+    }
 
     void SterReactor(ZReactor Reactor){
         if(Reactors.Find(Reactor)!=Reactors.Size())
