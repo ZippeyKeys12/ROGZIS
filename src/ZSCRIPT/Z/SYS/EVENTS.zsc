@@ -56,10 +56,19 @@ class ZEventManager:Thinker{
 
     override
     void Tick(){
-        for(int i=0; i<Stimuli.Size(); i++)
-            Stimuli[i].Tick();
+        for(int i=Stimuli.Size()-1; i>=0; i--){
+            ZStimulus Stimulus=Stimuli[i];
+            Stimulus.Tick();
+            if(Stimulus.Decay==0){
+                Stimuli.Delete(i);
+                Stimulus.Destroy();
+            }
+        }
     }
 
-    void AddStimulus(ZStimulus Stimulus)
-    {Stimuli.Push(Stimulus);}
+    void AddStimulus(ZStimulus Stimulus){
+        if(Stimuli.Find(Stimulus)!=Stimuli.Size())
+            ZManager.Error(String.Format("Stimulus: %s", Stimulus.ID), ERR_ERROR);
+        Stimuli.Push(Stimulus);
+    }
 }

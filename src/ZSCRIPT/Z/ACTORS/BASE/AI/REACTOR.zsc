@@ -1,38 +1,33 @@
 class ZReactor abstract{
-    uint Cooldown;
+    private
+    double __Strength__;
 
-    double Strength;
+    uint Cooldown;
 
     ZStimulus CurrStim;
 
-    Actor Owner,
-          Target,
-          Emitter;
-
-    virtual
-    ZReactor Init(Actor Owner){
-        self.Owner=Owner;
-        return self;
-    }
-
     virtual
     bool React(ZStimulus Stim){
-        if(CurrStim.SimilarTo(Stim))
-            Strength+=CurrStim.Strength;
-        else if(Cooldown || CurrStim.Strength+Strength>Stim.Strength)
+        if(CurrStim && CurrStim!=Stim && CurrStim.SimilarTo(Stim))
+            __Strength__+=CurrStim.Strength;
+        else if(Cooldown || (CurrStim && CurrStim.Strength+__Strength__>Stim.Strength))
             return false;
-        Cooldown=Stim.Persistence;
-        Emitter=Stim.Emitter;
-        Target=Stim.Target;
+        Cooldown+=Stim.Persistence;
         CurrStim=Stim;
-        return !(Strength=0);
+        return !(__Strength__=0);
     }
 
     virtual
     void Tick(){
-        if(Cooldown)
-            Cooldown=Max(Cooldown-1, 0);
-        if(!Cooldown || !CurrStim.Decay)
-            CurrStim=null;
+        if(CurrStim){
+            if(Cooldown)
+                Cooldown=Max(Cooldown-1, 0);
+            if(!Cooldown || !CurrStim.Decay)
+                CurrStim=null;
+        }else Cooldown=0;
     }
+
+    virtual
+    double Strength()
+    {return (CurrStim)?CurrStim.Strength+__Strength__:0;}
 }
