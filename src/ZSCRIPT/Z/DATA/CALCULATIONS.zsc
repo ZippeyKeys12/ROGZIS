@@ -116,15 +116,6 @@ struct ZCalc{
     {return nCr(N, V)*Time**V*(1-Time)**(N-V);}
 
     static
-    int MapSeed(){
-        String Checksum=Level.GetChecksum();
-        int Seed=0;
-        for(int i=0; i<Checksum.Length(); i++)
-            Seed^=Checksum.CharCodeAt(i)<<8*(i%4);
-        return Seed;
-    }
-
-    static
     double Lerp(double Time, double Start=0, double End=1){
         Time=NormRange(Time);
         return (1-Time)*Start+Time*End;

@@ -9,10 +9,12 @@ class ZPersonality{
 
     static
     ZPersonality Randomized()
-    {return Create(ZMatrix.Randomized(DIMENSIONS, FACETCOUNT, ZCalc.MapSeed()));}
+    {return new("ZPersonality").Init(Randomized: true);}
 
     private
-    ZPersonality Init(ZMatrix Facets){
+    ZPersonality Init(ZMatrix Facets=null, bool Randomized=false){
+        if(Randomized)
+            Facets=ZMatrix.Randomized(DIMENSIONS, FACETCOUNT, ZManager.MapSeed(self));
         self.Facets=Facets;
         Update();
         return self;

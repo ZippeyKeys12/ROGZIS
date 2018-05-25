@@ -1,4 +1,4 @@
-class ZGraph play{
+class ZGraph{
     Array<ZNode> Nodes;
 
     ZPlan GetPlan(ZNode StartNode, ZNode GoalNode){
@@ -63,7 +63,7 @@ class ZGraph play{
     }
 }
 
-class ZPlan play{
+class ZPlan{
     Array<ZNode> Nodes;
 
     ZNode Peek()
@@ -79,7 +79,7 @@ class ZPlan play{
     {return Nodes.Size();}
 }
 
-class ZNode play{
+class ZNode{
     ZNodeType Type;
 
     Array<ZEdge> Edges;
@@ -95,7 +95,7 @@ class ZNode play{
     {return 0;}
 }
 
-class ZEdge play{
+class ZEdge{
     double Cost;
 
     ZNode To;

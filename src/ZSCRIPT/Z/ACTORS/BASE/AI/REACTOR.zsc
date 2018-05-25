@@ -1,8 +1,11 @@
 class ZReactor abstract{
+
     private
     double __Strength__;
 
     uint Cooldown;
+
+    Name ID;
 
     ZStimulus CurrStim;
 

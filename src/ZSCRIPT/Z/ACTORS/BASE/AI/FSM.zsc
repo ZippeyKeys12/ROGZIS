@@ -1,13 +1,10 @@
 class ZFSM abstract{
     Name State;
 
-    Actor Owner;
-
     virtual
     protected
-    ZFSM Init(Actor Owner, Name State='Idle'){
+    ZFSM Init(Name State='Idle'){
         self.State=State;
-        self.Owner=Owner;
         return self;
     }
 

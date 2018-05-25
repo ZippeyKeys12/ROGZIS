@@ -40,12 +40,20 @@ class ZEventManager:Thinker{
     private
     Array<ZStimulus> Stimuli;
 
+    private
+    Array<ZReactor> Reactors;
+
     static
     ZEventManager Instance(){
-        ThinkerIterator it=ThinkerIterator.Create("ZEventManager", STAT_ZDATA);
-        ZEventManager p=ZEventManager(it.Next());
+        ZEventManager p=UIInstance();
         if(!p)p=new("ZEventManager").Init();
         return p;
+    }
+
+    static
+    ZEventManager UIInstance(){
+        ThinkerIterator it=ThinkerIterator.Create("ZEventManager", STAT_ZDATA);
+        return ZEventManager(it.Next());
     }
 
     private
@@ -66,9 +74,14 @@ class ZEventManager:Thinker{
         }
     }
 
-    void AddStimulus(ZStimulus Stimulus){
+    void SterStimulus(ZStimulus Stimulus){
         if(Stimuli.Find(Stimulus)!=Stimuli.Size())
             ZManager.Error(String.Format("Stimulus: %s", Stimulus.ID), ERR_ERROR);
         Stimuli.Push(Stimulus);
+
+    void SterReactor(ZReactor Reactor){
+        if(Reactors.Find(Reactor)!=Reactors.Size())
+            ZManager.Error(String.Format("Reactor: %s", Reactor.ID), ERR_ERROR);
+        Reactors.Push(Reactor);
     }
 }
