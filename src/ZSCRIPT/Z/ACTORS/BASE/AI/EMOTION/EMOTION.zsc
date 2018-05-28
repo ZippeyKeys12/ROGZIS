@@ -1,0 +1,25 @@
+class ZEmotion:ZFSM{
+    ZReactor Reactor;
+
+    static
+    ZEmotion Create(Name DefaultState='Neutral')
+    {return ZEmotion(new("ZEmotion").Init(DefaultState));}
+
+    override
+    ZFSM Init(Name DefaultState){
+        Reactor=new("ZReactor");
+        return super.Init(DefaultState);
+    }
+
+    override
+    void Tick(){
+        double Strength=Reactor.Strength();
+        switch(Reactor.CurrStim.ID){
+            case 'Threaten':
+                if(Strength){
+                    
+                }
+                break;
+        }
+    }
+}
