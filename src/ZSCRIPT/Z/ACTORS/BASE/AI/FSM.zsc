@@ -1,13 +1,18 @@
 class ZFSM abstract{
-    Name State;
+    private
+    Name __State__,
+         DefaultState;
 
     virtual
     protected
-    ZFSM Init(Name State='Idle'){
-        self.State=State;
+    ZFSM Init(Name DefaultState='Idle'){
+        self.DefaultState=DefaultState;
         return self;
     }
 
     virtual
     void Tick(){}
+
+    Name State()
+    {return (__State__=='')?DefaultState:__State__;}
 }
