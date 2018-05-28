@@ -119,6 +119,57 @@ class ZMatrix{
         return Result;
     }
 
+    ZMatrix SMin(double Min, double Min2=int.max){
+        ZMatrix Result=Create(Rows, Columns);
+        for(int Row=0; Row<Result.Rows; Row++)
+            for(int Column=0; Column<Result.Columns; Column++)
+                Result.Set(Row, Column, Min(Get(Row, Column), Min, Min2));
+        return Result;
+    }
+
+    ZMatrix MMin(ZMatrix Min, ZMatrix Min2=null){
+        if(Rows!=Min.Rows || Columns!=Min.Columns || (Min2 && (Rows!=Min2.Rows || Columns!=Min2.Columns)))ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+        ZMatrix Result=Create(Rows, Columns);
+        for(int Row=0; Row<Result.Rows; Row++)
+            for(int Column=0; Column<Result.Columns; Column++)
+                Result.Set(Row, Column, Min(Get(Row, Column), Min.Get(Row, Column), (Min2)?Min2.Get(Row, Column):int.max));
+        return Result;
+    }
+
+    ZMatrix SMax(double Max, double Max2=int.min){
+        ZMatrix Result=Create(Rows, Columns);
+        for(int Row=0; Row<Result.Rows; Row++)
+            for(int Column=0; Column<Result.Columns; Column++)
+                Result.Set(Row, Column, Max(Get(Row, Column), Max, Max2));
+        return Result;
+    }
+
+    ZMatrix MMax(ZMatrix Max, ZMatrix Max2=null){
+        if(Rows!=Max.Rows || Columns!=Max.Columns || (Max2 && (Rows!=Max2.Rows || Columns!=Max2.Columns)))ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+        ZMatrix Result=Create(Rows, Columns);
+        for(int Row=0; Row<Result.Rows; Row++)
+            for(int Column=0; Column<Result.Columns; Column++)
+                Result.Set(Row, Column, Max(Get(Row, Column), Max.Get(Row, Column), (Max2)?Max2.Get(Row, Column):int.min));
+        return Result;
+    }
+
+    ZMatrix SClamp(double Min, double Max){
+        ZMatrix Result=Create(Rows, Columns);
+        for(int Row=0; Row<Result.Rows; Row++)
+            for(int Column=0; Column<Result.Columns; Column++)
+                Result.Set(Row, Column, Clamp(Get(Row, Column), Min, Max));
+        return Result;
+    }
+
+    ZMatrix MClamp(ZMatrix Min, ZMatrix Max){
+        if(Rows!=Min.Rows || Columns!=Min.Columns || Rows!=Max.Rows || Columns!=Max.Columns)ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+        ZMatrix Result=Create(Rows, Columns);
+        for(int Row=0; Row<Result.Rows; Row++)
+            for(int Column=0; Column<Result.Columns; Column++)
+                Result.Set(Row, Column, Clamp(Get(Row, Column), Min.Get(Row, Column), Max.Get(Row, Column)));
+        return Result;
+    }
+
     ZMatrix Transpose() const{
         ZMatrix Result=Create(Columns, Rows);
         for(int Row=0; Row<Rows; Row++)
@@ -130,12 +181,22 @@ class ZMatrix{
     ZMatrix Clone() const
     {return SMultiply(1);}
 
+    ZMatrix Mutate(int Seed, double Floor=0, double Ceiling=1, double MaxChange=1, double MutationChance=.1) const{
+        ZMatrix Result=Randomized(Rows, Columns, Seed).SMultiply(MaxChange),
+                Chance=Randomized(Rows, Columns, Seed, 0).SMax(MutationChance);
+        for(int Row=0; Row<Rows; Row++)
+            for(int Column=0; Column<Columns; Column++)
+                if(Chance.Get(Row, Column)>MutationChance)
+                    Result.Set(Row, Column, 0);
+        return Add(Result).SClamp(Floor, Ceiling);
+    }
+
     ZMatrix Noise(int Seed=int('NoiseyBoi'), double Floor=-1, double Ceiling=1) const{
         SetRandomSeed[NoiseyBoi](Seed);
         ZMatrix Result=ZMatrix.Create(Rows, Columns);
-        for(int i=0; i<Rows; i++)
-            for(int j=0; j<Columns; j++)
-                Result.Set(i, j, Get(i, j)*FRandom[NoiseyBoi](Floor, Ceiling));
+        for(int Row=0; Row<Rows; Row++)
+            for(int Column=0; Column<Columns; Column++)
+                Result.Set(Row, Column, Get(Row, Column)*FRandom[NoiseyBoi](Floor, Ceiling));
         return Result;
     }
 
@@ -146,7 +207,7 @@ class ZMatrix{
         for(int i=0; i<Rows; i++){
             int i1=i/Period*Period,
                 i2=(i1+Period)%Rows;
-              float HBlend=(i-i1)*Frequency;
+            float HBlend=(i-i1)*Frequency;
             for(int j=0; j<Columns; j++){
                 int j1=(j/Period)*Period,
                     j2=(j1+Period)%Columns;
