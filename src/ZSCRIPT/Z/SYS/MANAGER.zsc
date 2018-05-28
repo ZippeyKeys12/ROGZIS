@@ -16,7 +16,7 @@ class ZManager:Thinker{
     private
     ZManager Init(){
         ChangeStatNum(STAT_STATIC);
-        //World State
+        // World State
         WorldState=new("ZWorldState");
         InitRegistries();
         InitEvents();

@@ -28,10 +28,10 @@ class ZPlayer{
     override
     void HandleMovement(){
         let Player=self.Player;
-        //[RH] Check for fast turn around
+        // [RH] Check for fast turn around
         if((Player.cmd.buttons & ~Player.oldbuttons) & BT_TURN180)
             Player.turnticks=TURN180_TICKS;
-        //Handle Movement
+        // Handle Movement
         if(ReactionTime)ReactionTime--;
         else{
             if(!LockMovement){
@@ -40,10 +40,10 @@ class ZPlayer{
                 CheckJump();
                 CheckClamber();
                 HandleArmorMovement();
-                //Crouch-jumping and reduce crouch step height
+                // Crouch-jumping and reduce crouch step height
                 if(Player.OnGround)MaxStepHeight=(Player.CrouchOffset!=0)?14:18;
                 else MaxStepHeight=(Player.CrouchOffset!=0 && !CrouchingJump)*5;
-                //Other Checks
+                // Other Checks
                 LowerFriction();
             }
         }
@@ -57,7 +57,7 @@ class ZPlayer{
         let Player = self.Player;
         UserCmd cmd = Player.cmd;
 
-        //[RH] 180-degree turn overrides all other yaws
+        // [RH] 180-degree turn overrides all other yaws
         if (Player.turnticks){
             Player.turnticks--;
             Angle+=(180./TURN180_TICKS);
@@ -65,12 +65,12 @@ class ZPlayer{
 
         Player.OnGround=(Pos.Z<=FloorZ) || bOnMobj || bMBFBouncer || (Player.Cheats & CF_NOCLIP2);
 
-        //killough 10/98:
-        //
-        //We must apply thrust to the Player and bobbing separately, to avoid
-        //anomalies. The thrust applied to bobbing is always the same strength on
-        //ice, because the Player still "works just as hard" to Move, while the
-        //thrust applied to the Movement varies with 'MoveFactor'.
+        // killough 10/98:
+        // 
+        // We must apply thrust to the Player and bobbing separately, to avoid
+        // anomalies. The thrust applied to bobbing is always the same strength on
+        // ice, because the Player still "works just as hard" to Move, while the
+        // thrust applied to the Movement varies with 'MoveFactor'.
         if (cmd.forwardMove|cmd.sideMove){
             double MoveFactor,
                    BobFactor,
@@ -81,7 +81,7 @@ class ZPlayer{
             [Friction, MoveFactor]=GetFriction();
             BobFactor=Friction<ORIG_FRICTION?MoveFactor:ORIG_FRICTION_FACTOR;
             if (!Player.OnGround && !bNoGravity && !waterlevel){
-                //[RH] allow very limited Movement if not on ground.
+                // [RH] allow very limited Movement if not on ground.
                 double AirControl=GetAirControl();
                 MoveFactor*=AirControl;
                 BobFactor*=AirControl;
@@ -93,7 +93,7 @@ class ZPlayer{
             ForwardMove*=Speed/256;
             SideMove*=Speed/256;
 
-            //When crouching, speed and bobbing have to be reduced
+            // When crouching, speed and bobbing have to be reduced
             if (CanCrouch() && Player.CrouchFactor!=1){
                 ForwardMove*=Player.CrouchFactor;
                 SideMove*=Player.CrouchFactor;
@@ -134,7 +134,7 @@ class ZPlayer{
 
     override
     void CheckJump(){
-        //[RH] check for jump
+        // [RH] check for jump
         if(Buttons & BT_JUMP){
             if(WaterLevel>=2)Vel.Z=4*Speed;
             else if(bNoGravity)Vel.Z=3.;
@@ -143,8 +143,8 @@ class ZPlayer{
                        JumpFac=0;
                 CrouchingJump=Player.CrouchOffset!=0;
 
-                //[BC] If the player has the high jump power, double his jump velocity.
-                //(actually, pick the best factors from all active items.)
+                // [BC] If the player has the high jump power, double his jump velocity.
+                // (actually, pick the best factors from all active items.)
                 for (PowerHighJump p=PowerHighJump(Inv); p!=null; p=PowerHighJump(p.Inv))
                     if(p && p.Strength>JumpFac)JumpFac=p.Strength;
 

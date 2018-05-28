@@ -1,14 +1,14 @@
 class ZMarine:ZPlayer{
     [Property]{
         [Player]
-        //Descriptors
+        // Descriptors
         DisplayName="Marine";
         AttackZOffset=13;
-        //Start Items
+        // Start Items
         StartItem="ZWeaponSystem";
         StartItem="Fist";
         StartItem=("Clip", 50);
-        //Weapons
+        // Weapons
         WeaponSlot=(1, "Fist");
         WeaponSlot=(2, "ZWeaponSystem");
     }

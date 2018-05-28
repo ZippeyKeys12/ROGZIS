@@ -1,4 +1,4 @@
-//SYSTEM
+// SYSTEM
 #include "ZSCRIPT/Z/SYS/CONSTANTS.zsc"
 #include "ZSCRIPT/Z/SYS/DAMAGETYPE.zsc"
 #include "ZSCRIPT/Z/SYS/MANAGER.zsc"
@@ -9,7 +9,7 @@
 #include "ZSCRIPT/Z/SYS/NODEGRAPH.zsc"
 #include "ZSCRIPT/Z/SYS/WEAPONS.zsc"
 
-//DATA MANAGEMENT
+// DATA MANAGEMENT
 #include "ZSCRIPT/Z/DATA/GRAPH.zsc"
 #include "ZSCRIPT/Z/DATA/MATRIX.zsc"
 #include "ZSCRIPT/Z/DATA/PERLIN.zsc"
@@ -20,16 +20,16 @@
 #include "ZSCRIPT/Z/DATA/QUATERNION.zsc"
 #include "ZSCRIPT/Z/DATA/CALCULATIONS.zsc"
 
-//UI
+// UI
 #include "ZSCRIPT/Z/UI/HUD.zsc"
 
-//PLAYER
+// PLAYER
 #include "ZSCRIPT/Z/PLYR/INCLUDES.zsc"
 
-//ACTORS
+// ACTORS
 #include "ZSCRIPT/Z/ACTORS/INCLUDES.zsc"
 
-//INVENTORY
+// INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"
 #include "ZSCRIPT/Z/INV/WEAPON.zsc"
 #include "ZSCRIPT/Z/INV/UPGRADE.zsc"

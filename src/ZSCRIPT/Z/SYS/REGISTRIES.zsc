@@ -11,7 +11,7 @@ class ZManager{
 
     private
     void InitRegistries(){
-        //Node Graphs
+        // Node Graphs
         ActorIterator it=ActorIterator.Create(ZTID_NODES, "ZPathMarker");
         ZPathNode StartNode, TargetNode, Node;
         ZPathMarker Marker;
@@ -27,23 +27,23 @@ class ZManager{
             }
             NodeGraphs.Push(Graph);
         }
-        //For registration
+        // For registration
         Parser_TSV ParserTSV; TSVRow Row;
-        //DamageTypes
+        // DamageTypes
         DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
         ParserTSV=Parser_TSV.Create(#config "DATA", "tDamageTypes");
         for(int i=1; i<ParserTSV.Size(); i++){
             Row=ParserTSV.GetRow(i);
-            //Flags Management
+            // Flags Management
             Array<String> Flags; Flags.Clear(); ZDamageInfo ActualFlags=0;
             Row.Get(6).Split(Flags, "|", TOK_SKIPEMPTY);
             for(int j=0; j<Flags.Size(); j++)
                 if(Flags[j]~=="DMG_ZONE")
                     ActualFlags|=DMG_ZONE;
-            //Registration
+            // Registration
             DamageTypes.Add(ZDamageType.Create(Row.Get(0), Row.Get(1), Row.GetDouble(2), Row.GetDouble(3), Row.GetDouble(4), Row.GetDouble(5), ActualFlags));
         }
-        //Upgrades
+        // Upgrades
         static const Class<ZArmorUpgrade> ArmorUpgradeNames[]={
             @ZMAUpgrades
         };

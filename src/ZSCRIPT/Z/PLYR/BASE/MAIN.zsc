@@ -33,7 +33,7 @@ class ZPlayer:PlayerPawn{
     override
     void Tick(){
         super.Tick();
-        //Handle Voodoo Dolls
+        // Handle Voodoo Dolls
         if(!player || player.mo!=self || Health<=0)return;
         PreTick();
         RealTick();

@@ -23,15 +23,15 @@ class ZMStats:Thinker{
 
         MaxStrain,
 
-        //Health
+        // Health
         Health,
         MaxHealth,
         RunHealth,
 
-        //Plating
+        // Plating
         Plate,
 
-        //Energy
+        // Energy
         Energy,
         MaxEnergy,
         LastEnergy,
@@ -69,7 +69,7 @@ class ZMStats:Thinker{
     ZMStats Init(){
         ChangeStatNum(STAT_STATIC);
         Manager=ZManager.Instance();
-        //Attributes
+        // Attributes
         Intelligence=
         Willpower=
         Endurance=
@@ -77,7 +77,7 @@ class ZMStats:Thinker{
         Defense=
         Agility=
         Luck=0;
-        //Stats
+        // Stats
         ForwardMove2=(ViewBob=ForwardMove1=BaseForwardMove=.65)/2;
         SideMove2=(SideMove1=BaseSideMove=.52)/2;
         JumpZ=BaseJumpZ=7;
@@ -91,7 +91,7 @@ class ZMStats:Thinker{
         EnergyRechargeRate=MaxEnergy/2;
         IdleRechargeBonus=2;
         ShakeLevel=BaseShakeLevel;
-        //Inventory
+        // Inventory
         MaxStrain=20;
         AddUpgrade("LongFall");
         AddUpgrade("BoostDash");
@@ -104,7 +104,7 @@ class ZMStats:Thinker{
         ToggleUpgrade("BoostDash");
         ToggleUpgrade("LongFall");
         ToggleUpgrade("PoweredSlide");
-        //ToggleUpgrade("Magnet");
+        // ToggleUpgrade("Magnet");
         ToggleUpgrade("Jetpack");
         return self;
     }
@@ -231,7 +231,7 @@ class ZMStats:Thinker{
             if(Upgrades[i].Activated)
                 TempDamage=Upgrades[i].ModifyDamage(Inflictor, Source, TempDamage, DamageType, Flags, Angle);
         int PlateHit;
-        //Armor Plating
+        // Armor Plating
         if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
             TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
             Plate=Max(Plate-PlateHit, 0);

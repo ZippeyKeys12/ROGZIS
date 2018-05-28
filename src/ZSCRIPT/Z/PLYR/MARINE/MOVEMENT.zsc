@@ -11,12 +11,12 @@ class ZMarine{
     override
     double CheckSprint(){
         if(!Player.OnGround)return 1;
-        //Sprinting
+        // Sprinting
         if((~Buttons & BT_BACK) && (~Buttons & BT_CROUCH) && (Buttons & BT_SPEED) && (Buttons & BT_FORWARD) && (Health>=RunHealth) && (MStats.Energy>MStats.SprintCost)){
             MStats.Recharger=0;
             MStats.Energy-=MStats.SprintCost;
             return MStats.SprintMultiplier;
-        //Backstep
+        // Backstep
         }else if(Buttons & BT_BACK)return SideMove1;
         else return 1;
     }
@@ -45,7 +45,7 @@ class ZMarine{
         bool Result=super.CanCollideWith(Other, Passive);
         if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
             Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
-            //TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
+            // TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
             Vel.xy=Vel.xy dot SideVector*SideVector;
             bSkullfly=false;
         }

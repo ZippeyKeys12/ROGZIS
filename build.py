@@ -33,15 +33,6 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
     InisFound=Config.read(IniFiles)
     for Ini in InisFound:
         print("  ", Ini[len(BuildFolder)+2:])
-    # INI Evaluation
-    print("Evaluating INI Settings")
-    for Section in Config:
-        for Key, Value in Config.items(Section):
-            if Key[0] in ["i", "d"]:
-                Temp=eval(compile(parse(Value, mode="eval"), "<string>", "eval"))
-                if Key[0] is "i":
-                    Temp=int(Temp)
-                Config[Section][Key]=str(Temp)
     # JSON Loading
     print("Loading JSON Data")
     for Section in Config:
@@ -58,6 +49,15 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
     Config["AI.EMOTION"]["iTempTraits"]=str(len(JsonFile["Temperament"]))
     Config["AI.EMOTION"]["iPersDimensions"]=str(len(JsonFile["Personality"].items()))
     Config["AI.EMOTION"]["iPersFacets"]=str(len(list(JsonFile["Personality"].items())[0]))
+    # INI Evaluation
+    print("Evaluating INI Settings")
+    for Section in Config:
+        for Key, Value in Config.items(Section):
+            if Key[0] in ["i", "d"]:
+                Temp=eval(compile(parse(Value, mode="eval"), "<string>", "eval"))
+                if Key[0] is "i":
+                    Temp=int(Temp)
+                Config[Section][Key]=str(Temp)
     # Config Injection
     print("Injecting INI Settings")
     ConfigPattern=re.compile("#config\\s+\"([^\"\r\n]+)\"\\s*(\\s|,)\\s*\"([^\"\r\n]+)\"", re.IGNORECASE)
@@ -100,7 +100,7 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                         if len(Default)<2:
                             continue
                         if SectionName=="Info":
-                            DefaultCall+="//$"+Default[0]+" "+Default[1]+"\n"
+                            DefaultCall+="// $"+Default[0]+" "+Default[1]+"\n"
                         else:
                             if not SectionName=="Default":
                                 DefaultCall+=SectionName+"."

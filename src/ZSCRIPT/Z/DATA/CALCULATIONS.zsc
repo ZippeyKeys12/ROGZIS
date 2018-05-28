@@ -262,8 +262,8 @@ class ZLeftInterpolator{
     void Reset(int DesiredValue)
     {CurrentValue=DesiredValue;}
 
-    //This must be called peroiodically in the status bar's Tick function.
-    //Do not call this in the Draw function because that may skip some frames!
+    // This must be called peroiodically in the status bar's Tick function.
+    // Do not call this in the Draw function because that may skip some frames!
     void Update(int DesiredValue){
         for(int i=9; i>=0; i--){
             int Place=10**i;
@@ -277,7 +277,7 @@ class ZLeftInterpolator{
         }
     }
 
-    //This must be called in the draw function to retrieve the value for output.
+    // This must be called in the draw function to retrieve the value for output.
     int GetValue() const
     {return CurrentValue;}
 }
