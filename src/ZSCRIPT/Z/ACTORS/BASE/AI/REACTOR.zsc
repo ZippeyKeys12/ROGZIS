@@ -1,7 +1,8 @@
-class ZReactor abstract{
-
+class ZReactor{
     private
     double __Strength__;
+
+    bool New;
 
     uint Cooldown;
 
@@ -17,11 +18,14 @@ class ZReactor abstract{
             return false;
         Cooldown+=Stim.Persistence;
         CurrStim=Stim;
+        New=true;
         return !(__Strength__=0);
     }
 
     virtual
     void Tick(){
+        if(New)
+            New=false;
         if(CurrStim){
             if(Cooldown)
                 Cooldown=Max(Cooldown-1, 0);
