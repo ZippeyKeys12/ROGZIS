@@ -36,7 +36,7 @@ class ZManager{
     }
 }
 
-class ZEventManager:Thinker{
+class ZEventManager:EventHandler{
     private
     Array<ZStimulus> Stimuli;
 
@@ -44,26 +44,11 @@ class ZEventManager:Thinker{
     Array<ZReactor> Reactors;
 
     static
-    ZEventManager Instance(){
-        ZEventManager p=UIInstance();
-        if(!p)p=new("ZEventManager").Init();
-        return p;
-    }
-
-    static
-    ZEventManager UIInstance(){
-        ThinkerIterator it=ThinkerIterator.Create("ZEventManager", STAT_ZDATA);
-        return ZEventManager(it.Next());
-    }
-
-    private
-    ZEventManager Init(){
-        ChangeStatNum(STAT_ZDATA);
-        return self;
-    }
+    ZEventManager Instance()
+    {return ZEventManager(EventHandler.Find("ZEventManager"));}
 
     override
-    void Tick(){
+    void WorldTick(){
         for(int i=Stimuli.Size()-1; i>=0; i--){
             ZStimulus Stimulus=Stimuli[i];
             Stimulus.Tick();
