@@ -181,12 +181,12 @@ class ZMatrix{
     ZMatrix Clone() const
     {return SMultiply(1);}
 
-    ZMatrix Mutate(int Seed, double Floor=0, double Ceiling=1, double MaxChange=1, double MutationChance=.1) const{
+    ZMatrix Mutate(int Seed, double Floor=0, double Ceiling=1, double MaxChange=1, double MutationRate=.1) const{
         ZMatrix Result=Randomized(Rows, Columns, Seed).SMultiply(MaxChange),
-                Chance=Randomized(Rows, Columns, Seed, 0).SMax(MutationChance);
+                Chance=Randomized(Rows, Columns, Seed, 0).SMax(MutationRate);
         for(int Row=0; Row<Rows; Row++)
             for(int Column=0; Column<Columns; Column++)
-                if(Chance.Get(Row, Column)>MutationChance)
+                if(Chance.Get(Row, Column)>MutationRate)
                     Result.Set(Row, Column, 0);
         return Add(Result).SClamp(Floor, Ceiling);
     }
