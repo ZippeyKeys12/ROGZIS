@@ -165,14 +165,14 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         Zsc+="{},".format(Dimension)
     Zsc="{};}}void Update(){{".format(Zsc[:-1])
     for Index, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
-        Zsc+="{}=Facets.RowSum({})/FACETCOUNT;".format(Dimension, Index)
+        Zsc+="{}=__Facets__.RowSum({})/FACETCOUNT;".format(Dimension, Index)
     print("        Facets:")
     Zsc+="}double Facet(Name Facet){switch(Facet){"
     for Row, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
         print("          {}:".format(Dimension))
         for Column, Facet in zip(range(len(JsonFile["Personality"][Dimension])), JsonFile["Personality"][Dimension]):
             print("            {}".format(Facet))
-            Zsc+="case '{}': return Facets.Get({}, {});".format(Facet, Row, Column)
+            Zsc+="case '{}': return __Facets__.Get({}, {});".format(Facet, Row, Column)
     FullFile=Zsc+"}return double.NaN;}}"+FullFile
     print("Generating ZScript: Successful")
     return FullFile
