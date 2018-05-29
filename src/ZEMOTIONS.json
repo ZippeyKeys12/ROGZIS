@@ -1,15 +1,4 @@
 {
-    "Temperament":[
-        "Activity",
-        "Rhythmicity",
-        "InitialReaction",
-        "Adaptability",
-        "Intensity",
-        "Mood",
-        "Distractibility",
-        "Persistence",
-        "Sensitivity"
-    ],
     "Personality":{
         "Openness":[
             "Curious",

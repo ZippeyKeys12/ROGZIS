@@ -46,7 +46,6 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
     # Dynamic Config
     print("Generating Dynamic Config")
     JsonFile=json.loads(Config["AI.EMOTION"]["jEmotions"])
-    Config["AI.EMOTION"]["iTempTraits"]=str(len(JsonFile["Temperament"]))
     Config["AI.EMOTION"]["iPersDimensions"]=str(len(JsonFile["Personality"].items()))
     Config["AI.EMOTION"]["iPersFacets"]=str(len(list(JsonFile["Personality"].items())[0]))
     # INI Evaluation

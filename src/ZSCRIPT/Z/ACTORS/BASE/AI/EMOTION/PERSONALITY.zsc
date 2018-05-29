@@ -22,6 +22,12 @@ class ZPersonality{
         return self;
     }
 
-    ZMatrix Facets()
+    ZMatrix Facets() const
     {return __Facets__.Clone();}
+
+    ZPersonality Clone() const{
+        ZPersonality Result=new("ZPersonality");
+        Result.__Facets__=Facets();
+        return Result;
+    }
 }
