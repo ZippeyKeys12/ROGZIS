@@ -36,5 +36,5 @@ class ZReactor{
 
     virtual
     double Strength()
-    {return (CurrStim)?CurrStim.Strength+__Strength__:0;}
+    {return Min((CurrStim)?CurrStim.Strength+__Strength__:0, STR_MAX);}
 }

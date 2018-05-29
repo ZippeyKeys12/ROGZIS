@@ -52,11 +52,20 @@ enum ZUtilityType{
     UTL_LOGIT,
 }
 
+enum ZStimStrength{
+    STR_MIN         =   1,
+    STR_WEAK        =   50,
+    STR_MODERATE    =   5*STR_WEAK,
+    STR_STRONG      =   3*STR_MODERATE,
+    STR_VERYSTRONG  =   3/2*STR_STRONG,
+    STR_MAX         =   1500,
+}
+
 ///////////////
 // Inventory //
 ///////////////
 enum ZArmorInfo{
-    // Armor Types   -   Player-based
+    // Armor Types  -   Player-based
     AMR_NONE        =   0,
     AMR_TYPES       =   4,      // No. of Armor Types
     // Health
@@ -85,6 +94,6 @@ enum ZWeaponInfo{
 }
 
 enum ZUpgradeInfo{
-    UPR_NONE    =   0,
-    UPR_MARMOR  =   1,
+    UPR_NONE,
+    UPR_MARMOR,
 }
