@@ -1,4 +1,23 @@
 class ZUtility{
+    Array<ZUtilityAxis> Axes;
+
+    bool Push(ZUtilityAxis Axis){
+        if(Axes.Find(Axis)!=Axes.Size())
+            ZManager.Error("Axis already exists", ERR_ERROR);
+        return Axes.Push(Axis);
+    }
+
+    double Get(ZMatrix Xs){
+        if(Xs.Height()!=Axes.Size())
+            ZManager.Error(String.Format("Incorrect Number of Axes\nIs: %d, Should Be: %d", Xs.Height(), Axes.Size()), ERR_ERROR);
+        double Score=1;
+        for(int i=0; i<Axes.Size(); i++)
+            Score*=Axes[i].Get(Xs.Get(i));
+        return Score*(1+(1-1/Axes.Size())*(1-Score));
+    }
+}
+
+class ZUtilityAxis{
     bool XSign,
          YSign;
 
@@ -11,8 +30,8 @@ class ZUtility{
     ZMapper Mapper;
 
     static
-    ZUtility Create(ZUtilityType Type, double Min, double Max, double Misc=0, int XSign=1, int YSign=1){
-        ZUtility Function=new("ZUtility");
+    ZUtilityAxis Create(ZUtilityType Type, double Min, double Max, double Misc=0, int XSign=1, int YSign=1){
+        ZUtilityAxis Function=new("ZUtilityAxis");
         Function.XSign=XSign>0;
         Function.YSign=YSign>0;
         Function.Type=Type;

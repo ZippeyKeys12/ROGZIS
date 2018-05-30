@@ -1,0 +1,32 @@
+class ZConsiderer{
+    private
+    Array<Name> Considerations;
+
+    static
+    ZConsiderer Create(uint NumConsiderations)
+    {return new("ZConsiderer").Init(NumConsiderations);}
+
+    virtual
+    ZConsiderer Init(uint NumConsiderations){
+        for(int i=0; i<NumConsiderations; i++)
+            Considerations.Push(i);
+        return self;
+    }
+
+    void ID(uint Index, Name ID)
+    {Considerations[Index]=ID;}
+
+    Name Consider(ZMatrix Rewards){
+        if(Rewards.Height()!=Considerations.Size())
+            ZManager.Error(String.Format("Incorrect Number of Considerations\nIs: %d, Should Be: %d", Rewards.Height(), Considerations.Size()), ERR_ERROR);
+        Array<uint> Best;
+        Best.Push(0);
+        for(int i=1; i<Considerations.Size(); i++)
+            if(Rewards.Get(i)>Rewards.Get(Best[0])){
+                Best.Clear();
+                Best.Push(i);
+            }else if(Rewards.Get(i)==Rewards.Get(Best[0]))
+                Best.Push(i);
+        return Considerations[Best[Random(0, Best.Size()-1)]];
+    }
+}
