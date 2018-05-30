@@ -1,0 +1,31 @@
+class ZPathos{
+    ZActor Owner;
+
+    ZPersonality Personality;
+
+    ZMood Mood;
+
+    ZEmotion Emotion;
+
+    ZSentiments Sentiments;
+
+    static
+    ZPathos Create(ZActor Owner, ZPersonality BasePersonality=null)
+    {return new("ZPathos").Init(Owner, BasePersonality);}
+
+    private
+    ZPathos Init(ZActor Owner, ZPersonality BasePersonality){
+        self.Owner=Owner;
+        if(BasePersonality)
+            Personality=ZPersonality.Create(BasePersonality.Facets);
+        else Personality=ZPersonality.Randomized();
+        Emotion=ZEmotion.Create(Owner, BasePersonality);
+        return self;
+    }
+
+    ZPathos Clone(){
+        ZPathos Result=new("ZPathos");
+        Result.Personality=Personality.Clone();
+        return Result;
+    }
+}

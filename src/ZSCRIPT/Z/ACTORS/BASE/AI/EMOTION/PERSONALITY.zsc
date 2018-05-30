@@ -1,7 +1,6 @@
 extend
 class ZPersonality{
-    private
-    ZMatrix __Facets__;
+    ZMatrix Facets;
 
     static
     ZPersonality Create(ZMatrix Facets, bool Mutate=true)
@@ -13,21 +12,18 @@ class ZPersonality{
 
     private
     ZPersonality Init(ZMatrix Facets=null, bool Mutate=true, bool Randomized=false){
-        if(Randomized)
-            __Facets__=ZMatrix.Randomized(DIMENSIONS, FACETCOUNT, ZManager.MapSeed(self), 0);
+        if(Randomized || !Facets)
+            self.Facets=ZMatrix.Randomized(DIMENSIONS, FACETCOUNT, ZManager.MapSeed(self)^Random(int.min, int.max), 0);
         else if(Mutate)
-            __Facets__=Facets.Mutate(ZManager.MapSeed(self)^int('Mutate'), MaxChange: .5, MutationRate: .25);
-        else __Facets__=Facets;
+            self.Facets=Facets.Mutate(ZManager.MapSeed(self)^Random(int.min, int.max), MaxChange: .5, MutationRate: .25);
+        else self.Facets=Facets.SClamp(0, 1);
         Update();
         return self;
     }
 
-    ZMatrix Facets() const
-    {return __Facets__.Clone();}
-
     ZPersonality Clone() const{
         ZPersonality Result=new("ZPersonality");
-        Result.__Facets__=Facets();
+        Result.Facets=Facets.Clone();
         return Result;
     }
 }

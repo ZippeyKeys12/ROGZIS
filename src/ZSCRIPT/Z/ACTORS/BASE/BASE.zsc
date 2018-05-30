@@ -6,6 +6,11 @@ class ZActor:Actor{
         super.BeginPlay();
         Brain=ZBrain(new("ZBrain_"..GetClassName()));
     }
+
+    virtual
+    clearscope
+    bool IsFriend(Actor Other) const
+    {return Species==Other.Species;}
 }
 
 class ZBrain_ZZZ:ZBrain{}
