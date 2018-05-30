@@ -9,7 +9,7 @@ class ZMAU_BoostDash{
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
         if(DashCountdown==0){
-            static const int DashKeys[]={
+            static const uint DashKeys[]={
                 BT_FORWARD,
                 BT_BACK,
                 BT_MOVELEFT,

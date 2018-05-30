@@ -20,8 +20,7 @@ class ZMatrix{
             ZManager.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
         self.Rows=Rows;
         self.Columns=Columns;
-        Values.Resize(Rows*Columns);
-        for(int i=0; i<Values.Size(); i++)Values[i]=Ones;
+        for(int i=0; i<Rows*Columns; i++)Values.Push(Ones);
         return self;
     }
 
@@ -72,7 +71,8 @@ class ZMatrix{
     {return Columns;}
 
     ZMatrix Add(ZMatrix Other) const{
-        if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+        if(Rows!=Other.Rows || Columns!=Other.Columns)
+            ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
         ZMatrix Result=ZMatrix.Create(Rows, Columns);
         for(int Row=0; Row<Rows; Row++)
             for(int Column=0; Column<Columns; Column++)
@@ -81,7 +81,8 @@ class ZMatrix{
     }
 
     ZMatrix Subtract(ZMatrix Other) const{
-        if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+        if(Rows!=Other.Rows || Columns!=Other.Columns)
+            ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
         ZMatrix Result=ZMatrix.Create(Rows, Columns);
         for(int Row=0; Row<Rows; Row++)
             for(int Column=0; Column<Columns; Column++)
@@ -90,7 +91,8 @@ class ZMatrix{
     }
 
     ZMatrix Multiply(ZMatrix Other){
-        if(Rows!=Other.Rows || Columns!=Other.Columns)ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
+        if(Rows!=Other.Rows || Columns!=Other.Columns)
+            ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
         ZMatrix Result=ZMatrix.Create(Rows, Columns);
         for(int Row=0; Row<Rows; Row++)
             for(int Column=0; Column<Columns; Column++)
@@ -107,7 +109,8 @@ class ZMatrix{
     }
 
     ZMatrix MMultiply(ZMatrix Other) const{
-        if(Columns!=Other.Rows)ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
+        if(Columns!=Other.Rows)
+            ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
         ZMatrix Result=ZMatrix.Create(Rows, Other.Columns);
         for(int Row=0; Row<Result.Rows; Row++)
             for(int Column=0; Column<Result.Columns; Column++){
@@ -128,7 +131,8 @@ class ZMatrix{
     }
 
     ZMatrix MMin(ZMatrix Min, ZMatrix Min2=null){
-        if(Rows!=Min.Rows || Columns!=Min.Columns || (Min2 && (Rows!=Min2.Rows || Columns!=Min2.Columns)))ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+        if(Rows!=Min.Rows || Columns!=Min.Columns || (Min2 && (Rows!=Min2.Rows || Columns!=Min2.Columns)))
+            ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
         ZMatrix Result=Create(Rows, Columns);
         for(int Row=0; Row<Result.Rows; Row++)
             for(int Column=0; Column<Result.Columns; Column++)
@@ -145,7 +149,8 @@ class ZMatrix{
     }
 
     ZMatrix MMax(ZMatrix Max, ZMatrix Max2=null){
-        if(Rows!=Max.Rows || Columns!=Max.Columns || (Max2 && (Rows!=Max2.Rows || Columns!=Max2.Columns)))ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+        if(Rows!=Max.Rows || Columns!=Max.Columns || (Max2 && (Rows!=Max2.Rows || Columns!=Max2.Columns)))
+            ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
         ZMatrix Result=Create(Rows, Columns);
         for(int Row=0; Row<Result.Rows; Row++)
             for(int Column=0; Column<Result.Columns; Column++)
@@ -162,7 +167,8 @@ class ZMatrix{
     }
 
     ZMatrix MClamp(ZMatrix Min, ZMatrix Max){
-        if(Rows!=Min.Rows || Columns!=Min.Columns || Rows!=Max.Rows || Columns!=Max.Columns)ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+        if(Rows!=Min.Rows || Columns!=Min.Columns || Rows!=Max.Rows || Columns!=Max.Columns)
+            ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
         ZMatrix Result=Create(Rows, Columns);
         for(int Row=0; Row<Result.Rows; Row++)
             for(int Column=0; Column<Result.Columns; Column++)
