@@ -51,24 +51,22 @@ class ZEventManager:EventHandler{
     void WorldTick(){
         for(int i=Stimuli.Size()-1; i>=0; i--){
             ZStimulus Stimulus=Stimuli[i];
-            Stimulus.Tick();
-            if(Stimulus.Decay==0){
+            if(!Stimulus){
+                Stimuli.Delete(i);
+            }else if(Stimulus.Decay==0 || !Consumed(Stimulus)){
                 Stimuli.Delete(i);
                 Stimulus.Destroy();
-            }
+            }else Stimulus.Tick();
         }
-        for(int i=0; i<Reactors.Size(); i++)
+        for(int i=0; i<Reactors.Size(); i++){
             Reactors[i].Tick();
+        }
     }
 
     void SterStimulus(ZStimulus Stimulus){
         if(Stimuli.Find(Stimulus)!=Stimuli.Size())
             ZManager.Error(String.Format("Stimulus: %s is Already Registered", Stimulus.ID), ERR_ERROR);
-        bool Consumed;
-        for(int i=0; i<Reactors.Size(); i++)
-            if(Reactors[i].React(Stimulus))
-                Consumed=true;
-        if(Consumed)
+        if(Consumed(Stimulus))
             Stimuli.Push(Stimulus);
         else Stimulus.Destroy();
     }
@@ -77,5 +75,13 @@ class ZEventManager:EventHandler{
         if(Reactors.Find(Reactor)!=Reactors.Size())
             ZManager.Error(String.Format("Reactor: %s", Reactor.ID), ERR_ERROR);
         Reactors.Push(Reactor);
+    }
+
+    private
+    bool Consumed(ZStimulus Stimulus){
+        for(int i=0; i<Reactors.Size(); i++)
+            if(Reactors[i].CurrStim==Stimulus)
+                return true;
+        return false;
     }
 }
