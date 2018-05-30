@@ -19,52 +19,60 @@ class ZEmotion:ZFSM{
         return Result;
     }
 
-    override
-    void Tick(){
-        double Strength=Reactor.Strength();
-        ZStimulus CurrStim=Reactor.CurrStim;
-        switch(CurrStim.ID){
-            case 'Insult':
-                if(CurrStim.Target==Owner){
-                    if(Strength>STR_VERYSTRONG){
-                        Strength=STR_VERYSTRONG;
-                        static const Name DirectConsider[]={
-                            'Irritable',
-                            'Impulsive',
-                            'Vulnerable'
-                        };
-                        static const Name InverseConsider[]={
-                            'Deliberate',
-                            'Forgiving'
-                        };
-                        double Attack=1;
-                        for(int i=0; i<DirectConsider.Size(); i++)
-                            Attack*=Personality.Facet(DirectConsider[i]);
-                        for(int i=0; i<InverseConsider.Size(); i++)
-                            Attack*=1-Personality.Facet(InverseConsider[i]);
-                        Attack/=DirectConsider.Size()+InverseConsider.Size();
-                    }
-                }else if(Owner.IsFriend(CurrStim.Target)){
-                    /*if(){
-                        a
-                    }*/
-                }
-                break;
-        }
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // On second thought, this should be per actor because a creature may be deaf or communicate through EMPs //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // override
+    // void Tick(){
+    //     double Strength=Reactor.Strength();
+    //     ZStimulus CurrStim=Reactor.CurrStim;
+    //     switch(CurrStim.ID){
+    //         case 'Insult':
+    //             if(CurrStim.Target==Owner){
+    //                 if(Strength>STR_VERYSTRONG){
+    //                     Strength=STR_VERYSTRONG;
+    //                     static const Name DirectConsider[]={
+    //                         'Irritable',
+    //                         'Impulsive',
+    //                         'Vulnerable'
+    //                     };
+    //                     static const Name InverseConsider[]={
+    //                         'Deliberate',
+    //                         'Forgiving'
+    //                     };
+    //                     double Attack=1;
+    //                     for(int i=0; i<DirectConsider.Size(); i++)
+    //                         Attack*=Personality.Facet(DirectConsider[i]);
+    //                     for(int i=0; i<InverseConsider.Size(); i++)
+    //                         Attack*=1-Personality.Facet(InverseConsider[i]);
+    //                     Attack/=DirectConsider.Size()+InverseConsider.Size();
+    //                 }
+    //             }else if(Owner.IsFriend(CurrStim.Target)){
+    //                 /*if(){
+    //                     a
+    //                 }*/
+    //             }
+    //             break;
+    //     }
+    // }
 }
 
-class ZEmotionReactor:ZReactor{
-    override
-    bool React(ZStimulus Stim){
-        static const Name ValidStims[]={
-            'Insult',
-            'Threaten',
-            'Noise'
-        };
-        for(int i=0; i<ValidStims.Size(); i++)
-            if(Stim.ID==ValidStims[i])
-                return super.React(Stim);
-        return false;
-    }
-}
+//////////////
+// This too //
+//////////////
+//
+// class ZEmotionReactor:ZReactor{
+//     override
+//     bool React(ZStimulus Stim){
+//         static const Name ValidStims[]={
+//             'Insult',
+//             'Threaten',
+//             'Noise'
+//         };
+//         for(int i=0; i<ValidStims.Size(); i++)
+//             if(Stim.ID==ValidStims[i])
+//                 return super.React(Stim);
+//         return false;
+//     }
+// }
