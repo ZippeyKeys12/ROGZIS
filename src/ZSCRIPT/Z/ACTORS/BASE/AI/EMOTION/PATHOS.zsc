@@ -10,17 +10,18 @@ class ZPathos{
     ZSentiments Sentiments;
 
     static
-    ZPathos Create(ZActor Owner, ZPersonality BasePersonality=null)
-    {return new("ZPathos").Init(Owner, BasePersonality);}
-
-    private
-    ZPathos Init(ZActor Owner, ZPersonality BasePersonality){
-        self.Owner=Owner;
+    ZPathos Create(ZActor Owner, Class<ZReactor> ReactorName='ZReactor', ZPersonality BasePersonality=null){
+        ZPathos Result=new("ZPathos");
+        Result.Owner=Owner;
         if(BasePersonality)
-            Personality=ZPersonality.Create(BasePersonality.Facets);
-        else Personality=ZPersonality.Randomized();
-        Emotion=ZEmotion.Create(Owner, BasePersonality);
-        return self;
+            Result.Personality=ZPersonality.Create(BasePersonality.Facets);
+        else Result.Personality=ZPersonality.Randomized();
+        Result.Emotion=ZEmotion.Create(Owner, ReactorName, BasePersonality);
+        return Result;
+    }
+
+    void Tick(){
+        
     }
 
     ZPathos Clone(){
