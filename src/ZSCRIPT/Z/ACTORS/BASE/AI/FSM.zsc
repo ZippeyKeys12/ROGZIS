@@ -1,7 +1,9 @@
-class ZFSM abstract{
+class ZFSM abstract{    
     private
-    Name __State__,
-         DefaultState;
+    Name DefaultState;
+
+    protected
+    Name __State__;
 
     virtual
     protected
@@ -9,6 +11,10 @@ class ZFSM abstract{
         self.DefaultState=DefaultState;
         return self;
     }
+
+    virtual
+    bool Set(Name NewState)
+    {return __State__=NewState;}
 
     virtual
     void Tick(){}
