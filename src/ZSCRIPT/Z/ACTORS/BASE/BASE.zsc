@@ -1,10 +1,19 @@
 class ZActor:Actor{
+    Name BrainName;
+
     ZBrain Brain;
+
+    Property Brain: BrainName;
+
+    [Property]{
+        [ZActor]
+        Brain='ZBrain';
+    }
 
     override
     void BeginPlay(){
         super.BeginPlay();
-        Brain=ZBrain(new("ZBrain_"..GetClassName()));
+        Brain=ZBrain(new(BrainName));
     }
 
     virtual
@@ -12,8 +21,6 @@ class ZActor:Actor{
     bool IsFriend(Actor Other) const
     {return Species==Other.Species;}
 }
-
-class ZBrain_ZZZ:ZBrain{}
 
 class ZZZ:ZActor{
     ZPlan Plan;

@@ -21,7 +21,7 @@ def ZRead(BuildFolder, LumpName):
             Include=IncludePattern.search(Line)
             if Include:
                 print("  Including: "+Include.group(1))
-                Lines.extend(ZRead(BuildFolder, Include.group(1)))
+                Lines.extend(ZRead(BuildFolder, Include.group(1))+"\n")
             else: Lines.append(Line)
     return "".join(Lines)
 

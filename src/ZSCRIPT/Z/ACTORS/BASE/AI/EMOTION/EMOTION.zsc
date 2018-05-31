@@ -3,15 +3,15 @@ class ZEmotion:ZFSM{
 
     ZActor Owner;
 
-    ZEmotionReactor Reactor;
+    ZReactor Reactor;
 
     ZPersonality Personality;
 
     static
-    ZEmotion Create(ZActor Owner, ZPersonality Personality=null, Name DefaultState='Neutral'){
+    ZEmotion Create(ZActor Owner, Class<ZReactor> ReactorName='ZReactor', ZPersonality Personality=null, Name DefaultState='Neutral'){
         ZEmotion Result=new("ZEmotion");
         Result.Owner=Owner;
-        Result.Reactor=new("ZEmotionReactor");
+        Result.Reactor=ZReactor(new(ReactorName));
         if(!Personality)
             Personality=ZPersonality.Randomized();
         Result.Personality=Personality;
