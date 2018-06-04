@@ -1,0 +1,11 @@
+class ZMood:ZFSM{
+    int Decay;
+
+    override
+    void Tick(){
+        if(Decay>0)
+            Decay--;
+        else if(Decay==0)
+            __State__='';
+    }
+}

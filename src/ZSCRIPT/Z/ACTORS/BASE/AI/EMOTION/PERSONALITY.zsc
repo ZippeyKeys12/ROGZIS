@@ -4,25 +4,28 @@ class ZPersonality{
 
     static
     ZPersonality Create(ZMatrix Facets, bool Mutate=true)
-    {return new("ZPersonality").Init(Facets.Clone(), Mutate);}
+    {return new('ZPersonality').Init(Facets.Clone(), Mutate);}
 
     static
     ZPersonality Randomized()
-    {return new("ZPersonality").Init(Randomized: true);}
+    {return new('ZPersonality').Init();}
 
     private
-    ZPersonality Init(ZMatrix Facets=null, bool Mutate=true, bool Randomized=false){
-        if(Randomized || !Facets)
-            self.Facets=ZMatrix.Randomized(DIMENSIONS, FACETCOUNT, ZManager.MapSeed(self)^Random(int.min, int.max), 0);
-        else if(Mutate)
-            self.Facets=Facets.Mutate(ZManager.MapSeed(self)^Random(int.min, int.max), MaxChange: .5, MutationRate: .25);
-        else self.Facets=Facets.SClamp(0, 1);
+    ZPersonality Init(ZMatrix OrigFacets=null, bool Mutate=true){
+        if(!OrigFacets){
+            Facets=ZMatrix.Create(DIMENSIONS, FACETCOUNT);
+            ZGaussian Distribution=ZGaussian.Create(.5, .125);
+            for(int i=0; i<DIMENSIONS*FACETCOUNT; i++)
+                Facets.Values[i]=ZCalc.NormRange(Distribution.Generate());
+        }else if(Mutate)
+            Facets=OrigFacets.Mutate(ZManager.RandSeed(), MaxChange: .25, MutationRate: .1);
+        else Facets=OrigFacets.SClamp(0, 1);
         Update();
         return self;
     }
 
     ZPersonality Clone() const{
-        ZPersonality Result=new("ZPersonality");
+        ZPersonality Result=new('ZPersonality');
         Result.Facets=Facets.Clone();
         return Result;
     }

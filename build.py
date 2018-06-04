@@ -164,7 +164,7 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         Zsc+="{},".format(Dimension)
     Zsc="{};}}void Update(){{".format(Zsc[:-1])
     for Index, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
-        Zsc+="{}=Facets.Row({}).ASum()/FACETCOUNT;".format(Dimension, Index)
+        Zsc+="{}=Facets.Row({}).AAMean();".format(Dimension, Index)
     print("        Facets:")
     Zsc+="}double Facet(Name Facet){switch(Facet){"
     for Row, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
@@ -180,6 +180,7 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
             const DIMENSIONS={0[iPersDimensions]};
             const FACETCOUNT={0[iPersFacets]};
     """.format(Config["AI.EMOTION"])
+    
     ## Generics
     print("  Generics:")
     ### Dictionary

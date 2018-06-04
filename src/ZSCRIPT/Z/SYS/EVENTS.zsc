@@ -58,9 +58,6 @@ class ZEventManager:EventHandler{
                 Stimulus.Destroy();
             }else Stimulus.Tick();
         }
-        for(int i=0; i<Reactors.Size(); i++){
-            Reactors[i].Tick();
-        }
     }
 
     void SterStimulus(ZStimulus Stimulus){

@@ -1,6 +1,4 @@
-class ZPathos{
-    ZActor Owner;
-
+class ZPathos:ZReactor play{
     ZPersonality Personality;
 
     ZMood Mood;
@@ -10,23 +8,30 @@ class ZPathos{
     ZSentiments Sentiments;
 
     static
-    ZPathos Create(ZActor Owner, Class<ZReactor> ReactorName='ZReactor', ZPersonality BasePersonality=null){
-        ZPathos Result=new("ZPathos");
-        Result.Owner=Owner;
+    ZPathos Create(Class<ZEmotion> EmotionName='ZEmotion', ZPersonality BasePersonality=null){
+        ZPathos Result=new('ZPathos');
         if(BasePersonality)
             Result.Personality=ZPersonality.Create(BasePersonality.Facets);
         else Result.Personality=ZPersonality.Randomized();
-        Result.Emotion=ZEmotion.Create(Owner, ReactorName, BasePersonality);
+        Result.Mood=ZMood(ZFSM.Create('ZMood', 'Neutral'));
+        Result.Emotion=ZEmotion(ZFSM.Create(EmotionName, 'Neutral'));
+        Result.Sentiments=new('ZSentiments');
+        ZEventManager.Instance().SterReactor(Result);
         return Result;
     }
 
+    override
     void Tick(){
-        
+        super.Tick();
+        Mood.Tick();
+        Emotion.Tick();
     }
 
     ZPathos Clone(){
-        ZPathos Result=new("ZPathos");
+        ZPathos Result=new('ZPathos');
+        Result.Owner=Owner;
         Result.Personality=Personality.Clone();
+        Result.Emotion=ZEmotion(ZFSM.Create(Emotion.GetClassName(), 'Neutral'));
         return Result;
     }
 }
