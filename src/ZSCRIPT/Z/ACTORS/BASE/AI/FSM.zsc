@@ -5,6 +5,10 @@ class ZFSM abstract{
     protected
     Name __State__;
 
+    static
+    ZFSM Create(Class<ZFSM> Type, Name DefaultState='Idle')
+    {return ZFSM(new(Type)).Init(DefaultState);}
+
     virtual
     protected
     ZFSM Init(Name DefaultState='Idle'){
@@ -14,10 +18,14 @@ class ZFSM abstract{
 
     virtual
     bool Set(Name NewState)
-    {return __State__=NewState;}
+    {return (IsValid(NewState))?bool(__State__=NewState):false;}
 
     virtual
     void Tick(){}
+
+    virtual
+    bool IsValid(Name State)
+    {return false;}
 
     Name State()
     {return (__State__=='')?DefaultState:__State__;}
