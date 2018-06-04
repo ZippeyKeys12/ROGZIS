@@ -4,7 +4,7 @@ class ZPerlin{
 
     static
     ZPerlin Create(int Seed=int('NoiseyBoi'), int Height=16, int Width=16, int OctaveCount=8)
-    {return new("ZPerlin").Init(Seed, Height, Width, OctaveCount);}
+    {return new('ZPerlin').Init(Seed, Height, Width, OctaveCount);}
 
     private
     ZPerlin Init(int Seed, int Height, int Width, int OctaveCount){

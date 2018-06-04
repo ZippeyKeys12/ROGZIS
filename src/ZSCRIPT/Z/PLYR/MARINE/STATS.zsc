@@ -61,7 +61,7 @@ class ZMStats:Thinker{
     ZMStats Instance(){
         ThinkerIterator it=ThinkerIterator.Create("ZMStats", STAT_STATIC);
         ZMStats p=ZMStats(it.Next());
-        if(!p)p=new("ZMStats").Init();
+        if(!p)p=new('ZMStats').Init();
         return p;
     }
 
@@ -222,7 +222,7 @@ class ZMStats:Thinker{
         if(Plate<=0)return Damage;
         ZDamageType DamageType=Manager.DamageType(Mod);
         if(!DamageType){
-            ZManager.Error(String.Format("Undefined ZDamageType: %s", Mod), ERR_ERROR);
+            ZManager.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
             return Damage;
         }
         double Dam, TempDamage=Damage;

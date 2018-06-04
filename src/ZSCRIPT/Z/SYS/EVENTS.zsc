@@ -65,7 +65,7 @@ class ZEventManager:EventHandler{
 
     void SterStimulus(ZStimulus Stimulus){
         if(Stimuli.Find(Stimulus)!=Stimuli.Size())
-            ZManager.Error(String.Format("Stimulus: %s is Already Registered", Stimulus.ID), ERR_ERROR);
+            ZManager.Error("Stimulus: "..Stimulus.ID.." is Already Registered", ERR_ERROR);
         if(Consumed(Stimulus))
             Stimuli.Push(Stimulus);
         else Stimulus.Destroy();
@@ -73,7 +73,7 @@ class ZEventManager:EventHandler{
 
     void SterReactor(ZReactor Reactor){
         if(Reactors.Find(Reactor)!=Reactors.Size())
-            ZManager.Error(String.Format("Reactor: %s", Reactor.ID), ERR_ERROR);
+            ZManager.Error("Reactor: "..Reactor.ID.." is Already Registered", ERR_ERROR);
         Reactors.Push(Reactor);
     }
 

@@ -8,7 +8,7 @@ class ZBrain abstract{
     virtual
     ZBrain Init(ZActor Owner){
         self.Owner=Owner;
-        Stack=new("ZStack");
+        Stack=new('ZStack');
         return self;
     }
 

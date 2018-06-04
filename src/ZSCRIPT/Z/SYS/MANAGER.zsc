@@ -2,14 +2,14 @@ class ZManager:Thinker{
     static
     ZManager Instance(){
         ZManager p=UIInstance();
-        if(!p)p=new("ZManager").Init();
+        if(!p)p=new('ZManager').Init();
         return p;
     }
 
     static
     clearscope
     ZManager UIInstance(){
-        ThinkerIterator it=ThinkerIterator.Create("ZManager", STAT_STATIC);
+        ThinkerIterator it=ThinkerIterator.Create('ZManager', STAT_STATIC);
         return ZManager(it.Next());
     }
 
@@ -17,7 +17,7 @@ class ZManager:Thinker{
     ZManager Init(){
         ChangeStatNum(STAT_STATIC);
         // World State
-        WorldState=new("ZWorldState");
+        WorldState=new('ZWorldState');
         InitRegistries();
         InitEvents();
         return self;

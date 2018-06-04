@@ -36,5 +36,5 @@ class ZManager{
     static
     clearscope
     int MapSeed(Object Caller=null)
-    {return UIInstance().__MapSeed__^int((Caller)?Caller.GetClassName():'');}
+    {return UIInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
 }

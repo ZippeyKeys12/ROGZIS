@@ -18,7 +18,7 @@ class ZPerceptron{
 
     static
     ZPerceptron Create(uint Inputs, uint Hiddens, uint Outputs, double LearningRate=.1)
-    {return new("ZPerceptron").Init(Inputs, Hiddens, Outputs, LearningRate);}
+    {return new('ZPerceptron').Init(Inputs, Hiddens, Outputs, LearningRate);}
 
     private
     ZPerceptron Init(uint Inputs, uint Hiddens, uint Outputs, double LearningRate){

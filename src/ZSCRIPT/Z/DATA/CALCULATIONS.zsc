@@ -10,14 +10,14 @@ struct ZCalc{
     /////////////
     static
     bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
-    {return abs(FirstValue-SecondValue)<=Epsilon;}
+    {return Abs(FirstValue-SecondValue)<=Epsilon;}
 
     static
     int ShiftOf(int Value){
         int Shifts=0;
         while(Value>1){
             Value>>=1;
-             Shifts++;
+            Shifts++;
         }
         return Shifts;
     }
@@ -28,7 +28,7 @@ struct ZCalc{
 
     static
     double TransferSign(double Value, double Sign)
-    {return abs(Value)*Sign(Sign);}
+    {return Abs(Value)*Sign(Sign);}
 
     static
     int Alternate(int n, bool Offset=false)
@@ -202,7 +202,7 @@ class ZMapper{
 
     static
     ZMapper Create(double Min, double Max){
-        ZMapper Mapper=new("ZMapper");
+        ZMapper Mapper=new('ZMapper');
         Mapper.Min=Min;
         Mapper.Max=Max;
         return Mapper;
@@ -221,7 +221,7 @@ class ZLeftInterpolator{
 
     static
     ZLeftInterpolator Create(int DesiredValue){
-        ZLeftInterpolator Interpolator = new("ZLeftInterpolator");
+        ZLeftInterpolator Interpolator = new('ZLeftInterpolator');
         Interpolator.Reset(DesiredValue);
         return Interpolator;
     }

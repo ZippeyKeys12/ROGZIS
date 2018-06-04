@@ -19,7 +19,7 @@ class ZManager{
             PATH_ALL
         };
         for(int i=0; i<NodeGraphTypes.Size(); i++){
-            ZGraph Graph=new("ZGraph");
+            ZGraph Graph=new('ZGraph');
             while(Marker=ZPathMarker(it.Next())){
                 Marker.Init();
                 if((Node=Marker.Node) && (i==PATH_ALL || Node.Type==NodeGraphTypes[i]))
@@ -30,7 +30,7 @@ class ZManager{
         // For registration
         Parser_TSV ParserTSV; TSVRow Row;
         // DamageTypes
-        DamageTypes=ZDamageTypes(new("ZDamageTypes").Init());
+        DamageTypes=ZDamageTypes(new('ZDamageTypes').Init());
         ParserTSV=Parser_TSV.Create(#config "DATA", "tDamageTypes");
         for(int i=1; i<ParserTSV.Size(); i++){
             Row=ParserTSV.GetRow(i);
@@ -45,9 +45,9 @@ class ZManager{
         }
         // Upgrades
         static const Class<ZArmorUpgrade> ArmorUpgradeNames[]={
-            @ZMAUpgrades
+            $ZMAUpgrades
         };
-        ArmorUpgrades=ZArmorUpgrades(new("ZArmorUpgrades").Init());
+        ArmorUpgrades=ZArmorUpgrades(new('ZArmorUpgrades').Init());
         ZArmorUpgrade Upgrade;
         for(int i=0; i<ArmorUpgradeNames.Size(); i++){
             ArmorUpgrades.Add(Upgrade=ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init()));

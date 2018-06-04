@@ -15,7 +15,7 @@ class ZDamageType:ZRegistryItem{
 
     static
     ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZDamageInfo DamageFlags=DMG_NONE)
-    {return new("ZDamageType").Init(ID, Name, ArmorPlating, MagneticShield, PlasmaShield, HardLight, DamageFlags);}
+    {return new('ZDamageType').Init(ID, Name, ArmorPlating, MagneticShield, PlasmaShield, HardLight, DamageFlags);}
 
     ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZDamageInfo DamageFlags=DMG_NONE){
         self.ID=ID;

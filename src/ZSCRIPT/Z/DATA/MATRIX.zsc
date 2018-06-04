@@ -3,16 +3,15 @@ class ZMatrix{
     uint Columns,
          Rows;
 
-    private
     Array<double> Values;
 
     static
-    {return new("ZMatrix").Init(Rows, Columns, false);}
     ZMatrix Create(uint Rows, uint Columns=1)
+    {return new('ZMatrix').Init(Rows, Columns, false);}
 
     static
     ZMatrix Identity(uint Size)
-    {return new("ZMatrix").Init(Size, Size, true);}
+    {return new('ZMatrix').Init(Size, Size, true);}
 
     private
     ZMatrix Init(uint Rows, uint Columns, bool Ones){
@@ -26,7 +25,7 @@ class ZMatrix{
 
     static
     ZMatrix Randomized(uint Rows, uint Columns, int Seed, double Floor=-1, double Ceiling=1)
-    {return new("ZMatrix").Init(Rows, Columns, true).Noise(Seed, Floor, Ceiling);}
+    {return new('ZMatrix').Init(Rows, Columns, true).Noise(Seed, Floor, Ceiling);}
 
     void Set(uint Row, uint Column, double Value)
     {Values[Row*Columns+Column]=Value;}
@@ -371,7 +370,7 @@ class ZMatrix{
     }
 
     ZMatrix Append(ZMatrix Other){
-        ZMatrix Result=Create(Rows+Other.Values.Size()/Columns+1, Columns);
+        ZMatrix Result=Create(Rows+ZCalc.Round(Other.Values.Size()/double(Columns)), Columns);
         Result.Values.Copy(Values);
         for(int i=0; i<Other.Values.Size(); i++)
             Result.Values[Values.Size()+i]=Other.Values[i];

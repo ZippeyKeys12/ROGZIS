@@ -4,7 +4,7 @@ class Parser_TSV{
     
     static
     Parser_TSV Create(String LumpName)
-    {return new("Parser_TSV").LoadLumps(LumpName);}
+    {return new('Parser_TSV').LoadLumps(LumpName);}
     
     Parser_TSV LoadLumps(String LumpName){
         static
@@ -57,7 +57,7 @@ class TSVRow{
     
     static
     TSVRow Create(String Row)
-    {return new("TSVRow").Init(Row);}
+    {return new('TSVRow').Init(Row);}
     
     TSVRow Init(String Row){
         Row.Split(Values, "\t", TOK_SKIPEMPTY);

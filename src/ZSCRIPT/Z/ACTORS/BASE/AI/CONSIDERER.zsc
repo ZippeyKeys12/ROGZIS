@@ -4,7 +4,7 @@ class ZConsiderer{
 
     static
     ZConsiderer Create(uint NumConsiderations)
-    {return new("ZConsiderer").Init(NumConsiderations);}
+    {return new('ZConsiderer').Init(NumConsiderations);}
 
     virtual
     ZConsiderer Init(uint NumConsiderations){
@@ -18,7 +18,7 @@ class ZConsiderer{
 
     Name Consider(ZMatrix Rewards){
         if(Rewards.Height()!=Considerations.Size())
-            ZManager.Error(String.Format("Incorrect Number of Considerations\nIs: %d, Should Be: %d", Rewards.Height(), Considerations.Size()), ERR_ERROR);
+            ZManager.Error("Incorrect Number of Considerations\nIs: "..Rewards.Height()..", Should Be: "..Considerations.Size(), ERR_ERROR);
         Array<uint> Best;
         Best.Push(0);
         for(int i=1; i<Considerations.Size(); i++)

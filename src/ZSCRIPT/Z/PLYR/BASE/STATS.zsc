@@ -8,7 +8,7 @@ class ZStats:Thinker{
     ZStats Instance(){
         ThinkerIterator it=ThinkerIterator.Create("ZStats", STAT_STATIC);
         ZStats p=ZStats(it.Next());
-        if(!p)p=new("ZStats").Init();
+        if(!p)p=new('ZStats').Init();
         return p;
     }
 

@@ -18,7 +18,7 @@ class ZItem:ZRegistryItem play{
 
     static
     ZItem Create(Name ID, String Name, String Description, int Price, Object Ref=null){
-        ZItem Item=new("ZItem");
+        ZItem Item=new('ZItem');
         Item.ID=ID;
         Item.Ref=Ref;
         Item.Name=Name;

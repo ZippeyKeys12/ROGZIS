@@ -4,7 +4,7 @@ class ZQuaternion{
 
     static
     ZQuaternion Create(double W, double X, double Y, double Z)
-    {return new("ZQuaternion").Init(W, X, Y, Z);}
+    {return new('ZQuaternion').Init(W, X, Y, Z);}
 
     static
     ZQuaternion Zero()
@@ -23,7 +23,7 @@ class ZQuaternion{
 
     static
     ZQuaternion FromEulerAngles(double Yaw, double Pitch, double Roll)
-    {return new("ZQuaternion").SetEulerAngles(Yaw, Pitch, Roll);}
+    {return new('ZQuaternion').SetEulerAngles(Yaw, Pitch, Roll);}
 
     private
     ZQuaternion Init(double W, double X, double Y, double Z){

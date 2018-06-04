@@ -23,10 +23,10 @@ class ZPathMarker:Actor{
     virtual
     ZPathMarker Init(){
         if(!Node){
-            Node=new("ZPathNode");
+            Node=new('ZPathNode');
             Node.Marker=self;
         }
-        ActorIterator it=ActorIterator.Create(ZTID_NODES, "ZPathMarker");
+        ActorIterator it=ActorIterator.Create(ZTID_NODES, 'ZPathMarker');
         ZPathMarker Marker;
         while(Marker=ZPathMarker(it.Next())){
             if(self==Marker)
@@ -34,7 +34,7 @@ class ZPathMarker:Actor{
             Vector3 VecTo=Vec3To(Marker);
             if(/*VecTo.Z<= && */CheckSight(Marker)){
                 if(!Marker.Node){
-                    Marker.Node=new("ZPathNode");
+                    Marker.Node=new('ZPathNode');
                     Marker.Node.Marker=Marker;
                 }
                 Node.Edges.Push(ZEdge.Create(Node, Marker.Node));
