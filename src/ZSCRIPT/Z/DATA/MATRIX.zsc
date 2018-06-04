@@ -354,8 +354,11 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix Clone() const
-    {return SMultiply(1);}
+    ZMatrix Clone() const{
+        ZMatrix Result=Create(Rows, Columns);
+        Result.Values.Copy(Values);
+        return Result;
+    }
 
     ZMatrix Mutate(int Seed, double Floor=0, double Ceiling=1, double MaxChange=1, double MutationRate=.1) const{
         ZMatrix Result=Randomized(Rows, Columns, Seed).SMultiply(MaxChange),
