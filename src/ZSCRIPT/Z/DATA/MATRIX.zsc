@@ -367,6 +367,14 @@ class ZMatrix{
         return Result;
     }
 
+    ZMatrix Append(ZMatrix Other){
+        ZMatrix Result=Create(Rows+Other.Values.Size()/Columns+1, Columns);
+        Result.Values.Copy(Values);
+        for(int i=0; i<Other.Values.Size(); i++)
+            Result.Values[Values.Size()+i]=Other.Values[i];
+        return Result;
+    }
+
     ZMatrix Noise(int Seed=int('NoiseyBoi'), double Floor=-1, double Ceiling=1) const{
         SetRandomSeed[NoiseyBoi](Seed);
         ZMatrix Result=ZMatrix.Create(Rows, Columns);
