@@ -26,7 +26,7 @@ class ZPerceptron{
         self.Hiddens=Hiddens;
         self.Outputs=Outputs;
         In2Hid=ZMatrix.Create(Hiddens, Inputs);
-        StdNormDist=ZGaussian.Create(ZManager.MapSeed(self));
+        StdNormDist=ZGaussian.Create();
         for(int i=0; i<In2Hid.Height(); i++)
             for(int j=0; j<In2Hid.Width(); j++)
                 In2Hid.Set(i, j, StdNormDist.Generate());

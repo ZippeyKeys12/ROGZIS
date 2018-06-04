@@ -17,7 +17,9 @@ class ZGaussian{
     {return new("ZGaussian").Init(Seed, Mean, StdDev);}
 
     private
-    ZGaussian Init(int Seed, double Mean, double StdDev){
+    ZGaussian Init(double Mean, double StdDev, int Seed=0){
+        if(!Seed)
+            Seed=ZManager.RandSeed();
         self.Mean=Mean;
         self.StdDev=StdDev;
         SetRandomSeed[GauseyBoi](Seed);
@@ -48,9 +50,15 @@ class ZGaussian{
     double Get() const
     {return CachedValues[Random(0, CachedValues.Size())];}
 
-    double Normalize(double Value)
+    double Normalize(double Value) const
     {return (Value-Mean)/StdDev;}
 
     void Clear()
     {CachedValues.Clear();}
+
+    ZMatrix Matrix(bool Row=false) const{
+        ZMatrix Result=ZMatrix.Create((Row)?1:CachedValues.Size(), (!Row)?1:CachedValues.Size());
+        Result.Values.Copy(CachedValues);
+        return Result;
+    }
 }
