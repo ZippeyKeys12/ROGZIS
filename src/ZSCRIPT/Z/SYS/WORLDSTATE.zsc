@@ -24,10 +24,10 @@ class ZManager{
         Player.Stats.ActualRoll=Player.Roll;
         Player.MStats=ZMStats.Instance();
         String Checksum=Level.GetChecksum();
-        int Seed=0;
+        __MapSeed__=0;
         for(int i=0; i<Checksum.Length(); i++)
-            Seed^=Checksum.CharCodeAt(i)<<8*(i%4);
-        __MapSeed__=Seed;
+            __MapSeed__^=Checksum.CharCodeAt(i)<<8*(i%4);
+        int Seed=MapSeed(self);
         Player.YawShake=ZPerlin.Create(Seed, 1000, 3);
         Player.PitchShake=ZPerlin.Create(Seed+1, 1000, 3);
         Player.RollShake=ZPerlin.Create(Seed+2, 1000, 3);

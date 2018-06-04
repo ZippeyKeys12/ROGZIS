@@ -59,39 +59,6 @@ struct ZCalc{
     {return ANormRangeMap(NormRangeMap(Value, OldStart, OldEnd), NewStart, NewEnd);}
 
     static
-    double AMean(ZMatrix Array){
-        double Total=0;
-        for(int i=0; i<Array.Height(); i++)
-            Total+=Array.Get(i);
-        return Total/Array.Height();
-    }
-
-    static
-    double GMean(ZMatrix Array){
-        double Total=1;
-        for(int i=0; i<Array.Height(); i++)
-            Total*=Array.Get(i);
-        return Total**(1/Array.Height());
-    }
-
-    static
-    double HMean(ZMatrix Array){
-        double Total=0;
-        for(int i=0; i<Array.Height(); i++)
-            Total+=1/Array.Get(i);
-        return Array.Height()/Total;
-    }
-
-    static
-    double StdDev(ZMatrix Array, bool Statistic=true){
-        double Total=0,
-               Mean=AMean(Array);
-        for(int i=0; i<Array.Height(); i++)
-            Total+=(Array.Get(i)-Mean)**2;
-        return sqrt(Total/(Array.Height()-Statistic));
-    }
-
-    static
     double AsymptoticMean(double X, double Target, double Weight=.1)
     {return (Target-X)*(1-Weight);}
 
@@ -224,7 +191,7 @@ struct ZCalc{
         }else Temp=End;
         if(SEDot<.95){
             double Angle=ACos(SEDot);
-            return Start.SMultiply(Sin(Angle*(1-Time))).Add(Temp.SMultiply(Sin(Angle*Time))).SMultiply(1/Sin(Angle));
+            return Start.SMultiply(Sin(Angle*(1-Time))).Add(Temp.SMultiply(Sin(Angle*Time))).SDivide(Sin(Angle));
         }else return ZQLerp(Time, Start, Temp);
     }
 }
