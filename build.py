@@ -59,24 +59,24 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                 Config[Section][Key]=str(Temp)
     # Config Injection
     print("Injecting INI Settings")
-    ConfigPattern=re.compile("#config\\s+\"([^\"\r\n]+)\"\\s*(\\s|,)\\s*\"([^\"\r\n]+)\"", re.IGNORECASE)
-    ConfigCall=ConfigPattern.search(FullFile)
-    while ConfigCall:
-        Section=ConfigCall.group(1)
-        Option=ConfigCall.group(3)
+    Pattern=re.compile("#config\\s+\"([^\"\r\n]+)\"\\s*(\\s|,)\\s*\"([^\"\r\n]+)\"", re.IGNORECASE)
+    Call=Pattern.search(FullFile)
+    while Call:
+        Section=Call.group(1)
+        Option=Call.group(3)
         FullFile=re.sub("#config\\s+\"{}\"\\s*(\\s|,)\\s*\"{}\"".format(Section, Option), Config[Section][Option], FullFile, flags=re.IGNORECASE)
-        ConfigCall=ConfigPattern.search(FullFile)
+        Call=Pattern.search(FullFile)
     # ZScript Generation
     print("Generating ZScript")
     ## Defaults
     print("  Defaults:", end=" ")
-    DefaultPattern=re.compile("\\[Property\\](\\s*){([^{}]*)}", re.IGNORECASE)
-    DefaultCall=DefaultPattern.search(FullFile)
-    while DefaultCall:
-        DefaultCall=DefaultCall.group(2)
-        DefaultCall=re.sub("\\s+", " ", DefaultCall)
-        Sections=DefaultCall.split("[")
-        DefaultCall="Default{"
+    Pattern=re.compile("\\[Property\\](\\s*){([^{}]*)}", re.IGNORECASE)
+    Call=Pattern.search(FullFile)
+    while Call:
+        Call=Call.group(2)
+        Call=re.sub("\\s+", " ", Call)
+        Sections=Call.split("[")
+        Call="Default{"
         for Section in Sections:
             if len(Section)<2:
                 continue
@@ -87,25 +87,25 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                     Default=Default.split("=")
                     if len(Default)<2:
                         continue
-                    DefaultCall+="+" if Default[1]=="true" else "-"
+                    Call+="+" if Default[1]=="true" else "-"
                     if SectionName.find(".")>-1:
-                        DefaultCall+=SectionName.split(".")[1]+"."
-                    DefaultCall+=Default[0]+";"
+                        Call+=SectionName.split(".")[1]+"."
+                    Call+=Default[0]+";"
                 else:
                     if SectionName=="Type":
-                        DefaultCall+=Default+";"
+                        Call+=Default+";"
                     else:
                         Default=Default.split("=")
                         if len(Default)<2:
                             continue
                         if SectionName=="Info":
-                            DefaultCall+="// $"+Default[0]+" "+Default[1]+"\n"
+                            Call+="// $"+Default[0]+" "+Default[1]+"\n"
                         else:
                             if not SectionName=="Default":
-                                DefaultCall+=SectionName+"."
-                            DefaultCall+=Default[0]+" "+re.sub("[()]", "", Default[1])+";"
-        FullFile=DefaultPattern.sub(DefaultCall+"}", FullFile, 1)
-        DefaultCall=DefaultPattern.search(FullFile)
+                                Call+=SectionName+"."
+                            Call+=Default[0]+" "+re.sub("[()]", "", Default[1])+";"
+        FullFile=Pattern.sub(Call+"}", FullFile, 1)
+        Call=Pattern.search(FullFile)
     print("Successful")
     ## Upgrades
     print("  Upgrades:")
@@ -125,8 +125,8 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         VarSections=MAUpgrade["Variables"]
         if "Config" in VarSections:
             for Key, Value in VarSections["Config"].items():
-                ConfigCall=Value.split(".")
-                Zsc+="const {}={};".format(Key, Config[ConfigCall[0]][ConfigCall[1]])
+                Call=Value.split(".")
+                Zsc+="const {}={};".format(Key, Config[Call[0]][Call[1]])
         if "General" in VarSections:
             for Variables in VarSections["General"]:
                 Zsc+="{};".format(Variables)
@@ -139,15 +139,15 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
             Zsc+="return super.Init();}"
         FullFile=Zsc+"}"+FullFile
     print("    Inserting Marine Upgrades:", end=" ")
-    FullFile=FullFile.replace("@ZMAUpgrades", str(MAUpgrades).replace("'", "\"")[1:-1])
+    FullFile=FullFile.replace("$ZMAUpgrades", str(MAUpgrades)[1:-1])
     print("Successful")
     ## AI
     print("  AI:")
     ### Emotion
     print("    Emotion:")
+    JsonFile=json.loads(Config["AI.EMOTION"]["JEmotions"])
     #### Personality
     print("      Personality:")
-    JsonFile=json.loads(Config["AI.EMOTION"]["JEmotions"])
     Zsc="""
         class ZPersonality{{
             const DIMENSIONS={0[iPersDimensions]};
@@ -173,6 +173,26 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
             print("            {}".format(Facet))
             Zsc+="case '{}': return Facets.Get({}, {});".format(Facet, Row, Column)
     FullFile=Zsc+"}return double.NaN;}}"+FullFile
+    #### Mood
+    print("      Mood:")
+    Zsc="""
+        class ZMood:ZFSM{{
+            const DIMENSIONS={0[iPersDimensions]};
+            const FACETCOUNT={0[iPersFacets]};
+    """.format(Config["AI.EMOTION"])
+    ## Generics
+    print("  Generics:")
+    ### Dictionary
+    print("    ZDictionary")
+    Template=open(BuildFolder+"/ZSCRIPT/TEMPLATE/DICTIONARY.zsc")
+    Pattern=re.compile("ZDictionary\\s*<\\s*(\\w+)\\s*>")
+    Call=Pattern.search(FullFile)
+    while Call:
+        print("      "+Call.group(1))
+        FullFile+=re.sub("@Type", Call.group(1), Template.read(), flags=re.IGNORECASE)
+        FullFile=re.sub("ZDictionary\\s*<\\s*"+Call.group(1)+"\\s*>", "ZDictionary_"+Call.group(1), FullFile, flags=re.IGNORECASE)
+        Call=Pattern.search(FullFile)
+    # End
     print("Generating ZScript: Successful")
     return FullFile
 

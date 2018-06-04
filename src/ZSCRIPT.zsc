@@ -13,7 +13,6 @@
 #include "ZSCRIPT/Z/DATA/GRAPH.zsc"
 #include "ZSCRIPT/Z/DATA/MATRIX.zsc"
 #include "ZSCRIPT/Z/DATA/PERLIN.zsc"
-#include "ZSCRIPT/Z/DATA/DATAMAP.zsc"
 #include "ZSCRIPT/Z/DATA/GAUSSIAN.zsc"
 #include "ZSCRIPT/Z/DATA/REGISTRIES.zsc"
 #include "ZSCRIPT/Z/DATA/PARSER_TSV.zsc"
