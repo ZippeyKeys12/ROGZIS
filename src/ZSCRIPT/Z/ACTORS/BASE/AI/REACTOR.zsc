@@ -1,8 +1,8 @@
-class ZReactor{
+class ZReactor abstract{
     private
     double __Strength__;
 
-    bool New;
+    bool __New__;
 
     uint Cooldown;
 
@@ -12,20 +12,23 @@ class ZReactor{
 
     virtual
     bool React(ZStimulus Stim){
+        if(!IsValid(Stim))
+            return false;
         if(CurrStim && CurrStim!=Stim && CurrStim.SimilarTo(Stim))
             __Strength__+=CurrStim.Strength;
         else if(Cooldown || (CurrStim && CurrStim.Strength+__Strength__>Stim.Strength))
             return false;
+        else __Strength__=0;
         Cooldown+=Stim.Persistence;
         CurrStim=Stim;
-        New=true;
+        __New__=true;
         return !(__Strength__=0);
     }
 
     virtual
     void Tick(){
-        if(New)
-            New=false;
+        if(__New__)
+            __New__=false;
         if(CurrStim){
             if(Cooldown)
                 Cooldown=Max(Cooldown-1, 0);
@@ -35,6 +38,16 @@ class ZReactor{
     }
 
     virtual
+    bool IsValid(ZStimulus Stim)
+    {return false;}
+
+    virtual
     double Strength()
-    {return Min((CurrStim)?CurrStim.Strength+__Strength__:0, STR_MAX);}
+    {return Min(__Strength__, STR_MAX);}
+
+    virtual
+    void Reset(){
+        __Strength__=Cooldown=__New__=CurrStim=null;
+        ID='';
+    }
 }
