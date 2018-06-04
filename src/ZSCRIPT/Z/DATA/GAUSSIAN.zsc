@@ -13,8 +13,8 @@ class ZGaussian{
     Array<double> CachedValues;
 
     static
-    ZGaussian Create(int Seed=int('GauseyBoi'), double Mean=0, double StdDev=1)
-    {return new("ZGaussian").Init(Seed, Mean, StdDev);}
+    ZGaussian Create(double Mean=0, double StdDev=1, int Seed=int('GauseyBoi'))
+    {return new('ZGaussian').Init(Mean, StdDev, Seed);}
 
     private
     ZGaussian Init(double Mean, double StdDev, int Seed=0){
