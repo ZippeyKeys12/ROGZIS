@@ -29,7 +29,6 @@ class ZPathos:ZReactor play{
 
     ZPathos Clone(){
         ZPathos Result=new('ZPathos');
-        Result.Owner=Owner;
         Result.Personality=Personality.Clone();
         Result.Emotion=ZEmotion(ZFSM.Create(Emotion.GetClassName(), 'Neutral'));
         return Result;
