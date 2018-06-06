@@ -1,0 +1,49 @@
+class ZNL_Dense:ZNeuralLayer{
+    private
+    uint Inputs,
+         Outputs;
+
+    private
+    double LearningRate;
+
+    private
+    ZMatrix In2Out,
+            Bias;
+
+    static
+    ZNL_Dense Create(uint Inputs, uint Outputs, double LearningRate=.1){
+        ZNL_Dense Result=new('ZNL_Dense');
+        Result.Inputs=Inputs;
+        Result.Outputs=Outputs;
+        ZGaussian StdNormDist=ZGaussian.Create();
+        Result.In2Out=ZMatrix.Create(Outputs, Inputs);
+        for(int Row=0; Row<Outputs; Row++)
+            for(int Column=0; Column<Inputs; Column++)
+                Result.In2Out.Set(Row, Column, StdNormDist.Generate());
+        Result.Bias=ZMatrix.Create(Outputs);
+        for(int Row=0; Row<Outputs; Row++)
+            Result.Bias.Set(Row, 0, StdNormDist.Generate());
+        Result.LearningRate=LearningRate;
+        return Result;
+    }
+
+    override
+    ZMatrix Get(ZMatrix Input)
+    {return Activation(In2Out.MMultiply(Input).Add(Bias));}
+
+    override
+    ZMatrix Weights()
+    {return In2Out.Clone();}
+
+    override
+    ZMatrix Train(ZMatrix Input, ZMatrix LastError, ZMatrix LastWeights, bool Last){
+        ZMatrix Error=(Last)?LastError:(LastWeights.Transpose().MMultiply(LastError)),
+                Gradient=Activation(Get(Input), true)
+                        .Multiply(Error)
+                        .SMultiply(LearningRate),
+                DeltaOutput=Gradient.MMultiply(Input.Transpose());
+        In2Out=In2Out.Add(DeltaOutput);
+        Bias=Bias.Add(Gradient);
+        return Error;
+    }
+}
