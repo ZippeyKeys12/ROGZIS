@@ -18,7 +18,7 @@ class ZPersonality{
             for(int i=0; i<DIMENSIONS*FACETCOUNT; i++)
                 Facets.Values[i]=ZCalc.NormRange(Distribution.Generate());
         }else if(Mutate)
-            Facets=OrigFacets.Mutate(ZManager.RandSeed(), MaxChange: .25, MutationRate: .1);
+            Facets=OrigFacets.Mutate(ZManager.RandSeed(), MaxChange: .125, MutationRate: .1);
         else Facets=OrigFacets.SClamp(0, 1);
         Update();
         return self;
