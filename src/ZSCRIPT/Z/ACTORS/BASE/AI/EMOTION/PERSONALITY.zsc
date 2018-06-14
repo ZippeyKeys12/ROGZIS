@@ -3,23 +3,21 @@ class ZPersonality{
     ZMatrix Facets;
 
     static
-    ZPersonality Create(ZMatrix Facets, bool Mutate=true)
-    {return new('ZPersonality').Init(Facets.Clone(), Mutate);}
+    ZPersonality Create(ZMatrix Facets)
+    {return new('ZPersonality').Init(Facets.Clone());}
 
     static
     ZPersonality Randomized()
     {return new('ZPersonality').Init();}
 
     private
-    ZPersonality Init(ZMatrix OrigFacets=null, bool Mutate=true){
+    ZPersonality Init(ZMatrix OrigFacets=null){
         if(!OrigFacets){
             Facets=ZMatrix.Create(DIMENSIONS, FACETCOUNT);
-            ZGaussian Distribution=ZGaussian.Create(.5, .125);
+            ZGaussian Distribution=ZGaussian.Create(0, .25);
             for(int i=0; i<DIMENSIONS*FACETCOUNT; i++)
-                Facets.Values[i]=ZCalc.NormRange(Distribution.Generate());
-        }else if(Mutate)
-            Facets=OrigFacets.Mutate(ZManager.RandSeed(), MaxChange: .125, MutationRate: .1);
-        else Facets=OrigFacets.SClamp(0, 1);
+                Facets.Values[i]=Clamp(Distribution.Generate(), -1, 1);
+        }else Facets=OrigFacets.SClamp(-1, 1);
         Update();
         return self;
     }

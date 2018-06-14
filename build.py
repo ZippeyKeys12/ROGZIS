@@ -55,14 +55,6 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                     Value = "".join(Input)
                     Config[Section][Key] = Value
 
-    # Dynamic Config
-    print("Generating Dynamic Config")
-    JsonFile = json.loads(Config["AI.EMOTION"]["jEmotions"])
-    Config["AI.EMOTION"]["iPersDimensions"] = str(
-        len(JsonFile["Personality"].items()))
-    Config["AI.EMOTION"]["iPersFacets"] = str(
-        len(list(JsonFile["Personality"].items())[0]))
-
     # INI Evaluation
     print("Evaluating INI Settings")
     for Section in Config:
@@ -172,32 +164,33 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
 
     # Emotion
     print("    Emotion:")
-    JsonFile = json.loads(Config["AI.EMOTION"]["JEmotions"])
 
     # Personality
     print("      Personality:")
+    Personality = tuple(Database.execute(
+        "SELECT * FROM FiveFactorPersonality"))
     Zsc = """
         class ZPersonality{{
-            const DIMENSIONS={0[iPersDimensions]};
-            const FACETCOUNT={0[iPersFacets]};
-    """.format(Config["AI.EMOTION"])
+            const DIMENSIONS={};
+            const FACETCOUNT={};
+    """.format(len(Personality), len(Personality[0])-1)
     print("        Dimensions:")
     Zsc += "private double"
-    for Dimension in JsonFile["Personality"]:
-        print("          {}".format(Dimension))
-        Zsc += " {},".format(Dimension)
+    for Dimension in Personality:
+        print("          {}".format(Dimension[0]))
+        Zsc += " {},".format(Dimension[0])
     Zsc = Zsc[:-1]+";"
-    Zsc += ("double,"*len(JsonFile["Personality"]))[:-1]+" Summary(){return"
-    for Dimension in JsonFile["Personality"]:
-        Zsc += " {},".format(Dimension)
+    Zsc += ("double,"*len(Personality))[:-1]+" Summary(){return"
+    for Dimension in Personality:
+        Zsc += " {},".format(Dimension[0])
     Zsc = Zsc[:-1]+";}void Update(){"
-    for Index, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
-        Zsc += "{}=Facets.Row({}).AAMean();".format(Dimension, Index)
+    for Dimension in zip(range(len(Personality)), Personality):
+        Zsc += "{0[1][0]}=Facets.Row({0[0]}).AAMean();".format(Dimension)
     print("        Facets:")
     Zsc += "}double Facet(Name Facet){switch(Facet){"
-    for Row, Dimension in zip(range(len(JsonFile["Personality"])), JsonFile["Personality"]):
-        print("          {}:".format(Dimension))
-        for Column, Facet in zip(range(len(JsonFile["Personality"][Dimension])), JsonFile["Personality"][Dimension]):
+    for Row, Dimension in zip(range(len(Personality)), Personality):
+        print("          {}:".format(Dimension[0]))
+        for Column, Facet in zip(range(len(Personality[Row])-1), Personality[Row][1:]):
             print("            {}".format(Facet))
             Zsc += "case '{}': return Facets.Get({}, {});".format(
                 Facet, Row, Column)
@@ -205,14 +198,9 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
 
     # Mood
     print("      Mood:")
-    Zsc = """
-        class ZMood:ZFSM{{
-            const DIMENSIONS={0[iPersDimensions]};
-            const FACETCOUNT={0[iPersFacets]};
-    """.format(Config["AI.EMOTION"])
 
     # Generics
-    ## TODO: C-style preprocessing
+    # TODO: C-style preprocessing
     print("  Generics:")
 
     # Dictionary
