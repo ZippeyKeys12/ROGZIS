@@ -82,9 +82,9 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         Sections = Call.group(2).split(",")
         Replacement = ""
         for Section in Sections:
-            Components = re.sub("\s+", " ", Section).split(":")
+            Components = re.sub("\\s+", " ", Section).split(":")
             Replacement += "const {0}=#config {1[0]}\", \"{1[1]};".format(
-                Components[0].strip("\s*").replace("\"", ""), Components[1].split("."))
+                Components[0].replace("\"", ""), Components[1].split("."))
         FullFile = re.sub(
             "\\[Config\\](\\s*){{({})}}".format(Call.group(2)), Replacement, FullFile)
         Call = Pattern.search(FullFile)
@@ -104,7 +104,7 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
     # ZScript Generation
     print("Generating ZScript")
 
-    ## Defaults
+    # Defaults
     print("  Defaults:", end=" ")
     Pattern = re.compile("\\[Property\\](\\s*){([^{}]*)}", re.IGNORECASE)
     Call = Pattern.search(FullFile)
@@ -144,10 +144,10 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         Call = Pattern.search(FullFile)
     print("Successful")
 
-    ## Upgrades
+    # Upgrades
     print("  Upgrades:")
 
-    ### Marine Armor
+    # Marine Armor
     print("    Marine:")
     MAUpgrades = []
     for MAUpgrade in Database.execute("SELECT * FROM MarineArmorUpgrades"):
@@ -167,14 +167,14 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
     FullFile = FullFile.replace("$ZMAUpgrades", str(MAUpgrades)[1:-1])
     print("Successful")
 
-    ## AI
+    # AI
     print("  AI:")
 
-    ### Emotion
+    # Emotion
     print("    Emotion:")
     JsonFile = json.loads(Config["AI.EMOTION"]["JEmotions"])
 
-    ### Personality
+    # Personality
     print("      Personality:")
     Zsc = """
         class ZPersonality{{
@@ -203,7 +203,7 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
                 Facet, Row, Column)
     FullFile = Zsc+"}return double.NaN;}}"+FullFile
 
-    ### Mood
+    # Mood
     print("      Mood:")
     Zsc = """
         class ZMood:ZFSM{{
@@ -211,20 +211,21 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
             const FACETCOUNT={0[iPersFacets]};
     """.format(Config["AI.EMOTION"])
 
-    ## Generics
+    # Generics
+    ## TODO: C-style preprocessing
     print("  Generics:")
 
-    ### Dictionary
+    # Dictionary
     print("    ZDictionary")
     Template = open(BuildFolder+"/ZSCRIPT/TEMPLATE/DICTIONARY.zsc")
-    Pattern = re.compile("ZDictionary\\s*<\\s*(\\w+)\\s*>")
+    Pattern = re.compile("Map\\s*<\\s*(\\w+)\\s*,\\s*(\\w+)\\s*>")
     Call = Pattern.search(FullFile)
     while Call:
         print("      "+Call.group(1))
-        FullFile += re.sub("@Type", Call.group(1),
-                           Template.read(), flags=re.IGNORECASE)
-        FullFile = re.sub("ZDictionary\\s*<\\s*"+Call.group(1)+"\\s*>",
-                          "ZDictionary_"+Call.group(1), FullFile, flags=re.IGNORECASE)
+        FullFile += re.sub("@ValType", Call.group(2), re.sub("@KeyType", Call.group(
+            1), Template.read(), flags=re.IGNORECASE), flags=re.IGNORECASE)
+        FullFile = re.sub("Map\\s*<\\s*"+Call.group(1)+"\\s*,\\s*"+Call.group(2)+"\\s*>",
+                          "ZDictionary_"+Call.group(1)+"_"+Call.group(2), FullFile, flags=re.IGNORECASE)
         Call = Pattern.search(FullFile)
 
     # End
