@@ -1,27 +1,27 @@
-class ZDictionary_@Type{
-    Array<Name> Keys;
-    Array<@Type> Values;
+class ZDictionary_@KeyType_@ValType{
+    Array<@KeyType> Keys;
+    Array<@ValType> Values;
 
-    bool Put(Name Key, @Type Value){
-        if(!Key || Key=='' || !Value || Get(Key))
+    bool Put(@KeyType Key, @ValType Value){
+        if(!Key || !Value || Get(Key))
             return false;
-        else if(Keys.Find(int(Key))==Keys.Size())
+        else if(Keys.Find(Key)==Keys.Size())
             ZManager.Error("Key: "..Key.." Already Exists", ERR_ERROR);
-        Keys.Push(int(Key));
+        Keys.Push(Key);
         Values.Push(Value);
         return true;
     }
     
-    @Type Get(Name Key) const{
-        uint Index=Keys.Find(int(Key));
+    @ValType Get(@KeyType Key) const{
+        uint Index=Keys.Find(Key);
         if(Index==Keys.Size())
             return null;
         return Values[Index];
     }
     
-    @Type Remove(Name Key){
-        uint Index=Keys.Find(int(Key));
-        @Type Value=Values[Index];
+    @ValType Remove(@KeyType Key){
+        uint Index=Keys.Find(Key);
+        @ValType Value=Values[Index];
         Keys.Delete(Index);
         Values.Delete(Index);
         return Value;
@@ -30,8 +30,8 @@ class ZDictionary_@Type{
     uint Size() const
     {return Keys.Size();}
     
-    ZDictionaryEntry_@Type Index(uint Index) const
-    {return ZDictionaryEntry_@Type.Create(Keys[Index], Values[Index]);}
+    ZDictionaryEntry_@KeyType_@ValType Index(uint Index) const
+    {return ZDictionaryEntry_@KeyType_@ValType.Create(Keys[Index], Values[Index]);}
     
     void Clear(){
         Keys.Clear();
@@ -39,13 +39,13 @@ class ZDictionary_@Type{
     }
 }
 
-class ZDictionaryEntry_@Type{
-    Name Key;
-    @Type Value;
+class ZDictionaryEntry_@KeyType_@ValType{
+    @KeyType Key;
+    @ValType Value;
     
     static
-    ZDictionaryEntry_@Type Create(Name Key, @Type Value){
-        ZDictionaryEntry_@Type Entry=new('ZDictionaryEntry_@Type');
+    ZDictionaryEntry_@KeyType_@ValType Create(@KeyType Key, @ValType Value){
+        ZDictionaryEntry_@KeyType_@ValType Entry=new('ZDictionaryEntry_@KeyType_@ValType');
         Entry.Key=Key;
         Entry.Value=Value;
         return Entry;
