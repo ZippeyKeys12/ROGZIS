@@ -51,8 +51,8 @@ class ZManager{
         ZArmorUpgrade Upgrade;
         for(int i=0; i<ArmorUpgradeNames.Size(); i++){
             ArmorUpgrades.Add(Upgrade=ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init()));
-            if(!Upgrade)
-                Error(Upgrade.ID.." doesn't have an order", ERR_ERROR);
+            if(!Upgrade.Priority)
+                Error(Upgrade.ID.." doesn't have an priority", ERR_ERROR);
         }
     }
 

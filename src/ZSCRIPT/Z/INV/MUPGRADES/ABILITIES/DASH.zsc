@@ -1,5 +1,18 @@
 extend
 class ZMAU_BoostDash{
+    [Config]{
+        "DashCost": "ABILITIES.iDashCost",
+        "DashPower": "ABILITIES.iDashPower",
+        "DashCooldown": "ABILITIES.iDashCooldown"
+    }
+
+    int DashCountdown;
+
+    override
+    void Defaults(){
+        DashCountdown=0;
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo)
     {if(DashCountdown>0)DashCountdown--;}

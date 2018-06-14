@@ -1,5 +1,7 @@
 extend
 class ZMAU_LongFall{
+    bool MidAir;
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

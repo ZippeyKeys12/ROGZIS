@@ -1,5 +1,25 @@
 extend
 class ZMAU_PoweredSlide{
+    [Config]{
+        "SlideCost": "ABILITIES.iSlideCost",
+        "SlidePower": "ABILITIES.iSlidePower",
+        "SlideLength": "ABILITIES.iSlideLength",
+        "SlideCooldown": "ABILITIES.iSlideCooldown",
+        "SlideFactor": "ABILITIES.dSlideHeightFactor"
+    }
+
+    bool Sliding;
+
+    int SlideTics,
+        SlideCountdown;
+
+    Vector2 Direction;
+
+    override
+    void Defaults(){
+        Direction=(0, 0);
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);
@@ -26,9 +46,9 @@ class ZMAU_PoweredSlide{
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);
         if(!Marine)return;
-        if(!Sliding && SlideCountdown==0 && PlayerInfo.OnGround && (Marine.SameButtons & BT_SPEED) && (Marine.NewButtons & BT_CROUCH) && Marine.MStats.Energy>SlideCost){
+        if(!Sliding && !SlideCountdown && PlayerInfo.OnGround && (Marine.SameButtons & BT_SPEED) && (Marine.NewButtons & BT_CROUCH) && Marine.MStats.Energy>SlideCost){
             Marine.LockMovement=Marine.LockTilt=Sliding=true;
-            Direction=Marine.ViewVector.XY.Unit();
+            Direction=Marine.FrontVector.Unit();
             SlideTics=SlideLength;
         }
     }

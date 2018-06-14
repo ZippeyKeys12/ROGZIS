@@ -1,5 +1,11 @@
 extend
 class ZMAU_Morph{
+    [Config]{
+        "MorphAbsorption": "STATS.dMorphAbsorption"
+    }
+
+    ZDamageType LastDmgType;
+
     override
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags, double Angle){
         if(LastDmgType==DamageType)

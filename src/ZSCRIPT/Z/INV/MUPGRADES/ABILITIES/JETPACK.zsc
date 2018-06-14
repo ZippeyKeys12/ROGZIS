@@ -1,5 +1,20 @@
 extend
 class ZMAU_Jetpack{
+    [Config]{
+        "JetCost": "ABILITIES.iJetCost",
+        "MaxCharge": "ABILITIES.iJetMaxCharge",
+        "Cooldown": "ABILITIES.iJetCooldown"
+    }
+
+    int Charge,
+        Countdown;
+
+    override
+    void Defaults(){
+        Charge=MaxCharge;
+        Countdown=Cooldown;
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

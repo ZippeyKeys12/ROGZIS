@@ -1,5 +1,18 @@
 extend
 class ZMAU_BoostJump{
+    [Config]{
+        "JumpCost": "ABILITIES.iDashCost",
+        "JumpPower": "ABILITIES.iDashPower",
+        "JumpCooldown": "ABILITIES.iDashCooldown"
+    }
+
+    int JumpCountdown;
+
+    override
+    void Defaults(){
+        JumpCountdown=0;
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo)
     {if(JumpCountdown>0)JumpCountdown--;}

@@ -1,5 +1,15 @@
 extend
 class ZMAU_Magnet{
+    int Magnet,
+        MaxMagnet,
+        MagnetRechargeRate,
+        MagnetRechargeAmount;
+
+    override
+    void Defaults(){
+        MagnetRechargeRate=MagnetRechargeAmount=0;
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

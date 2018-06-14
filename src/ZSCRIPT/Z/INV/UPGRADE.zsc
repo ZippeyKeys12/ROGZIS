@@ -16,12 +16,16 @@ class ZUpgrade:ZItem{
     ZUpgrade Init(){
         Activated=false;
         ID=GetClassName();
+        Defaults();
         return self;
     }
+
+    virtual
+    void Defaults(){}
 }
 
 class ZArmorUpgrade:ZUpgrade{
-    const Order=0;
+    const Priority=0;
     const Strain=0;
 
     virtual

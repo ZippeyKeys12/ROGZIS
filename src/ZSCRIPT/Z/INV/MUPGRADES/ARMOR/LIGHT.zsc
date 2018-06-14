@@ -1,5 +1,17 @@
 extend
 class ZMAU_Light{
+    int Light,
+        MaxLight,
+        LightChargeUp,
+        LightRechargeRate,
+        LightRechargeAmount;
+
+    override
+    void Defaults(){
+        LightRechargeRate=0;
+        LightRechargeAmount=0;
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

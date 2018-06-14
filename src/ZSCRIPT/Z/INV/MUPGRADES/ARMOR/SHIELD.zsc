@@ -1,5 +1,18 @@
 extend
 class ZMAU_Shield{
+    int Shield,
+        MaxShield,
+        ShieldGoal,
+        ShieldDivider,
+        ShieldRechargeRate,
+        ShieldRechargeAmount;
+
+    override
+    void Defaults(){
+        ShieldRechargeRate=0;
+        ShieldRechargeAmount=0;
+    }
+
     override
     void Tick(ZPlayer Player, PlayerInfo PlayerInfo){
         ZMarine Marine=ZMarine(Player);

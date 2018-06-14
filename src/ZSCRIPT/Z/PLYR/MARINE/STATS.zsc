@@ -144,7 +144,7 @@ class ZMStats:Thinker{
         for(int i=0; i<Upgrades.Size(); i++){
             int IndexOfMax=i;
             for(int j=i+1; j<N; j++){
-                if(Upgrades[j].Order>Upgrades[IndexOfMax].Order)
+                if(Upgrades[j].Priority>Upgrades[IndexOfMax].Priority)
                     IndexOfMax=j;
             }
             if(IndexOfMax!=i){
