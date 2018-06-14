@@ -1,7 +1,5 @@
 extend
 class ZPersonality{
-    ZMatrix Facets;
-
     static
     ZPersonality Create(ZMatrix Facets)
     {return new('ZPersonality').Init(Facets.Clone());}
@@ -13,18 +11,18 @@ class ZPersonality{
     private
     ZPersonality Init(ZMatrix OrigFacets=null){
         if(!OrigFacets){
-            Facets=ZMatrix.Create(DIMENSIONS, FACETCOUNT);
+            __Facets__=ZMatrix.Create(DIMENSIONS, FACETS);
             ZGaussian Distribution=ZGaussian.Create(0, .25);
-            for(int i=0; i<DIMENSIONS*FACETCOUNT; i++)
-                Facets.Values[i]=Clamp(Distribution.Generate(), -1, 1);
-        }else Facets=OrigFacets.SClamp(-1, 1);
+            for(int i=0; i<DIMENSIONS*FACETS; i++)
+                __Facets__.Values[i]=Clamp(Distribution.Generate(), -1, 1);
+        }else __Facets__=OrigFacets.SClamp(-1, 1);
         Update();
         return self;
     }
 
     ZPersonality Clone() const{
         ZPersonality Result=new('ZPersonality');
-        Result.Facets=Facets.Clone();
+        Result.__Facets__=__Facets__.Clone();
         return Result;
     }
 }

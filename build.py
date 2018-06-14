@@ -167,12 +167,13 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
 
     # Personality
     print("      Personality:")
-    Personality = tuple(Database.execute(
+    Personality = list(Database.execute(
         "SELECT * FROM FiveFactorPersonality"))
     Zsc = """
         class ZPersonality{{
             const DIMENSIONS={};
-            const FACETCOUNT={};
+            const FACETS={};
+            ZMatrix __Facets__;
     """.format(len(Personality), len(Personality[0])-1)
     print("        Dimensions:")
     Zsc += "private double"
@@ -185,14 +186,14 @@ def ZReplace(BuildFolder, FullFile, IniFiles):
         Zsc += " {},".format(Dimension[0])
     Zsc = Zsc[:-1]+";}void Update(){"
     for Dimension in zip(range(len(Personality)), Personality):
-        Zsc += "{0[1][0]}=Facets.Row({0[0]}).AAMean();".format(Dimension)
+        Zsc += "{0[1][0]}=__Facets__.Row({0[0]}).AAMean();".format(Dimension)
     print("        Facets:")
     Zsc += "}double Facet(Name Facet){switch(Facet){"
     for Row, Dimension in zip(range(len(Personality)), Personality):
         print("          {}:".format(Dimension[0]))
         for Column, Facet in zip(range(len(Personality[Row])-1), Personality[Row][1:]):
             print("            {}".format(Facet))
-            Zsc += "case '{}': return Facets.Get({}, {});".format(
+            Zsc += "case '{}': return __Facets__.Get({}, {});".format(
                 Facet, Row, Column)
     FullFile = Zsc+"}return double.NaN;}}"+FullFile
 

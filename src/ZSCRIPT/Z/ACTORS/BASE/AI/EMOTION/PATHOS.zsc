@@ -11,7 +11,7 @@ class ZPathos:ZReactor play{
     ZPathos Create(Class<ZEmotion> EmotionName='ZEmotion', ZPersonality BasePersonality=null){
         ZPathos Result=new('ZPathos');
         if(BasePersonality)
-            Result.Personality=ZPersonality.Create(BasePersonality.Facets);
+            Result.Personality=ZPersonality.Create(BasePersonality.__Facets__);
         else Result.Personality=ZPersonality.Randomized();
         Result.Mood=ZMood(ZFSM.Create('ZMood', 'Neutral'));
         Result.Emotion=ZEmotion(ZFSM.Create(EmotionName, 'Neutral'));
