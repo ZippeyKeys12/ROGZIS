@@ -54,4 +54,3 @@ dist/
 src/GRAPHICS/
 .vscode
 __pycache__/
-test.py
