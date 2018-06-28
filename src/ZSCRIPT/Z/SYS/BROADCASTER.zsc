@@ -6,8 +6,14 @@ class ZEventBroadcaster:StaticEventHandler{
     {return ZEventBroadcaster(EventHandler.Find("ZEventBroadcaster"));}
 
     void Register(ZEventHandler Handler){
-        if(Handler.Order>Handlers[0].Order)
+        if(Handlers.Find(Handler)!=Handlers.Size()){
+            ZManager.Error("ZEventHandler: "..Handler.GetClassName().."is already registered", ERR_ERROR);
+            return;
+        }
+        if(Handlers.Size()>0 && Handler.Order>Handlers[0].Order){
             Handlers.Insert(0, Handler);
+            return;
+        }
         for(int i=0; i<Handlers.Size()-1; i++)
             if(Handlers[i].Order>=Handler.Order && Handlers[i+1].Order<Handler.Order)
                 return Handlers.Insert(i+1, Handler);
