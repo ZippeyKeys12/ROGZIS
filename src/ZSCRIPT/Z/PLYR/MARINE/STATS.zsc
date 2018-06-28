@@ -1,13 +1,15 @@
 class ZMStats:Thinker{
-    const BaseHealth=#config "STATS", "iMaxHealth";
-    const MaxPlate=#config "STATS", "iStartPlate";
-    const BasePlateAbsorption=#config "STATS", "dPlateAbsorption";
-    const BaseEnergy=#config "STATS", "iMaxEnergy";
-    const EnergyRechargeAmount=#config "STATS", "iEnergyRechargeAmount";
-    const SprintCost=#config "ABILITIES", "iSprintCost";
-    const SprintMultiplier=#config "ABILITIES", "dSprintMultiplier";
-    const RunHealthPercent=#config "STATS", "dRunHealthPerc";
-    const BaseShakeLevel=#config "STATS", "iShakeLevel";
+    [Config]{
+        "BaseHealth": "STATS.iMaxHealth",
+        "MaxPlate": "STATS.iStartPlate",
+        "BasePlateAbsorption": "STATS.dPlateAbsorption",
+        "BaseEnergy": "STATS.iMaxEnergy",
+        "EnergyRechargeAmount": "STATS.iEnergyRechargeAmount",
+        "SprintCost": "ABILITIES.iSprintCost",
+        "SprintMultiplier": "ABILITIES.dSprintMultiplier",
+        "RunHealthPercent": "STATS.dRunHealthPerc",
+        "BaseShakeLevel": "STATS.iShakeLevel"
+    }
 
     bool RechargeQueue;
 
@@ -139,28 +141,36 @@ class ZMStats:Thinker{
         CriticalChance=.001*Luck;
     }
 
-    void SortUpgrades(){
-        int N=Upgrades.Size();
-        for(int i=0; i<Upgrades.Size(); i++){
-            int IndexOfMax=i;
-            for(int j=i+1; j<N; j++){
-                if(Upgrades[j].Priority>Upgrades[IndexOfMax].Priority)
-                    IndexOfMax=j;
-            }
-            if(IndexOfMax!=i){
-                ZArmorUpgrade Temp=Upgrades[i];
-                Upgrades[i]=Upgrades[IndexOfMax];
-                Upgrades[IndexOfMax]=Temp;
-            }
-        }
-    }
+    // void SortUpgrades(){
+    //     int N=Upgrades.Size();
+    //     for(int i=0; i<Upgrades.Size(); i++){
+    //         int IndexOfMax=i;
+    //         for(int j=i+1; j<N; j++){
+    //             if(Upgrades[j].Priority>Upgrades[IndexOfMax].Priority)
+    //                 IndexOfMax=j;
+    //         }
+    //         if(IndexOfMax!=i){
+    //             ZArmorUpgrade Temp=Upgrades[i];
+    //             Upgrades[i]=Upgrades[IndexOfMax];
+    //             Upgrades[IndexOfMax]=Temp;
+    //         }
+    //     }
+    // }
 
     bool AddUpgrade(Name ID){
         ZArmorUpgrade Upgrade=ZArmorUpgrade(Manager.Upgrade(UPR_MARMOR, ID));
-        if(Upgrades.Find(Upgrade)!=Upgrades.Size())return false;
-        Upgrades.Push(Upgrade);
-        SortUpgrades();
-        return true;
+        if(Upgrades.Find(Upgrade)!=Upgrades.Size())
+            ZManager.Error("Upgrade: "..Upgrade.ID.."is already in player inventory", ERR_ERROR);
+        if(Upgrades.Size()>0 && Upgrade.Priority>Upgrades[0].Priority){
+            Upgrades.Insert(0, Upgrade);
+            return true;
+        }
+        for(int i=0; i<Upgrades.Size()-1; i++)
+            if(Upgrades[i].Priority>=Upgrade.Priority && Upgrades[i+1].Priority<Upgrade.Priority){
+                Upgrades.Insert(i+1, Upgrade);
+                return true;
+            }
+        return Upgrades.Push(Upgrade);
     }
 
     bool ToggleUpgrade(Name ID){
