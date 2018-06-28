@@ -1,5 +1,9 @@
-extend
 class ZPersonality{
+    const DIMENSIONCOUNT=5;
+    const FACETCOUNT=6;
+
+    ZMatrix Facets;
+
     static
     ZPersonality Create(ZMatrix Facets)
     {return new('ZPersonality').Init(Facets.Clone());}
@@ -11,18 +15,65 @@ class ZPersonality{
     private
     ZPersonality Init(ZMatrix OrigFacets=null){
         if(!OrigFacets){
-            __Facets__=ZMatrix.Create(DIMENSIONS, FACETS);
+            Facets=ZMatrix.Create(FACETCOUNT, DIMENSIONCOUNT);
             ZGaussian Distribution=ZGaussian.Create(0, .25);
-            for(int i=0; i<DIMENSIONS*FACETS; i++)
-                __Facets__.Values[i]=Clamp(Distribution.Generate(), -1, 1);
-        }else __Facets__=OrigFacets.SClamp(-1, 1);
-        Update();
+            for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
+                Facets.Values[i]=Clamp(Distribution.Generate(), -1, 1);
+        }else Facets=OrigFacets.SClamp(-1, 1);
         return self;
     }
 
     ZPersonality Clone() const{
         ZPersonality Result=new('ZPersonality');
-        Result.__Facets__=__Facets__.Clone();
+        Result.Facets=Facets.Clone();
         return Result;
+    }
+
+    ZMatrix OCEAN(bool AsRow=false)
+    {return Facets.TAMean(AsRow);}
+
+    double Facet(Name Facet){
+        switch(Facet){
+            // Openness
+            case 'Curious': return Facets.Get(0);
+            case 'Imaginative': return Facets.Get(1);
+            case 'Artistic': return Facets.Get(2);
+            case 'Interested': return Facets.Get(3);
+            case 'Excitable': return Facets.Get(4);
+            case 'Unconventional': return Facets.Get(5);
+
+            // Conscientiousness
+            case 'Efficient': return Facets.Get(0, 1);
+            case 'Organized': return Facets.Get(1, 1);
+            case 'Dutiful': return Facets.Get(2, 1);
+            case 'Thorough': return Facets.Get(3, 1);
+            case 'Hardworking': return Facets.Get(4, 1);
+            case 'Deliberate': return Facets.Get(5, 1);
+
+            // Extraversion
+            case 'Sociable': return Facets.Get(0, 2);
+            case 'Assertive': return Facets.Get(1, 2);
+            case 'Energetic': return Facets.Get(2, 2);
+            case 'Adventurous': return Facets.Get(3, 2);
+            case 'Enthusiastic': return Facets.Get(4, 2);
+            case 'Outgoing': return Facets.Get(5, 2);
+
+            // Agreeableness
+            case 'Forgiving': return Facets.Get(0, 3);
+            case 'Straightforward': return Facets.Get(1, 3);
+            case 'Altruistic': return Facets.Get(2, 3);
+            case 'Compliant': return Facets.Get(3, 3);
+            case 'Modest': return Facets.Get(4, 3);
+            case 'Sympathetic': return Facets.Get(5, 3);
+
+            // Neuroticism
+            case 'Tense': return Facets.Get(0, 4);
+            case 'Irritable': return Facets.Get(1, 4);
+            case 'Discontented': return Facets.Get(2, 4);
+            case 'Shy': return Facets.Get(3, 4);
+            case 'Impulsive': return Facets.Get(4, 4);
+            case 'Vulnerable': return Facets.Get(5, 4);
+            default: return double.NaN;
+        }
     }
 }

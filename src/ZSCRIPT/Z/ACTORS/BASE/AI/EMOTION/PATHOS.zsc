@@ -11,9 +11,9 @@ class ZPathos:ZReactor play{
     ZPathos Create(Class<ZEmotion> EmotionName='ZEmotion', ZPersonality BasePersonality=null){
         ZPathos Result=new('ZPathos');
         if(BasePersonality)
-            Result.Personality=ZPersonality.Create(BasePersonality.__Facets__);
+            Result.Personality=ZPersonality.Create(BasePersonality.Facets);
         else Result.Personality=ZPersonality.Randomized();
-        Result.Mood=ZMood(ZFSM.Create('ZMood', 'Neutral'));
+        //Result.Mood=ZMood(ZFSM.Create('ZMood', 'Neutral'));
         Result.Emotion=ZEmotion(ZFSM.Create(EmotionName, 'Neutral'));
         Result.Sentiments=new('ZSentiments');
         ZEventManager.Instance().SterReactor(Result);
@@ -23,7 +23,7 @@ class ZPathos:ZReactor play{
     override
     void Tick(){
         super.Tick();
-        Mood.Tick();
+        //Mood.Tick();
         Emotion.Tick();
     }
 
