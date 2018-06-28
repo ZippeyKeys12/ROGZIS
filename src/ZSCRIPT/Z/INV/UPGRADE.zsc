@@ -25,8 +25,8 @@ class ZUpgrade:ZItem{
 }
 
 class ZArmorUpgrade:ZUpgrade{
-    const Priority=0;
-    const Strain=0;
+    uint Priority,
+         Strain;
 
     virtual
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}

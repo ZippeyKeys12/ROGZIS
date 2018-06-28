@@ -59,8 +59,12 @@ def ZGenerate(FullFile, Data):
             MAUpgrade[2] = 0
         Zsc = """
             class ZMAU_{0[0]}:ZArmorUpgrade{{
-                const Priority={0[1]};
-                const Strain={0[2]};
+                override
+                ZUpgrade Init(){{
+                    Priority={0[1]};
+                    Strain={0[2]};
+                    return super.Init();
+                }}
             }}
         """.format(MAUpgrade)
         FullFile = Zsc+FullFile
