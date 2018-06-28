@@ -2,14 +2,18 @@ class ZUtility{
     Array<ZUtilityAxis> Axes;
 
     bool Push(ZUtilityAxis Axis){
-        if(Axes.Find(Axis)!=Axes.Size())
+        if(Axes.Find(Axis)!=Axes.Size()){
             ZManager.Error("Axis already exists", ERR_ERROR);
+            return false;
+        }
         return Axes.Push(Axis);
     }
 
     double Get(ZMatrix Xs){
-        if(Xs.Height()!=Axes.Size())
+        if(Xs.Height()!=Axes.Size()){
             ZManager.Error("Incorrect Number of Axes\nIs: "..Xs.Height()..", Should Be: "..Axes.Size(), ERR_ERROR);
+            return double.NaN;
+        }
         double Score=1;
         for(int i=0; i<Axes.Size(); i++)
             Score*=Axes[i].Get(Xs.Get(i));

@@ -17,8 +17,10 @@ class ZConsiderer{
     {Considerations[Index]=ID;}
 
     Name Consider(ZMatrix Rewards){
-        if(Rewards.Height()!=Considerations.Size())
+        if(Rewards.Height()!=Considerations.Size()){
             ZManager.Error("Incorrect Number of Considerations\nIs: "..Rewards.Height()..", Should Be: "..Considerations.Size(), ERR_ERROR);
+            return '';
+        }
         Array<uint> Best;
         Best.Push(0);
         for(int i=1; i<Considerations.Size(); i++)

@@ -5,8 +5,10 @@ class ZDictionary_@KeyType_@ValType{
     bool Put(@KeyType Key, @ValType Value){
         if(!Key || !Value || Get(Key))
             return false;
-        else if(Keys.Find(Key)==Keys.Size())
+        else if(Keys.Find(Key)==Keys.Size()){
             ZManager.Error("Key: "..Key.." Already Exists", ERR_ERROR);
+            return false;
+        }
         Keys.Push(Key);
         Values.Push(Value);
         return true;

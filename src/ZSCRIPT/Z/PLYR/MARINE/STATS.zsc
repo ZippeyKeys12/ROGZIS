@@ -159,8 +159,10 @@ class ZMStats:Thinker{
 
     bool AddUpgrade(Name ID){
         ZArmorUpgrade Upgrade=ZArmorUpgrade(Manager.Upgrade(UPR_MARMOR, ID));
-        if(Upgrades.Find(Upgrade)!=Upgrades.Size())
+        if(Upgrades.Find(Upgrade)!=Upgrades.Size()){
             ZManager.Error("Upgrade: "..Upgrade.ID.."is already in player inventory", ERR_ERROR);
+            return false;
+        }
         if(Upgrades.Size()>0 && Upgrade.Priority>Upgrades[0].Priority){
             Upgrades.Insert(0, Upgrade);
             return true;
@@ -233,7 +235,7 @@ class ZMStats:Thinker{
         ZDamageType DamageType=Manager.DamageType(Mod);
         if(!DamageType){
             ZManager.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
-            return Damage;
+            return 0;
         }
         double Dam, TempDamage=Damage;
         Array<ZArmorUpgrade> Upgrades;
