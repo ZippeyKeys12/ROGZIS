@@ -13,7 +13,7 @@ class ZPathos:ZReactor play{
         if(BasePersonality)
             Result.Personality=ZPersonality.Create(BasePersonality.Facets);
         else Result.Personality=ZPersonality.Randomized();
-        //Result.Mood=ZMood(ZFSM.Create('ZMood', 'Neutral'));
+        Result.Mood=ZMood.Create(Result.Personality);
         Result.Emotion=ZEmotion(ZFSM.Create(EmotionName, 'Neutral'));
         Result.Sentiments=new('ZSentiments');
         ZEventManager.Instance().SterReactor(Result);

@@ -1,11 +1,20 @@
-class ZMood:ZFSM{
-    int Decay;
+class ZMood{
+    const DIMENSIONCOUNT=3;
 
-    override
-    void Tick(){
-        if(Decay>0)
-            Decay--;
-        else if(Decay==0)
-            __State__='';
+    ZMatrix Dimensions;
+
+    static
+    ZMood Create(ZPersonality Personality){
+        ZMood Result=new('ZMood');
+        // Transformation Matrix: Personality -> Mood
+        // /  0   0  .21  .59  .19 \
+        // | .15  0   0   .3  -.57 |
+        // \ .25 .17 .6  -.32   0  /
+        ZMatrix TM=ZMatrix.Create(DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
+        TM.Set(0, 0,  0 ); TM.Set(0, 1,  0 ); TM.Set(0, 2, .21); TM.Set(0, 3,  .59); TM.Set(0, 4,  .19);
+        TM.Set(1, 0, .15); TM.Set(1, 1,  0 ); TM.Set(1, 2,  0 ); TM.Set(1, 3,  .3 ); TM.Set(1, 4, -.57);
+        TM.Set(2, 0, .25); TM.Set(2, 1, .17); TM.Set(2, 2, .6 ); TM.Set(2, 3, -.32); TM.Set(2, 4,   0 );
+        Result.Dimensions=Personality.OCEAN().MMultiply(TM);
+        return Result;
     }
 }
