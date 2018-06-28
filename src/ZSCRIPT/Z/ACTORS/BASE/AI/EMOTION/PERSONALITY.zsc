@@ -73,6 +73,8 @@ class ZPersonality{
             case 'Shy': return Facets.Get(3, 4);
             case 'Impulsive': return Facets.Get(4, 4);
             case 'Vulnerable': return Facets.Get(5, 4);
+
+            // Default
             default: return double.NaN;
         }
     }

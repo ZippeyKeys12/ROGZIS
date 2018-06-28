@@ -3,9 +3,9 @@ class ZMood{
 
     // Transformation Matrix: Personality -> Mood
     static const double P2M[]={
-         0,   0,  .21, .59,  .19,
-        .15,  0,   0,  .3,  -.57,
-        .25, .17, .6, -.32,   0
+         0,   0,  .21,  .59,  .19,
+        .15,  0,   0,   .3,  -.57,
+        .25, .17, .6,  -.32,   0
     };
 
     ZMatrix Dimensions;
@@ -16,7 +16,10 @@ class ZMood{
         ZMatrix TM=ZMatrix.Create(DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
         for(int i=0; i<TM.Values.Size(); i++)
             TM.Values[i]=ZMood.P2M[i];
-        Result.Dimensions=Personality.OCEAN().MMultiply(TM);
+        Result.Dimensions=TM.MMultiply(Personality.OCEAN());
         return Result;
     }
+
+    ZMatrix PAD()
+    {return Dimensions.Clone();}
 }
