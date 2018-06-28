@@ -1,0 +1,32 @@
+class ZEventBroadcaster:StaticEventHandler{
+    Array<ZEventHandler> Handlers;
+
+    static
+    ZEventBroadcaster Instance()
+    {return ZEventBroadcaster(EventHandler.Find("ZEventBroadcaster"));}
+
+    void Register(ZEventHandler Handler){
+        if(Handler.Order>Handlers[0].Order)
+            Handlers.Insert(0, Handler);
+        for(int i=0; i<Handlers.Size()-1; i++)
+            if(Handlers[i].Order>=Handler.Order && Handlers[i+1].Order<Handler.Order)
+                return Handlers.Insert(i+1, Handler);
+        Handlers.Push(Handler);
+    }
+
+    void Unregister(ZEventHandler EventHandler){
+        Handlers.Delete(Handlers.Find(EventHandler));
+    }
+}
+
+class ZEventHandler:EventHandler{
+    override
+    void OnRegister(){
+        ZEventBroadcaster.Instance().Register(self);
+    }
+
+    override
+    void OnUnregister(){
+        ZEventBroadcaster.Instance().Unregister(self);
+    }
+}
