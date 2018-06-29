@@ -61,6 +61,18 @@ enum ZStimStrength{
     STR_MAX         =   1500,
 }
 
+enum ZMoodSubspace{
+    MD_NULL,
+    MD_EXUBERANT,
+    MD_DEPENDENT,
+    MD_RELAXED,
+    MD_DOCILE,
+    MD_BORED,
+    MD_DISDAINFUL,
+    MD_ANXIOUS,
+    MD_HOSTILE,
+}
+
 ///////////////
 // Inventory //
 ///////////////

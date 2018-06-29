@@ -1,25 +1,45 @@
-class ZMood{
+class ZMood play{
     const DIMENSIONCOUNT=3;
-
-    // Transformation Matrix: Personality -> Mood
-    static const double P2M[]={
-         0,   0,  .21,  .59,  .19,
-        .15,  0,   0,   .3,  -.57,
-        .25, .17, .6,  -.32,   0
-    };
 
     ZMatrix Dimensions;
 
     static
     ZMood Create(ZPersonality Personality){
         ZMood Result=new('ZMood');
-        ZMatrix TM=ZMatrix.Create(DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
-        for(int i=0; i<TM.Values.Size(); i++)
-            TM.Values[i]=ZMood.P2M[i];
-        Result.Dimensions=TM.MMultiply(Personality.OCEAN());
+        Result.Dimensions=ZManager.Instance().Pers2Mood(Personality.OCEAN());
         return Result;
     }
 
-    ZMatrix PAD()
-    {return Dimensions.Clone();}
+    ZMatrix PAD(bool AsRow=false){
+        ZMatrix Result=Dimensions.Clone();
+        if(AsRow)
+            return Result.AsRow();
+        return Result;
+    }
+
+    ZMoodSubspace Subspace(){
+        switch(ZCalc.Sign(Dimensions.Get(0))){
+            case  1: switch(ZCalc.Sign(Dimensions.Get(1))){
+                case  1: switch(ZCalc.Sign(Dimensions.Get(2))){
+                    case  1: return MD_EXUBERANT;
+                    case -1: return MD_DEPENDENT;
+                }
+                case -1: switch(ZCalc.Sign(Dimensions.Get(2))){
+                    case  1: return MD_RELAXED;
+                    case -1: return MD_DOCILE;
+                }
+            }
+            case -1: switch(ZCalc.Sign(Dimensions.Get(1))){
+                case  1: switch(ZCalc.Sign(Dimensions.Get(2))){
+                    case  1: return MD_HOSTILE;
+                    case -1: return MD_ANXIOUS;
+                }
+                case -1: switch(ZCalc.Sign(Dimensions.Get(2))){
+                    case  1: return MD_DISDAINFUL;
+                    case -1: return MD_BORED;
+                }
+            }
+            default: return MD_NULL;
+        }
+    }
 }

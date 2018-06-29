@@ -7,6 +7,7 @@
 #include "ZSCRIPT/Z/SYS/WORLDSTATE.zsc"
 #include "ZSCRIPT/Z/SYS/BROADCASTER.zsc"
 #include "ZSCRIPT/Z/SYS/REGISTRIES.zsc"
+#include "ZSCRIPT/Z/SYS/FUNCTIONS.zsc"
 #include "ZSCRIPT/Z/SYS/NODEGRAPH.zsc"
 #include "ZSCRIPT/Z/SYS/WEAPONS.zsc"
 
