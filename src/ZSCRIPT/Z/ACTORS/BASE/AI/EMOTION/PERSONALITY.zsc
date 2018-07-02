@@ -2,10 +2,10 @@ class ZPersonality{
     const DIMENSIONCOUNT=5;
     const FACETCOUNT=6;
 
-    ZMatrix Facets;
+    ZMatrix2 Facets;
 
     static
-    ZPersonality Create(ZMatrix Facets)
+    ZPersonality Create(ZMatrix2 Facets)
     {return new('ZPersonality').Init(Facets.Clone());}
 
     static
@@ -13,9 +13,9 @@ class ZPersonality{
     {return new('ZPersonality').Init();}
 
     private
-    ZPersonality Init(ZMatrix OrigFacets=null){
+    ZPersonality Init(ZMatrix2 OrigFacets=null){
         if(!OrigFacets){
-            Facets=ZMatrix.Create(FACETCOUNT, DIMENSIONCOUNT);
+            Facets=ZMatrix2.Create(FACETCOUNT, DIMENSIONCOUNT);
             ZGaussian Distribution=ZGaussian.Create(0, .25);
             for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
                 Facets.Values[i]=Clamp(Distribution.Generate(), 0, 1);
@@ -29,7 +29,7 @@ class ZPersonality{
         return Result;
     }
 
-    ZMatrix OCEAN(bool AsRow=false)
+    ZMatrix2 OCEAN(bool AsRow=false)
     {return Facets.TAMean(AsRow);}
 
     double Facet(Name Facet){

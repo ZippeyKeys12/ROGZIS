@@ -56,8 +56,8 @@ class ZGaussian{
     void Clear()
     {CachedValues.Clear();}
 
-    ZMatrix Matrix(bool Row=false) const{
-        ZMatrix Result=ZMatrix.Create((Row)?1:CachedValues.Size(), (!Row)?1:CachedValues.Size());
+    ZMatrix2 Matrix(bool Row=false) const{
+        ZMatrix2 Result=ZMatrix2.Create((Row)?1:CachedValues.Size(), (!Row)?1:CachedValues.Size());
         Result.Values.Copy(CachedValues);
         return Result;
     }

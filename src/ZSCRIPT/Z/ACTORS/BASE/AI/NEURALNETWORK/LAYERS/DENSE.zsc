@@ -7,7 +7,7 @@ class ZNL_Dense:ZNeuralLayer{
     double LearningRate;
 
     private
-    ZMatrix In2Out,
+    ZMatrix2 In2Out,
             Bias;
 
     static
@@ -16,11 +16,11 @@ class ZNL_Dense:ZNeuralLayer{
         Result.Inputs=Inputs;
         Result.Outputs=Outputs;
         ZGaussian StdNormDist=ZGaussian.Create();
-        Result.In2Out=ZMatrix.Create(Outputs, Inputs);
+        Result.In2Out=ZMatrix2.Create(Outputs, Inputs);
         for(int Row=0; Row<Outputs; Row++)
             for(int Column=0; Column<Inputs; Column++)
                 Result.In2Out.Set(Row, Column, StdNormDist.Generate());
-        Result.Bias=ZMatrix.Create(Outputs);
+        Result.Bias=ZMatrix2.Create(Outputs);
         for(int Row=0; Row<Outputs; Row++)
             Result.Bias.Set(Row, 0, StdNormDist.Generate());
         Result.LearningRate=LearningRate;
@@ -28,16 +28,16 @@ class ZNL_Dense:ZNeuralLayer{
     }
 
     override
-    ZMatrix Get(ZMatrix Input)
+    ZMatrix2 Get(ZMatrix2 Input)
     {return Activation(In2Out.MMultiply(Input).Add(Bias));}
 
     override
-    ZMatrix Weights()
+    ZMatrix2 Weights()
     {return In2Out.Clone();}
 
     override
-    ZMatrix Train(ZMatrix Input, ZMatrix LastError, ZMatrix LastWeights, bool Last){
-        ZMatrix Error=(Last)?LastError:(LastWeights.Transpose().MMultiply(LastError)),
+    ZMatrix2 Train(ZMatrix2 Input, ZMatrix2 LastError, ZMatrix2 LastWeights, bool Last){
+        ZMatrix2 Error=(Last)?LastError:(LastWeights.Transpose().MMultiply(LastError)),
                 Gradient=Activation(Get(Input), true)
                         .Multiply(Error)
                         .SMultiply(LearningRate),

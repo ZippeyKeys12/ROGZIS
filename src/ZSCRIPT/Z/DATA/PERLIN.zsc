@@ -1,6 +1,6 @@
 class ZPerlin{
     private
-    ZMatrix Noise;
+    ZMatrix2 Noise;
 
     static
     ZPerlin Create(int Seed=int('NoiseyBoi'), int Height=16, int Width=16, int OctaveCount=8)
@@ -8,13 +8,13 @@ class ZPerlin{
 
     private
     ZPerlin Init(int Seed, int Height, int Width, int OctaveCount){
-        Array<ZMatrix> Noises;
-        ZMatrix BaseNoise=ZMatrix.Randomized(Height, Width, Seed, 0, 1);
+        Array<ZMatrix2> Noises;
+        ZMatrix2 BaseNoise=ZMatrix2.Randomized(Height, Width, Seed, 0, 1);
         for(int Octave=0; Octave<OctaveCount; Octave++)
             Noises.Push(BaseNoise.SmoothNoise(Octave));
         double Amplitude=1,
                TotalAmplitude=0;
-        Noise=ZMatrix.Create(Height, Width);
+        Noise=ZMatrix2.Create(Height, Width);
         for(int Octave=OctaveCount-1; Octave>=0; Octave--){
             TotalAmplitude+=Amplitude*=.5;
             for(int i=0; i<Height; i++)

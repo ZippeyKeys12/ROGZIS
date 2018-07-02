@@ -1,7 +1,7 @@
 class ZMood play{
     const DIMENSIONCOUNT=3;
 
-    ZMatrix Dimensions;
+    ZMatrix2 Dimensions;
 
     static
     ZMood Create(ZPersonality Personality){
@@ -10,8 +10,8 @@ class ZMood play{
         return Result;
     }
 
-    ZMatrix PAD(bool AsRow=false){
-        ZMatrix Result=Dimensions.Clone();
+    ZMatrix2 PAD(bool AsRow=false){
+        ZMatrix2 Result=Dimensions.Clone();
         if(AsRow)
             return Result.AsRow();
         return Result;

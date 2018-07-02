@@ -1,4 +1,4 @@
-class ZMatrix{
+class ZMatrix2{
     private
     uint Columns,
          Rows;
@@ -6,15 +6,15 @@ class ZMatrix{
     Array<double> Values;
 
     static
-    ZMatrix Create(uint Rows, uint Columns=1)
-    {return new('ZMatrix').Init(Rows, Columns, false);}
+    ZMatrix2 Create(uint Rows, uint Columns=1)
+    {return new('ZMatrix2').Init(Rows, Columns, false);}
 
     static
-    ZMatrix Identity(uint Size)
-    {return new('ZMatrix').Init(Size, Size, true);}
+    ZMatrix2 Identity(uint Size)
+    {return new('ZMatrix2').Init(Size, Size, true);}
 
     private
-    ZMatrix Init(uint Rows, uint Columns, bool Ones){
+    ZMatrix2 Init(uint Rows, uint Columns, bool Ones){
         if(Rows<=0 || Columns<=0)
             ZManager.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
         self.Rows=Rows;
@@ -24,8 +24,8 @@ class ZMatrix{
     }
 
     static
-    ZMatrix Randomized(uint Rows, uint Columns, int Seed, double Floor=-1, double Ceiling=1)
-    {return new('ZMatrix').Init(Rows, Columns, true).Noise(Seed, Floor, Ceiling);}
+    ZMatrix2 Randomized(uint Rows, uint Columns, int Seed, double Floor=-1, double Ceiling=1)
+    {return new('ZMatrix2').Init(Rows, Columns, true).Noise(Seed, Floor, Ceiling);}
 
     void Set(uint Row, uint Column, double Value)
     {Values[Row*Columns+Column]=Value;}
@@ -52,15 +52,15 @@ class ZMatrix{
         return (Get(Row*2, Column), Get(Row*2+1, Column));
     }
 
-    ZMatrix Row(uint Index) const{
-        ZMatrix Result=Create(1, Columns);
+    ZMatrix2 Row(uint Index) const{
+        ZMatrix2 Result=Create(1, Columns);
         for(int i=0; i<Columns; i++)
             Result.Set(0, i, Get(Index, i));
         return Result;
     }
 
-    ZMatrix AsRow() const{
-        ZMatrix Result=Create(Values.Size());
+    ZMatrix2 AsRow() const{
+        ZMatrix2 Result=Create(Values.Size());
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i];
         return Result;
@@ -69,15 +69,15 @@ class ZMatrix{
     uint Height() const
     {return Rows;}
 
-    ZMatrix Col(uint Column) const{
-        ZMatrix Result=Create(Rows);
+    ZMatrix2 Col(uint Column) const{
+        ZMatrix2 Result=Create(Rows);
         for(int i=0; i<Rows; i++)
             Result.Set(i, 0, Get(i, Column));
         return Result;
     }
 
-    ZMatrix AsCol() const{
-        ZMatrix Result=Create(1, Values.Size());
+    ZMatrix2 AsCol() const{
+        ZMatrix2 Result=Create(1, Values.Size());
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i];
         return Result;
@@ -138,9 +138,9 @@ class ZMatrix{
 
     // Per Row/Column
 
-    ZMatrix TSum(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TSum(bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).ASum();
@@ -149,9 +149,9 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix TMin(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TMin(bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AMin();
@@ -160,9 +160,9 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix TMax(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TMax(bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AMax();
@@ -171,13 +171,13 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix TRange(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TRange(bool AsRow=false, bool ForRows=false) const{
         return TMax(AsRow, ForRows).Subtract(TMin(AsRow, ForRows));
     }
 
-    ZMatrix TAMean(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TAMean(bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AAMean();
@@ -186,9 +186,9 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix TGMean(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TGMean(bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AGMean();
@@ -197,9 +197,9 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix THMean(bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 THMean(bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AHMean();
@@ -208,9 +208,9 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix TVariance(bool Statistic=true, bool AsRow=false, bool ForRows=false) const{
+    ZMatrix2 TVariance(bool Statistic=true, bool AsRow=false, bool ForRows=false) const{
         int Size=(ForRows)?Rows:Columns;
-        ZMatrix Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AVariance();
@@ -219,74 +219,74 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix TStdDev(bool Statistic=true, bool AsRow=false, bool ForRows=false) const
+    ZMatrix2 TStdDev(bool Statistic=true, bool AsRow=false, bool ForRows=false) const
     {return TVariance(Statistic, AsRow, ForRows).SExponent(.5);}
 
     ///////////////////
     // Manipulations //
     ///////////////////
-    ZMatrix Add(ZMatrix Other) const{
+    ZMatrix2 Add(ZMatrix2 Other) const{
         if(Rows!=Other.Rows || Columns!=Other.Columns)
             ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]+Other.Values[i];
         return Result;
     }
 
-    ZMatrix Subtract(ZMatrix Other) const{
+    ZMatrix2 Subtract(ZMatrix2 Other) const{
         if(Rows!=Other.Rows || Columns!=Other.Columns)
             ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]-Other.Values[i];
         return Result;
         return Add(Other.SMultiply(-1));
     }
 
-    ZMatrix Multiply(ZMatrix Other){
+    ZMatrix2 Multiply(ZMatrix2 Other){
         if(Rows!=Other.Rows || Columns!=Other.Columns)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Other.Values[i];
         return Result;
     }
 
-    ZMatrix Divide(ZMatrix Other){
+    ZMatrix2 Divide(ZMatrix2 Other){
         if(Rows!=Other.Rows || Columns!=Other.Columns)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Other.Values[i];
         return Result;
     }
 
-    ZMatrix SMultiply(double Multiplier) const{
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+    ZMatrix2 SMultiply(double Multiplier) const{
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Multiplier;
         return Result;
     }
 
-    ZMatrix SDivide(double Divisor) const{
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+    ZMatrix2 SDivide(double Divisor) const{
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Divisor;
         return Result;
     }
 
-    ZMatrix SExponent(double Degree){
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+    ZMatrix2 SExponent(double Degree){
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]**Degree;
         return Result;
     }
 
-    ZMatrix MMultiply(ZMatrix Other) const{
+    ZMatrix2 MMultiply(ZMatrix2 Other) const{
         if(Columns!=Other.Rows)
             ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
-        ZMatrix Result=ZMatrix.Create(Rows, Other.Columns);
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Other.Columns);
         for(int Row=0; Row<Result.Rows; Row++)
             for(int Column=0; Column<Result.Columns; Column++){
                 double Value=0;
@@ -297,70 +297,70 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix SMin(double Min, double Min2=int.max) const{
-        ZMatrix Result=Create(Rows, Columns);
+    ZMatrix2 SMin(double Min, double Min2=int.max) const{
+        ZMatrix2 Result=Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Min(Values[i], Min, Min2);
         return Result;
     }
 
-    ZMatrix MMin(ZMatrix Min, ZMatrix Min2=null) const{
+    ZMatrix2 MMin(ZMatrix2 Min, ZMatrix2 Min2=null) const{
         if(Rows!=Min.Rows || Columns!=Min.Columns || (Min2 && (Rows!=Min2.Rows || Columns!=Min2.Columns)))
             ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=Create(Rows, Columns);
+        ZMatrix2 Result=Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Min(Values[i], Min.Values[i], (Min2)?Min2.Values[i]:int.max);
         return Result;
     }
 
-    ZMatrix SMax(double Max, double Max2=int.min) const{
-        ZMatrix Result=Create(Rows, Columns);
+    ZMatrix2 SMax(double Max, double Max2=int.min) const{
+        ZMatrix2 Result=Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Max(Values[i], Max, Max2);
         return Result;
     }
 
-    ZMatrix MMax(ZMatrix Max, ZMatrix Max2=null) const{
+    ZMatrix2 MMax(ZMatrix2 Max, ZMatrix2 Max2=null) const{
         if(Rows!=Max.Rows || Columns!=Max.Columns || (Max2 && (Rows!=Max2.Rows || Columns!=Max2.Columns)))
             ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=Create(Rows, Columns);
+        ZMatrix2 Result=Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Max(Values[i], Max.Values[i], (Max2)?Max2.Values[i]:int.min);
         return Result;
     }
 
-    ZMatrix SClamp(double Min, double Max) const{
-        ZMatrix Result=Create(Rows, Columns);
+    ZMatrix2 SClamp(double Min, double Max) const{
+        ZMatrix2 Result=Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Clamp(Values[i], Min, Max);
         return Result;
     }
 
-    ZMatrix MClamp(ZMatrix Min, ZMatrix Max) const{
+    ZMatrix2 MClamp(ZMatrix2 Min, ZMatrix2 Max) const{
         if(Rows!=Min.Rows || Columns!=Min.Columns || Rows!=Max.Rows || Columns!=Max.Columns)
             ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
-        ZMatrix Result=Create(Rows, Columns);
+        ZMatrix2 Result=Create(Rows, Columns);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Clamp(Values[i], Min.Values[i], Max.Values[i]);
         return Result;
     }
 
-    ZMatrix Transpose() const{
-        ZMatrix Result=Create(Columns, Rows);
+    ZMatrix2 Transpose() const{
+        ZMatrix2 Result=Create(Columns, Rows);
         for(int Row=0; Row<Rows; Row++)
             for(int Column=0; Column<Columns; Column++)
                 Result.Set(Column, Row, Get(Row, Column));
         return Result;
     }
 
-    ZMatrix Clone() const{
-        ZMatrix Result=Create(Rows, Columns);
+    ZMatrix2 Clone() const{
+        ZMatrix2 Result=Create(Rows, Columns);
         Result.Values.Copy(Values);
         return Result;
     }
 
-    ZMatrix Mutate(int Seed, double Floor=0, double Ceiling=1, double MaxChange=1, double MutationRate=.1) const{
-        ZMatrix Result=Randomized(Rows, Columns, Seed).SMultiply(MaxChange),
+    ZMatrix2 Mutate(int Seed, double Floor=0, double Ceiling=1, double MaxChange=1, double MutationRate=.1) const{
+        ZMatrix2 Result=Randomized(Rows, Columns, Seed).SMultiply(MaxChange),
                 Chance=Randomized(Values.Size(), Seed+1, 0).SMax(MutationRate);
         for(int i=0; i<Values.Size(); i++)
             if(Chance.Values[i]<=MutationRate)
@@ -369,25 +369,25 @@ class ZMatrix{
         return Result;
     }
 
-    ZMatrix Append(ZMatrix Other){
-        ZMatrix Result=Create(Rows+ZCalc.Round(Other.Values.Size()/double(Columns)), Columns);
+    ZMatrix2 Append(ZMatrix2 Other){
+        ZMatrix2 Result=Create(Rows+ZCalc.Round(Other.Values.Size()/double(Columns)), Columns);
         Result.Values.Copy(Values);
         for(int i=0; i<Other.Values.Size(); i++)
             Result.Values[Values.Size()+i]=Other.Values[i];
         return Result;
     }
 
-    ZMatrix Noise(int Seed=int('NoiseyBoi'), double Floor=-1, double Ceiling=1) const{
+    ZMatrix2 Noise(int Seed=int('NoiseyBoi'), double Floor=-1, double Ceiling=1) const{
         SetRandomSeed[NoiseyBoi](Seed);
-        ZMatrix Result=ZMatrix.Create(Rows, Columns);
+        ZMatrix2 Result=ZMatrix2.Create(Rows, Columns);
         for(int Row=0; Row<Rows; Row++)
             for(int Column=0; Column<Columns; Column++)
                 Result.Set(Row, Column, Get(Row, Column)*FRandom[NoiseyBoi](Floor, Ceiling));
         return Result;
     }
 
-    ZMatrix SmoothNoise(int Octave) const{
-        ZMatrix Result=Create(Rows, Columns);
+    ZMatrix2 SmoothNoise(int Octave) const{
+        ZMatrix2 Result=Create(Rows, Columns);
         int Period=2**Octave;
         double Frequency=1/Period;
         for(int i=0; i<Rows; i++){

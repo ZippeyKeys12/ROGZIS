@@ -1,9 +1,9 @@
 extend
 class ZManager{
-    ZMatrix P2M,
+    ZMatrix2 P2M,
             M2E;
 
-    ZMatrix Pers2Mood(ZMatrix OCEAN){
+    ZMatrix2 Pers2Mood(ZMatrix2 OCEAN){
         if(!P2M){
             // Transformation Matrix: Personality -> Mood
             static const double StaticP2M[]={
@@ -11,7 +11,7 @@ class ZManager{
                 .15,  0,   0,   .3,  -.57,
                 .25, .17, .6,  -.32,   0
             };
-            P2M=ZMatrix.Create(ZMood.DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
+            P2M=ZMatrix2.Create(ZMood.DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
             for(int i=0; i<StaticP2M.Size(); i++)
                 P2M.Values[i]=Clamp(StaticP2M[i], -1, 1);
         }

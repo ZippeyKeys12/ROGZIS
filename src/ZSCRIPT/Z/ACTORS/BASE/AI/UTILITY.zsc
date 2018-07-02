@@ -9,7 +9,7 @@ class ZUtility{
         return Axes.Push(Axis);
     }
 
-    double Get(ZMatrix Xs){
+    double Get(ZMatrix2 Xs){
         if(Xs.Height()!=Axes.Size()){
             ZManager.Error("Incorrect Number of Axes\nIs: "..Xs.Height()..", Should Be: "..Axes.Size(), ERR_ERROR);
             return double.NaN;
