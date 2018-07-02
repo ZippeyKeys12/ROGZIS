@@ -1,0 +1,13 @@
+class ZMatrixBase abstract{
+    Array<double> Values;
+
+    virtual
+    ZMatrixBase Clone() const{
+        ZMatrixBase Result=ZMatrixBase(new(GetClassName()));
+        Result.Values.Copy(Values);
+        return Result;
+    }
+}
+
+// 2D
+#include "ZSCRIPT/Z/DATA/MATRIX/2D.zsc"

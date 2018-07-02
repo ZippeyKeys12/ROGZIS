@@ -13,11 +13,11 @@ class ZGaussian{
     Array<double> CachedValues;
 
     static
-    ZGaussian Create(double Mean=0, double StdDev=1, int Seed=int('GauseyBoi'))
+    ZGaussian Create(double Mean=0, double StdDev=1, int Seed=0)
     {return new('ZGaussian').Init(Mean, StdDev, Seed);}
 
     private
-    ZGaussian Init(double Mean, double StdDev, int Seed=0){
+    ZGaussian Init(double Mean, double StdDev, int Seed){
         if(!Seed)
             Seed=ZManager.RandSeed();
         self.Mean=Mean;

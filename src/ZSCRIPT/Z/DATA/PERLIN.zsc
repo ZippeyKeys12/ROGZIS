@@ -3,13 +3,13 @@ class ZPerlin{
     ZMatrix2 Noise;
 
     static
-    ZPerlin Create(int Seed=int('NoiseyBoi'), int Height=16, int Width=16, int OctaveCount=8)
-    {return new('ZPerlin').Init(Seed, Height, Width, OctaveCount);}
+    ZPerlin Create(uint Height, uint Width, int OctaveCount=8, int Seed=0)
+    {return new('ZPerlin').Init(Height, Width, OctaveCount, Seed);}
 
     private
-    ZPerlin Init(int Seed, int Height, int Width, int OctaveCount){
+    ZPerlin Init(int Height, int Width, int OctaveCount, int Seed){
         Array<ZMatrix2> Noises;
-        ZMatrix2 BaseNoise=ZMatrix2.Randomized(Height, Width, Seed, 0, 1);
+        ZMatrix2 BaseNoise=ZMatrix2.Randomized(Height, Width, 0, Seed: Seed);
         for(int Octave=0; Octave<OctaveCount; Octave++)
             Noises.Push(BaseNoise.SmoothNoise(Octave));
         double Amplitude=1,

@@ -20,7 +20,7 @@ class ZNL_Dense:ZNeuralLayer{
         for(int Row=0; Row<Outputs; Row++)
             for(int Column=0; Column<Inputs; Column++)
                 Result.In2Out.Set(Row, Column, StdNormDist.Generate());
-        Result.Bias=ZMatrix2.Create(Outputs);
+        Result.Bias=ZMatrix2.Create(Outputs, 1);
         for(int Row=0; Row<Outputs; Row++)
             Result.Bias.Set(Row, 0, StdNormDist.Generate());
         Result.LearningRate=LearningRate;
