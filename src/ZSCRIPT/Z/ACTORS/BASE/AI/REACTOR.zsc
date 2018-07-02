@@ -39,7 +39,7 @@ class ZReactor abstract{
 
     virtual
     bool IsValid(ZStimulus Stim)
-    {return false;}
+    {return true;}
 
     virtual
     double Strength()
