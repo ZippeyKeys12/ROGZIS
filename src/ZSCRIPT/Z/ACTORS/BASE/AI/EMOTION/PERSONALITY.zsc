@@ -18,8 +18,8 @@ class ZPersonality{
             Facets=ZMatrix.Create(FACETCOUNT, DIMENSIONCOUNT);
             ZGaussian Distribution=ZGaussian.Create(0, .25);
             for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
-                Facets.Values[i]=Clamp(Distribution.Generate(), -1, 1);
-        }else Facets=OrigFacets.SClamp(-1, 1);
+                Facets.Values[i]=Clamp(Distribution.Generate(), 0, 1);
+        }else Facets=OrigFacets.SClamp(0, 1);
         return self;
     }
 

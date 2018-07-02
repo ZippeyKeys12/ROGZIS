@@ -6,7 +6,7 @@ class ZMood play{
     static
     ZMood Create(ZPersonality Personality){
         ZMood Result=new('ZMood');
-        Result.Dimensions=ZManager.Instance().Pers2Mood(Personality.OCEAN());
+        Result.Dimensions=ZManager.Instance().Pers2Mood(Personality.OCEAN()).SClamp(-1, 1);
         return Result;
     }
 
