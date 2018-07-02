@@ -36,7 +36,7 @@ class ZManager{
     static
     clearscope
     int RandSeed(Object Caller=null)
-    {return ZManager.RandSeed()^((Caller)?int(Caller.GetClassName()):0);}
+    {return Random(int.min, int.max)^((Caller)?int(Caller.GetClassName()):0);}
 
     static
     clearscope
