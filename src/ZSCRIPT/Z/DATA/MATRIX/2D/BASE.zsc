@@ -223,7 +223,6 @@ class ZMatrix2:ZMatrixBase{
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]-Other.Values[i];
         return Result;
-        return Add(Other.SMultiply(-1));
     }
 
     ZMatrix2 Multiply(ZMatrix2 Other){
