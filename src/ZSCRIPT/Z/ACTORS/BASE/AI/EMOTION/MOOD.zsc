@@ -86,7 +86,8 @@ class ZMood play{
             Manager.M2E_OCC=ZMatrix2.Create(ZEmotion.DIMENSIONCOUNT_OCC, ZMood.DIMENSIONCOUNT);
             for(int i=0; i<StaticM2E.Size(); i++)
                 Manager.M2E_OCC.Values[i]=StaticM2E[i];
+            Manager.M2E_OCC=Manager.M2E_OCC.Transpose();
         }
-        return Manager.M2E_OCC.VMultiply(PAD()).SClamp(0, 1).ToV();
+        return PAD().M2Multiply(Manager.M2E_OCC).SClamp(0, 1);
     }
 }
