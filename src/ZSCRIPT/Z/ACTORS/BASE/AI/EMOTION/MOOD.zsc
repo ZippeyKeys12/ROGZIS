@@ -50,7 +50,7 @@ class ZMood play{
             };
             Manager.M2E_Ekman=ZMatrix2.Create(ZMood.DIMENSIONCOUNT, ZEmotion.DIMENSIONCOUNT_EKMAN);
             for(int i=0; i<StaticM2E.Size(); i++)
-                Manager.P2M.Values[i]=StaticM2E[i];
+                Manager.M2E_Ekman.Values[i]=StaticM2E[i];
         }
         return PAD().M2Multiply(Manager.M2E_Ekman).SClamp(0, 1);
     }
