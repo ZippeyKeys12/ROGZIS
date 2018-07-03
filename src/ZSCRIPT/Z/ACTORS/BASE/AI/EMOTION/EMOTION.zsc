@@ -1,4 +1,7 @@
 class ZEmotion:ZFSM{
+    const DIMENSIONCOUNT_EKMAN=5;
+    const DIMENSIONCOUNT_OCC=22;
+
     uint Strength,
          Decay;
 

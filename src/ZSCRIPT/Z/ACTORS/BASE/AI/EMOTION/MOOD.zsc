@@ -1,21 +1,17 @@
 class ZMood play{
     const DIMENSIONCOUNT=3;
 
-    ZMatrix2 Dimensions;
+    ZVector Dimensions;
 
     static
     ZMood Create(ZPersonality Personality){
         ZMood Result=new('ZMood');
-        Result.Dimensions=ZManager.Instance().Pers2Mood(Personality.OCEAN()).SClamp(-1, 1);
+        Result.Dimensions=Personality.ToPAD();
         return Result;
     }
 
-    ZMatrix2 PAD(bool AsRow=false){
-        ZMatrix2 Result=Dimensions.Clone();
-        if(AsRow)
-            return Result.AsRow();
-        return Result;
-    }
+    ZVector PAD()
+    {return Dimensions.Clone();}
 
     ZMoodSubspace Subspace(){
         switch(ZCalc.Sign(Dimensions.Get(0))){
@@ -41,5 +37,21 @@ class ZMood play{
             }
             default: return MD_NULL;
         }
+    }
+
+    ZVector ToEkman(){
+        ZManager Manager=ZManager.Instance();
+        if(!Manager.M2E_Ekman){
+            // Transformation Matrix: Mood -> Emotion - Ekman Model
+            static const double StaticM2E[]={
+                -.51, -.4, -.64, .4,  -.4,
+                 .59,  .2,  .6,  .2,  -.2,
+                 .25,  .1, -.43, .15, -.5
+            };
+            Manager.M2E_Ekman=ZMatrix2.Create(ZMood.DIMENSIONCOUNT, ZEmotion.DIMENSIONCOUNT_EKMAN);
+            for(int i=0; i<StaticM2E.Size(); i++)
+                Manager.P2M.Values[i]=StaticM2E[i];
+        }
+        return PAD().M2Multiply(Manager.M2E_Ekman).SClamp(0, 1);
     }
 }
