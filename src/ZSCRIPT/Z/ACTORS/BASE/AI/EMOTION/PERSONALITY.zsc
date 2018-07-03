@@ -19,7 +19,7 @@ class ZPersonality play{
             ZGaussian Distribution=ZGaussian.Create(0, .125);
             for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
                 Facets.Values[i]=Clamp(Distribution.Generate(), 0, 1);
-        }else Facets=OrigFacets.SClamp(0, 1);
+        }else Facets=OrigFacets.SClamp(0, 1); // Maybe -1 to 1, inconsistent standards
         return self;
     }
 
