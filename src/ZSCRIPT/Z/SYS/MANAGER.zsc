@@ -1,4 +1,6 @@
 class ZManager:Thinker{
+    ZVector P2E;
+
     ZMatrix2 P2M,
              M2E_OCC,
              M2E_Ekman;

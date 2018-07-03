@@ -79,6 +79,20 @@ class ZPersonality play{
         }
     }
 
+    double Empathy(){
+        ZManager Manager=ZManager.Instance();
+        if(!Manager.P2E){
+            // Transformation Matrix: Personality -> Empathy
+            static const double StaticP2E[]={
+                .354, .177, .135, .312, .021
+            };
+            Manager.P2E=ZVector.Create(ZPersonality.DIMENSIONCOUNT);
+            for(int i=0; i<StaticP2E.Size(); i++)
+                Manager.P2E.Values[i]=StaticP2E[i];
+        }
+        return Manager.P2E.VDot(OCEAN());
+    }
+
     ZVector ToPAD(){
         ZManager Manager=ZManager.Instance();
         if(!Manager.P2M){
