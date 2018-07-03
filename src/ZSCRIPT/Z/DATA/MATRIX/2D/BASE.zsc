@@ -4,27 +4,23 @@ class ZMatrix2:ZMatrixBase{
          __Width__;
 
     static
-    ZMatrix2 Create(uint Height, uint Width)
-    {return new('ZMatrix2').Init(Height, Width, false);}
-
-    static
-    ZMatrix2 Identity(uint Size)
-    {return new('ZMatrix2').Init(Size, Size, true);}
-
-    virtual
-    protected
-    ZMatrix2 Init(uint Height, uint Width, bool Ones){
+    ZMatrix2 Create(uint Height, uint Width, bool Ones=false){
+        ZMatrix2 Result=new('ZMatrix2');
         if(Height<=0 || Width<=0)
             ZManager.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
-        self.__Height__=Height;
-        self.__Width__=Width;
-        for(int i=0; i<Height*Width; i++)Values.Push(Ones);
-        return self;
+        Result.__Height__=Height;
+        Result.__Width__=Width;
+        for(int i=0; i<Height*Width; i++)Result.Values.Push(Ones);
+        return Result;
     }
 
     static
+    ZMatrix2 Identity(uint Size)
+    {return Create(Size, Size, true);}
+
+    static
     ZMatrix2 Randomized(uint Height, uint Width, double Floor=-1, double Ceiling=1, int Seed=0)
-    {return new('ZMatrix2').Init(Height, Width, true).Noise(Floor, Ceiling, Seed);}
+    {return Create(Height, Width, true).Noise(Floor, Ceiling, Seed);}
 
     virtual
     void Set(uint Row, uint Column, double Value)
