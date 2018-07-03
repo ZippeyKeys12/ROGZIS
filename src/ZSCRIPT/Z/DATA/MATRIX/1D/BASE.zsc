@@ -39,6 +39,42 @@ class ZVector:ZMatrixBase{
     // Manipulations //
     ///////////////////
 
+    ZVector Add(ZVector Other) const{
+        if(__Length__!=Other.__Length__)
+            ZManager.Error("Attempted to add differently-sized vectors", ERR_FATAL);
+        ZVector Result=Create(__Length__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i]+Other.Values[i];
+        return Result;
+    }
+
+    ZVector Subtract(ZVector Other) const{
+        if(__Length__!=Other.__Length__)
+            ZManager.Error("Attempted to subtract differently-sized vectors", ERR_FATAL);
+        ZVector Result=Create(__Length__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i]-Other.Values[i];
+        return Result;
+    }
+
+    ZVector Multiply(ZVector Other) const{
+        if(__Length__!=Other.__Length__)
+            ZManager.Error("Attempted to multiply differently-sized vectors", ERR_FATAL);
+        ZVector Result=Create(__Length__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i]*Other.Values[i];
+        return Result;
+    }
+
+    ZVector Divide(ZVector Other) const{
+        if(__Length__!=Other.__Length__)
+            ZManager.Error("Attempted to divide differently-sized vectors", ERR_FATAL);
+        ZVector Result=Create(__Length__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i]/Other.Values[i];
+        return Result;
+    }
+
     double VDot(ZVector Other) const{
         if(__Length__!=Other.Size())
             ZManager.Error("Attempted to dot incorrectly-sized vectors", ERR_FATAL);
