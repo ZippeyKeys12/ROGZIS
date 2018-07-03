@@ -208,6 +208,7 @@ class ZMatrix2:ZMatrixBase{
     void Set(uint Row, uint Column, double Value)
     {Values[Row*__Width__+Column]=Value;}
 
+    virtual
     ZMatrix2 Add(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
@@ -217,6 +218,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 Subtract(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
@@ -226,6 +228,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 Multiply(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
@@ -235,6 +238,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 Divide(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
@@ -244,6 +248,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 SMultiply(double Multiplier) const{
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
@@ -251,6 +256,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 SDivide(double Divisor) const{
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
@@ -258,6 +264,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 SExponent(double Degree){
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
@@ -265,6 +272,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    virtual
     ZMatrix2 M2Multiply(ZMatrix2 Other) const{
         if(__Width__!=Other.__Height__)
             ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);

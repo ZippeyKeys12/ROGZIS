@@ -53,6 +53,12 @@ class ZGaussian{
     double Get(int Index=-1) const
     {return CachedValues[(Index<0)?Random(0, CachedValues.Size()-1):Index];}
 
+    ZGaussian Add(ZGaussian Other) const
+    {return Create(Mean()+Other.Mean(), Sqrt(StdDev()**2+Other.StdDev()**2));}
+
+    ZGaussian Subtract(ZGaussian Other) const
+    {return Create(Mean()-Other.Mean(), Sqrt(StdDev()**2+Other.StdDev()**2));}
+
     double Normalize(double Value) const
     {return (Value-__Mean__)/__StdDev__;}
 

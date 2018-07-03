@@ -14,3 +14,6 @@ class ZMatrixBase abstract{
 
 // 2D
 #include "ZSCRIPT/Z/DATA/MATRIX/2D/INCLUDES.zsc"
+
+// 3D
+#include "ZSCRIPT/Z/DATA/MATRIX/3D/INCLUDES.zsc"
