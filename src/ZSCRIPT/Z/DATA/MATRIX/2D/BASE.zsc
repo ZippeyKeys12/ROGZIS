@@ -116,9 +116,9 @@ class ZMatrix2:ZMatrixBase{
 
     // Per Row/Column
 
-    ZMatrix2 TSum(bool AsRow=false, bool ForRows=false) const{
+    ZVector TSum(bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).ASum();
@@ -127,9 +127,9 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 TMin(bool AsRow=false, bool ForRows=false) const{
+    ZVector TMin(bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AMin();
@@ -138,9 +138,9 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 TMax(bool AsRow=false, bool ForRows=false) const{
+    ZVector TMax(bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AMax();
@@ -149,13 +149,13 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 TRange(bool AsRow=false, bool ForRows=false) const{
-        return TMax(AsRow, ForRows).Subtract(TMin(AsRow, ForRows));
+    ZVector TRange(bool ForRows=false) const{
+        return TMax(ForRows).Subtract(TMin(ForRows));
     }
 
-    ZMatrix2 TAMean(bool AsRow=false, bool ForRows=false) const{
+    ZVector TAMean(bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AAMean();
@@ -164,9 +164,9 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 TGMean(bool AsRow=false, bool ForRows=false) const{
+    ZVector TGMean(bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AGMean();
@@ -175,9 +175,9 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 THMean(bool AsRow=false, bool ForRows=false) const{
+    ZVector THMean(bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AHMean();
@@ -186,9 +186,9 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 TVariance(bool Statistic=true, bool AsRow=false, bool ForRows=false) const{
+    ZVector TVariance(bool Statistic=true, bool ForRows=false) const{
         int Size=(ForRows)?__Height__:__Width__;
-        ZMatrix2 Result=Create((AsRow)?1:Size, (!AsRow)?1:Size);
+        ZVector Result=ZVector.Create(Size);
         for(int i=0; i<Size; i++){
             if(ForRows)
                 Result.Values[i]=Row(i).AVariance();
@@ -197,8 +197,8 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 TStdDev(bool Statistic=true, bool AsRow=false, bool ForRows=false) const
-    {return TVariance(Statistic, AsRow, ForRows).SExponent(.5);}
+    ZVector TStdDev(bool Statistic=true, bool ForRows=false) const
+    {return TVariance(Statistic, ForRows).SExponent(.5);}
 
     ///////////////////
     // Manipulations //
