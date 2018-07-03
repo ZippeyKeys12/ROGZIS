@@ -30,27 +30,12 @@ class ZMatrix2:ZMatrixBase{
     void Set(uint Row, uint Column, double Value)
     {Values[Row*__Width__+Column]=Value;}
 
-    void V2Set(uint Row, uint Column, Vector2 Point, bool Row=true){
-        if(Row){
-            Set(Row, Column*2, Point.X);
-            Set(Row, Column*2+1, Point.Y);
-        }else{
-            Set(Row*2, Column, Point.X);
-            Set(Row*2+1, Column, Point.Y);
-        }
-    }
-
     //////////
     // Info //
     //////////
+
     double Get(uint Row, uint Column=0) const
     {return Values[Row*__Width__+Column];}
-
-    Vector2 V2Get(uint Row, uint Column=0, bool Row=true) const{
-        if(Row)
-            return (Get(Row, Column*2), Get(Row, Column*2+1));
-        return (Get(Row*2, Column), Get(Row*2+1, Column));
-    }
 
     ZMatrix2 Row(uint Index) const{
         ZMatrix2 Result=Create(1, __Width__);
@@ -225,6 +210,7 @@ class ZMatrix2:ZMatrixBase{
     ///////////////////
     // Manipulations //
     ///////////////////
+
     ZMatrix2 Add(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
@@ -283,7 +269,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 MMultiply(ZMatrix2 Other) const{
+    ZMatrix2 M2Multiply(ZMatrix2 Other) const{
         if(__Width__!=Other.__Height__)
             ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, Other.__Width__);
@@ -297,6 +283,9 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
+    ZMatrix2 VMultiply(ZVector Other) const
+    {return M2Multiply(Other.ToM2());}
+
     ZMatrix2 SMin(double Min, double Min2=int.max) const{
         ZMatrix2 Result=Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
@@ -304,7 +293,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 MMin(ZMatrix2 Min, ZMatrix2 Min2=null) const{
+    ZMatrix2 M2Min(ZMatrix2 Min, ZMatrix2 Min2=null) const{
         if(__Height__!=Min.__Height__ || __Width__!=Min.__Width__ || (Min2 && (__Height__!=Min2.__Height__ || __Width__!=Min2.__Width__)))
             ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=Create(__Height__, __Width__);
@@ -320,7 +309,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 MMax(ZMatrix2 Max, ZMatrix2 Max2=null) const{
+    ZMatrix2 M2Max(ZMatrix2 Max, ZMatrix2 Max2=null) const{
         if(__Height__!=Max.__Height__ || __Width__!=Max.__Width__ || (Max2 && (__Height__!=Max2.__Height__ || __Width__!=Max2.__Width__)))
             ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=Create(__Height__, __Width__);
@@ -336,7 +325,7 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 MClamp(ZMatrix2 Min, ZMatrix2 Max) const{
+    ZMatrix2 M2Clamp(ZMatrix2 Min, ZMatrix2 Max) const{
         if(__Height__!=Min.__Height__ || __Width__!=Min.__Width__ || __Height__!=Max.__Height__ || __Width__!=Max.__Width__)
             ZManager.Error("Attempted to min differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=Create(__Height__, __Width__);
@@ -350,13 +339,6 @@ class ZMatrix2:ZMatrixBase{
         for(int Row=0; Row<__Height__; Row++)
             for(int Column=0; Column<__Width__; Column++)
                 Result.Set(Column, Row, Get(Row, Column));
-        return Result;
-    }
-
-    virtual
-    ZMatrix2 Clone() const{
-        ZMatrix2 Result=Create(__Height__, __Width__);
-        Result.Values.Copy(Values);
         return Result;
     }
 
@@ -395,6 +377,23 @@ class ZMatrix2:ZMatrixBase{
                 Result.Set(i, j, ZCalc.Lerp((j-j1)*Frequency, ZCalc.Lerp(HBlend, Get(i1, j1), Get(i2, j1)), ZCalc.Lerp(HBlend, Get(i1, j2), Get(i2, j2))));
             }
         }
+        return Result;
+    }
+
+    ////////////////
+    // Transforms //
+    ////////////////
+
+    ZVector ToV(){
+        ZVector Result=ZVector.Create(Values.Size());
+        Result.Values.Copy(Values);
+        return Result;
+    }
+
+    virtual
+    ZMatrix2 Clone() const{
+        ZMatrix2 Result=Create(__Height__, __Width__);
+        Result.Values.Copy(Values);
         return Result;
     }
 }

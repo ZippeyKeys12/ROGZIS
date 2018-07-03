@@ -9,5 +9,8 @@ class ZMatrixBase abstract{
     }
 }
 
+// 1D
+#include "ZSCRIPT/Z/DATA/MATRIX/1D/INCLUDES.zsc"
+
 // 2D
-#include "ZSCRIPT/Z/DATA/MATRIX/2D.zsc"
+#include "ZSCRIPT/Z/DATA/MATRIX/2D/INCLUDES.zsc"

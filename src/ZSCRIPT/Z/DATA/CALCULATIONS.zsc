@@ -121,13 +121,13 @@ struct ZCalc{
     Vector2 V2SmoothStep(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1), double Degree=2)
     {return (SmoothStep(Time, Start.X, End.X, Degree), SmoothStep(Time, Start.Y, End.Y, Degree));}
 
-    static
-    Vector2 V2Bezier(double Time, ZMatrix2 Points, bool Row=true){
-        Vector2 Total=(0, 0);
-        for(int i=0; i<(Row)?Points.Height()/2:Points.Width()/2; i++)
-            Total+=Points.V2Get(i*Row, i*!Row, Row)*Bernstein(Time, Points.Height(), i);
-        return Total;
-    }
+    // static
+    // Vector2 V2Bezier(double Time, ZMatrix2 Points, bool Row=true){
+    //     Vector2 Total=(0, 0);
+    //     for(int i=0; i<(Row)?Points.Height()/2:Points.Width()/2; i++)
+    //         Total+=Points.V2Get(i*Row, i*!Row, Row)*Bernstein(Time, Points.Height(), i);
+    //     return Total;
+    // }
 
     static
     bool IsInTriangle(Vector2 Point, Vector2 A, Vector2 B, Vector2 C){

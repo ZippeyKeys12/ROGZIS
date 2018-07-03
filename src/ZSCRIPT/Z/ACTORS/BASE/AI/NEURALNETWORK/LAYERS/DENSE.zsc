@@ -29,7 +29,7 @@ class ZNL_Dense:ZNeuralLayer{
 
     override
     ZMatrix2 Get(ZMatrix2 Input)
-    {return Activation(In2Out.MMultiply(Input).Add(Bias));}
+    {return Activation(In2Out.M2Multiply(Input).Add(Bias));}
 
     override
     ZMatrix2 Weights()
@@ -37,11 +37,11 @@ class ZNL_Dense:ZNeuralLayer{
 
     override
     ZMatrix2 Train(ZMatrix2 Input, ZMatrix2 LastError, ZMatrix2 LastWeights, bool Last){
-        ZMatrix2 Error=(Last)?LastError:(LastWeights.Transpose().MMultiply(LastError)),
+        ZMatrix2 Error=(Last)?LastError:(LastWeights.Transpose().M2Multiply(LastError)),
                 Gradient=Activation(Get(Input), true)
                         .Multiply(Error)
                         .SMultiply(LearningRate),
-                DeltaOutput=Gradient.MMultiply(Input.Transpose());
+                DeltaOutput=Gradient.M2Multiply(Input.Transpose());
         In2Out=In2Out.Add(DeltaOutput);
         Bias=Bias.Add(Gradient);
         return Error;

@@ -1,0 +1,89 @@
+class ZVector:ZMatrixBase{
+    uint __Length__;
+
+    static
+    ZVector Create(uint Length, bool Ones=false){
+        ZVector Result=new('ZVector');
+        Result.__Length__=Length;
+        for(int i=0; i<Length; i++)
+            Result.Values.Push(Ones);
+        return Result;
+    }
+
+    static
+    ZVector Randomized(uint Length, double Floor=-1, double Ceiling=1, int Seed=0){
+        ZVector Result=Create(Length, true).Noise(Floor, Ceiling, Seed);
+        return Result;
+    }
+
+    void Set(uint Index, double Value)
+    {Values[Index]=Value;}
+
+    //////////
+    // Info //
+    //////////
+
+    double Get(uint Index) const
+    {return Values[Index];}
+
+    uint Size() const
+    {return __Length__;}
+
+    double Length() const
+    {return Sqrt(LengthSquared());}
+
+    double LengthSquared() const
+    {return VDot(Clone());}
+
+    ///////////////////
+    // Manipulations //
+    ///////////////////
+
+    double VDot(ZVector Other) const{
+        if(__Length__!=Other.Size())
+            ZManager.Error("Attempted to dot incorrectly-sized vectors", ERR_FATAL);
+        double Total=0;
+        for(int Index=0; Index<__Length__; Index++)
+            Total+=Get(Index)*Other.Get(Index);
+        return Total;
+    }
+
+    ZVector Noise(double Floor, double Ceiling, int Seed=0) const{
+        if(!Seed)
+            Seed=ZManager.RandSeed();
+        SetRandomSeed[NoiseyBoi](Seed);
+        ZVector Result=Create(__Length__);
+        for(int Index=0; Index<Values.Size(); Index++)
+            Result.Values[Index]=Values[Index]*FRandom[NoiseyBoi](Floor, Ceiling);
+        return Result;
+    }
+
+    ////////////////
+    // Transforms //
+    ////////////////
+
+    Vector2 ToV2() const{
+        if(__Length__!=2)
+            ZManager.Error("Attempted to convert ZVector to Vector2: Is not 2 values", ERR_FATAL);
+        return (Values[0], Values[1]);
+    }
+
+    Vector3 ToV3() const{
+        if(__Length__!=3)
+            ZManager.Error("Attempted to convert ZVector to Vector3: Is not 3 values", ERR_FATAL);
+        return (Values[0], Values[1], Values[2]);
+    }
+
+    ZMatrix2 ToM2(bool AsRow=false) const{
+        ZMatrix2 Result=ZMatrix2.Create((AsRow)?1:__Length__, (!AsRow)?1:__Length__);
+        Result.Values.Copy(Values);
+        return Result;
+    }
+
+    virtual
+    ZVector Clone() const{
+        ZVector Result=Create(__Length__);
+        Result.Values.Copy(Values);
+        return Result;
+    }
+}
