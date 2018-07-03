@@ -1,4 +1,8 @@
 class ZManager:Thinker{
+    ZMatrix2 P2M,
+             M2E_OCC,
+             M2E_Ekman;
+
     static
     ZManager Instance(){
         ZManager p=UIInstance();

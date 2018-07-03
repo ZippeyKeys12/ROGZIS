@@ -1,4 +1,4 @@
-class ZPersonality{
+class ZPersonality play{
     const DIMENSIONCOUNT=5;
     const FACETCOUNT=6;
 
@@ -16,7 +16,7 @@ class ZPersonality{
     ZPersonality Init(ZMatrix2 OrigFacets=null){
         if(!OrigFacets){
             Facets=ZMatrix2.Create(FACETCOUNT, DIMENSIONCOUNT);
-            ZGaussian Distribution=ZGaussian.Create(0, .25);
+            ZGaussian Distribution=ZGaussian.Create(0, .125);
             for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
                 Facets.Values[i]=Clamp(Distribution.Generate(), 0, 1);
         }else Facets=OrigFacets.SClamp(0, 1);
@@ -29,7 +29,7 @@ class ZPersonality{
         return Result;
     }
 
-    ZMatrix2 OCEAN(bool AsRow=false)
+    ZVector OCEAN(bool AsRow=false)
     {return Facets.TAMean(AsRow);}
 
     double Facet(Name Facet){
@@ -77,5 +77,21 @@ class ZPersonality{
             // Default
             default: return double.NaN;
         }
+    }
+
+    ZVector ToPAD(){
+        ZManager Manager=ZManager.Instance();
+        if(!Manager.P2M){
+            // Transformation Matrix: Personality -> Mood
+            static const double StaticP2M[]={
+                 0,   0,  .21,  .59,  .19,
+                .15,  0,   0,   .3,  -.57,
+                .25, .17, .6,  -.32,   0
+            };
+            Manager.P2M=ZMatrix2.Create(ZMood.DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
+            for(int i=0; i<StaticP2M.Size(); i++)
+                Manager.P2M.Values[i]=StaticP2M[i];
+        }
+        return Manager.P2M.VMultiply(OCEAN()).SClamp(-1, 1).ToV();
     }
 }
