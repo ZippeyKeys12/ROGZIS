@@ -117,6 +117,15 @@ class ZMatrix3:ZMatrixBase{
     ////////////////
 
     virtual
+    ZSummaryMatrix2 ToSM2(){
+        if(__Depth__!=2)
+            ZManager.Error("Attempted to convert ZMatrix3 to ZSummaryMatrix2: Is not 2 deep", ERR_FATAL);
+        ZSummaryMatrix2 Result=ZSummaryMatrix2.Create(__Height__, __Width__);
+        Result.Values.Copy(Values);
+        return Result;
+    }
+
+    virtual
     ZMatrix3 Clone() const{
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         Result.Values.Copy(Values);

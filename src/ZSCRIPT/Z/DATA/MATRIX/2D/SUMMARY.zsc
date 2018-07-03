@@ -1,0 +1,81 @@
+class ZSummaryMatrix2:ZMatrix3{
+    static
+    ZSummaryMatrix2 Create(uint Height, uint Width, bool Ones=false){
+        ZSummaryMatrix2 Result=new('ZSummaryMatrix2');
+        if(Height<=0 || Width<=0)
+            ZManager.Error("Attempted to create a non-positively-sized summary matrix", ERR_FATAL);
+        Result.__Height__=Height;
+        Result.__Width__=Width;
+        Result.__Depth__=2;
+        for(int i=0; i<Height*Width*2; i++)
+            Result.Values.Push(Ones);
+        return Result;
+    }
+
+    //////////
+    // Info //
+    //////////
+
+    virtual
+    ZGaussian Get(uint Row, uint Column) const
+    {return ZGaussian.Create(super.Get(Row, Column, 0), super.Get(Row, Column, 1));}
+
+    double GetMean(uint Row, uint Column)
+    {return super.Get(Row, Column, 0);}
+
+    double GetStdDev(uint Row, uint Column)
+    {return super.Get(Row, Column, 1);}
+
+    ///////////////////
+    // Manipulations //
+    ///////////////////
+
+    virtual
+    void Set(uint Row, uint Column, double Mean, double StdDev){
+        SetMean(Row, Column, Mean);
+        SetStdDev(Row, Column, StdDev);
+    }
+
+    void SetMean(uint Row, uint Column, double Value)
+    {super.Set(Row, Column, 0, Value);}
+
+    void SetStdDev(uint Row, uint Column, double Value)
+    {super.Set(Row, Column, 1, Value);}
+
+    ZSummaryMatrix2 Add(ZSummaryMatrix2 Other) const{
+        if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
+            ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+        ZSummaryMatrix2 Result=Create(__Height__, __Width__);
+        for(int Row=0; Row<__Height__; Row++)
+            for(int Column=0; Column<__Width__; Column++)
+                Result.Set(Row, Column, GetMean(Row, Column)+Other.GetMean(Row, Column), Sqrt(GetStdDev(Row, Column)**2+Other.GetStdDev(Row, Column)**2));
+        return Result;
+    }
+
+    ZSummaryMatrix2 Subtract(ZSummaryMatrix2 Other) const{
+        if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
+            ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
+        ZSummaryMatrix2 Result=Create(__Height__, __Width__);
+        for(int Row=0; Row<__Height__; Row++)
+            for(int Column=0; Column<__Width__; Column++)
+                Result.Set(Row, Column, GetMean(Row, Column)-Other.GetMean(Row, Column), Sqrt(GetStdDev(Row, Column)**2+Other.GetStdDev(Row, Column)**2));
+        return Result;
+    }
+
+    ZSummaryMatrix2 SMultiply(double Multiplier) const
+    {return super.SMultiply(Multiplier).ToSM2();}
+
+    ZSummaryMatrix2 SDivide(double Divisor) const
+    {return super.SDivide(Divisor).ToSM2();}
+
+    ////////////////
+    // Transforms //
+    ////////////////
+
+    virtual
+    ZSummaryMatrix2 Clone() const{
+        ZSummaryMatrix2 Result=Create(__Height__, __Width__);
+        Result.Values.Copy(Values);
+        return Result;
+    }
+}
