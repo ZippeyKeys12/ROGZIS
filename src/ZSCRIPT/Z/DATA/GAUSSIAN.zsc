@@ -6,24 +6,21 @@ class ZGaussian{
     int PreGen;
 
     private
-    double Mean,
-           StdDev;
+    double __Mean__,
+           __StdDev__;
 
     private
     Array<double> CachedValues;
 
     static
-    ZGaussian Create(double Mean=0, double StdDev=1, int Seed=0)
-    {return new('ZGaussian').Init(Mean, StdDev, Seed);}
-
-    private
-    ZGaussian Init(double Mean, double StdDev, int Seed){
+    ZGaussian Create(double Mean=0, double StdDev=1, int Seed=0){
+        ZGaussian Result=new('ZGaussian');
         if(!Seed)
             Seed=ZManager.RandSeed();
-        self.Mean=Mean;
-        self.StdDev=StdDev;
         SetRandomSeed[GauseyBoi](Seed);
-        return self;
+        Result.__Mean__=Mean;
+        Result.__StdDev__=StdDev;
+        return Result;
     }
 
     void Simulate(int Amount){
@@ -31,10 +28,16 @@ class ZGaussian{
             CachedValues.Push(Generate());
     }
 
+    double Mean() const
+    {return __Mean__;}
+
+    double StdDev() const
+    {return __StdDev__;}
+
     double Generate(){
         PreGenerated=!PreGenerated;
         if(!PreGenerated)
-            return PreGen*StdDev+Mean;
+            return PreGen*__StdDev__+__Mean__;
         else{
             double u1, u2;
             do{
@@ -43,21 +46,21 @@ class ZGaussian{
             }while(u1<=double.epsilon);
             double Gen=Sqrt(-2*Log(u1))*Cos(2*ZCalc.PI*u2);
             PreGen=Sqrt(-2*Log(u1))*Sin(2*ZCalc.PI*u2);
-            return Gen*StdDev+Mean;
+            return Gen*__StdDev__+__Mean__;
         }
     }
 
-    double Get() const
-    {return CachedValues[Random(0, CachedValues.Size())];}
+    double Get(int Index=-1) const
+    {return CachedValues[(Index<0)?Random(0, CachedValues.Size()-1):Index];}
 
     double Normalize(double Value) const
-    {return (Value-Mean)/StdDev;}
+    {return (Value-__Mean__)/__StdDev__;}
 
     void Clear()
     {CachedValues.Clear();}
 
-    ZMatrix2 Matrix(bool Row=false) const{
-        ZMatrix2 Result=ZMatrix2.Create((Row)?1:CachedValues.Size(), (!Row)?1:CachedValues.Size());
+    ZVector ToV() const{
+        ZVector Result=ZVector.Create(CachedValues.Size());
         Result.Values.Copy(CachedValues);
         return Result;
     }

@@ -1,4 +1,5 @@
 class ZVector:ZMatrixBase{
+    protected
     uint __Length__;
 
     static
@@ -15,9 +16,6 @@ class ZVector:ZMatrixBase{
         ZVector Result=Create(Length, true).Noise(Floor, Ceiling, Seed);
         return Result;
     }
-
-    void Set(uint Index, double Value)
-    {Values[Index]=Value;}
 
     //////////
     // Info //
@@ -38,6 +36,10 @@ class ZVector:ZMatrixBase{
     ///////////////////
     // Manipulations //
     ///////////////////
+
+    virtual
+    void Set(uint Index, double Value)
+    {Values[Index]=Value;}
 
     ZVector Add(ZVector Other) const{
         if(__Length__!=Other.__Length__)

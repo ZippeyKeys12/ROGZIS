@@ -1,5 +1,5 @@
 class ZMatrix2:ZMatrixBase{
-    private
+    protected
     uint __Height__,
          __Width__;
 
@@ -10,7 +10,8 @@ class ZMatrix2:ZMatrixBase{
             ZManager.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
         Result.__Height__=Height;
         Result.__Width__=Width;
-        for(int i=0; i<Height*Width; i++)Result.Values.Push(Ones);
+        for(int i=0; i<Height*Width; i++)
+            Result.Values.Push(Ones);
         return Result;
     }
 
@@ -21,10 +22,6 @@ class ZMatrix2:ZMatrixBase{
     static
     ZMatrix2 Randomized(uint Height, uint Width, double Floor=-1, double Ceiling=1, int Seed=0)
     {return Create(Height, Width, true).Noise(Floor, Ceiling, Seed);}
-
-    virtual
-    void Set(uint Row, uint Column, double Value)
-    {Values[Row*__Width__+Column]=Value;}
 
     //////////
     // Info //
@@ -206,6 +203,10 @@ class ZMatrix2:ZMatrixBase{
     ///////////////////
     // Manipulations //
     ///////////////////
+
+    virtual
+    void Set(uint Row, uint Column, double Value)
+    {Values[Row*__Width__+Column]=Value;}
 
     ZMatrix2 Add(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
