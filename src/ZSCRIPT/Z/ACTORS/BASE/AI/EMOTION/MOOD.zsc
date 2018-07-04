@@ -13,29 +13,29 @@ class ZMood play{
     ZVector PAD()
     {return Dimensions.Clone();}
 
-    ZMoodSubspace Subspace(){
+    Name Subspace(){
         switch(ZCalc.Sign(Dimensions.Get(0))){
             case  1: switch(ZCalc.Sign(Dimensions.Get(1))){
                 case  1: switch(ZCalc.Sign(Dimensions.Get(2))){
-                    case  1: return MD_EXUBERANT;
-                    case -1: return MD_DEPENDENT;
+                    case  1: return 'Exuberant';
+                    case -1: return 'Dependent';
                 }
                 case -1: switch(ZCalc.Sign(Dimensions.Get(2))){
-                    case  1: return MD_RELAXED;
-                    case -1: return MD_DOCILE;
+                    case  1: return 'Relaxed';
+                    case -1: return 'Docile';
                 }
             }
             case -1: switch(ZCalc.Sign(Dimensions.Get(1))){
                 case  1: switch(ZCalc.Sign(Dimensions.Get(2))){
-                    case  1: return MD_HOSTILE;
-                    case -1: return MD_ANXIOUS;
+                    case  1: return 'Hostile';
+                    case -1: return 'Anxious';
                 }
                 case -1: switch(ZCalc.Sign(Dimensions.Get(2))){
-                    case  1: return MD_DISDAINFUL;
-                    case -1: return MD_BORED;
+                    case  1: return 'Disdainful';
+                    case -1: return 'Bored';
                 }
             }
-            default: return MD_NULL;
+            default: return '';
         }
     }
 
