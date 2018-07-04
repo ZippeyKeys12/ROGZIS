@@ -39,6 +39,17 @@ class ZMood play{
         }
     }
 
+    Name Expression(){
+        if(ZCalc.Sign(Dimensions.Get(0))==1)
+            return 'Happy';
+        else if(ZCalc.Sign(Dimensions.Get(1))==-1)
+            return 'Sad';
+        else if(ZCalc.Sign(Dimensions.Get(2))==1)
+            return 'Angry';
+        else
+            return 'Fearful';
+    }
+
     ZVector ToEkman(){
         ZManager Manager=ZManager.Instance();
         if(!Manager.M2E_Ekman){
