@@ -1,0 +1,32 @@
+class ZMapper{
+    double Min,
+           Max;
+
+    static
+    ZMapper Create(double Min, double Max){
+        ZMapper Mapper=new('ZMapper');
+        Mapper.Min=Min;
+        Mapper.Max=Max;
+        return Mapper;
+    }
+
+    double NormRangeMap(double Value) const
+    {return Clamp((Value-Min)/(Max-Min), 0, 1);}
+
+    double ANormRangeMap(double Value) const
+    {return Clamp(Value*(Max-Min)+Min, Min, Max);}
+
+    ZMatrixBase MNormRangeMap(ZMatrixBase Other) const{
+        ZMatrixBase Result=Other.Clone();
+        for(int i=0; i<Other.Values.Size(); i++)
+            Result.Values[i]=NormRangeMap(Other.Values[i]);
+        return Result;
+    }
+
+    ZMatrixBase MANormRangeMap(ZMatrixBase Other){
+        ZMatrixBase Result=Other.Clone();
+        for(int i=0; i<Other.Values.Size(); i++)
+            Result.Values[i]=ANormRangeMap(Other.Values[i]);
+        return Result;
+    }
+}
