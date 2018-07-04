@@ -1,4 +1,4 @@
-class ZBrain abstract{
+class ZBrain play abstract{
     ZActor Owner;
 
     ZStack Stack;
