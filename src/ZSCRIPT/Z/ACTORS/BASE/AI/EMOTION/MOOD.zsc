@@ -1,4 +1,4 @@
-class ZMood:ZLobe{
+class ZMood play{
     const DIMENSIONCOUNT=3;
 
     ZVector Dimensions;

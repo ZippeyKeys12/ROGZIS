@@ -1,4 +1,4 @@
-class ZPathos:ZReactor play{
+class ZPathos:ZLobe{
     ZPersonality Personality;
 
     ZMood Mood;
