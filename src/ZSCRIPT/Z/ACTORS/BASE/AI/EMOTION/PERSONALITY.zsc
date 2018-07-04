@@ -2,6 +2,8 @@ class ZPersonality play{
     const DIMENSIONCOUNT=5;
     const FACETCOUNT=6;
 
+    ZMapper Bipolar;
+
     ZMatrix2 Facets;
 
     static
@@ -20,6 +22,7 @@ class ZPersonality play{
             for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
                 Facets.Values[i]=Clamp(Distribution.Generate(), 0, 1);
         }else Facets=OrigFacets.SClamp(0, 1); // Maybe -1 to 1, inconsistent standards
+        Bipolar=ZMapper.Create(-1, 1);
         return self;
     }
 
@@ -90,7 +93,7 @@ class ZPersonality play{
             for(int i=0; i<StaticP2E.Size(); i++)
                 Manager.P2E.Values[i]=StaticP2E[i];
         }
-        return Manager.P2E.VDot(OCEAN());
+        return Manager.P2E.VDot(ZVector(Bipolar.MANormRangeMap(OCEAN())));
     }
 
     ZVector ToPAD(){
