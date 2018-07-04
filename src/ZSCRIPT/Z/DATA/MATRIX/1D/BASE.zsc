@@ -77,6 +77,13 @@ class ZVector:ZMatrixBase{
         return Result;
     }
 
+    ZVector SMultiply(double Multiplier){
+        ZVector Result=ZVector.Create(__Length__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i]*Multiplier;
+        return Result;
+    }
+
     ZVector SExponent(double Degree){
         ZVector Result=ZVector.Create(__Length__);
         for(int i=0; i<Values.Size(); i++)
