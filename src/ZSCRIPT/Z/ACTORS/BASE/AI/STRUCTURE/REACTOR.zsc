@@ -1,4 +1,4 @@
-class ZReactor abstract{
+class ZReactor play abstract{
     private
     double __Strength__;
 

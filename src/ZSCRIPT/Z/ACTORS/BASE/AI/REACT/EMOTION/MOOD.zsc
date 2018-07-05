@@ -1,11 +1,13 @@
 class ZMood play{
     const DIMENSIONCOUNT=3;
 
-    ZVector Dimensions;
+    ZVector Dimensions,
+            Ideal;
 
     static
     ZMood Create(ZPersonality Personality){
         ZMood Result=new('ZMood');
+        Result.Ideal=Personality.ToPAD();
         Result.Dimensions=Personality.ToPAD();
         return Result;
     }

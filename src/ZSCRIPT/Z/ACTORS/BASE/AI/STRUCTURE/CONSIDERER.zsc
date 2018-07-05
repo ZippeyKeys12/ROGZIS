@@ -13,8 +13,11 @@ class ZConsiderer{
         return self;
     }
 
-    void ID(uint Index, Name ID)
+    void SetID(uint Index, Name ID)
     {Considerations[Index]=ID;}
+
+    Name GetID(uint Index)
+    {return Considerations[Index];}
 
     Name Consider(ZMatrix2 Rewards){
         if(Rewards.Height()!=Considerations.Size()){

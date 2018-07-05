@@ -16,16 +16,15 @@ class ZPathos:ZLobe{
         Result.Mood=ZMood.Create(Result.Personality);
         Result.Emotion=ZEmotion(ZFSM.Create(EmotionName, 'Neutral'));
         Result.Sentiments=new('ZSentiments');
-        ZEventManager.Instance().SterReactor(Result);
         return Result;
     }
 
-    override
-    void Tick(){
-        super.Tick();
-        //Mood.Tick();
-        Emotion.Tick();
-    }
+    // override
+    // void Think(){
+    //     super.Tick();
+    //     //Mood.Tick();
+    //     Emotion.Tick();
+    // }
 
     ZPathos Clone(){
         ZPathos Result=new('ZPathos');

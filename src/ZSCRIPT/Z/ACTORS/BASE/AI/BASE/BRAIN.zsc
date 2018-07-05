@@ -1,21 +1,58 @@
-class ZBrain play abstract{
+class ZBrain:ZReactor abstract{
     ZActor Owner;
 
     ZStack Stack;
 
-    Array<ZUtility> Considerations;
+    Array<ZSensorLobe> __Sense__;
+    Array<ZPlannerLobe> __Plan__;
+    Array<ZActuatorLobe> __Act__;
+
+    static
+    ZBrain Create(Class<ZBrain> Type, ZActor Owner){
+        ZBrain Result=ZBrain(new(Type));
+        Result.Owner=Owner;
+        Result.Stack=new('ZStack');
+        return Result;
+    }
+
+    // TODO: Solidify architecture of lobe interaction
+    override
+    bool React(ZStimulus Stim)
+    {return Think(Stim);}
 
     virtual
-    ZBrain Init(ZActor Owner){
-        self.Owner=Owner;
-        Stack=new('ZStack');
-        return self;
+    bool Think(ZStimulus Stim=null)
+    {return Act(Plan(Sense(Stim)));}
+
+    virtual
+    ZStimulus Sense(ZStimulus Stim=null){
+        ZStimulus Result;
+        for(int i=0; i<__Sense__.Size(); i++){
+            Result=__Sense__[i].Sense(Owner, Stim);
+            if(Result)
+                return Result;
+        }
+        return null;
     }
 
     virtual
-    void Consider(){}
+    Name Plan(ZStimulus Stim){
+        Name PlanOAction='';
+        for(int i=0; i<__Plan__.Size(); i++){
+            PlanOAction=__Plan__[i].Plan(Stim);
+            if(PlanOAction)
+                return PlanOAction;
+        }
+        return '';
+    }
 
     virtual
-    Name State()
-    {return Stack.Peek();}
+    bool Act(Name PlanOAction){
+        bool Acted;
+        for(int i=0; i<__Act__.Size(); i++){
+            if(__Act__[i].Act(Owner, PlanOAction))
+                Acted=true;
+        }
+        return Acted;
+    }
 }

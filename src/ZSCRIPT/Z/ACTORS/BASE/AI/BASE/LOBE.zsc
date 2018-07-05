@@ -1,1 +1,25 @@
-class ZLobe:ZReactor play abstract{}
+class ZLobe play abstract{
+    virtual
+    void Think(){}
+
+    virtual
+    void Tick(){}
+}
+
+class ZSensorLobe:ZLobe abstract{
+    virtual
+    ZStimulus Sense(ZActor This, ZStimulus Stim=null)
+    {return null;}
+}
+
+class ZPlannerLobe:ZLobe abstract{
+    virtual
+    Name Plan(ZStimulus Stim)
+    {return '';}
+}
+
+class ZActuatorLobe:ZLobe abstract{
+    virtual
+    bool Act(ZActor This, Name PlanOAction)
+    {return false;}
+}
