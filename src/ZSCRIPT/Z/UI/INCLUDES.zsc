@@ -1,6 +1,8 @@
+// Framework
+#include "ZSCRIPT/Z/UI/FRAMEWORK/ELEMENT.zsc"
+#include "ZSCRIPT/Z/UI/FRAMEWORK/COMPONENT.zsc"
+
 // Component
-#include "ZSCRIPT/Z/UI/COMPONENTS/ELEMENT.zsc"
-#include "ZSCRIPT/Z/UI/COMPONENTS/COMPONENT.zsc"
 
 // HUD
 #include "ZSCRIPT/Z/UI/HUD/BASE.zsc"

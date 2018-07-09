@@ -1,4 +1,4 @@
-class ZElement{
+class ZElement ui{
     private
     Vector2 Scale;
 
@@ -34,4 +34,16 @@ class ZElement{
 
     Vector2 Rel2AbsPos(Vector2 DesPos)
     {return (Parent)?Parent.RelPos(AABB.Pos+DesPos):DesPos;}
+
+    virtual
+    void Draw(){}
+
+    virtual
+    void Tick(){}
+
+    virtual
+    void OnUIEvent(UIEvent e){}
+
+    virtual
+    void OnInputEvent(InputEvent e){}
 }
