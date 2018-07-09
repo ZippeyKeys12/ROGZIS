@@ -1,0 +1,18 @@
+class ZElement{
+    protected
+    ZComponent Parent;
+
+    ZRectangle __Area__;
+
+    static
+    ZElement Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null){
+        ZElement Result=new('ZElement');
+        Result.__Area__=ZRectangle.Create(Pos, Size);
+        if(Parent)
+            Result.Parent=Parent;
+        return Result;
+    }
+
+    ZRectangle Area()
+    {return __Area__.Clone();}
+}

@@ -1,0 +1,29 @@
+class ZRectangle{
+    Vector2 Pos,
+            Size;
+
+    static
+    ZRectangle Create(Vector2 Pos, Vector2 Size){
+        ZRectangle Result=new('ZRectangle');
+        Result.Pos=Pos;
+        Result.Size=Size;
+        return Result;
+    }
+
+    static
+    ZRectangle FromCorners(Vector2 TL, Vector2 BR)
+    {return Create(TL, (TL.X-BR.X, TL.Y-BR.Y));}
+
+    double Get(Name Corner){
+        switch(Corner){
+            case 'Top':     return Pos.Y;
+            case 'Right':   return Pos.X+Size.X;
+            case 'Bottom':  return Pos.Y+Size.Y;
+            case 'Left':    return Pos.X;
+            default:        return 0;
+        }
+    }
+
+    ZRectangle Clone()
+    {return Create(Pos, Size);}
+}

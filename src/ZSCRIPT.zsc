@@ -16,6 +16,7 @@
 #include "ZSCRIPT/Z/DATA/PERLIN.zsc"
 #include "ZSCRIPT/Z/DATA/MAPPER.zsc"
 #include "ZSCRIPT/Z/DATA/GAUSSIAN.zsc"
+#include "ZSCRIPT/Z/DATA/RECTANGLE.zsc"
 #include "ZSCRIPT/Z/DATA/REGISTRIES.zsc"
 #include "ZSCRIPT/Z/DATA/PARSER_TSV.zsc"
 #include "ZSCRIPT/Z/DATA/QUATERNION.zsc"
@@ -24,7 +25,7 @@
 #include "ZSCRIPT/Z/DATA/MATRIX/BASE.zsc"
 
 // UI
-#include "ZSCRIPT/Z/UI/HUD.zsc"
+#include "ZSCRIPT/Z/UI/INCLUDES.zsc"
 
 // PLAYER
 #include "ZSCRIPT/Z/PLYR/INCLUDES.zsc"

@@ -1,0 +1,41 @@
+class ZStatusBar:BaseStatusBar{
+    const NOTIFSCALE=.4;
+
+    ZMarine PlayerInst;
+
+    ZBroadcaster Broadcaster;
+
+    override
+    void NewGame(){
+        super.NewGame();
+        Broadcaster=ZBroadcaster.Instance();
+    }
+
+    override
+    void Init(){
+        super.Init();
+        SetSize(0, 640, 480);
+    }
+
+    override
+    void DrawAutomapHUD(double ticFrac){
+        DoDrawAutomapHUD(Font.CR_RED, Font.CR_UNTRANSLATED);
+    }
+
+    override
+    void Draw (int state, double TicFrac){
+        super.Draw(state, TicFrac);
+        BeginHUD();
+        DrawStats();
+        DrawDebug();
+        int VWidth=Screen.GetWidth()*.2,
+            VHeight=Screen.GetHeight()*.2;
+        Screen.DrawText(SmallFont, 5, VWidth/2-SmallFont.StringWidth("Wassup!!!")/2, 10, "Wassup!!!", DTA_VirtualWidth, VWidth, DTA_VirtualHeight, VHeight);
+    }
+
+    override
+    void Tick(){
+        super.Tick();
+        UpdateStats();
+    }
+}

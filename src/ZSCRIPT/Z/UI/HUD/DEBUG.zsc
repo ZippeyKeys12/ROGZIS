@@ -1,0 +1,20 @@
+extend
+class ZStatusBar{
+    void DrawDebug(){
+        DebugStats();
+    }
+
+    void DebugStats(){
+        int VWidth=Screen.GetWidth()*NOTIFSCALE,
+            VHeight=Screen.GetHeight()*NOTIFSCALE;
+        for(uint Index=0; Index<Min(Broadcaster.Notifs.Size(), 5); Index++)
+            Screen.DrawText(SmallFont, 5, VWidth-SmallFont.StringWidth(Broadcaster.Notifs[Index]), SmallFont.GetHeight()*(.25+Index*1.25), Broadcaster.Notifs[Index], DTA_VirtualWidth, VWidth, DTA_VirtualHeight, VHeight);
+    }
+
+    void DrawNotifications(){
+        int VWidth=Screen.GetWidth()*NOTIFSCALE,
+            VHeight=Screen.GetHeight()*NOTIFSCALE;
+        for(uint Index=0; Index<Min(Broadcaster.Notifs.Size(), 5); Index++)
+            Screen.DrawText(SmallFont, 5, VWidth+312.5*NOTIFSCALE-SmallFont.StringWidth(Broadcaster.Notifs[Index]), SmallFont.GetHeight()*(.25+Index*1.25), Broadcaster.Notifs[Index], DTA_VirtualWidth, VWidth, DTA_VirtualHeight, VHeight);
+    }
+}
