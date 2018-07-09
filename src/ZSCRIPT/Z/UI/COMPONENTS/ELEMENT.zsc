@@ -1,18 +1,37 @@
 class ZElement{
-    protected
+    private
+    Vector2 Scale;
+
+    private
     ZComponent Parent;
 
-    ZRectangle __Area__;
+    ZRectangle AABB;
 
     static
     ZElement Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null){
         ZElement Result=new('ZElement');
-        Result.__Area__=ZRectangle.Create(Pos, Size);
-        if(Parent)
+        Result.Scale=(1, 1);
+        if(Parent){
             Result.Parent=Parent;
+            Parent.Elements.Push(Result);
+            Result.Scale=Parent.Scale;
+        }
+        Result.AABB=ZRectangle.Create(Pos, Size);
         return Result;
     }
 
-    ZRectangle Area()
-    {return __Area__.Clone();}
+    double Height()
+    {return AABB.Height();}
+
+    double Width()
+    {return AABB.Width();}
+
+    ZRectangle BoundingBox()
+    {return AABB.Clone();}
+
+    Vector2 ScaledScreenSize()
+    {return (Screen.GetWidth()/Scale.X, Screen.GetHeight()/Scale.Y);}
+
+    Vector2 Rel2AbsPos(Vector2 DesPos)
+    {return (Parent)?Parent.RelPos(AABB.Pos+DesPos):DesPos;}
 }

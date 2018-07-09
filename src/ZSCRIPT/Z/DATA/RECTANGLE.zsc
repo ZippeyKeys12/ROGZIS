@@ -1,4 +1,6 @@
+// TODO: Rename to ZAABB if non-axis aligned rectangles are needed
 class ZRectangle{
+    private
     Vector2 Pos,
             Size;
 
@@ -14,15 +16,24 @@ class ZRectangle{
     ZRectangle FromCorners(Vector2 TL, Vector2 BR)
     {return Create(TL, (TL.X-BR.X, TL.Y-BR.Y));}
 
+    double Height()
+    {return Size.Y;}
+
+    double Width()
+    {return Size.X;}
+
     double Get(Name Corner){
         switch(Corner){
+            case 'Left':    return Pos.X;
             case 'Top':     return Pos.Y;
             case 'Right':   return Pos.X+Size.X;
             case 'Bottom':  return Pos.Y+Size.Y;
-            case 'Left':    return Pos.X;
             default:        return 0;
         }
     }
+
+    bool IsInRectangle(Vector2 Point)
+    {return Get('Left')<Point.X && Point.X<Get('Right') && Get('Top')<Point.Y && Point.Y<Get('Bottom');}
 
     ZRectangle Clone()
     {return Create(Pos, Size);}
