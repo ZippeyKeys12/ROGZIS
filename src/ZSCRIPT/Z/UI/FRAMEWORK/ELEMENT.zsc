@@ -1,9 +1,11 @@
-class ZElement ui{
+class ZElement ui abstract{
     protected
     Vector2 __Scale__;
 
     protected
     ZComponent Parent;
+
+    ZDrawer Drawer;
 
     ZRectangle AABB;
 
@@ -16,6 +18,7 @@ class ZElement ui{
             Parent.Elements.Push(Result);
             Result.__Scale__=Parent.__Scale__;
         }
+        Result.Drawer=ZDrawer.Create(Result);
         Result.AABB=ZRectangle.Create(Pos, Size);
         return Result;
     }
@@ -48,10 +51,10 @@ class ZElement ui{
     {return (Parent)?Parent.Rel2VirtualPos(AABB.Pos+DesPos):DesPos;}
 
     void OnDraw(){
-        int Temp1, Temp2, Temp3, Temp4=Screen.GetClipRect();
-        ZDrawer.SetClipRect(AbsBounds());
+        // int Temp1, Temp2, Temp3, Temp4=Screen.GetClipRect();
+        // ZDrawer.SetClipRect(AbsBounds());
         Draw();
-        Screen.SetClipRect(Temp1, Temp2, Temp3, Temp4);
+        // Screen.SetClipRect(Temp1, Temp2, Temp3, Temp4);
     }
 
     virtual

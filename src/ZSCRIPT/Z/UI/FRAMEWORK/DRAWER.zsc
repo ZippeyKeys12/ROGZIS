@@ -12,9 +12,21 @@ class ZDrawer ui{
     void SetClipRect(ZRectangle Rectangle)
     {return Screen.SetClipRect(Rectangle.Pos.X, Rectangle.Pos.Y, Rectangle.Size.X, Rectangle.Size.Y);}
 
-    void DrawTexture(TextureID Tex, bool Animate, Vector2 Pos){
+    void DrawTexture(TextureID Tex, int NewHeight=0, int NewWidth=0, double Alpha=256, bool FlipX=false, bool FlipY=false, bool Animate=false, Vector2 Pos=(0, 0)){
+        if(!Tex.IsValid())
+            return;
         Pos=Element.Rel2VirtualPos(Pos);
-        Vector2 Scale=Element.Scale();
-        Screen.DrawTexture(Tex, Animate, Pos.X/Scale.X, Pos.Y/Scale.Y, DTA_VirtualWidthF, Screen.GetWidth()/Scale.X, DTA_VirtualHeightF, Screen.GetHeight()/Scale.Y, DTA_KeepRatio, true);
+        Vector2 Scale=Element.Scale(),
+                Size=TexMan.GetScaledSize(Tex);
+        Screen.DrawTexture(Tex, Animate, Pos.X/Scale.X, Pos.Y/Scale.Y,
+            DTA_Alpha, Alpha,
+            DTA_FlipX, FlipX,
+            DTA_FlipY, FlipY,
+            DTA_DestHeight, int((NewHeight)?NewHeight:Size.Y),
+            DTA_DestWidth, int((NewWidth)?NewWidth:Size.X),
+            DTA_VirtualHeightF, Screen.GetHeight()/Scale.Y,
+            DTA_VirtualWidthF, Screen.GetWidth()/Scale.X,
+            DTA_KeepRatio, true
+        );
     }
 }

@@ -8,13 +8,13 @@ class ZStatusBar{
         int VWidth=Screen.GetWidth()*NOTIFSCALE,
             VHeight=Screen.GetHeight()*NOTIFSCALE;
         for(uint Index=0; Index<Min(Broadcaster.Notifs.Size(), 5); Index++)
-            Screen.DrawText(SmallFont, 5, VWidth-SmallFont.StringWidth(Broadcaster.Notifs[Index]), SmallFont.GetHeight()*(.25+Index*1.25), Broadcaster.Notifs[Index], DTA_VirtualHeight, VHeight, DTA_VirtualWidth, VWidth);
+            Screen.DrawText(SmallFont, Font.CR_GOLD, VWidth-SmallFont.StringWidth(Broadcaster.Notifs[Index]), SmallFont.GetHeight()*(.25+Index*1.25), Broadcaster.Notifs[Index], DTA_VirtualHeight, VHeight, DTA_VirtualWidth, VWidth);
     }
 
     void DrawNotifications(){
         int VWidth=Screen.GetWidth()*NOTIFSCALE,
             VHeight=Screen.GetHeight()*NOTIFSCALE;
         for(uint Index=0; Index<Min(Broadcaster.Notifs.Size(), 5); Index++)
-            Screen.DrawText(SmallFont, 5, VWidth+312.5*NOTIFSCALE-SmallFont.StringWidth(Broadcaster.Notifs[Index]), SmallFont.GetHeight()*(.25+Index*1.25), Broadcaster.Notifs[Index], DTA_VirtualHeight, VHeight, DTA_VirtualWidth, VWidth);
+            Screen.DrawText(SmallFont, Font.CR_GOLD, VWidth+312.5*NOTIFSCALE-SmallFont.StringWidth(Broadcaster.Notifs[Index]), SmallFont.GetHeight()*(.25+Index*1.25), Broadcaster.Notifs[Index], DTA_VirtualHeight, VHeight, DTA_VirtualWidth, VWidth);
     }
 }

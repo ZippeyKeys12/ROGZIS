@@ -30,7 +30,6 @@ class ZStatusBar{
         // DrawImage("BARDVDR1", (320, -29));
         // Energy528
         DrawBar("BDYNRGY1", "TNT1A0", energy.getValue(), eMax, (-110.5, -8.5), 0, 0);
-        DrawBar("BDYARMR1", "TNT1A0", energy.getValue(), eMax, (-110.5, -8.5), 0, 0);
         // if(!(PlayerInst.shield>=sMax && PlayerInst.energy>=eMax))
         // {DrawBar("BDYNRGY2", "BDYNRGYO", erMax-energyRecharger.getValue(), erMax, (-110.5, -7.5), 0, 0);}
     }

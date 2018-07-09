@@ -4,6 +4,7 @@
 #include "ZSCRIPT/Z/UI/FRAMEWORK/COMPONENT.zsc"
 
 // Component
+#include "ZSCRIPT/Z/UI/COMPONENTS/BOX.zsc"
 
 // HUD
 #include "ZSCRIPT/Z/UI/HUD/BASE.zsc"

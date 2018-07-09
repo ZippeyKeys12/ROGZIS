@@ -1,0 +1,41 @@
+class ZBox:ZElement{
+    TextureID Corner,
+              Edge,
+              Fill;
+
+    static
+    ZBox Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null){
+        ZBox Result=ZBox(ZElement.Create(Pos, Size, Parent, 'ZBox'));
+        Result.Corner=TexMan.CheckForTexture('HUDCNR', TexMan.TYPE_MiscPatch);
+        Result.Edge=TexMan.CheckForTexture('HUDEDGE', TexMan.TYPE_MiscPatch);
+        Result.Fill=TexMan.CheckForTexture('HUDFILL', TexMan.TYPE_MiscPatch);
+        return Result;
+    }
+
+    override
+    void Draw(){
+        Vector2 CornerSize=TexMan.GetScaledSize(Corner);
+        // Top-Left
+        Drawer.DrawTexture(Corner, Alpha: .7*256, FlipX: true, Pos: AABB.Pos);
+        // Top-Right
+        Drawer.DrawTexture(Corner, Alpha: .7*256, Pos: AABB.Pos+(AABB.Size.X-CornerSize.X, 0));
+        // Bottom-Left
+        Drawer.DrawTexture(Corner, Alpha: .7*256, FlipX: true, FlipY: true, Pos: AABB.Pos+(0, AABB.Size.Y-CornerSize.Y));
+        // Bottom-Right
+        Drawer.DrawTexture(Corner, Alpha: .7*256, FlipY: true, Pos: AABB.Pos+(AABB.Size.X-CornerSize.X, AABB.Size.Y-CornerSize.Y));
+        // Top Edge
+        Drawer.DrawTexture(Edge, NewWidth: AABB.Size.X-2*CornerSize.X, Alpha: .7*256, Pos: AABB.Pos+(CornerSize.X, 0));
+        // Bottom Edge
+        Drawer.DrawTexture(Edge, NewWidth: AABB.Size.X-2*CornerSize.X, Alpha: .7*256, Pos: AABB.Pos+(CornerSize.X, AABB.Size.Y-1));
+        // Left Edge
+        Drawer.DrawTexture(Edge, NewHeight: AABB.Size.Y-2*CornerSize.Y, Alpha: .7*256, Pos: AABB.Pos+(0, CornerSize.Y));
+        // Right Edge
+        Drawer.DrawTexture(Edge, NewHeight: AABB.Size.Y-2*CornerSize.Y, Alpha: .7*256, Pos: AABB.Pos+(AABB.Size.X-1, CornerSize.Y));
+        // Main Fill
+        Drawer.DrawTexture(Fill, AABB.Size.Y-1, AABB.Size.X-2*CornerSize.X, Pos: AABB.Pos+(CornerSize.X, 1));
+        // Left Fill
+        Drawer.DrawTexture(Fill, AABB.Size.Y-2*CornerSize.Y, CornerSize.X-1, Pos: AABB.Pos+(1, CornerSize.Y));
+        // Right Fill
+        Drawer.DrawTexture(Fill, AABB.Size.Y-2*CornerSize.Y, CornerSize.X-1, Pos: AABB.Pos+(AABB.Size.X-CornerSize.X, CornerSize.Y));
+    }
+}
