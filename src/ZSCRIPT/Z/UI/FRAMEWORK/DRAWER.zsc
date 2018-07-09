@@ -1,0 +1,20 @@
+class ZDrawer ui{
+    ZElement Element;
+
+    static
+    ZDrawer Create(ZElement Element){
+        ZDrawer Result=new('ZDrawer');
+        Result.Element=Element;
+        return Result;
+    }
+
+    static
+    void SetClipRect(ZRectangle Rectangle)
+    {return Screen.SetClipRect(Rectangle.Pos.X, Rectangle.Pos.Y, Rectangle.Size.X, Rectangle.Size.Y);}
+
+    void DrawTexture(TextureID Tex, bool Animate, Vector2 Pos){
+        Pos=Element.Rel2VirtualPos(Pos);
+        Vector2 Scale=Element.Scale();
+        Screen.DrawTexture(Tex, Animate, Pos.X/Scale.X, Pos.Y/Scale.Y, DTA_VirtualWidthF, Screen.GetWidth()/Scale.X, DTA_VirtualHeightF, Screen.GetHeight()/Scale.Y, DTA_KeepRatio, true);
+    }
+}

@@ -1,20 +1,20 @@
 class ZElement ui{
-    private
-    Vector2 Scale;
+    protected
+    Vector2 __Scale__;
 
-    private
+    protected
     ZComponent Parent;
 
     ZRectangle AABB;
 
     static
-    ZElement Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null){
-        ZElement Result=new('ZElement');
-        Result.Scale=(1, 1);
+    ZElement Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null, Class<ZElement> ClassName='ZElement'){
+        ZElement Result=ZElement(new(ClassName));
+        Result.__Scale__=(1, 1);
         if(Parent){
             Result.Parent=Parent;
             Parent.Elements.Push(Result);
-            Result.Scale=Parent.Scale;
+            Result.__Scale__=Parent.__Scale__;
         }
         Result.AABB=ZRectangle.Create(Pos, Size);
         return Result;
@@ -26,14 +26,33 @@ class ZElement ui{
     double Width()
     {return AABB.Width();}
 
-    ZRectangle BoundingBox()
+    ZRectangle Bounds()
     {return AABB.Clone();}
 
+    Vector2 Scale()
+    {return __Scale__;}
+
+    ZRectangle AbsBounds()
+    {return ZRectangle.Create(AbsPos(), Rel2AbsPos(AABB.Pos+AABB.Size)-AbsPos());}
+
     Vector2 ScaledScreenSize()
-    {return (Screen.GetWidth()/Scale.X, Screen.GetHeight()/Scale.Y);}
+    {return (Screen.GetWidth()/__Scale__.X, Screen.GetHeight()/__Scale__.Y);}
+
+    Vector2 AbsPos()
+    {return (Parent)?Parent.Rel2AbsPos(AABB.Pos):Screen.VirtualToRealCoords(AABB.Pos, ZCalc.ScreenSize(), ScaledScreenSize());}
 
     Vector2 Rel2AbsPos(Vector2 DesPos)
-    {return (Parent)?Parent.RelPos(AABB.Pos+DesPos):DesPos;}
+    {return Screen.VirtualToRealCoords(Rel2VirtualPos(DesPos), ZCalc.ScreenSize(), ScaledScreenSize());}
+
+    Vector2 Rel2VirtualPos(Vector2 DesPos)
+    {return (Parent)?Parent.Rel2VirtualPos(AABB.Pos+DesPos):DesPos;}
+
+    void OnDraw(){
+        int Temp1, Temp2, Temp3, Temp4=Screen.GetClipRect();
+        ZDrawer.SetClipRect(AbsBounds());
+        Draw();
+        Screen.SetClipRect(Temp1, Temp2, Temp3, Temp4);
+    }
 
     virtual
     void Draw(){}
