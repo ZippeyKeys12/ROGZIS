@@ -16,7 +16,7 @@ class ZGaussian{
     ZGaussian Create(double Mean=0, double StdDev=1, int Seed=0){
         ZGaussian Result=new('ZGaussian');
         if(!Seed)
-            Seed=ZManager.RandSeed();
+            Seed=ZCalc.RandSeed();
         SetRandomSeed[GauseyBoi](Seed);
         Result.__Mean__=Mean;
         Result.__StdDev__=StdDev;

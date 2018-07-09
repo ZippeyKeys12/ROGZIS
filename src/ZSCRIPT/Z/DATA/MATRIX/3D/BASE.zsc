@@ -104,7 +104,7 @@ class ZMatrix3:ZMatrixBase{
     virtual
     ZMatrix3 Noise(double Floor, double Ceiling, int Seed=0) const{
         if(!Seed)
-            Seed=ZManager.RandSeed();
+            Seed=ZCalc.RandSeed();
         SetRandomSeed[NoiseyBoi](Seed);
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int Index=0; Index<Values.Size(); Index++)

@@ -358,7 +358,7 @@ class ZMatrix2:ZMatrixBase{
 
     ZMatrix2 Noise(double Floor=-1, double Ceiling=1, int Seed=0) const{
         if(!Seed)
-            Seed=ZManager.RandSeed();
+            Seed=ZCalc.RandSeed();
         SetRandomSeed[NoiseyBoi](Seed);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int Row=0; Row<__Height__; Row++)
