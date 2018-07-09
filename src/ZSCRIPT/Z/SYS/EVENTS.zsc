@@ -68,17 +68,17 @@ class ZEventManager:EventHandler{
         else Stimulus.Destroy();
     }
 
-    void SterReactor(ZReactor Reactor){
-        if(Reactors.Find(Reactor)!=Reactors.Size())
-            ZManager.Error("Reactor: "..Reactor.ID.." is Already Registered", ERR_ERROR);
-        Reactors.Push(Reactor);
-    }
-
     private
     bool Consumed(ZStimulus Stimulus){
         for(int i=0; i<Reactors.Size(); i++)
             if(Reactors[i].CurrStim==Stimulus)
                 return true;
         return false;
+    }
+
+    void SterReactor(ZReactor Reactor){
+        if(Reactors.Find(Reactor)!=Reactors.Size())
+            ZManager.Error("Reactor: "..Reactor.ID.." is Already Registered", ERR_ERROR);
+        Reactors.Push(Reactor);
     }
 }

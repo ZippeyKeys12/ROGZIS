@@ -1,9 +1,15 @@
-class ZEventBroadcaster:StaticEventHandler{
+class ZBroadcaster:StaticEventHandler{
+    Array<String> Notifs;
     Array<ZEventHandler> Handlers;
 
     static
-    ZEventBroadcaster Instance()
-    {return ZEventBroadcaster(EventHandler.Find("ZEventBroadcaster"));}
+    clearscope
+    ZBroadcaster Instance()
+    {return ZBroadcaster(EventHandler.Find("ZBroadcaster"));}
+
+    static
+    void Notification(String NotificationText)
+    {Instance().Notifs.Push(NotificationText);}
 
     void Register(ZEventHandler Handler){
         if(Handlers.Find(Handler)!=Handlers.Size()){
@@ -20,19 +26,18 @@ class ZEventBroadcaster:StaticEventHandler{
         Handlers.Push(Handler);
     }
 
-    void Unregister(ZEventHandler EventHandler){
-        Handlers.Delete(Handlers.Find(EventHandler));
-    }
+    void Unregister(ZEventHandler EventHandler)
+    {Handlers.Delete(Handlers.Find(EventHandler));}
 }
 
 class ZEventHandler:EventHandler{
     override
     void OnRegister(){
-        ZEventBroadcaster.Instance().Register(self);
+        ZBroadcaster.Instance().Register(self);
     }
 
     override
     void OnUnregister(){
-        ZEventBroadcaster.Instance().Unregister(self);
+        ZBroadcaster.Instance().Unregister(self);
     }
 }
