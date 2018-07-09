@@ -31,14 +31,4 @@ class ZManager{
         Player.PitchShake=ZPerlin.Create(1000, 3);
         Player.RollShake=ZPerlin.Create(1000, 3);
     }
-
-    static
-    clearscope
-    int RandSeed(Object Caller=null)
-    {return Random(int.min, int.max)^((Caller)?int(Caller.GetClassName()):0);}
-
-    static
-    clearscope
-    int MapSeed(Object Caller=null)
-    {return UIInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
 }

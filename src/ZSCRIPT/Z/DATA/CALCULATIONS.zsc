@@ -1,13 +1,25 @@
 struct ZCalc{
-    ///////////////
-    // Constants //
-    ///////////////
+    //////////
+    // Data //
+    //////////
     const E=2.718281828459;
     const PI=3.14159265359;
 
     /////////////
     // Numbers //
     /////////////
+    static
+    Vector2 ScreenSize()
+    {return (Screen.GetWidth(), Screen.GetHeight());}
+
+    static
+    int RandSeed(Object Caller=null)
+    {return Random(int.min, int.max)^((Caller)?int(Caller.GetClassName()):0);}
+
+    static
+    int MapSeed(Object Caller=null)
+    {return ZManager.UIInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
+
     static
     bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
     {return Abs(FirstValue-SecondValue)<=Epsilon;}
@@ -36,7 +48,7 @@ struct ZCalc{
 
     static
     int Round(double Value)
-    {return (Value%1>=.5)?Ceil(Value):Floor(Value);}
+    {return (Abs(Value%1)>=.5)?Ceil(Value):Floor(Value);}
 
     static
     double NormRange(double Value)
