@@ -39,7 +39,7 @@ class ZBox:ZElement{
              BL=Sides & BOX_BL,
              BR=Sides & BOX_BR;
         Drawer.DrawTexture(Edge, NewWidth: AABB.Size.X-CornerSize.X*(TL+TR)-!TL-!TR, Alpha: Alpha, Pos: AABB.Pos+(!TL+TL*CornerSize.X, 0));
-        Drawer.DrawTexture(Fill, AABB.Size.Y-TL-TR-BL-BR, AABB.Size.X-2*CornerSize.X, Alpha: Alpha, Pos: AABB.Pos+(CornerSize.X, 1));
+        Drawer.DrawTexture(Fill, AABB.Size.Y-2*(TL || TR || BL || BR), AABB.Size.X-2*CornerSize.X, Alpha: Alpha, Pos: AABB.Pos+(CornerSize.X, 1));
         Drawer.DrawTexture(Edge, AABB.Size.Y-CornerSize.Y*(TL+BL)-!TL-!BL, Alpha: Alpha, Pos: AABB.Pos+(0, !TL+TL*CornerSize.Y));
         Drawer.DrawTexture(Fill, AABB.Size.Y-CornerSize.Y*(TL+BL)-!TL-!BL, CornerSize.X-1, Alpha: Alpha, Pos: AABB.Pos+(1, !TL+TL*CornerSize.Y));
         Drawer.DrawTexture(Edge, AABB.Size.Y-CornerSize.Y*(TR+BR)-!TR-!BR, Alpha: Alpha, Pos: AABB.Pos+(AABB.Size.X-1, !TR+TR*CornerSize.Y));
