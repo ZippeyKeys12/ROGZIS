@@ -5,7 +5,7 @@ class ZStatusBar:BaseStatusBar{
 
     ZBroadcaster Broadcaster;
 
-    ZBox Box;
+    Array<ZElement> Elements;
 
     override
     void NewGame(){
@@ -17,7 +17,7 @@ class ZStatusBar:BaseStatusBar{
     void Init(){
         super.Init();
         SetSize(0, 640, 480);
-        Box=ZBox.Create((100, 100), (100, 100));
+        Elements.Push(ZBox.Create((1000, 500), (100, 100), .7));
     }
 
     override
@@ -30,19 +30,18 @@ class ZStatusBar:BaseStatusBar{
         BeginHUD();
         DrawStats();
         DrawDebug();
-        DrawBox();
         int VWidth=Screen.GetWidth()*.2,
             VHeight=Screen.GetHeight()*.2;
         Screen.DrawText(SmallFont, Font.CR_GOLD, VWidth/2-SmallFont.StringWidth("Wassup!!!")/2, 10, "Wassup!!!", DTA_VirtualWidth, VWidth, DTA_VirtualHeight, VHeight);
-    }
-
-    void DrawBox(){
-        Box.OnDraw();
+        for(int i=0; i<Elements.Size(); i++)
+            Elements[i].OnDraw();
     }
 
     override
     void Tick(){
         super.Tick();
         UpdateStats();
+        for(int i=0; i<Elements.Size(); i++)
+            Elements[i].Tick();
     }
 }
