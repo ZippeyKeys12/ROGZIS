@@ -51,10 +51,7 @@ class ZElement ui abstract{
     {return (Parent)?Parent.Rel2VirtualPos(AABB.Pos+DesPos):DesPos;}
 
     void OnDraw(){
-        // int Temp1, Temp2, Temp3, Temp4=Screen.GetClipRect();
-        // ZDrawer.SetClipRect(AbsBounds());
         Draw();
-        // Screen.SetClipRect(Temp1, Temp2, Temp3, Temp4);
     }
 
     virtual
