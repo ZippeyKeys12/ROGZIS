@@ -12,7 +12,7 @@ class ZDrawer ui{
     void SetClipRect(ZRectangle Rectangle)
     {return Screen.SetClipRect(Rectangle.Pos.X, Rectangle.Pos.Y, Rectangle.Size.X, Rectangle.Size.Y);}
 
-    void DrawTexture(TextureID Tex, int NewHeight=0, int NewWidth=0, double Alpha=256, bool FlipX=false, bool FlipY=false, bool Animate=false, Vector2 Pos=(0, 0)){
+    void DrawTexture(TextureID Tex, int NewHeight=0, int NewWidth=0, double Alpha=1, bool FlipX=false, bool FlipY=false, bool Animate=false, Vector2 Pos=(0, 0)){
         if(!Tex.IsValid())
             return;
         Pos=Element.Rel2VirtualPos(Pos);
