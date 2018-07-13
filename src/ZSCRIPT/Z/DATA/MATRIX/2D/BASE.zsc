@@ -358,7 +358,7 @@ class ZMatrix2:ZMatrixBase{
 
     ZMatrix2 Noise(double Floor=-1, double Ceiling=1, int Seed=0) const{
         if(!Seed)
-            Seed=ZCalc.RandSeed();
+            Seed=ZUtil.RandSeed();
         SetRandomSeed[NoiseyBoi](Seed);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int Row=0; Row<__Height__; Row++)
@@ -378,7 +378,7 @@ class ZMatrix2:ZMatrixBase{
             for(int j=0; j<__Width__; j++){
                 int j1=(j/Period)*Period,
                     j2=(j1+Period)%__Width__;
-                Result.Set(i, j, ZCalc.Lerp((j-j1)*Frequency, ZCalc.Lerp(HBlend, Get(i1, j1), Get(i2, j1)), ZCalc.Lerp(HBlend, Get(i1, j2), Get(i2, j2))));
+                Result.Set(i, j, ZCalc_S.Lerp((j-j1)*Frequency, ZCalc_S.Lerp(HBlend, Get(i1, j1), Get(i2, j1)), ZCalc_S.Lerp(HBlend, Get(i1, j2), Get(i2, j2))));
             }
         }
         return Result;

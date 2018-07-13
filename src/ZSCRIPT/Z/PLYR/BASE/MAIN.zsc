@@ -24,11 +24,14 @@ class ZPlayer:PlayerPawn{
         Stats.ActualPitch=Pitch;
         Stats.ActualYaw=Angle;
         Stats.ActualRoll=Roll;
+        ZBroadcaster.Notification("You feel sated");
+        ZBroadcaster.Notification("Your throat feels dry");
+        ZBroadcaster.Notification("The sun is shining, it's a beautiful day");
     }
 
     virtual
     void AddScreenShake(double Amount)
-    {Stats.Shake=ZCalc.NormRange(Stats.Shake+Amount);}
+    {Stats.Shake=Clamp(Stats.Shake+Amount, 0, 1);}
 
     override
     void Tick(){

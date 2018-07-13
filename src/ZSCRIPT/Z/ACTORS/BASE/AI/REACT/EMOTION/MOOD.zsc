@@ -16,23 +16,23 @@ class ZMood play{
     {return Dimensions.Clone();}
 
     Name Subspace(){
-        switch(ZCalc.Sign(Dimensions.Get(0))){
-            case  1: switch(ZCalc.Sign(Dimensions.Get(1))){
-                case  1: switch(ZCalc.Sign(Dimensions.Get(2))){
+        switch(ZCalc_S.Sign(Dimensions.Get(0))){
+            case  1: switch(ZCalc_S.Sign(Dimensions.Get(1))){
+                case  1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Exuberant';
                     case -1: return 'Dependent';
                 }
-                case -1: switch(ZCalc.Sign(Dimensions.Get(2))){
+                case -1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Relaxed';
                     case -1: return 'Docile';
                 }
             }
-            case -1: switch(ZCalc.Sign(Dimensions.Get(1))){
-                case  1: switch(ZCalc.Sign(Dimensions.Get(2))){
+            case -1: switch(ZCalc_S.Sign(Dimensions.Get(1))){
+                case  1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Hostile';
                     case -1: return 'Anxious';
                 }
-                case -1: switch(ZCalc.Sign(Dimensions.Get(2))){
+                case -1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Disdainful';
                     case -1: return 'Bored';
                 }
@@ -42,11 +42,11 @@ class ZMood play{
     }
 
     Name Expression(){
-        if(ZCalc.Sign(Dimensions.Get(0))==1)
+        if(ZCalc_S.Sign(Dimensions.Get(0))==1)
             return 'Happy';
-        else if(ZCalc.Sign(Dimensions.Get(1))==-1)
+        else if(ZCalc_S.Sign(Dimensions.Get(1))==-1)
             return 'Sad';
-        else if(ZCalc.Sign(Dimensions.Get(2))==1)
+        else if(ZCalc_S.Sign(Dimensions.Get(2))==1)
             return 'Angry';
         else
             return 'Fearful';

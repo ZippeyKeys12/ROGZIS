@@ -38,12 +38,12 @@ class ZMarine:ZPlayer{
 
     override
     void HandleScreenShake(){
-        AddScreenShake(ZCalc.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
-        double CurrentShake=MStats.ShakeLevel*ZCalc.NormRange(ZCalc.SmoothStart(Stats.Shake));
+        AddScreenShake(ZCalc_S.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
+        double CurrentShake=MStats.ShakeLevel*Clamp(ZCalc_S.SmoothStart(Stats.Shake), 0, 1);
         if(CurrentShake>0){
-            ActiveYaw=CurrentShake*ZCalc.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
-            ActivePitch=CurrentShake*ZCalc.DRangeMap(PitchShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
-            ActiveRoll=CurrentShake*ZCalc.DRangeMap(RollShake.Get(Level.MapTime%1000, 1), 2, 7, -5, 5);
+            ActiveYaw=CurrentShake*ZCalc_S.DRangeMap(YawShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+            ActivePitch=CurrentShake*ZCalc_S.DRangeMap(PitchShake.Get(Level.MapTime%1000, 1), 2, 7, -2.5, 2.5);
+            ActiveRoll=CurrentShake*ZCalc_S.DRangeMap(RollShake.Get(Level.MapTime%1000, 1), 2, 7, -5, 5);
             AddScreenShake(-.02);
         }else ActiveYaw=ActivePitch=ActiveRoll=0;
     }

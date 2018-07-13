@@ -20,16 +20,16 @@ class ZDamageType:ZRegistryItem{
     ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZDamageInfo DamageFlags=DMG_NONE){
         self.ID=ID;
         self.Name=Name;
-        Factors[ZCalc.ShiftOf(AMR_PLATE)]=ArmorPlating;
-        Factors[ZCalc.ShiftOf(AMR_MAGNET)]=MagneticShield;
-        Factors[ZCalc.ShiftOf(AMR_SHIELD)]=PlasmaShield;
-        Factors[ZCalc.ShiftOf(AMR_LIGHT)]=HardLight;
+        Factors[ZCalc_S.ShiftOf(AMR_PLATE)]=ArmorPlating;
+        Factors[ZCalc_S.ShiftOf(AMR_MAGNET)]=MagneticShield;
+        Factors[ZCalc_S.ShiftOf(AMR_SHIELD)]=PlasmaShield;
+        Factors[ZCalc_S.ShiftOf(AMR_LIGHT)]=HardLight;
         self.DamageFlags=DamageFlags;
         return self;
     }
 
     double Factor(ZArmorInfo AMR_TYPE) const
-    {return Factors[ZCalc.ShiftOf(AMR_TYPE)];}
+    {return Factors[ZCalc_S.ShiftOf(AMR_TYPE)];}
 
     int Flags() const
     {return DamageFlags;}

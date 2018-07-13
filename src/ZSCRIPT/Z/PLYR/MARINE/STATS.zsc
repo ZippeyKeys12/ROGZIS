@@ -245,7 +245,7 @@ class ZMStats:Thinker{
         int PlateHit;
         // Armor Plating
         if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
-            TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
+            TempDamage*=1-Floor(PlateHit=PlateAbsorption*ZCalc_S.DRangeMap(Plate/MaxPlate, 0, 1, 0, 1.5));
             Plate=Max(Plate-PlateHit, 0);
         }
         return Ceil(TempDamage);

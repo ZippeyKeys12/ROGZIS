@@ -1,0 +1,22 @@
+struct ZUtil{
+    const E=2.718281828459;
+    const PI=3.14159265359;
+
+    static
+    Vector2 ScreenSize()
+    {return (Screen.GetWidth(), Screen.GetHeight());}
+
+    static
+    int RandSeed(Object Caller=null)
+    {return Random(int.min, int.max)^((Caller)?int(Caller.GetClassName()):0);}
+
+    static
+    int MapSeed(Object Caller=null)
+    {return ZManager.UIInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
+
+    static
+    bool Exists(String ClassName){
+        Class Type=ClassName;
+        return Type;
+    }
+}

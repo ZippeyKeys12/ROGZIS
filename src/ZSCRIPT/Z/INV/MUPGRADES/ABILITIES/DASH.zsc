@@ -35,7 +35,7 @@ class ZMAU_BoostDash{
                     if(Marine.NewButtons & BT_SPEED){
                         Stats.Energy-=DashCost;
                         int MidAirBoost=DashPower*!PlayerInfo.OnGround,
-                            Power=(PlayerInfo.OnGround?2:1)*DashPower*ZCalc.Alternate(i);
+                            Power=(PlayerInfo.OnGround?2:1)*DashPower*ZCalc_S.Alternate(i);
                         Marine.Vel.xy+=Power*((i>1)?-Marine.SideVector:Marine.ViewVector.xy.Unit());
                         Marine.Vel.z+=MidAirBoost;
                         DashCountdown=DashCooldown;

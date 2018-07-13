@@ -96,7 +96,7 @@ class ZQuaternion{
     double, double, double GetEulerAngles() const{
         double SinP=2*(W*Y-Z*X),
                YSquared=Y**2,
-               Pitch=(Abs(SinP)>=1)?ZCalc.TransferSign(90, SinP):ASin(SinP);
+               Pitch=(Abs(SinP)>=1)?ZCalc_S.TransferSign(90, SinP):ASin(SinP);
         if(Abs(Pitch)>=89.9999)return 2*ATan2(X, W), Pitch, 0;
         return ATan2(2*(W*Z+X*Y), 1-2*(YSquared+Z**2)), Pitch, ATan2(2*(W*X+Y*Z), 1-2*(YSquared+X**2));
     }

@@ -26,6 +26,6 @@ class ZNeuralLayer abstract{
     double Sigmoid(double X, bool Derivative=false){
         if(Derivative)
             return X*(1-X);
-        return 1/(1+ZCalc.E**-X);
+        return 1/(1+ZUtil.E**-X);
     }
 }

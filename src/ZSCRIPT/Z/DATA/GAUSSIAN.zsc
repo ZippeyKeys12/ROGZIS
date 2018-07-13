@@ -16,7 +16,7 @@ class ZGaussian{
     ZGaussian Create(double Mean=0, double StdDev=1, int Seed=0){
         ZGaussian Result=new('ZGaussian');
         if(!Seed)
-            Seed=ZCalc.RandSeed();
+            Seed=ZUtil.RandSeed();
         SetRandomSeed[GauseyBoi](Seed);
         Result.__Mean__=Mean;
         Result.__StdDev__=StdDev;
@@ -44,8 +44,8 @@ class ZGaussian{
                 u1=FRandom[GauseyBoi](0, 1);
                 u2=FRandom[GauseyBoi](0, 1);
             }while(u1<=double.epsilon);
-            double Gen=Sqrt(-2*Log(u1))*Cos(2*ZCalc.PI*u2);
-            PreGen=Sqrt(-2*Log(u1))*Sin(2*ZCalc.PI*u2);
+            double Gen=Sqrt(-2*Log(u1))*Cos(2*ZUtil.PI*u2);
+            PreGen=Sqrt(-2*Log(u1))*Sin(2*ZUtil.PI*u2);
             return Gen*__StdDev__+__Mean__;
         }
     }

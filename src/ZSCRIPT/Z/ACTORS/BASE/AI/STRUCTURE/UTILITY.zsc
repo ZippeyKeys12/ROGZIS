@@ -77,6 +77,6 @@ class ZUtilityAxis{
         }
         if(!YSign)
             Y=1-Y;
-        return ZCalc.NormRange(Y);
+        return Clamp(Y, 0, 1);
     }
 }
