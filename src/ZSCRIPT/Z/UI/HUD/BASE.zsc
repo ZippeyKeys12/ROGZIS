@@ -17,7 +17,7 @@ class ZStatusBar:BaseStatusBar{
     void Init(){
         super.Init();
         SetSize(0, 640, 480);
-        Elements.Push(ZBox.Create((100, 100), (500, 100), .7, BOX_TR|BOX_BR));
+        Elements.Push(ZBox.Create((100, 100), (500, 100), .7, BOX_TR));
     }
 
     override

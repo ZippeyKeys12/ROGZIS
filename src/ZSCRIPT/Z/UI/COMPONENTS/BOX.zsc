@@ -30,28 +30,31 @@ class ZBox:ZElement{
     override
     void Draw(){
         Vector2 CornerSize=TexMan.GetScaledSize(Corner);
-        bool Top=Sides & (BOX_TL | BOX_TR),
-             Left=Sides & (BOX_TL | BOX_BL),
-             Bottom=Sides & (BOX_BL | BOX_BR),
-             Right=Sides & (BOX_TR | BOX_BR),
-             TL=Sides & BOX_TL,
+        bool TL=Sides & BOX_TL,
              TR=Sides & BOX_TR,
              BL=Sides & BOX_BL,
              BR=Sides & BOX_BR;
-        Drawer.DrawTexture(Edge, Width: AABB.Size.X-CornerSize.X*(TL+TR)-!TL-!TR, Alpha: Alpha, Pos: AABB.Pos+(!TL+TL*CornerSize.X, 0));
-        Drawer.DrawTexture(Fill, AABB.Size.Y-2*(TL || TR || BL || BR), AABB.Size.X-2*CornerSize.X, Alpha: Alpha, Pos: AABB.Pos+(CornerSize.X, 1));
-        Drawer.DrawTexture(Edge, AABB.Size.Y-CornerSize.Y*(TL+BL)-!TL-!BL, Alpha: Alpha, Pos: AABB.Pos+(0, !TL+TL*CornerSize.Y));
-        Drawer.DrawTexture(Fill, AABB.Size.Y-CornerSize.Y*(TL+BL)-!TL-!BL, CornerSize.X-1, Alpha: Alpha, Pos: AABB.Pos+(1, !TL+TL*CornerSize.Y));
-        Drawer.DrawTexture(Edge, AABB.Size.Y-CornerSize.Y*(TR+BR)-!TR-!BR, Alpha: Alpha, Pos: AABB.Pos+(AABB.Size.X-1, !TR+TR*CornerSize.Y));
-        Drawer.DrawTexture(Fill, AABB.Size.Y-CornerSize.Y*(TR+BR)-!TR-!BR, CornerSize.X-1, Alpha: Alpha, Pos: AABB.Pos+(AABB.Size.X-CornerSize.X, !TR+TR*CornerSize.Y));
-        Drawer.DrawTexture(Edge, Width: AABB.Size.X-CornerSize.X*(BL+BR)-!BL-!BR, Alpha: Alpha, Pos: AABB.Pos+(!BL+BL*CornerSize.X, AABB.Size.Y-1));
+        double LeftLength=AABB.Size.Y-CornerSize.Y*(TL+BL)-!TL-!BL,
+               RightLength=AABB.Size.Y-CornerSize.Y*(TR+BR)-!TR-!BR,
+               LeftOffset=!TL+TL*CornerSize.Y,
+               RightOffset=!TR+TR*CornerSize.Y,
+               LenMinusCnr=AABB.Size.X-CornerSize.X,
+               HgtMinusCnr=AABB.Size.Y-CornerSize.Y,
+               CnrLenMinus1=CornerSize.X-1;
+        Drawer.DrawTexture(Edge, Width: AABB.Size.X-CornerSize.X*(TL+TR)-!TL-!TR, Alpha: Alpha, Pos: (!TL+TL*CornerSize.X, 0));
+        Drawer.DrawTexture(Fill, AABB.Size.Y-2*(TL || TR || BL || BR), AABB.Size.X-2*CornerSize.X, Alpha: Alpha, Pos: (CornerSize.X, 1));
+        Drawer.DrawTexture(Edge, LeftLength, Alpha: Alpha, Pos: (0, LeftOffset));
+        Drawer.DrawTexture(Fill, LeftLength, CnrLenMinus1, Alpha: Alpha, Pos: (1, LeftOffset));
+        Drawer.DrawTexture(Edge, RightLength, Alpha: Alpha, Pos: (AABB.Size.X-1, RightOffset));
+        Drawer.DrawTexture(Fill, RightLength, CnrLenMinus1, Alpha: Alpha, Pos: (LenMinusCnr, RightOffset));
+        Drawer.DrawTexture(Edge, Width: AABB.Size.X-CornerSize.X*(BL+BR)-!BL-!BR, Alpha: Alpha, Pos: (!BL+BL*CornerSize.X, AABB.Size.Y-1));
         if(TL)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true, Pos: AABB.Pos);
+            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true);
         if(TR)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, Pos: AABB.Pos+(AABB.Size.X-CornerSize.X, 0));
+            Drawer.DrawTexture(Corner, Alpha: Alpha, Pos: (LenMinusCnr, 0));
         if(BL)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true, FlipY: true, Pos: AABB.Pos+(0, AABB.Size.Y-CornerSize.Y));
+            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true, FlipY: true, Pos: (0, HgtMinusCnr));
         if(BR)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipY: true, Pos: AABB.Pos+(AABB.Size.X-CornerSize.X, AABB.Size.Y-CornerSize.Y));
+            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipY: true, Pos: (LenMinusCnr, HgtMinusCnr));
     }
 }
