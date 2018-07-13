@@ -1,3 +1,10 @@
+enum ZEUtilityType{
+    UTL_LINEAR,
+    UTL_POLYNOMIAL,
+    UTL_LOGISTIC,
+    UTL_LOGIT,
+}
+
 class ZUtility{
     Array<ZUtilityAxis> Axes;
 
@@ -29,12 +36,12 @@ class ZUtilityAxis{
 
     double Misc;
 
-    ZUtilityType Type;
+    ZEUtilityType Type;
 
     ZMapper Mapper;
 
     static
-    ZUtilityAxis Create(ZUtilityType Type, double Min, double Max, double Misc=0, int XSign=1, int YSign=1){
+    ZUtilityAxis Create(ZEUtilityType Type, double Min, double Max, double Misc=0, int XSign=1, int YSign=1){
         ZUtilityAxis Function=new('ZUtilityAxis');
         Function.XSign=XSign>0;
         Function.YSign=YSign>0;

@@ -1,3 +1,9 @@
+enum ZEPathType{
+    PATH_ALL,
+    PATH_LAND,
+    PATH_WATER,
+}
+
 class ZPathMarker:Actor{
     ZPathNode Node;
 

@@ -1,3 +1,8 @@
+enum ZEPSpriteType{
+    PSP_RWEAPON=PSP_WEAPON+1,
+    PSP_LWEAPON,
+}
+
 class ZPistol:Pistol{
     Default{+NOINTERACTION;}
     States{

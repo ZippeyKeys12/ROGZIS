@@ -3,97 +3,15 @@
 /////////////
 const TICRATE=35;
 
-enum ZTIDs{
+enum ZETIDs{
     ZTID_NODES  =   2000,
     ZTID_WEAPS,
 }
 
-enum ZErrorLevel{
-    ERR_INFO,
-    ERR_WARNING,
-    ERR_ERROR,
-    ERR_FATAL,
-}
-
-enum ZStatNum{
+enum ZEStatNum{
     // Thinkers that don't actually think
     STAT_STATIC =   Thinker.STAT_STATIC,    // Persists between levels
 
     // Ticking thinkers
     STAT_ZDATA  =   Thinker.STAT_USER,      // Thinkers storing world data
-}
-
-enum ZDamageInfo{
-    // Effects  -   Multiple
-    DMG_NONE    =   0,
-    DMG_ZONE    =   1<<0,
-}
-
-enum ZNodeType{}
-
-enum ZPathType{
-    PATH_ALL,
-    PATH_LAND,
-    PATH_WATER,
-}
-
-enum ZPSpriteType{
-    PSP_RWEAPON=PSP_WEAPON+1,
-    PSP_LWEAPON,
-}
-
-////////
-// AI //
-////////
-enum ZUtilityType{
-    UTL_LINEAR,
-    UTL_POLYNOMIAL,
-    UTL_LOGISTIC,
-    UTL_LOGIT,
-}
-
-enum ZStimStrength{
-    STR_MIN         =   1,
-    STR_WEAK        =   50,
-    STR_MODERATE    =   5*STR_WEAK,
-    STR_STRONG      =   3*STR_MODERATE,
-    STR_VERYSTRONG  =   3/2*STR_STRONG,
-    STR_MAX         =   1500,
-}
-
-///////////////
-// Inventory //
-///////////////
-enum ZArmorInfo{
-    // Armor Types  -   Player-based
-    AMR_NONE        =   0,
-    AMR_TYPES       =   4,      // No. of Armor Types
-    // Health
-    AMR_PLATE       =   1<<0,
-    AMR_MAGNET      =   1<<1,   // Also provides abilties
-    AMR_SHIELD      =   1<<2,
-    AMR_LIGHT       =   1<<3,
-    // Utility
-    AMR_ENERGY      =   1<<4,   // Needed for AMR_MAGNET, AMR_PLASMA and AMR_LIGHT and any abilities
-    AMR_SEALED      =   1<<5,
-}
-
-enum ZWeaponInfo{
-    // Weapon Type
-    WPN_MELEE       =   1<<0,
-    WPN_RANGED      =   1<<1,
-    // General Types
-    WPN_AMMO        =   1<<2,
-    // Melee Types
-    WPN_STAB        =   1<<3,
-    WPN_SLICE       =   1<<4,
-    // Ranged Types
-    WPN_HITSCAN     =   1<<5,
-    WPN_RAIL        =   1<<6,
-    WPN_FLAMER      =   1<<7,
-}
-
-enum ZUpgradeInfo{
-    UPR_NONE,
-    UPR_MARMOR,
 }

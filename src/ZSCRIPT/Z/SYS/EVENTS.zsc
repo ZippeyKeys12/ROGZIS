@@ -1,3 +1,10 @@
+enum ZEErrorLevel{
+    ERR_INFO,
+    ERR_WARNING,
+    ERR_ERROR,
+    ERR_FATAL,
+}
+
 extend
 class ZManager{
     ZEventManager EventManager;
@@ -9,7 +16,7 @@ class ZManager{
 
     static
     clearscope
-    void Error(String Error, ZErrorLevel Level){
+    void Error(String Error, ZEErrorLevel Level){
         switch(Level){
             case ERR_INFO:break;
             case ERR_WARNING:

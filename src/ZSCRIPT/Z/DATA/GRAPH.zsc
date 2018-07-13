@@ -1,3 +1,5 @@
+enum ZENodeType{}
+
 class ZGraph{
     Array<ZNode> Nodes;
 
@@ -80,12 +82,12 @@ class ZPlan{
 }
 
 class ZNode abstract{
-    ZNodeType Type;
+    ZENodeType Type;
 
     Array<ZEdge> Edges;
 
     virtual
-    ZNode Init(ZNodeType Type=0){
+    ZNode Init(ZENodeType Type=0){
         self.Type=Type;
         return self;
     }

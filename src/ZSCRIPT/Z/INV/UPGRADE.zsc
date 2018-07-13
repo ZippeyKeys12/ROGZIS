@@ -1,12 +1,6 @@
-class ZArmorUpgrades:ZRegistry{
-    bool Add(ZArmorUpgrade Upgrade)
-    {return Upgrade && super.Add(Upgrade);}
-
-    ZArmorUpgrade Get(Name ID) const
-    {return ZArmorUpgrade(super.Get(ID));}
-
-    ZArmorUpgrade GetRand() const
-    {return ZArmorUpgrade(super.GetRand());}
+enum ZEUpgradeInfo{
+    UPR_NONE,
+    UPR_MARMOR,
 }
 
 class ZUpgrade:ZItem{
@@ -22,6 +16,17 @@ class ZUpgrade:ZItem{
 
     virtual
     void Defaults(){}
+}
+
+class ZArmorUpgrades:ZRegistry{
+    bool Add(ZArmorUpgrade Upgrade)
+    {return Upgrade && super.Add(Upgrade);}
+
+    ZArmorUpgrade Get(Name ID) const
+    {return ZArmorUpgrade(super.Get(ID));}
+
+    ZArmorUpgrade GetRand() const
+    {return ZArmorUpgrade(super.GetRand());}
 }
 
 class ZArmorUpgrade:ZUpgrade{

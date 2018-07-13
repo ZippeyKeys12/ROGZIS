@@ -64,7 +64,7 @@ class ZZZ:ZActor{
         Angle=ATan2(Vel.Y, Vel.X);
     }
 
-    void A_Star(Actor Target=null, ZPathType Type=PATH_ALL){
+    void A_Star(Actor Target=null, ZEPathType Type=PATH_ALL){
         if(!Target){
             if(self.Target)
                 Target=self.Target;

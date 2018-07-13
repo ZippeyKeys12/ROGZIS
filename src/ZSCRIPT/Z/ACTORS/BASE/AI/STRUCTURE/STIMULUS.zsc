@@ -1,3 +1,12 @@
+enum ZEStimStrength{
+    STR_MIN         =   1,
+    STR_WEAK        =   50,
+    STR_MODERATE    =   5*STR_WEAK,
+    STR_STRONG      =   3*STR_MODERATE,
+    STR_VERYSTRONG  =   3/2*STR_STRONG,
+    STR_MAX         =   1500,
+}
+
 class ZStimulus{
     uint Persistence;
 
