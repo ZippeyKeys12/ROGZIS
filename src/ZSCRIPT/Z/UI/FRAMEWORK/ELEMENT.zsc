@@ -18,8 +18,8 @@ class ZElement ui abstract{
             Parent.Elements.Push(Result);
             Result.__Scale__=Parent.__Scale__;
         }
-        Result.Drawer=ZDrawer.Create(Result);
         Result.AABB=ZRectangle.Create(Pos, Size);
+        Result.Drawer=ZDrawer.Create(Result);
         return Result;
     }
 
@@ -35,24 +35,17 @@ class ZElement ui abstract{
     Vector2 Scale()
     {return __Scale__;}
 
-    ZRectangle AbsBounds()
-    {return ZRectangle.Create(AbsPos(), Rel2AbsPos(AABB.Pos+AABB.Size)-AbsPos());}
-
     Vector2 ScaledScreenSize()
     {return (Screen.GetWidth()/__Scale__.X, Screen.GetHeight()/__Scale__.Y);}
 
     Vector2 AbsPos()
-    {return (Parent)?Parent.Rel2AbsPos(AABB.Pos):Screen.VirtualToRealCoords(AABB.Pos, ZCalc.ScreenSize(), ScaledScreenSize());}
+    {return (Parent)?Parent.Rel2AbsPos(AABB.Pos):AABB.Pos;}
 
     Vector2 Rel2AbsPos(Vector2 DesPos)
-    {return Screen.VirtualToRealCoords(Rel2VirtualPos(DesPos), ZCalc.ScreenSize(), ScaledScreenSize());}
+    {return (Parent)?Parent.Rel2AbsPos(AABB.Pos+(DesPos.X*__Scale__.X, DesPos.Y*__Scale__.Y)):AABB.Pos+(DesPos.X*__Scale__.X, DesPos.Y*__Scale__.Y);}
 
-    Vector2 Rel2VirtualPos(Vector2 DesPos)
-    {return (Parent)?Parent.Rel2VirtualPos(AABB.Pos+DesPos):DesPos;}
-
-    void OnDraw(){
-        Draw();
-    }
+    void OnDraw()
+    {Draw();}
 
     virtual
     void Draw(){}

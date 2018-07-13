@@ -1,35 +1,47 @@
 class ZDrawer ui{
+    int ClipTop,
+        ClipBottom,
+        ClipLeft,
+        ClipRight;
+
     ZElement Element;
 
     static
     ZDrawer Create(ZElement Element){
         ZDrawer Result=new('ZDrawer');
         Result.Element=Element;
+        Result.SetClipRect(Element.AABB);
         return Result;
     }
 
-    static
-    void SetClipRect(ZRectangle Rectangle)
-    {return Screen.SetClipRect(Rectangle.Pos.X, Rectangle.Pos.Y, Rectangle.Size.X, Rectangle.Size.Y);}
+    void SetClipRect(ZRectangle Rectangle){
+        Vector2 Pos=Element.AbsPos(),
+                Scale=Element.Scale();
+        ClipTop=Pos.Y+Rectangle.Pos.Y*Scale.Y;
+        ClipBottom=ClipTop+Rectangle.Size.Y*Scale.Y;
+        ClipLeft=Pos.X+Rectangle.Pos.X*Scale.X;
+        ClipRight=ClipLeft+Rectangle.Size.X*Scale.X;
+    }
 
-    void DrawTexture(TextureID Tex, double NewHeight=0, double NewWidth=0, double Alpha=1, bool FlipX=false, bool FlipY=false, bool Animate=false, Vector2 Pos=(0, 0)){
+    void DrawTexture(TextureID Tex, double Height=0, double Width=0, double Alpha=1, bool FlipX=false, bool FlipY=false, bool Animate=false, Vector2 Pos=(0, 0)){
         if(!Tex.IsValid())
             return;
-        Pos=Element.Rel2VirtualPos(Pos);
+        Pos=Element.Rel2AbsPos(Pos);
         Vector2 Scale=Element.Scale(),
                 Size=TexMan.GetScaledSize(Tex);
         Screen.DrawTexture(Tex, Animate, Pos.X/Scale.X, Pos.Y/Scale.Y,
             DTA_Alpha, Alpha,
             DTA_FlipX, FlipX,
             DTA_FlipY, FlipY,
-            DTA_ClipTop, int(Element.AABB.Pos.Y),
-	        DTA_ClipBottom, int(Element.AABB.Pos.Y+Element.AABB.Size.Y),
-            DTA_ClipLeft, int(Element.AABB.Pos.X),
-            DTA_ClipRight, int(Element.AABB.Pos.X+Element.AABB.Size.X),
-            DTA_DestHeightF, (NewHeight)?NewHeight:Size.Y,
-            DTA_DestWidthF, (NewWidth)?NewWidth:Size.X,
+            DTA_ClipTop, ClipTop,
+	        DTA_ClipBottom, ClipBottom,
+            DTA_ClipLeft, ClipLeft,
+            DTA_ClipRight, ClipRight,
+            DTA_DestHeightF, (Height)?Height:Size.Y,
+            DTA_DestWidthF, (Width)?Width:Size.X,
             DTA_VirtualHeightF, Screen.GetHeight()/Scale.Y,
-            DTA_VirtualWidthF, Screen.GetWidth()/Scale.X
+            DTA_VirtualWidthF, Screen.GetWidth()/Scale.X,
+            DTA_KeepRatio, true
         );
     }
 }
