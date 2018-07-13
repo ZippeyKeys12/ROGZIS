@@ -21,9 +21,9 @@ class ZBox:ZElement{
         ZBox Result=ZBox(ZElement.Create(Pos, Size, Parent, 'ZBox'));
         Result.Sides=Sides;
         Result.Alpha=Alpha;
-        Result.Corner=TexMan.CheckForTexture('HUDCNR', TexMan.TYPE_MiscPatch);
-        Result.Edge=TexMan.CheckForTexture('HUDEDGE', TexMan.TYPE_MiscPatch);
-        Result.Fill=TexMan.CheckForTexture('HUDFILL', TexMan.TYPE_MiscPatch);
+        Result.Corner=ZTexture.Misc('HUDCNR');
+        Result.Edge=ZTexture.Misc('HUDEDGE');
+        Result.Fill=ZTexture.Misc('HUDFILL');
         return Result;
     }
 
@@ -48,13 +48,15 @@ class ZBox:ZElement{
         Drawer.DrawTexture(Edge, RightLength, Alpha: Alpha, Pos: (AABB.Size.X-1, RightOffset));
         Drawer.DrawTexture(Fill, RightLength, CnrLenMinus1, Alpha: Alpha, Pos: (LenMinusCnr, RightOffset));
         Drawer.DrawTexture(Edge, Width: AABB.Size.X-CornerSize.X*(BL+BR)-!BL-!BR, Alpha: Alpha, Pos: (!BL+BL*CornerSize.X, AABB.Size.Y-1));
-        if(TL)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true);
-        if(TR)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, Pos: (LenMinusCnr, 0));
-        if(BL)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true, FlipY: true, Pos: (0, HgtMinusCnr));
-        if(BR)
-            Drawer.DrawTexture(Corner, Alpha: Alpha, FlipY: true, Pos: (LenMinusCnr, HgtMinusCnr));
+        if(Sides!=BOX_NONE){
+            if(TL)
+                Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true);
+            if(TR)
+                Drawer.DrawTexture(Corner, Alpha: Alpha, Pos: (LenMinusCnr, 0));
+            if(BL)
+                Drawer.DrawTexture(Corner, Alpha: Alpha, FlipX: true, FlipY: true, Pos: (0, HgtMinusCnr));
+            if(BR)
+                Drawer.DrawTexture(Corner, Alpha: Alpha, FlipY: true, Pos: (LenMinusCnr, HgtMinusCnr));
+        }
     }
 }

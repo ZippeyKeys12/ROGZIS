@@ -28,7 +28,7 @@ class ZDrawer ui{
             return;
         Pos=Element.AbsPos()+Element.Rel2AbsPos(Pos);
         Vector2 Scale=Element.Scale(),
-                Size=TexMan.GetScaledSize(Tex);
+                Size=ZTexture.Size(Tex);
         Screen.DrawTexture(Tex, Animate, Pos.X/Scale.X, Pos.Y/Scale.Y,
             DTA_Alpha, Alpha,
             DTA_FlipX, FlipX,
