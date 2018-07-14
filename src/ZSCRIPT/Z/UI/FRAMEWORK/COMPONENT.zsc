@@ -2,8 +2,8 @@ class ZComponent:ZElement{
     Array<ZElement> Elements;
 
     static
-    ZComponent Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null, Vector2 Scale=(1, 1)){
-        ZComponent Result=ZComponent(ZElement.Create(Pos, Size, Parent, 'ZComponent'));
+    ZComponent Create(Class<ZComponent> Type, Vector2 Pos, Vector2 Size, ZComponent Parent=null, Vector2 Scale=(1, 1)){
+        ZComponent Result=ZComponent(ZElement.Create(Type, Pos, Size, Parent));
         Result.__Scale__.X*=Scale.X;
         Result.__Scale__.Y*=Scale.Y;
         return Result;

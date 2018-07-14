@@ -10,8 +10,8 @@ class ZElement ui abstract{
     ZRectangle AABB;
 
     static
-    ZElement Create(Vector2 Pos, Vector2 Size, ZComponent Parent=null, Class<ZElement> ClassName='ZElement'){
-        ZElement Result=ZElement(new(ClassName));
+    ZElement Create(Class<ZElement> Type, Vector2 Pos, Vector2 Size, ZComponent Parent=null){
+        ZElement Result=ZElement(new(Type));
         Result.__Scale__=(1, 1);
         if(Parent){
             Result.Parent=Parent;
