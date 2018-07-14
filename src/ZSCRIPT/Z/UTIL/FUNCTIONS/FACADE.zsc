@@ -1,0 +1,53 @@
+struct ZFunction{
+    static
+    ZF_Base Line()
+    {return ZF_Base.Create('Linear');}
+
+    static
+    ZF_Base Poly(double Degree=2)
+    {return ZF_Base.Create('Polynomial', Degree);}
+
+    static
+    ZF_Base Exp(double Base=ZUtil.E)
+    {return ZF_Base.Create('Exponential', Base);}
+
+    static
+    ZF_Base Log(double Base=ZUtil.E)
+    {return ZF_Base.Create('Logarithm', Base);}
+
+    static
+    ZF_Base Sin()
+    {return ZF_Base.Create('Sine');}
+
+    static
+    ZF_Base Cos()
+    {return ZF_Base.Create('Cosine');}
+
+    static
+    ZF_Base Tan()
+    {return ZF_Base.Create('Tangent');}
+
+    static
+    ZF_Base ASin()
+    {return ZF_Base.Create('ArcSine');}
+
+    static
+    ZF_Base ACos()
+    {return ZF_Base.Create('ArcCosine');}
+
+    static
+    ZF_Base ATan()
+    {return ZF_Base.Create('ArcTangent');}
+
+    static
+    ZF_Base SinH()
+    {return ZF_Base.Create('HyperSine');}
+
+    static
+    ZF_Base CosH()
+    {return ZF_Base.Create('HyperCosine');}
+
+    static
+    ZF_Base TanH()
+    {return ZF_Base.Create('HyperTangent');}
+}
