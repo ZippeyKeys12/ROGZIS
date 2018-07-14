@@ -1,4 +1,6 @@
 struct ZCalc_V3{
+    bool OtherwiseTheStructWontResolve;
+
     static
     Vector3 Lerp(double Time, Vector3 Start, Vector3 End){
         Time=Clamp(Time, 0, 1);

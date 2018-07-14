@@ -1,10 +1,12 @@
 struct ZCalc_Q{
+    bool OtherwiseTheStructWontResolve;
+
     static
-    ZQuaternion ZQLerp(double Time, ZQuaternion Start, ZQuaternion End)
+    ZQuaternion Lerp(double Time, ZQuaternion Start, ZQuaternion End)
     {return Start.SMultiply(1-Time).Add(End.SMultiply(Time)).Unit();}
 
     static
-    ZQuaternion ZQSlerp(double Time, ZQuaternion Start, ZQuaternion End){
+    ZQuaternion Slerp(double Time, ZQuaternion Start, ZQuaternion End){
         double SEDot=Start.DotProduct(End);
         ZQuaternion Temp;
         if(SEDot<0){
@@ -14,6 +16,6 @@ struct ZCalc_Q{
         if(SEDot<.95){
             double Angle=ACos(SEDot);
             return Start.SMultiply(Sin(Angle*(1-Time))).Add(Temp.SMultiply(Sin(Angle*Time))).SDivide(Sin(Angle));
-        }else return ZQLerp(Time, Start, Temp);
+        }else return Lerp(Time, Start, Temp);
     }
 }

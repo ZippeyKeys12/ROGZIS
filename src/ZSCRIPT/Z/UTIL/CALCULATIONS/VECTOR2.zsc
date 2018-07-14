@@ -1,4 +1,6 @@
 struct ZCalc_V2{
+    bool OtherwiseTheStructWontResolve;
+
     static
     Vector2 Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
         Time=Clamp(Time, 0, 1);
@@ -42,6 +44,6 @@ struct ZCalc_V2{
     }
 
     static
-    Vector2 V2CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
+    Vector2 CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
     {return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
 }

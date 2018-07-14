@@ -1,0 +1,11 @@
+struct ZCalc{
+    ZCalc_S     S;
+    ZCalc_V2    V2;
+    ZCalc_V3    V3;
+    ZCalc_Q     Q;
+}
+
+#include "ZSCRIPT/Z/UTIL/CALCULATIONS/SCALAR.zsc"
+#include "ZSCRIPT/Z/UTIL/CALCULATIONS/VECTOR2.zsc"
+#include "ZSCRIPT/Z/UTIL/CALCULATIONS/VECTOR3.zsc"
+#include "ZSCRIPT/Z/UTIL/CALCULATIONS/QUATERNION.zsc"

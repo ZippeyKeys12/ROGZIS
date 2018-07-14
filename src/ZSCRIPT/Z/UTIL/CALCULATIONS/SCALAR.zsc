@@ -1,4 +1,6 @@
 struct ZCalc_S{
+    bool OtherwiseTheStructWontResolve;
+
     static
     bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
     {return Abs(FirstValue-SecondValue)<=Epsilon;}
