@@ -19,4 +19,27 @@ struct ZUtil{
         Class Type=ClassName;
         return Type;
     }
+
+    static
+    Name Letter(uint Index){
+        static const Name Letters[]={
+            'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            'H', 'I', 'J', 'K', 'L', 'M', 'N',
+            'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+            'V', 'W', 'X', 'Y', 'Z'
+        };
+        return Letters[Index];
+    }
+
+    static
+    String TransferCase(String Value, String DesCase){
+        String Orig=DesCase;
+        DesCase.ToLower();
+        if(Orig==DesCase)
+            Value.ToLower();
+        DesCase.ToUpper();
+        if(Orig==DesCase)
+            Value.ToUpper();
+        return Value;
+    }
 }
