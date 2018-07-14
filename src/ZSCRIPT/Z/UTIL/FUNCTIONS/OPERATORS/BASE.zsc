@@ -1,0 +1,12 @@
+class ZF_Operator:ZFunction{
+    ZFunction Main,
+              Operand;
+
+    static
+    ZF_Operator Create(Name Type, ZFunction Main, ZFunction Operand=null, double Constant=double.NaN){
+        ZF_Operator Result=ZF_Operator(ZFunction.Create(Type, Constant));
+        Result.Main=Main;
+        Result.Operand=Operand;
+        return Result;
+    }
+}
