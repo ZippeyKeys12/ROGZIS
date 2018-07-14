@@ -1,4 +1,4 @@
-class ZF_ArcCosine:ZFunction{
+class ZF_ArcCosine:ZF_Base{
     override
     double Apply(double X)
     {return ACos(super.Apply(X));}

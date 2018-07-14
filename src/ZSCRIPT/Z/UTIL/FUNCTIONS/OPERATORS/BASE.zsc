@@ -1,10 +1,10 @@
-class ZF_Operator:ZFunction{
-    ZFunction Main,
+class ZF_Operator:ZF_Base abstract{
+    ZF_Base Main,
               Operand;
 
     static
-    ZF_Operator Create(Name Type, ZFunction Main, ZFunction Operand=null, double Constant=double.NaN){
-        ZF_Operator Result=ZF_Operator(ZFunction.Create('O'..Type, Constant));
+    ZF_Operator Create(Name Type, ZF_Base Main, ZF_Base Operand){
+        ZF_Operator Result=ZF_Operator(ZF_Base.Create('O'..Type));
         Result.Main=Main;
         Result.Operand=Operand;
         return Result;

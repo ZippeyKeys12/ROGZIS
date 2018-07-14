@@ -1,4 +1,4 @@
-class ZF_ArcTangent:ZFunction{
+class ZF_ArcTangent:ZF_Base{
     override
     double Apply(double X)
     {return ATan(super.Apply(X));}

@@ -1,4 +1,4 @@
-class ZF_HyperCosine:ZFunction{
+class ZF_HyperCosine:ZF_Base{
     override
     double Apply(double X)
     {return CosH(super.Apply(X));}

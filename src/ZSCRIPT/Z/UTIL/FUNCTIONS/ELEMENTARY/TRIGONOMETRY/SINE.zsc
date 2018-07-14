@@ -1,4 +1,4 @@
-class ZF_Sine:ZFunction{
+class ZF_Sine:ZF_Base{
     override
     double Apply(double X)
     {return Sin(super.Apply(X));}

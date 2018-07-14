@@ -1,6 +1,6 @@
-class ZF_Polynomial:ZFunction{
+class ZF_Polynomial:ZF_Base{
     override
-    ZFunction Init(){
+    ZF_Base Init(){
         if(!Misc)
             Misc=2;
         return self;

@@ -1,4 +1,4 @@
-class ZF_ArcSine:ZFunction{
+class ZF_ArcSine:ZF_Base{
     override
     double Apply(double X)
     {return ASin(super.Apply(X));}

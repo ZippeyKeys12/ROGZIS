@@ -1,36 +1,26 @@
-class ZF_Linear:ZFunction{}
+class ZF_Linear:ZF_Base{}
 
-class ZFunction{
+class ZF_Base{
     double Misc;
 
-    ZFunction Child;
+    ZF_Base Child;
 
     static
-    ZFunction Create(Name Type, double Misc=0){
+    ZF_Base Create(Name Type, double Misc=0){
         Type='ZF_'..Type;
         if(!ZUtil.ClassExists(Type)){
             ZManager.Error(Type.." does not exist", ERR_FATAL);
             return null;
         }else{
-            ZFunction Result=ZFunction(new());
+            ZF_Base Result=ZF_Base(new());
             Result.Misc=Misc;
             return Result.Init();
         }
     }
 
     virtual
-    ZFunction Init()
+    ZF_Base Init()
     {return self;}
-
-    virtual
-    void Attach(ZFunction Function){
-        if(Child)
-            ZManager.Error("Function already has child", ERR_FATAL);
-        Child=Function;
-    }
-
-    void Detach()
-    {Child=null;}
 
     virtual
     double Apply(double X){
@@ -38,4 +28,39 @@ class ZFunction{
             X=Child.Apply(X);
         return X;
     }
+
+    virtual
+    void Attach(ZF_Base Function){
+        if(Child)
+            ZManager.Error("Function already has child", ERR_FATAL);
+        Child=Function;
+    }
+
+    virtual
+    void Detach()
+    {Child=null;}
+
+    ZF_Base Add(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Addition', self, Other));}
+
+    ZF_Base Subtract(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Subtraction', self, Other));}
+
+    ZF_Base Multiply(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Multiplication', self, Other));}
+
+    ZF_Base Divide(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Division', self, Other));}
+
+    ZF_Base SAdd(double Constant)
+    {return Add(ZF_Base.Create('Constant', Constant));}
+
+    ZF_Base SSubtract(double Constant)
+    {return Subtract(ZF_Base.Create('Constant', Constant));}
+
+    ZF_Base SMultiply(double Constant)
+    {return Multiply(ZF_Base.Create('Constant', Constant));}
+
+    ZF_Base SDivide(double Constant)
+    {return Divide(ZF_Base.Create('Constant', Constant));}
 }

@@ -1,4 +1,4 @@
-class ZF_HyperSine:ZFunction{
+class ZF_HyperSine:ZF_Base{
     override
     double Apply(double X)
     {return SinH(super.Apply(X));}

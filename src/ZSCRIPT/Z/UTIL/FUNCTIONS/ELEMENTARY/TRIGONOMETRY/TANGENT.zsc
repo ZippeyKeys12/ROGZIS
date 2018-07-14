@@ -1,4 +1,4 @@
-class ZF_Tangent:ZFunction{
+class ZF_Tangent:ZF_Base{
     override
     double Apply(double X)
     {return Tan(super.Apply(X));}
