@@ -15,7 +15,7 @@ struct ZUtil{
     {return ZManager.UIInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
 
     static
-    bool Exists(String ClassName){
+    bool ClassExists(String ClassName){
         Class Type=ClassName;
         return Type;
     }
