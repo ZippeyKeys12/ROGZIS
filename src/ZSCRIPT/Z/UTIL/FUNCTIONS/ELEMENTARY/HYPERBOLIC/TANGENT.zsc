@@ -1,0 +1,5 @@
+class ZF_HyperTangent:ZFunction{
+    override
+    double Apply(double X)
+    {return TanH(super.Apply(X));}
+}

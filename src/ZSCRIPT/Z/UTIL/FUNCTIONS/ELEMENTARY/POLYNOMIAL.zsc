@@ -1,0 +1,12 @@
+class ZF_Polynomial:ZFunction{
+    override
+    ZFunction Init(){
+        if(!Misc)
+            Misc=2;
+        return self;
+    }
+
+    override
+    double Apply(double X)
+    {return super.Apply(X)**Misc;}
+}
