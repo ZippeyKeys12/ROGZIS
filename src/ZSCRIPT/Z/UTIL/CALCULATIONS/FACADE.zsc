@@ -1,8 +1,19 @@
 struct ZCalc{
-    ZCalc_S     S;
-    ZCalc_V2    V2;
-    ZCalc_V3    V3;
-    ZCalc_Q     Q;
+    static
+    ZCalc_S S()
+    {return ZCalc_S(ZSingletons.DataGet('ZCalc_S'));}
+
+    static
+    ZCalc_V2 V2()
+    {return ZCalc_V2(ZSingletons.DataGet('ZCalc_V2'));}
+
+    static
+    ZCalc_V3 V3()
+    {return ZCalc_V3(ZSingletons.DataGet('ZCalc_V3'));}
+
+    static
+    ZCalc_Q Q()
+    {return ZCalc_Q(ZSingletons.DataGet('ZCalc_Q'));}
 }
 
 #include "ZSCRIPT/Z/UTIL/CALCULATIONS/SCALAR.zsc"

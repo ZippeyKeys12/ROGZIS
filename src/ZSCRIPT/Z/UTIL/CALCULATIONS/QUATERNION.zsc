@@ -1,6 +1,4 @@
-struct ZCalc_Q{
-    bool OtherwiseTheStructWontResolve;
-
+class ZCalc_Q:ZSingleton{
     static
     ZQuaternion Lerp(double Time, ZQuaternion Start, ZQuaternion End)
     {return Start.SMultiply(1-Time).Add(End.SMultiply(Time)).Unit();}

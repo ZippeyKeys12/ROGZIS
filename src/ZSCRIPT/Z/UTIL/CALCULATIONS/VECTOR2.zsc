@@ -1,4 +1,4 @@
-struct ZCalc_V2{
+class ZCalc_V2:ZSingleton{
     bool OtherwiseTheStructWontResolve;
 
     static

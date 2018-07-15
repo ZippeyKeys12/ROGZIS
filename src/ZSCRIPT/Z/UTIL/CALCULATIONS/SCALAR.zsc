@@ -1,4 +1,4 @@
-struct ZCalc_S{
+class ZCalc_S:ZSingleton{
     bool OtherwiseTheStructWontResolve;
 
     static
@@ -88,38 +88,4 @@ struct ZCalc_S{
     static
     double SmoothStep(double Time, double Start=0, double End=1, double Degree=2)
     {return Lerp(Time, SmoothStart(Time, Start, End, Degree), SmoothStop(Time, Start, End, Degree));}
-}
-
-class ZLeftInterpolator{
-    protected
-    int CurrentValue;
-
-    static
-    ZLeftInterpolator Create(int DesiredValue){
-        ZLeftInterpolator Interpolator = new('ZLeftInterpolator');
-        Interpolator.Reset(DesiredValue);
-        return Interpolator;
-    }
-
-    void Reset(int DesiredValue)
-    {CurrentValue=DesiredValue;}
-
-    // This must be called peroiodically in the status bar's Tick function.
-    // Do not call this in the Draw function because that may skip some frames!
-    void Update(int DesiredValue){
-        for(int i=9; i>=0; i--){
-            int Place=10**i;
-            if(CurrentValue/Place>DesiredValue/Place){
-                CurrentValue-=Place;
-                break;
-            }else if(CurrentValue/Place<DesiredValue/Place){
-                CurrentValue+=Place;
-                break;
-            }
-        }
-    }
-
-    // This must be called in the draw function to retrieve the value for output.
-    int GetValue() const
-    {return CurrentValue;}
 }
