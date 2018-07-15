@@ -12,7 +12,7 @@ struct ZUtil{
 
     static
     int MapSeed(Object Caller=null)
-    {return ZManager.UIInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
+    {return ZManager.DataInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
 
     static
     bool ClassExists(String ClassName){

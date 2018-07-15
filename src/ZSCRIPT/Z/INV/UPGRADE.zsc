@@ -18,17 +18,6 @@ class ZUpgrade:ZItem{
     void Defaults(){}
 }
 
-class ZArmorUpgrades:ZRegistry{
-    bool Add(ZArmorUpgrade Upgrade)
-    {return Upgrade && super.Add(Upgrade);}
-
-    ZArmorUpgrade Get(Name ID) const
-    {return ZArmorUpgrade(super.Get(ID));}
-
-    ZArmorUpgrade GetRand() const
-    {return ZArmorUpgrade(super.GetRand());}
-}
-
 class ZArmorUpgrade:ZUpgrade{
     uint Priority,
          Strain;
@@ -39,6 +28,17 @@ class ZArmorUpgrade:ZUpgrade{
     virtual
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0)
     {return Damage;}
+}
+
+class ZArmorUpgrades:ZRegistry{
+    bool Add(ZArmorUpgrade Upgrade)
+    {return Upgrade && super.Add(Upgrade);}
+
+    ZArmorUpgrade Get(Name ID) const
+    {return ZArmorUpgrade(super.Get(ID));}
+
+    ZArmorUpgrade GetRand() const
+    {return ZArmorUpgrade(super.GetRand());}
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

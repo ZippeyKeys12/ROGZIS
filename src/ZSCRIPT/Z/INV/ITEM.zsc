@@ -1,14 +1,3 @@
-class ZItems:ZRegistry{
-    bool Add(ZItem Item)
-    {return Item && super.Add(Item);}
-
-    ZItem Get(Name ID) const
-    {return ZItem(super.Get(ID));}
-
-    ZItem GetRand() const
-    {return ZItem(super.GetRand());}
-}
-
 class ZItem:ZRegistryItem play{
     int Price;
 
@@ -37,4 +26,15 @@ class ZItem:ZRegistryItem play{
     clearscope
     String GetDesc() const
     {return Description;}
+}
+
+class ZItems:ZRegistry{
+    bool Add(ZItem Item)
+    {return Item && super.Add(Item);}
+
+    ZItem Get(Name ID) const
+    {return ZItem(super.Get(ID));}
+
+    ZItem GetRand() const
+    {return ZItem(super.GetRand());}
 }
