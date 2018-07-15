@@ -1,6 +1,22 @@
+class ZEventHandler:EventHandler{
+    ZBroadcaster Broadcaster;
+
+    override
+    void OnRegister(){
+        Broadcaster=ZBroadcaster.Instance();
+        Broadcaster.Register(self);
+    }
+
+    override
+    void OnUnregister(){
+        Broadcaster.Unregister(self);
+    }
+}
+
 class ZBroadcaster:StaticEventHandler{
-    Array<String> Notifs;
     Array<ZEventHandler> Handlers;
+
+    Array<String> Notifs;
 
     static
     clearscope
@@ -28,16 +44,4 @@ class ZBroadcaster:StaticEventHandler{
 
     void Unregister(ZEventHandler EventHandler)
     {Handlers.Delete(Handlers.Find(EventHandler));}
-}
-
-class ZEventHandler:EventHandler{
-    override
-    void OnRegister(){
-        ZBroadcaster.Instance().Register(self);
-    }
-
-    override
-    void OnUnregister(){
-        ZBroadcaster.Instance().Unregister(self);
-    }
 }
