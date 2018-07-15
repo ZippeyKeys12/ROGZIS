@@ -1,0 +1,35 @@
+class ZSingleton{
+    virtual
+    virtualscope
+    ZSingleton Init()
+    {return self;}
+}
+
+class ZSingletons:EventHandler{
+    Array<ZSingleton> Singletons;
+
+    static
+    clearscope
+    ZSingletons Instance()
+    {return ZSingletons(Find('ZSingletons'));}
+
+    static
+    ZSingleton Get(Class<ZSingleton> Type){
+        ZSingleton Result=DataGet(Type);
+        if(!Result){
+            Result=ZSingleton(new(Type)).Init();
+            Instance().Singletons.Push(Result);
+        }
+        return Result;
+    }
+
+    static
+    clearscope
+    ZSingleton DataGet(Class<ZSingleton> Type){
+        ZSingletons this=Instance();
+        for(int i=0; i<this.Singletons.Size(); i++)
+            if(this.Singletons[i].GetClassName()==Type)
+                return this.Singletons[i];
+        return null;
+    }
+}
