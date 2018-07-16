@@ -7,6 +7,6 @@ class ZF_Polynomial:ZF_Base{
     }
 
     override
-    double Apply(double X)
+    double Apply(double X) const
     {return super.Apply(X)**Misc;}
 }

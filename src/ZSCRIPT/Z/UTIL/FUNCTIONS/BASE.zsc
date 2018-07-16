@@ -23,7 +23,7 @@ class ZF_Base{
     {return self;}
 
     virtual
-    double Apply(double X){
+    double Apply(double X) const{
         if(Child)
             X=Child.Apply(X);
         return X;

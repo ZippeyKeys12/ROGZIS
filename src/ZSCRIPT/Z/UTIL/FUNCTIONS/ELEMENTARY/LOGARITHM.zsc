@@ -7,6 +7,6 @@ class ZF_Logarithm:ZF_Base{
     }
 
     override
-    double Apply(double X)
+    double Apply(double X) const
     {return Log(super.Apply(X))/Log(Misc);}
 }

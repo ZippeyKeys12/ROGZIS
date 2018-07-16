@@ -1,5 +1,5 @@
 class ZF_HyperSine:ZF_Base{
     override
-    double Apply(double X)
+    double Apply(double X) const
     {return SinH(super.Apply(X));}
 }

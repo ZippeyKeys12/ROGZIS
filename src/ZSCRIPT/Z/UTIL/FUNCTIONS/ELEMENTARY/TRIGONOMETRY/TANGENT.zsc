@@ -1,5 +1,5 @@
 class ZF_Tangent:ZF_Base{
     override
-    double Apply(double X)
+    double Apply(double X) const
     {return Tan(super.Apply(X));}
 }
