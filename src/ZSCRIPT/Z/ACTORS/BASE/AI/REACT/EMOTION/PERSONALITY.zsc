@@ -93,7 +93,7 @@ class ZPersonality play{
             for(int i=0; i<StaticP2E.Size(); i++)
                 Manager.P2E.Values[i]=StaticP2E[i];
         }
-        return Manager.P2E.VDot(ZVector(Bipolar.MANormRangeMap(OCEAN())));
+        return Manager.P2E.VDot(ZVector(Bipolar.VANormRangeMap(OCEAN())));
     }
 
     ZVector ToPAD(){

@@ -28,22 +28,22 @@ class ZMapper{
     double RangeMap(double Value) const
     {return ANormRangeMap(NormRangeMap(Value));}
 
-    ZMatrixBase MNormRangeMap(ZMatrixBase Other) const{
-        ZMatrixBase Result=Other.Clone();
+    ZVector VNormRangeMap(ZVector Other) const{
+        ZVector Result=Other.Clone();
         for(int i=0; i<Other.Values.Size(); i++)
             Result.Values[i]=NormRangeMap(Other.Values[i]);
         return Result;
     }
 
-    ZMatrixBase MANormRangeMap(ZMatrixBase Other) const{
-        ZMatrixBase Result=Other.Clone();
+    ZVector VANormRangeMap(ZVector Other) const{
+        ZVector Result=Other.Clone();
         for(int i=0; i<Other.Values.Size(); i++)
             Result.Values[i]=ANormRangeMap(Other.Values[i]);
         return Result;
     }
 
-    ZMatrixBase MRangeMap(ZMatrixBase Other) const{
-        ZMatrixBase Result=Other.Clone();
+    ZVector VRangeMap(ZVector Other) const{
+        ZVector Result=Other.Clone();
         for(int i=0; i<Other.Values.Size(); i++)
             Result.Values[i]=RangeMap(Other.Values[i]);
         return Result;
