@@ -1,20 +1,32 @@
 class ZMapper{
-    double Min,
-           Max;
+    double OMin,
+           OMax,
+           FMin,
+           FMax;
 
     static
-    ZMapper Create(double Min, double Max){
+    ZMapper Create(double OMin, double OMax, double FMin=0, double FMax=0){
         ZMapper Mapper=new('ZMapper');
-        Mapper.Min=Min;
-        Mapper.Max=Max;
+        Mapper.OMin=OMin;
+        Mapper.OMax=OMax;
+        if(!FMin && !FMax){
+            Mapper.FMin=OMin;
+            Mapper.FMax=OMax;
+        }else{
+            Mapper.FMin=FMin;
+            Mapper.FMax=FMax;
+        }
         return Mapper;
     }
 
     double NormRangeMap(double Value) const
-    {return Clamp((Value-Min)/(Max-Min), 0, 1);}
+    {return Clamp((Value-OMin)/(OMax-OMin), 0, 1);}
 
     double ANormRangeMap(double Value) const
-    {return Clamp(Value*(Max-Min)+Min, Min, Max);}
+    {return Clamp(Value*(FMax-FMin)+FMin, FMin, FMax);}
+
+    double RangeMap(double Value) const
+    {return ANormRangeMap(NormRangeMap(Value));}
 
     ZMatrixBase MNormRangeMap(ZMatrixBase Other) const{
         ZMatrixBase Result=Other.Clone();
@@ -23,10 +35,17 @@ class ZMapper{
         return Result;
     }
 
-    ZMatrixBase MANormRangeMap(ZMatrixBase Other){
+    ZMatrixBase MANormRangeMap(ZMatrixBase Other) const{
         ZMatrixBase Result=Other.Clone();
         for(int i=0; i<Other.Values.Size(); i++)
             Result.Values[i]=ANormRangeMap(Other.Values[i]);
+        return Result;
+    }
+
+    ZMatrixBase MRangeMap(ZMatrixBase Other) const{
+        ZMatrixBase Result=Other.Clone();
+        for(int i=0; i<Other.Values.Size(); i++)
+            Result.Values[i]=RangeMap(Other.Values[i]);
         return Result;
     }
 }
