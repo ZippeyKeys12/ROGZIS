@@ -1,5 +1,5 @@
 class ZVector{
-    protected
+    private
     uint __Length__;
 
     Array<double> Values;

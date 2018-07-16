@@ -1,5 +1,5 @@
 class ZMatrix2{
-    protected
+    private
     uint __Height__,
          __Width__;
 
@@ -99,7 +99,7 @@ class ZMatrix2{
         double Total=1;
         for(int i=0; i<Values.Size(); i++)
             Total*=Values[i];
-        return Total**(1/Values.Size());
+        return Total**(1./Values.Size());
     }
 
     double AHMean() const
@@ -386,9 +386,9 @@ class ZMatrix2{
         return Result;
     }
 
-    ////////////////
-    // Transforms //
-    ////////////////
+    /////////////////////
+    // Transformations //
+    /////////////////////
 
     ZVector ToV(){
         ZVector Result=ZVector.Create(Values.Size());
