@@ -38,12 +38,12 @@ class ZPersonality play{
     double Facet(Name Facet){
         switch(Facet){
             // Openness
-            case 'Curious': return Facets.Get(0);
-            case 'Imaginative': return Facets.Get(1);
-            case 'Artistic': return Facets.Get(2);
-            case 'Interested': return Facets.Get(3);
-            case 'Excitable': return Facets.Get(4);
-            case 'Unconventional': return Facets.Get(5);
+            case 'Curious': return Facets.Get(0, 0);
+            case 'Imaginative': return Facets.Get(1, 0);
+            case 'Artistic': return Facets.Get(2, 0);
+            case 'Interested': return Facets.Get(3, 0);
+            case 'Excitable': return Facets.Get(4, 0);
+            case 'Unconventional': return Facets.Get(5, 0);
 
             // Conscientiousness
             case 'Efficient': return Facets.Get(0, 1);

@@ -19,9 +19,9 @@ class ZConsiderer{
     Name GetID(uint Index)
     {return Considerations[Index];}
 
-    Name Consider(ZMatrix2 Rewards){
-        if(Rewards.Height()!=Considerations.Size()){
-            ZManager.Error("Incorrect Number of Considerations\nIs: "..Rewards.Height()..", Should Be: "..Considerations.Size(), ERR_ERROR);
+    Name Consider(ZVector Rewards){
+        if(Rewards.Length()!=Considerations.Size()){
+            ZManager.Error("Incorrect Number of Considerations\nIs: "..Rewards.Length()..", Should Be: "..Considerations.Size(), ERR_ERROR);
             return '';
         }
         Array<uint> Best;
@@ -32,6 +32,7 @@ class ZConsiderer{
                 Best.Push(i);
             }else if(Rewards.Get(i)==Rewards.Get(Best[0]))
                 Best.Push(i);
+        // TODO: Maybe make it based on order (priority)
         return Considerations[Best[Random(0, Best.Size()-1)]];
     }
 }
