@@ -1,14 +1,19 @@
-class ZSummaryMatrix2:ZMatrix3{
+class ZMatrix2_G{
+    private
+    uint __Height__,
+         __Width__;
+
+    Array<ZGaussian> Values;
+
     static
-    ZSummaryMatrix2 Create(uint Height, uint Width, bool Ones=false){
-        ZSummaryMatrix2 Result=new('ZSummaryMatrix2');
+    ZMatrix2_G Create(uint Height, uint Width){
+        ZMatrix2_G Result=new('ZMatrix2_G');
         if(Height<=0 || Width<=0)
             ZManager.Error("Attempted to create a non-positively-sized summary matrix", ERR_FATAL);
         Result.__Height__=Height;
         Result.__Width__=Width;
-        Result.__Depth__=2;
-        for(int i=0; i<Height*Width*2; i++)
-            Result.Values.Push(Ones);
+        for(int i=0; i<Height*Width; i++)
+            Result.Values.Push(ZGaussian.Create(0, 1));
         return Result;
     }
 
@@ -16,65 +21,70 @@ class ZSummaryMatrix2:ZMatrix3{
     // Info //
     //////////
 
-    virtual
     ZGaussian Get(uint Row, uint Column) const
-    {return ZGaussian.Create(super.Get(Row, Column, 0), super.Get(Row, Column, 1));}
+    {return Values[Row*__Width__+Column];}
 
     double GetMean(uint Row, uint Column)
-    {return super.Get(Row, Column, 0);}
+    {return Get(Row, Column).Mean();}
 
     double GetStdDev(uint Row, uint Column)
-    {return super.Get(Row, Column, 1);}
+    {return Get(Row, Column).StdDev();}
 
     ///////////////////
     // Manipulations //
     ///////////////////
 
-    virtual
-    void Set(uint Row, uint Column, double Mean, double StdDev){
-        SetMean(Row, Column, Mean);
-        SetStdDev(Row, Column, StdDev);
-    }
+    void Set(uint Row, uint Column, double Mean, double StdDev)
+    {Values[Row*__Width__+Column]=ZGaussian.Create(Mean, StdDev);}
+
+    void SetModel(uint Row, uint Column, ZGaussian Distribution)
+    {Values[Row*__Width__+Column]=Distribution.Clone();}
 
     void SetMean(uint Row, uint Column, double Value)
-    {super.Set(Row, Column, 0, Value);}
+    {Set(Row, Column, Value, GetStdDev(Row, Column));}
 
     void SetStdDev(uint Row, uint Column, double Value)
-    {super.Set(Row, Column, 1, Value);}
+    {Set(Row, Column, GetMean(Row, Column), Value);}
 
-    ZSummaryMatrix2 Add(ZSummaryMatrix2 Other) const{
+    ZMatrix2_G Add(ZMatrix2_G Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to add differently-sized matrices", ERR_FATAL);
-        ZSummaryMatrix2 Result=Create(__Height__, __Width__);
-        for(int Row=0; Row<__Height__; Row++)
-            for(int Column=0; Column<__Width__; Column++)
-                Result.Set(Row, Column, GetMean(Row, Column)+Other.GetMean(Row, Column), Sqrt(GetStdDev(Row, Column)**2+Other.GetStdDev(Row, Column)**2));
+        ZMatrix2_G Result=Create(__Height__, __Width__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i].Add(Other.Values[i]);
         return Result;
     }
 
-    ZSummaryMatrix2 Sub(ZSummaryMatrix2 Other) const{
+    ZMatrix2_G Sub(ZMatrix2_G Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
-        ZSummaryMatrix2 Result=Create(__Height__, __Width__);
-        for(int Row=0; Row<__Height__; Row++)
-            for(int Column=0; Column<__Width__; Column++)
-                Result.Set(Row, Column, GetMean(Row, Column)-Other.GetMean(Row, Column), Sqrt(GetStdDev(Row, Column)**2+Other.GetStdDev(Row, Column)**2));
+        ZMatrix2_G Result=Create(__Height__, __Width__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i].Sub(Other.Values[i]);
         return Result;
     }
 
-    ZSummaryMatrix2 SMult(double Multiplier) const
-    {return super.SMult(Multiplier).ToSM2();}
+    ZMatrix2_G SMul(double Multiplier) const{
+        ZMatrix2_G Result=Create(__Height__, __Width__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i].SMul(Multiplier);
+        return Result;
+    }
 
-    ZSummaryMatrix2 SDiv(double Divisor) const
-    {return super.SDiv(Divisor).ToSM2();}
+    ZMatrix2_G SDiv(double Divisor) const{
+        ZMatrix2_G Result=Create(__Height__, __Width__);
+        for(int i=0; i<Values.Size(); i++)
+            Result.Values[i]=Values[i].SDiv(Divisor);
+        return Result;
+    }
 
     ////////////////
     // Transforms //
     ////////////////
 
     virtual
-    ZSummaryMatrix2 Clone() const{
-        ZSummaryMatrix2 Result=Create(__Height__, __Width__);
+    ZMatrix2_G Clone() const{
+        ZMatrix2_G Result=Create(__Height__, __Width__);
         Result.Values.Copy(Values);
         return Result;
     }

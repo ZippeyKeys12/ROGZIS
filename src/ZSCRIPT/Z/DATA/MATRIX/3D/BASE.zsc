@@ -1,8 +1,10 @@
-class ZMatrix3:ZMatrixBase{
-    protected
+class ZMatrix3{
+    private
     uint __Height__,
          __Width__,
          __Depth__;
+
+    Array<double> Values;
 
     static
     ZMatrix3 Create(uint Height, uint Width, uint Depth, bool Ones=false){
@@ -58,7 +60,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 Mult(ZMatrix3 Other) const{
+    ZMatrix3 Mul(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
@@ -78,7 +80,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 SMult(double Multiplier) const{
+    ZMatrix3 SMul(double Multiplier) const{
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Multiplier;
@@ -116,14 +118,15 @@ class ZMatrix3:ZMatrixBase{
     // Transforms //
     ////////////////
 
-    virtual
-    ZSummaryMatrix2 ToSM2(){
-        if(__Depth__!=2)
-            ZManager.Error("Attempted to convert ZMatrix3 to ZSummaryMatrix2: Is not 2 deep", ERR_FATAL);
-        ZSummaryMatrix2 Result=ZSummaryMatrix2.Create(__Height__, __Width__);
-        Result.Values.Copy(Values);
-        return Result;
-    }
+    // TODO: Fix
+    // virtual
+    // ZMatrix2_G ToSM2(){
+    //     if(__Depth__!=2)
+    //         ZManager.Error("Attempted to convert ZMatrix3 to ZMatrix2_G: Is not 2 deep", ERR_FATAL);
+    //     ZMatrix2_G Result=ZMatrix2_G.Create(__Height__, __Width__);
+    //     Result.Values.Copy(Values);
+    //     return Result;
+    // }
 
     virtual
     ZMatrix3 Clone() const{

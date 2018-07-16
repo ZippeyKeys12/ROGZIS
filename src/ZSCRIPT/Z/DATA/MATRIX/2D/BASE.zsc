@@ -1,7 +1,9 @@
-class ZMatrix2:ZMatrixBase{
+class ZMatrix2{
     protected
     uint __Height__,
          __Width__;
+
+    Array<double> Values;
 
     static
     ZMatrix2 Create(uint Height, uint Width, bool Ones=false){
@@ -27,7 +29,7 @@ class ZMatrix2:ZMatrixBase{
     // Info //
     //////////
 
-    double Get(uint Row, uint Column=0) const
+    double Get(uint Row, uint Column) const
     {return Values[Row*__Width__+Column];}
 
     ZMatrix2 Row(uint Index) const{
@@ -229,7 +231,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 Mult(ZMatrix2 Other){
+    ZMatrix2 Mul(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
@@ -249,7 +251,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 SMult(double Multiplier) const{
+    ZMatrix2 SMul(double Multiplier) const{
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Multiplier;
@@ -273,7 +275,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 M2Mult(ZMatrix2 Other) const{
+    ZMatrix2 M2Mul(ZMatrix2 Other) const{
         if(__Width__!=Other.__Height__)
             ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, Other.__Width__);
@@ -287,8 +289,8 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 VMult(ZVector Other) const
-    {return M2Mult(Other.ToM2());}
+    ZMatrix2 VMul(ZVector Other) const
+    {return M2Mul(Other.ToM2());}
 
     ZMatrix2 SMin(double Min, double Min2=int.max) const{
         ZMatrix2 Result=Create(__Height__, __Width__);
@@ -347,7 +349,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     ZMatrix2 Mutate(double Floor=0, double Ceiling=1, double MaxChange=1, double MutationRate=.1, int Seed=0) const{
-        ZMatrix2 Result=Randomized(__Height__, __Width__, Seed: Seed).SMult(MaxChange),
+        ZMatrix2 Result=Randomized(__Height__, __Width__, Seed: Seed).SMul(MaxChange),
                 Chance=Randomized(__Height__, __Width__, 0, Seed:Seed+1).SMax(MutationRate);
         for(int i=0; i<Values.Size(); i++)
             if(Chance.Values[i]<=MutationRate)
