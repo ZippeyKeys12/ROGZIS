@@ -1,6 +1,4 @@
 class ZCalc_S:ZSingleton{
-    bool OtherwiseTheStructWontResolve;
-
     static
     bool Equals(double FirstValue, double SecondValue, double Epsilon=double.Epsilon)
     {return Abs(FirstValue-SecondValue)<=Epsilon;}

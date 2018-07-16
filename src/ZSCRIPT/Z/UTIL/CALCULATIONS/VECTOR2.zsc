@@ -1,6 +1,4 @@
 class ZCalc_V2:ZSingleton{
-    bool OtherwiseTheStructWontResolve;
-
     static
     Vector2 Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
         Time=Clamp(Time, 0, 1);
