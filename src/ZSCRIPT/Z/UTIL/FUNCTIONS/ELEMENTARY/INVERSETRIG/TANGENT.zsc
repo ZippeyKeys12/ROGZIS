@@ -1,5 +1,5 @@
 class ZF_ArcTangent:ZF_Base{
     override
     double Apply(double X)
-    {return ATan(super.Apply(X));}
+    {return ATan(CalcChild(X));}
 }
