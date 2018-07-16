@@ -12,7 +12,7 @@ class ZF_Base{
             ZManager.Error(Type.." does not exist", ERR_FATAL);
             return null;
         }else{
-            ZF_Base Result=ZF_Base(new());
+            ZF_Base Result=ZF_Base(new(Type));
             Result.Misc=Misc;
             return Result.Init();
         }

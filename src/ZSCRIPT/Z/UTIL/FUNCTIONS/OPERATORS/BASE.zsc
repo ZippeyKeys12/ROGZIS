@@ -1,6 +1,6 @@
 class ZF_Operator:ZF_Base abstract{
     ZF_Base Main,
-              Operand;
+            Operand;
 
     static
     ZF_Operator Create(Name Type, ZF_Base Main, ZF_Base Operand){
