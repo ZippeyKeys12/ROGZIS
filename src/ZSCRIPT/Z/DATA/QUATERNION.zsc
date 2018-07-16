@@ -35,7 +35,7 @@ class ZQuaternion{
     }
 
     ZQuaternion SetEulerAngles(double Yaw, double Pitch, double Roll)
-    {return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMult(FromAngleAxis(Pitch, (0, 1, 0))).QMult(FromAngleAxis(Roll, (1, 0, 0))));}
+    {return Equal(FromAngleAxis(Yaw, (0, 0, 1)).QMul(FromAngleAxis(Pitch, (0, 1, 0))).QMul(FromAngleAxis(Roll, (1, 0, 0))));}
 
     double Length() const
     {return sqrt(LengthSquared());}
@@ -61,13 +61,13 @@ class ZQuaternion{
     ZQuaternion Sub(ZQuaternion Other) const
     {return Add(Other.Negative());}
 
-    ZQuaternion SMult(double Multiplier) const
+    ZQuaternion SMul(double Multiplier) const
     {return Create(W*Multiplier, X*Multiplier, Y*Multiplier, Z*Multiplier);}
 
     ZQuaternion SDiv(double Divisor) const
     {return Create(W/Divisor, X/Divisor, Y/Divisor, Z/Divisor);}
 
-    ZQuaternion QMult(ZQuaternion Other) const
+    ZQuaternion QMul(ZQuaternion Other) const
     {return Create(W*Other.W-X*Other.X-Y*Other.Y-Z*Other.Z,
                    W*Other.X+X*Other.W+Y*Other.Z-Z*Other.Y,
                    W*Other.Y+Y*Other.W+Z*Other.X-X*Other.Z,

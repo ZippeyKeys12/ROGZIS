@@ -65,7 +65,7 @@ class ZMood play{
             for(int i=0; i<StaticM2E.Size(); i++)
                 Manager.M2E_Ekman.Values[i]=StaticM2E[i];
         }
-        return PAD().M2Mult(Manager.M2E_Ekman).SClamp(0, 1);
+        return PAD().M2Mul(Manager.M2E_Ekman).SClamp(0, 1);
     }
 
     ZVector ToOCC(){
@@ -101,6 +101,6 @@ class ZMood play{
                 Manager.M2E_OCC.Values[i]=StaticM2E[i];
             Manager.M2E_OCC=Manager.M2E_OCC.Transpose();
         }
-        return PAD().M2Mult(Manager.M2E_OCC).SClamp(0, 1);
+        return PAD().M2Mul(Manager.M2E_OCC).SClamp(0, 1);
     }
 }

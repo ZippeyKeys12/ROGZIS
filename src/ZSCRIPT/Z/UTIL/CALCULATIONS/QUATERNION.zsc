@@ -1,7 +1,7 @@
 class ZCalc_Q:ZSingleton{
     static
     ZQuaternion Lerp(double Time, ZQuaternion Start, ZQuaternion End)
-    {return Start.SMult(1-Time).Add(End.SMult(Time)).Unit();}
+    {return Start.SMul(1-Time).Add(End.SMul(Time)).Unit();}
 
     static
     ZQuaternion Slerp(double Time, ZQuaternion Start, ZQuaternion End){
@@ -13,7 +13,7 @@ class ZCalc_Q:ZSingleton{
         }else Temp=End;
         if(SEDot<.95){
             double Angle=ACos(SEDot);
-            return Start.SMult(Sin(Angle*(1-Time))).Add(Temp.SMult(Sin(Angle*Time))).SDiv(Sin(Angle));
+            return Start.SMul(Sin(Angle*(1-Time))).Add(Temp.SMul(Sin(Angle*Time))).SDiv(Sin(Angle));
         }else return Lerp(Time, Start, Temp);
     }
 }

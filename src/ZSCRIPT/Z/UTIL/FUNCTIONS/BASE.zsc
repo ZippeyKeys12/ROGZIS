@@ -47,7 +47,7 @@ class ZF_Base{
     ZF_Base Sub(ZF_Base Other)
     {return ZF_Base(ZF_Operator.Create('Subtract', self, Other));}
 
-    ZF_Base Mult(ZF_Base Other)
+    ZF_Base Mul(ZF_Base Other)
     {return ZF_Base(ZF_Operator.Create('Multiply', self, Other));}
 
     ZF_Base Div(ZF_Base Other)
@@ -59,8 +59,8 @@ class ZF_Base{
     ZF_Base SSub(double Constant)
     {return Sub(ZF_Base.Create('Constant', Constant));}
 
-    ZF_Base SMult(double Constant)
-    {return Mult(ZF_Base.Create('Constant', Constant));}
+    ZF_Base SMul(double Constant)
+    {return Mul(ZF_Base.Create('Constant', Constant));}
 
     ZF_Base SDiv(double Constant)
     {return Div(ZF_Base.Create('Constant', Constant));}
