@@ -41,6 +41,10 @@ class ZF_Base{
     void Detach()
     {Child=null;}
 
+    ////////////////
+    // Operations //
+    ////////////////
+
     ZF_Base Add(ZF_Base Other)
     {return ZF_Base(ZF_Operator.Create('Add', self, Other));}
 
@@ -64,4 +68,36 @@ class ZF_Base{
 
     ZF_Base SDiv(double Constant)
     {return Div(ZF_Base.Create('Constant', Constant));}
+
+    /////////////////////
+    // Transformations //
+    /////////////////////
+
+    ZF_Base VShift(double Value)
+    {return SAdd(Value);}
+
+    ZF_Base HShift(double Value){
+        Array<ZF_Base> Stack;
+        Stack.Push(self);
+        bool HasLeaf;
+        for(int i=0; i<Stack.Size();i++){
+            HasLeaf=false;
+            if(Stack[i].Child){
+                Stack.Push(Stack[i].Child);
+                HasLeaf=true;
+            }
+            if(Stack[i] is 'ZF_Operator'){
+                Stack.Push(ZF_Operator(Stack[i]).Main);
+                Stack.Push(ZF_Operator(Stack[i]).Operand);
+                HasLeaf=true;
+            }
+            if(HasLeaf){
+                Stack.Delete(i);
+                i--;
+            }
+        }
+        for(int i=0; i<Stack.Size(); i++)
+            Stack[i].Attach(Create('Linear').SAdd(-Value));
+        return self;
+    }
 }
