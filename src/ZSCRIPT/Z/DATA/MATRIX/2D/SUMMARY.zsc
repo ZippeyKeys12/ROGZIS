@@ -52,7 +52,7 @@ class ZSummaryMatrix2:ZMatrix3{
         return Result;
     }
 
-    ZSummaryMatrix2 Subtract(ZSummaryMatrix2 Other) const{
+    ZSummaryMatrix2 Sub(ZSummaryMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
         ZSummaryMatrix2 Result=Create(__Height__, __Width__);
@@ -62,11 +62,11 @@ class ZSummaryMatrix2:ZMatrix3{
         return Result;
     }
 
-    ZSummaryMatrix2 SMultiply(double Multiplier) const
-    {return super.SMultiply(Multiplier).ToSM2();}
+    ZSummaryMatrix2 SMult(double Multiplier) const
+    {return super.SMult(Multiplier).ToSM2();}
 
-    ZSummaryMatrix2 SDivide(double Divisor) const
-    {return super.SDivide(Divisor).ToSM2();}
+    ZSummaryMatrix2 SDiv(double Divisor) const
+    {return super.SDiv(Divisor).ToSM2();}
 
     ////////////////
     // Transforms //

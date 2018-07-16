@@ -56,7 +56,7 @@ class ZGaussian{
     ZGaussian Add(ZGaussian Other) const
     {return Create(Mean()+Other.Mean(), Sqrt(StdDev()**2+Other.StdDev()**2));}
 
-    ZGaussian Subtract(ZGaussian Other) const
+    ZGaussian Sub(ZGaussian Other) const
     {return Create(Mean()-Other.Mean(), Sqrt(StdDev()**2+Other.StdDev()**2));}
 
     double Normalize(double Value) const

@@ -29,7 +29,7 @@ class ZNeuralNetwork{
             Inputs.Push(Input);
             for(int j=0; j<Layers.Size()-1; j++)
                 Inputs.Push(Input=Layers[j].Get(Input));
-            ZMatrix2 Error=Target.Subtract(Layers[Layers.Size()-1].Get(Input));
+            ZMatrix2 Error=Target.Sub(Layers[Layers.Size()-1].Get(Input));
             for(int j=Layers.Size()-1; j>=0; j--)
                 Error=Layers[j].Train(Inputs[j], Error, (j+1<Layers.Size())?Layers[j+1].Weights():null, j==Layers.Size()-1);
         }

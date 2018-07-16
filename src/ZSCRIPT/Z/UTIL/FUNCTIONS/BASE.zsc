@@ -62,6 +62,6 @@ class ZF_Base{
     ZF_Base SMult(double Constant)
     {return Mult(ZF_Base.Create('Constant', Constant));}
 
-    ZF_Base SDivide(double Constant)
+    ZF_Base SDiv(double Constant)
     {return Div(ZF_Base.Create('Constant', Constant));}
 }

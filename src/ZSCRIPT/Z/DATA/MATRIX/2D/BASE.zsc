@@ -150,7 +150,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     ZVector TRange(bool ForRows=false) const{
-        return TMax(ForRows).Subtract(TMin(ForRows));
+        return TMax(ForRows).Sub(TMin(ForRows));
     }
 
     ZVector TAMean(bool ForRows=false) const{
@@ -219,7 +219,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 Subtract(ZMatrix2 Other) const{
+    ZMatrix2 Sub(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
@@ -229,7 +229,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 Multiply(ZMatrix2 Other){
+    ZMatrix2 Mult(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
@@ -239,7 +239,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 Divide(ZMatrix2 Other){
+    ZMatrix2 Div(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
@@ -249,7 +249,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 SMultiply(double Multiplier) const{
+    ZMatrix2 SMult(double Multiplier) const{
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Multiplier;
@@ -257,7 +257,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 SDivide(double Divisor) const{
+    ZMatrix2 SDiv(double Divisor) const{
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Divisor;
@@ -273,7 +273,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     virtual
-    ZMatrix2 M2Multiply(ZMatrix2 Other) const{
+    ZMatrix2 M2Mult(ZMatrix2 Other) const{
         if(__Width__!=Other.__Height__)
             ZManager.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
         ZMatrix2 Result=ZMatrix2.Create(__Height__, Other.__Width__);
@@ -287,8 +287,8 @@ class ZMatrix2:ZMatrixBase{
         return Result;
     }
 
-    ZMatrix2 VMultiply(ZVector Other) const
-    {return M2Multiply(Other.ToM2());}
+    ZMatrix2 VMult(ZVector Other) const
+    {return M2Mult(Other.ToM2());}
 
     ZMatrix2 SMin(double Min, double Min2=int.max) const{
         ZMatrix2 Result=Create(__Height__, __Width__);
@@ -347,7 +347,7 @@ class ZMatrix2:ZMatrixBase{
     }
 
     ZMatrix2 Mutate(double Floor=0, double Ceiling=1, double MaxChange=1, double MutationRate=.1, int Seed=0) const{
-        ZMatrix2 Result=Randomized(__Height__, __Width__, Seed: Seed).SMultiply(MaxChange),
+        ZMatrix2 Result=Randomized(__Height__, __Width__, Seed: Seed).SMult(MaxChange),
                 Chance=Randomized(__Height__, __Width__, 0, Seed:Seed+1).SMax(MutationRate);
         for(int i=0; i<Values.Size(); i++)
             if(Chance.Values[i]<=MutationRate)

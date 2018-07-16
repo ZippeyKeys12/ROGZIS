@@ -48,7 +48,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 Subtract(ZMatrix3 Other) const{
+    ZMatrix3 Sub(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
             ZManager.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
@@ -58,7 +58,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 Multiply(ZMatrix3 Other) const{
+    ZMatrix3 Mult(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
             ZManager.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
@@ -68,7 +68,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 Divide(ZMatrix3 Other) const{
+    ZMatrix3 Div(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
             ZManager.Error("Attempted to divide differently-sized matrices", ERR_FATAL);
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
@@ -78,7 +78,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 SMultiply(double Multiplier) const{
+    ZMatrix3 SMult(double Multiplier) const{
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Multiplier;
@@ -86,7 +86,7 @@ class ZMatrix3:ZMatrixBase{
     }
 
     virtual
-    ZMatrix3 SDivide(double Divisor) const{
+    ZMatrix3 SDiv(double Divisor) const{
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Divisor;
