@@ -1,4 +1,9 @@
 struct ZFunction{
+
+    //////////////
+    // Creation //
+    //////////////
+
     static
     ZF_Base Line()
     {return ZF_Base.Create('Linear');}
@@ -16,16 +21,16 @@ struct ZFunction{
     {return ZF_Base.Create('Logarithm', Base);}
 
     static
-    ZF_Base Sin()
-    {return ZF_Base.Create('Sine');}
+    ZF_Base Sin(double Amplitude=1, double Period=360)
+    {return ZF_Base.Create('Sine').VDilate(Amplitude).HDilate(Period/360);}
 
     static
-    ZF_Base Cos()
-    {return ZF_Base.Create('Cosine');}
+    ZF_Base Cos(double Amplitude=1, double Period=360)
+    {return ZF_Base.Create('Cosine').VDilate(Amplitude).HDilate(Period/360);}
 
     static
-    ZF_Base Tan()
-    {return ZF_Base.Create('Tangent');}
+    ZF_Base Tan(double Period=180)
+    {return ZF_Base.Create('Tangent').HDilate(Period/180);}
 
     static
     ZF_Base ASin()
