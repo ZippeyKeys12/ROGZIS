@@ -1,4 +1,4 @@
-class ZF_OAddition:ZF_Operator{
+class ZF_OAdd:ZF_Operator{
     override
     double Apply(double X)
     {return Main.Apply(Child.Apply(X))+Operand.Apply(Child.Apply(X));}

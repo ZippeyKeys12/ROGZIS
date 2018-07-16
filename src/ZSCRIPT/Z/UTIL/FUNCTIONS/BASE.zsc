@@ -30,10 +30,11 @@ class ZF_Base{
     }
 
     virtual
-    void Attach(ZF_Base Function){
+    ZF_Base Attach(ZF_Base Function){
         if(Child)
             ZManager.Error("Function already has child", ERR_FATAL);
         Child=Function;
+        return self;
     }
 
     virtual
@@ -41,26 +42,26 @@ class ZF_Base{
     {Child=null;}
 
     ZF_Base Add(ZF_Base Other)
-    {return ZF_Base(ZF_Operator.Create('Addition', self, Other));}
+    {return ZF_Base(ZF_Operator.Create('Add', self, Other));}
 
-    ZF_Base Subtract(ZF_Base Other)
-    {return ZF_Base(ZF_Operator.Create('Subtraction', self, Other));}
+    ZF_Base Sub(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Subtract', self, Other));}
 
-    ZF_Base Multiply(ZF_Base Other)
-    {return ZF_Base(ZF_Operator.Create('Multiplication', self, Other));}
+    ZF_Base Mult(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Multiply', self, Other));}
 
-    ZF_Base Divide(ZF_Base Other)
-    {return ZF_Base(ZF_Operator.Create('Division', self, Other));}
+    ZF_Base Div(ZF_Base Other)
+    {return ZF_Base(ZF_Operator.Create('Divide', self, Other));}
 
     ZF_Base SAdd(double Constant)
     {return Add(ZF_Base.Create('Constant', Constant));}
 
-    ZF_Base SSubtract(double Constant)
-    {return Subtract(ZF_Base.Create('Constant', Constant));}
+    ZF_Base SSub(double Constant)
+    {return Sub(ZF_Base.Create('Constant', Constant));}
 
-    ZF_Base SMultiply(double Constant)
-    {return Multiply(ZF_Base.Create('Constant', Constant));}
+    ZF_Base SMult(double Constant)
+    {return Mult(ZF_Base.Create('Constant', Constant));}
 
     ZF_Base SDivide(double Constant)
-    {return Divide(ZF_Base.Create('Constant', Constant));}
+    {return Div(ZF_Base.Create('Constant', Constant));}
 }

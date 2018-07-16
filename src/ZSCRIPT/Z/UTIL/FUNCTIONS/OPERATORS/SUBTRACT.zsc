@@ -1,4 +1,4 @@
-class ZF_OSubtraction:ZF_Operator{
+class ZF_OSubtract:ZF_Operator{
     override
     double Apply(double X)
     {return Main.Apply(Child.Apply(X))-Operand.Apply(Child.Apply(X));}

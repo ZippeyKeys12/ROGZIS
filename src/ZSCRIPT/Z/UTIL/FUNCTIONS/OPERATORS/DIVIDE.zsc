@@ -1,4 +1,4 @@
-class ZF_ODivision:ZF_Operator{
+class ZF_ODivide:ZF_Operator{
     override
     double Apply(double X)
     {return Main.Apply(Child.Apply(X))/Operand.Apply(Child.Apply(X));}
