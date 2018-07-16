@@ -5,20 +5,20 @@ struct ZFunction{
     //////////////
 
     static
-    ZF_Base Line()
-    {return ZF_Base.Create('Linear');}
+    ZF_Base Line(double Slope)
+    {return ZF_Base.Create('Linear').VDilate(Slope);}
 
     static
     ZF_Base Poly(double Degree=2)
     {return ZF_Base.Create('Polynomial', Degree);}
 
     static
-    ZF_Base Exp(double Base=ZUtil.E)
-    {return ZF_Base.Create('Exponential', Base);}
+    ZF_Base Exp(double Base=ZUtil.E, double Asymptote=0)
+    {return ZF_Base.Create('Exponential', Base).VShift(Asymptote);}
 
     static
-    ZF_Base Log(double Base=ZUtil.E)
-    {return ZF_Base.Create('Logarithm', Base);}
+    ZF_Base Log(double Base=ZUtil.E, double Asymptote=0)
+    {return ZF_Base.Create('Logarithm', Base).HShift(Asymptote);}
 
     static
     ZF_Base Sin(double Amplitude=1, double Period=360)
