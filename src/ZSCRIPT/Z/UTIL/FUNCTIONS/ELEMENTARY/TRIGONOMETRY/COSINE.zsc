@@ -1,5 +1,5 @@
 class ZF_Cosine:ZF_Base{
     override
     double Apply(double X)
-    {return Cos(CalcChild(X));}
+    {return Cos(super.Apply(X));}
 }

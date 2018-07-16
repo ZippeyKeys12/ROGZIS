@@ -8,5 +8,5 @@ class ZF_Logarithm:ZF_Base{
 
     override
     double Apply(double X)
-    {return Log(CalcChild(X))/Log(Misc);}
+    {return Log(super.Apply(X))/Log(Misc);}
 }

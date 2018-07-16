@@ -8,5 +8,5 @@ class ZF_Polynomial:ZF_Base{
 
     override
     double Apply(double X)
-    {return CalcChild(X)**Misc;}
+    {return super.Apply(X)**Misc;}
 }
