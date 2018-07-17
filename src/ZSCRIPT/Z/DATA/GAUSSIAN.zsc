@@ -20,9 +20,9 @@ class ZGaussian{
         return Result;
     }
 
-    void Simulate(int Amount){
+    void Simulate(int Amount, int Seed=0){
         for(int i=0; i<Amount; i++)
-            CachedValues.Push(Generate());
+            CachedValues.Push(Generate(Seed));
     }
 
     double Mean() const
@@ -31,15 +31,18 @@ class ZGaussian{
     double StdDev() const
     {return __StdDev__;}
 
-    double Generate(){
+    double Generate(int Seed=0){
+        if(!Seed)
+            Seed=ZUtil.RandSeed();
+        SetRandomSeed[GauseyBoi](Seed);
         PreGenerated=!PreGenerated;
         if(!PreGenerated)
             return PreGen*__StdDev__+__Mean__;
         else{
             double u1, u2;
             do{
-                u1=FRandom(0, 1);
-                u2=FRandom(0, 1);
+                u1=FRandom[GauseyBoi](0, 1);
+                u2=FRandom[GauseyBoi](0, 1);
             }while(u1<=double.epsilon);
             double Gen=Sqrt(-2*Log(u1))*Cos(360*u2);
             PreGen=Sqrt(-2*Log(u1))*Sin(360*u2);
