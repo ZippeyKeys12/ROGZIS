@@ -1,0 +1,17 @@
+class ZF_Bernstein:ZF_Base{
+    int nCr,
+        N,
+        I;
+
+    static
+    ZBernstein Create(int N, int I){
+        ZBernstein Result=ZBernstein(ZF_Base.Create('Bernstein'));
+        Result.N=N;
+        Result.I=I;
+        Result.nCr=ZCalc_S.nCr(N, I);
+    }
+
+    override
+    double Apply(double X) const
+    {return nCr*X**I*(1-X)**(N-I);}
+}

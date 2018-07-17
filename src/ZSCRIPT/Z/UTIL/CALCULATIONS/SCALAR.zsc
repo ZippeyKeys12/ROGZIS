@@ -68,10 +68,6 @@ class ZCalc_S:ZSingleton{
     {return N*(N+1)/2;}
 
     static
-    double Bernstein(double Time, int N, int V)
-    {return nCr(N, V)*Time**V*(1-Time)**(N-V);}
-
-    static
     double Lerp(double Time, double Start=0, double End=1){
         Time=Clamp(Time, 0, 1);
         return (1-Time)*Start+Time*End;
