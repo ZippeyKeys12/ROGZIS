@@ -79,6 +79,14 @@ class ZVector{
         return Result;
     }
 
+    virtual
+    ZVector Map(ZF_Base Function) const{
+        ZVector Result=Create(__Length__);
+        for(int i=0; i<__Length__; i++)
+            Result.Values[i]=Function.Apply(Values[i]);
+        return Result;
+    }
+
     ZVector SMul(double Multiplier){
         ZVector Result=ZVector.Create(__Length__);
         for(int i=0; i<Values.Size(); i++)

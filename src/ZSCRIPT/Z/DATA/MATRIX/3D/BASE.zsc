@@ -80,6 +80,14 @@ class ZMatrix3{
     }
 
     virtual
+    ZMatrix3 Map(ZF_Base Function) const{
+        ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
+        for(int i=0; i<__Height__*__Width__*__Depth__; i++)
+            Result.Values[i]=Function.Apply(Values[i]);
+        return Result;
+    }
+
+    virtual
     ZMatrix3 SMul(double Multiplier) const{
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)

@@ -20,15 +20,6 @@ class ZVector_V2{
     Vector2 Get(uint Index) const
     {return (Values[2*Index], Values[2*Index+1]);}
 
-    ///////////////////
-    // Manipulations //
-    ///////////////////
-
-    void Set(uint Index, Vector2 Value){
-        Values[2*Index]  =Value.X;
-        Values[2*Index+1]=Value.Y;
-    }
-
     Vector2 ASum() const{
         Vector2 Total=(0,0);
         for(int i=0; i<__Length__; i++)
@@ -57,6 +48,23 @@ class ZVector_V2{
 
     Vector2 AMean() const
     {return ASum()/__Length__;}
+
+    ///////////////////
+    // Manipulations //
+    ///////////////////
+
+    void Set(uint Index, Vector2 Value){
+        Values[2*Index]  =Value.X;
+        Values[2*Index+1]=Value.Y;
+    }
+
+    virtual
+    ZVector_V2 Map(ZF_Base Function) const{
+        ZVector_V2 Result=Create(__Length__);
+        for(int i=0; i<__Length__; i++)
+            Result.Values[i]=Function.Apply(Values[i]);
+        return Result;
+    }
 
     /////////////////////
     // Transformations //
