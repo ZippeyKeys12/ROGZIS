@@ -1,9 +1,17 @@
 class ZMatrix2{
+    //////////
+    // Data //
+    //////////
+
     private
     uint __Height__,
          __Width__;
 
     Array<double> Values;
+
+    //////////////
+    // Creation //
+    //////////////
 
     static
     ZMatrix2 Create(uint Height, uint Width, bool Ones=false){
@@ -213,6 +221,13 @@ class ZMatrix2{
     virtual
     void Set(uint Row, uint Column, double Value)
     {Values[Row*__Width__+Column]=Value;}
+
+    virtual
+    void Swap(uint ORow, uint OColumn, uint NRow, uint NColumn){
+        double Temp=Get(ORow, OColumn);
+        Set(ORow, OColumn, Get(NRow, NColumn));
+        Set(NRow, NColumn, Temp);
+    }
 
     virtual
     ZMatrix2 Add(ZMatrix2 Other) const{
