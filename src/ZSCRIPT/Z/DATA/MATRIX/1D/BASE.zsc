@@ -118,7 +118,7 @@ class ZVector{
     }
 
     ZVector M2Mul(ZMatrix2 Other) const
-    {return ToM2().M2Mul(Other).ToV();}
+    {return ToM2(__Length__==Other.Height()).M2Mul(Other).ToV();}
 
     ZVector SClamp(double Min, double Max){
         ZVector Result=Create(__Length__);
