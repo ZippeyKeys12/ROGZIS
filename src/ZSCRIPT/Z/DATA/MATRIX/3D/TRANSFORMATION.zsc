@@ -63,6 +63,7 @@ class ZMatrix2{
         return Result;
     }
 
+    static
     ZMatrix2 Perspective(double FoVY, double Aspect, double Z_Near, double Z_Far){
         double F=1/Tan(FoVY/2);
         ZMatrix2 Result=Null_3D();
@@ -80,12 +81,23 @@ class ZMatrix2{
         double ALen=Ang.Length(),
                AdjPitch=ASin(Ang.Y/ALen),
                AdjYaw=Yaw-90;
-        ZMatrix2 Result=Rotate(Roll, (0, 0, 1))
-                       .M2Mul(Rotate(AdjPitch, (1, 0, 0)))
-                       .M2Mul(Rotate(AdjYaw, (0, -1, 0)))
-                       .M2Mul(Scale(1, Level.PixelStretch, 1))
+        ZMatrix2 Result=Rotate_3D(Roll, (0, 0, 1))
+                       .M2Mul(Rotate_3D(AdjPitch, (1, 0, 0)))
+                       .M2Mul(Rotate_3D(AdjYaw, (0, -1, 0)))
+                       .M2Mul(Scale_3D((1, Level.PixelStretch, 1)))
                        .M2Mul(SwapYZ())
-                       .M2Mul(Translate(-Pos));
+                       .M2Mul(Translate_3D(-Pos));
         return Result;
+    }
+
+    static
+    ZMatrix2 WorldToClip(Vector3 Pos, double Yaw, double Pitch, double Roll, double FoV){
+        return Perspective(ZScreen.FoVY(FoV), ZScreen.AspectRatio(), 5, 65535)
+              .M2Mul(WorldToView(Pos, Yaw, Pitch, Roll));
+    }
+
+    ZMatrix2 ToClip(double FoV){
+        return Perspective(ZScreen.FoVY(FoV), ZScreen.AspectRatio(), 5, 65535)
+              .M2Mul(self);
     }
 }
