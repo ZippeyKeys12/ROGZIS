@@ -1,0 +1,29 @@
+class ZString{
+    enum ZE_StrCase{
+        Upper,
+        Lower,
+    }
+
+    static const Name Letters[]={
+        'A', 'B', 'C', 'D', 'E', 'F', 'G',
+        'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+        'V', 'W', 'X', 'Y', 'Z'
+    };
+
+    static
+    String Letter(uint Index, ZE_StrCase Case){
+        String Result=Letters[Index];
+        if(Case==Lower)
+            Result.ToLower();
+        return Result;
+    }
+
+    static
+    uint Index(String Letter){
+        uint Index=Letters.Find(Letter);
+        if(Index==Letters.Size())
+            return -1;
+        return Letters[Index];
+    }
+}
