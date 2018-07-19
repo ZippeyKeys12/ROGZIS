@@ -1,4 +1,4 @@
-enum ZEPSpriteType{
+enum ZE_PSpriteType{
     PSP_RWEAPON=PSP_WEAPON+1,
     PSP_LWEAPON,
 }

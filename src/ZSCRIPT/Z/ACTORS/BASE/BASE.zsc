@@ -70,7 +70,7 @@ class ZZZ:ZActor{
                 Target=self.Target;
             else return;
         }
-        ActorIterator it=ActorIterator.Create(ZTID_NODES, "ZPathMarker");
+        ActorIterator it=ActorIterator.Create(TID_NODES, "ZPathMarker");
         double New,
                LastStart=double.MAX,
                LastTarget=double.MAX;

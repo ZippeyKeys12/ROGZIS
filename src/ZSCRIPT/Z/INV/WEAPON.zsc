@@ -1,4 +1,4 @@
-enum ZEWeaponInfo{
+enum ZE_WeaponInfo{
     // Weapon Type
     WPN_MELEE       =   1<<0,
     WPN_RANGED      =   1<<1,
@@ -21,7 +21,7 @@ class ZWeapon:StateProvider{
 
     double BaseCritMult;
 
-    ZEWeaponInfo Info;
+    ZE_WeaponInfo Info;
 
     ZItem Data;
 

@@ -1,4 +1,4 @@
-enum ZEDamageInfo{
+enum ZE_DamageInfo{
     // Effects  -   Multiple
     DMG_NONE    =   0,
     DMG_ZONE    =   1<<0,

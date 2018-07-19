@@ -46,6 +46,7 @@
 #include "ZSCRIPT/Z/SYS/REGISTRIES.zsc"
 #include "ZSCRIPT/Z/SYS/NODEGRAPH.zsc"
 #include "ZSCRIPT/Z/SYS/WEAPONS.zsc"
+#include "ZSCRIPT/Z/SYS/ARMOR.zsc"
 
 #include "ZSCRIPT/Z/SYS/EVENTS/BROADCASTER.zsc"
 

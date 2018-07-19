@@ -12,7 +12,7 @@ class ZManager{
     private
     void InitRegistries(){
         // Node Graphs
-        ActorIterator it=ActorIterator.Create(ZTID_NODES, "ZPathMarker");
+        ActorIterator it=ActorIterator.Create(TID_NODES, "ZPathMarker");
         ZPathNode StartNode, TargetNode, Node;
         ZPathMarker Marker;
         static const uint NodeGraphTypes[]={

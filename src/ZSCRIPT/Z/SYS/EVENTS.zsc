@@ -1,4 +1,4 @@
-enum ZEErrorLevel{
+enum ZE_ErrorLevel{
     ERR_INFO,
     ERR_WARNING,
     ERR_ERROR,

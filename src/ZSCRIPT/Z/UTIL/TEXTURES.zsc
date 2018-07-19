@@ -1,6 +1,5 @@
 struct ZTexture{
-    enum ZEUseTypes
-    {
+    enum ZE_UseTypes{
         Type_Any,
         Type_Wall,
         Type_Flat,

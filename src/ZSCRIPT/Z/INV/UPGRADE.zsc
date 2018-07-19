@@ -1,4 +1,4 @@
-enum ZEUpgradeInfo{
+enum ZE_UpgradeInfo{
     UPR_NONE,
     UPR_MARMOR,
 }
@@ -16,29 +16,6 @@ class ZUpgrade:ZItem{
 
     virtual
     void Defaults(){}
-}
-
-class ZArmorUpgrade:ZUpgrade{
-    uint Priority,
-         Strain;
-
-    virtual
-    void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}
-
-    virtual
-    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0)
-    {return Damage;}
-}
-
-class ZArmorUpgrades:ZRegistry{
-    bool Add(ZArmorUpgrade Upgrade)
-    {return Upgrade && super.Add(Upgrade);}
-
-    ZArmorUpgrade Get(Name ID) const
-    {return ZArmorUpgrade(super.Get(ID));}
-
-    ZArmorUpgrade GetRand() const
-    {return ZArmorUpgrade(super.GetRand());}
 }
 
 #include "ZSCRIPT/Z/INV/MUPGRADES/INCLUDES.zsc"

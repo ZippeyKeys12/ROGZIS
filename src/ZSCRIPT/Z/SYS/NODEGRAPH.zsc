@@ -1,4 +1,4 @@
-enum ZEPathType{
+enum ZE_PathType{
     PATH_ALL,
     PATH_LAND,
     PATH_WATER,
@@ -23,7 +23,7 @@ class ZPathMarker:Actor{
         super.BeginPlay();
         ChangeStatNum(STAT_ZDATA);
         A_SetSize(Args[1]);
-        ChangeTID(ZTID_NODES);
+        ChangeTID(TID_NODES);
     }
 
     virtual
@@ -32,7 +32,7 @@ class ZPathMarker:Actor{
             Node=new('ZPathNode');
             Node.Marker=self;
         }
-        ActorIterator it=ActorIterator.Create(ZTID_NODES, 'ZPathMarker');
+        ActorIterator it=ActorIterator.Create(TID_NODES, 'ZPathMarker');
         ZPathMarker Marker;
         while(Marker=ZPathMarker(it.Next())){
             if(self==Marker)
