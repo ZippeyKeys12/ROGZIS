@@ -3,10 +3,6 @@ struct ZUtil{
     const PI=3.14159265359;
 
     static
-    Vector2 ScreenSize()
-    {return (Screen.GetWidth(), Screen.GetHeight());}
-
-    static
     int RandSeed(Object Caller=null)
     {return Random(int.min, int.max)^((Caller)?int(Caller.GetClassName()):0);}
 

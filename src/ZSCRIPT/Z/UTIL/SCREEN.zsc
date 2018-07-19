@@ -1,0 +1,16 @@
+struct ZScreen{
+    static
+    Vector2 Size()
+    {return (Screen.GetWidth(), Screen.GetHeight());}
+
+    static
+    double AspectRatio()
+    {return Screen.GetAspectRatio();}
+
+    static
+    double FoVY(double FoVH){
+        double Ratio=AspectRatio();
+        double FoVRatio=(Ratio>=1.3)?1.333333:Ratio;
+        return Tan(2*ATan(Tan(FoVH/2)/FoVRatio));
+    }
+}
