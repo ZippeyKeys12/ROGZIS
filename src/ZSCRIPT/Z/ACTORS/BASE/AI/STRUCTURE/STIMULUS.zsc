@@ -1,4 +1,4 @@
-enum ZEStimStrength{
+enum ZE_StimStrength{
     STR_MIN         =   1,
     STR_WEAK        =   50,
     STR_MODERATE    =   5*STR_WEAK,

@@ -1,4 +1,4 @@
-enum ZEBoxSides{
+enum ZE_BoxSides{
     BOX_NONE,
     BOX_TR  =   1<<0,
     BOX_TL  =   1<<1,
