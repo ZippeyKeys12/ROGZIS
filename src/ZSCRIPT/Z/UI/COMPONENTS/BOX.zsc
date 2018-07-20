@@ -8,7 +8,7 @@ enum ZE_BoxSides{
 }
 
 class ZBox:ZElement{
-    ZEBoxSides Sides;
+    ZE_BoxSides Sides;
 
     double Alpha;
 
@@ -17,7 +17,7 @@ class ZBox:ZElement{
               Fill;
 
     static
-    ZBox Create(Vector2 Pos, Vector2 Size, double Alpha=1, ZEBoxSides Sides=BOX_ALL, ZComponent Parent=null){
+    ZBox Create(Vector2 Pos, Vector2 Size, double Alpha=1, ZE_BoxSides Sides=BOX_ALL, ZComponent Parent=null){
         ZBox Result=ZBox(ZElement.Create('ZBox', Pos, Size, Parent));
         Result.Sides=Sides;
         Result.Alpha=Alpha;

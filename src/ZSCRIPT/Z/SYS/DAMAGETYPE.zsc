@@ -14,16 +14,16 @@ class ZDamageTypes:ZRegistry{
 
 class ZDamageType:ZRegistryItem{
     private
-    ZEDamageInfo DamageFlags;
+    ZE_DamageInfo DamageFlags;
 
     private
     double Factors[4];
 
     static
-    ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZEDamageInfo DamageFlags=DMG_NONE)
+    ZDamageType Create(Name ID, String Name, double ArmorPlating=1, double MagneticShield=1, double PlasmaShield=1, double HardLight=1, ZE_DamageInfo DamageFlags=DMG_NONE)
     {return new('ZDamageType').Init(ID, Name, ArmorPlating, MagneticShield, PlasmaShield, HardLight, DamageFlags);}
 
-    ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZEDamageInfo DamageFlags=DMG_NONE){
+    ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZE_DamageInfo DamageFlags=DMG_NONE){
         self.ID=ID;
         self.Name=Name;
         Factors[ZCalc_S.ShiftOf(AMR_PLATE)]=ArmorPlating;
@@ -34,7 +34,7 @@ class ZDamageType:ZRegistryItem{
         return self;
     }
 
-    double Factor(ZEArmorInfo AMR_TYPE) const
+    double Factor(ZE_ArmorInfo AMR_TYPE) const
     {return Factors[ZCalc_S.ShiftOf(AMR_TYPE)];}
 
     int Flags() const

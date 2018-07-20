@@ -16,7 +16,7 @@ class ZManager{
 
     static
     clearscope
-    void Error(String Error, ZEErrorLevel Level){
+    void Error(String Error, ZE_ErrorLevel Level){
         switch(Level){
             case ERR_INFO:break;
             case ERR_WARNING:

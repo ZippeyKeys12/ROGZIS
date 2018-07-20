@@ -35,7 +35,7 @@ class ZManager{
         for(int i=1; i<ParserTSV.Size(); i++){
             Row=ParserTSV.GetRow(i);
             // Flags Management
-            Array<String> Flags; Flags.Clear(); ZEDamageInfo ActualFlags=0;
+            Array<String> Flags; Flags.Clear(); ZE_DamageInfo ActualFlags=0;
             Row.Get(6).Split(Flags, "|", TOK_SKIPEMPTY);
             for(int j=0; j<Flags.Size(); j++)
                 if(Flags[j]~=="DMG_ZONE")
@@ -65,7 +65,7 @@ class ZManager{
     {return DamageTypes.Get(ID);}
 
     clearscope
-    ZUpgrade Upgrade(ZEUpgradeInfo Type, Name ID){
+    ZUpgrade Upgrade(ZE_UpgradeInfo Type, Name ID){
         switch(Type){
             case UPR_MARMOR:
                 return ZUpgrade(ArmorUpgrades.Get("ZMAU_"..ID));

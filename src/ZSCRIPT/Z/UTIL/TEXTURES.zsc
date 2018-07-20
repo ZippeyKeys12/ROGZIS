@@ -18,7 +18,7 @@ struct ZTexture{
     };
 
     static
-    TextureID Get(Name Tex, ZEUseTypes Type=Type_Any)
+    TextureID Get(Name Tex, ZE_UseTypes Type=Type_Any)
     {return TexMan.CheckForTexture(Tex, Type);}
 
     static
