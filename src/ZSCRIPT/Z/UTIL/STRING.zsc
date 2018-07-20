@@ -1,4 +1,4 @@
-struct ZString{
+class ZString{
     enum ZE_StrSys{
         English =   1<<0,
         Base64  =   1<<1,
@@ -9,8 +9,7 @@ struct ZString{
         Lower   =   1<<3,
     }
 
-    static
-    const Name Letters[]={
+    static const Name Letters[]={
         'A', 'B',
         'C', 'D',
         'E', 'F',
@@ -26,8 +25,7 @@ struct ZString{
         'Y', 'Z'
     };
 
-    static
-    const String Base64Table[]={
+    static const String Base64Table[]={
         "A", "B", "C", "D", "E", "F", "G", "H",
         "I", "J", "K", "L", "M", "N", "O", "P",
         "Q", "R", "S", "T", "U", "V", "W", "X",
@@ -38,31 +36,31 @@ struct ZString{
         "4", "5", "6", "7", "8", "9", "+", "/"
     };
 
-    static
     String Letter(uint Index, ZE_StrSys Type){
         String Result;
-        if(Type & English)
+        if(Type & English){
             Result=Letters[Index];
-        else if(Type & Base64)
-            Result=Base64[Index];
-        if(Type & Lower)
-            Result.ToLower();
-        else if(Type & Upper)
-            Result.ToUpper();
+            if(Type & Lower)
+                Result.ToLower();
+            else if(Type & Upper)
+                Result.ToUpper();
+        }else if(Type & Base64)
+            Result=Base64Table[Index];
         return Result;
     }
 
-    static
-    uint Index(String Character, ZE_StrSys Type){
+    int Index(String Character, ZE_StrSys Type){
         uint Index;
-        if(Type & English)
-            Index=Letters.Find(Character);
-        else if(Type & Base64)
-            Index=Base64Table.Find(Character);
-        if(Index==Letters.Size()){
-            ZManager.Error("Character does not exist in designated set", ERR_);
-            return -1;
-        }
-        return Letters[Index];
+        if(Type & English){
+            Character.ToUpper();
+            for(int i=0; i<Letters.Size(); i++)
+                if(Character==Letters[i])
+                    return i;
+        }else if(Type & Base64)
+            for(int i=0; i<Base64Table.Size(); i++)
+                if(Character==Base64Table[i])
+                    return i;
+        ZManager.Error("Character does not exist in designated set", ERR_ERROR);
+        return -1;
     }
 }
