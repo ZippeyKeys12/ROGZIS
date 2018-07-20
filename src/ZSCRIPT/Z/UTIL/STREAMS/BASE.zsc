@@ -31,16 +31,14 @@ class ZReader abstract{
     uint Length()
     {return 0;}
 
-    virtual
+    int Skip(int Offset)
+    {return Index+=Offset;}
+
     uint Position()
     {return Index;}
 
-    virtual
     bool End()
     {return Length()=<Position();}
-
-    int Skip(int Offset)
-    {return Index+=Offset;}
 
     void Reset(){
         Index=0;
