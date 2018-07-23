@@ -1,0 +1,39 @@
+class ZR_String:ZReader{
+    private
+    String Data;
+
+    static
+    ZR_String Create(String Data, Name Type='String'){
+        ZR_String Result=ZR_String(ZReader.Create(Type, Parent));
+        Result.Data=Data;
+        return Result;
+    }
+
+    override
+    String Read(){
+        if(End())
+            ZManager.Error("Reached end of stream", ERR_ERROR);
+        Skip(1);
+        return Data.CharAt(Index-1);
+    }
+
+    override
+    int ReadChar(){
+        if(End())
+            ZManager.Error("Reached end of stream", ERR_ERROR);
+        Skip(1);
+        return Data.CharCodeAt(Index-1);
+    }
+
+    override
+    String Peek()
+    {return Data.CharAt(Index);}
+
+    override
+    int PeekChar()
+    {return Data.CharCodeAt(Index);}
+
+    override
+    uint Length()
+    {return Data.Length();}
+}
