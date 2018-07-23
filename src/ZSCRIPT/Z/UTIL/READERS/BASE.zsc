@@ -5,10 +5,16 @@ class ZReader abstract{
     ZReader Parent;
 
     static
-    ZReader Create(Class<ZReader> Type, ZReader Parent=null){
-        ZReader Result=ZReader(new(Type));
-        Result.Parent=Parent;
-        return Result;
+    ZReader Create(Name Type){
+        Type='ZR_'..Type;
+        if(!ZUtil.ClassExists(Type)){
+            ZManager.Error(Type.." does not exist", ERR_FATAL);
+            return null;
+        }else{
+            ZReader Result=ZReader(new(Type));
+            Result.Parent=Parent;
+            return Result;
+        }
     }
 
     virtual
@@ -38,7 +44,7 @@ class ZReader abstract{
     {return Index;}
 
     bool End()
-    {return Length()=<Position();}
+    {return Length()<=Position();}
 
     void Reset(){
         Index=0;
