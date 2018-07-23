@@ -1,5 +1,5 @@
 class ZR_String:ZReader{
-    private
+    protected
     String Data;
 
     static
