@@ -32,6 +32,9 @@ class ZReader abstract{
     uint Length()
     {return 0;}
 
+    int ReadByte()
+    {return ReadChar() & 255;}
+
     int Skip(int Offset)
     {return Index+=Offset;}
 
