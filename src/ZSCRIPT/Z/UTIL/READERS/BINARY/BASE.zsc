@@ -1,0 +1,59 @@
+class ZR_Binary:ZReader{
+    protected
+    ZR_String Data;
+
+    static
+    ZR_Binary Create(ZR_String Data, Name Type='Binary'){
+        ZR_Binary Result=ZR_Binary(ZReader.Create(Type));
+        Result.Data=Data;
+        return Result;
+    }
+
+    override
+    int ReadChar()
+    {return Data.ReadChar();}
+
+    int ReadByte()
+    {return ReadChar() & 255;}
+
+    int ReadShort()
+    {return ReadByte()<<8 | ReadByte();}
+
+    int ReadLong()
+    {return ReadShort()<<16 | ReadShort();}
+
+    Vector2 ReadByteV2()
+    {return (ReadByte(), ReadByte());}
+
+    Vector2 ReadShortV2()
+    {return (ReadShort(), ReadShort());}
+
+    Vector2 ReadLongV2()
+    {return (ReadLong(), ReadLong());}
+
+    Vector3 ReadByteV3()
+    {return (ReadByte(), ReadByte(), ReadByte());}
+
+    Vector3 ReadShortV3()
+    {return (ReadShort(), ReadShort(), ReadShort());}
+
+    Vector3 ReadLongV3()
+    {return (ReadLong(), ReadLong(), ReadLong());}
+
+    float ReadFloat(){
+        ZManager.Error("ReadFloat not defined yet", ERR_FATAL);
+        return double.NaN;
+    }
+
+    override
+    String Peek()
+    {return Data.Peek();}
+
+    override
+    int PeekChar()
+    {return Data.PeekChar();}
+
+    override
+    uint Length()
+    {return Data.Length();}
+}
