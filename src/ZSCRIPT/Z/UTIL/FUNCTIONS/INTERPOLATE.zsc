@@ -13,5 +13,5 @@ class ZF_Interpolator:ZF_Base{
 
     override
     double Apply(double X) const
-    {return (1-X)*Start.Apply(super.Apply(X))+X*End.Apply(super.Apply(X));}
+    {return (1-super.Apply(X))*Start.Apply(super.Apply(X))+super.Apply(X)*End.Apply(super.Apply(X));}
 }
