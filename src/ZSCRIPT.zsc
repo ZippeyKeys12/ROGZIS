@@ -1,4 +1,5 @@
 // UTIL
+#include "ZSCRIPT/Z/UTIL/CHAR.zsc"
 #include "ZSCRIPT/Z/UTIL/STRING.zsc"
 #include "ZSCRIPT/Z/UTIL/SCREEN.zsc"
 #include "ZSCRIPT/Z/UTIL/TEXTURES.zsc"

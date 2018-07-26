@@ -16,7 +16,7 @@ enum ZE_CharCode{
     CHAR_ShiftOut,
     CHAR_ShiftIn,
     CHAR_DataLinkEsc,
-    CHAR_DeviceCtrl1
+    CHAR_DeviceCtrl1,
     CHAR_DeviceCtrl2,
     CHAR_DeviceCtrl3,
     CHAR_DeviceCtrl4,
@@ -125,5 +125,5 @@ enum ZE_CharCode{
     CHAR_VerticalLine,
     CHAR_CBrace,
     CHAR_Tilde,
-    CHAR_DEL
+    CHAR_DEL,
 }
