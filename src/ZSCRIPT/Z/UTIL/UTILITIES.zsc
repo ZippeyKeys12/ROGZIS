@@ -11,9 +11,16 @@ struct ZUtil{
     {return ZManager.DataInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
 
     static
-    bool ClassExists(String ClassName){
+    bool ClassExists(Name ClassName){
         Class Type=ClassName;
         return Type;
+    }
+
+    static
+    bool ChildOf(Name ClassName, Name ParentClass){
+        Class Parent=ParentClass;
+        Class Type=ClassName;
+        return Type is Parent;
     }
 
     static
