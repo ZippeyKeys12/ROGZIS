@@ -91,10 +91,6 @@ struct ZString{
     }
 
     static
-    String Offset(String Character, int Offset, ZE_StrSys Type=English)
-    {return Character(IndexOf(Character)+Offset, Type);}
-
-    static
     String Substring(String Str, int StartIndex, int EndIndex)
     {return Str.Mid(StartIndex, EndIndex-StartIndex);}
 
