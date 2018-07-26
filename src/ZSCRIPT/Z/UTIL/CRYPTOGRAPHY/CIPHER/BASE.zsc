@@ -1,0 +1,24 @@
+class ZCipher abstract{
+    protected
+    String Key;
+
+    static
+    ZCipher Create(Name Type, String Key){
+        Type='ZC_'..Type;
+        if(!ZUtil.ChildOf(Type, 'ZCipher')){
+            ZManager.Error(Type.." does not exist", ERR_FATAL);
+            return null;
+        }
+        ZCipher Result=ZCipher(new(Type));
+        Result.Key=Key;
+        return Result;
+    }
+
+    virtual
+    String Encrypt(String Str)
+    {return Str;}
+
+    virtual
+    String Decrypt(String Str)
+    {return Str;}
+}
