@@ -10,7 +10,7 @@ struct ZString{
     }
 
     static
-    String Letter(uint Index, ZE_StrSys Type){
+    String Character(uint Index, ZE_StrSys Type=English){
         String Result;
         if(Type & English){
             static const Name Letters[]={
@@ -50,7 +50,7 @@ struct ZString{
     }
 
     static
-    int Index(String Character, ZE_StrSys Type){
+    int IndexOf(String Character, ZE_StrSys Type=English){
         uint Index;
         if(Type & English){
             static const Name Letters[]={
@@ -89,6 +89,10 @@ struct ZString{
         ZManager.Error("Character does not exist in designated set", ERR_ERROR);
         return -1;
     }
+
+    static
+    String Offset(String Character, int Offset, ZE_StrSys Type=English)
+    {return Character(IndexOf(Character)+Offset, Type);}
 
     static
     String Substring(String Str, int StartIndex, int EndIndex)
