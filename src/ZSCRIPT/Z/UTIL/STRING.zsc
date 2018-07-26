@@ -128,4 +128,8 @@ struct ZString{
             || (CHAR_OBracket<=CharCode     &&  CharCode<=CHAR_Grave)
             || (CHAR_OBrace<=CharCode       &&  CharCode<=CHAR_Tilde);
     }
+
+    static
+    bool IsWhitespace(String Character)
+    {return Character.CharCodeAt(0)<=CHAR_Space;}
 }
