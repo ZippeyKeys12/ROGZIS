@@ -5,11 +5,11 @@ class ZReader abstract{
     static
     ZReader Create(Name Type){
         Type='ZR_'..Type;
-        if(!ZUtil.ClassExists(Type)){
+        if(!ZUtil.ChildOf(Type, 'ZReader')){
             ZManager.Error(Type.." does not exist", ERR_FATAL);
             return null;
-        }else
-            return ZReader(new(Type));
+        }
+        return ZReader(new(Type));
     }
 
     virtual
