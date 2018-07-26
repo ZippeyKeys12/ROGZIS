@@ -10,7 +10,7 @@ struct ZString{
     }
 
     static
-    String Character(uint Index, ZE_StrSys Type=English){
+    String CharacterAt(uint Index, ZE_StrSys Type=English){
         String Result;
         if(Type & English){
             static const Name Letters[]={
