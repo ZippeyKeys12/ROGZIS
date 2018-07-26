@@ -1,0 +1,48 @@
+class ZArray_@ValType{
+    Array<@ValType> Values;
+
+    uint Size()
+    {return Values.Size();}
+
+    void Copy(ZArray_@ValType Other)
+    {return Values.Copy(Other.Values);}
+
+    void Move(ZArray_@ValType Other)
+    {return Values.Move(Other.Values);}
+
+    uint Find(@ValType Item)
+    {return Values.Find(Item);}
+
+    uint Push(@ValType Item)
+    {return Values.Push(Item);}
+
+    @ValType Get(uint Index)
+    {return Values[Index];}
+
+    bool Pop()
+    {return Values.Pop();}
+
+    void Delete(uint Index, int DeleteCount=1)
+    {return Values.Delete(Index, DeleteCount);}
+
+    void Insert(uint Index, @ValType Item)
+    {return Values.Insert(Index, Item);}
+
+    void ShrinkToFit()
+    {return Values.ShrinkToFit();}
+
+    void Grow()
+    {return Values.Grow();}
+
+    void Resize(uint Amount)
+    {return Values.Resize(Amount);}
+
+    uint Reserve(uint Amount)
+    {return Values.Reserve(Amount);}
+
+    uint Max()
+    {return Values.Max();}
+
+    void Clear()
+    {return Values.Clear();}
+}
