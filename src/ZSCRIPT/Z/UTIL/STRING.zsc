@@ -99,51 +99,33 @@ struct ZString{
     {return Str.Mid(StartIndex, EndIndex-StartIndex);}
 
     static
-    bool IsLetter(String Character){
-        static const Name Letters[]={
-            'A', 'B',
-            'C', 'D',
-            'E', 'F',
-            'G', 'H',
-            'I', 'J',
-            'K', 'L',
-            'M', 'N',
-            'O', 'P',
-            'Q', 'R',
-            'S', 'T',
-            'U', 'V',
-            'W', 'X',
-            'Y', 'Z'
-        };
-        for(int i=0; i<Letters.Size(); i++)
-            if(Character==Letters[i])
-                return true;
-        return false;
+    bool IsUpper(String Character){
+        int CharCode=Character.CharCodeAt(0);
+        return CHAR_UA<=CharCode && CharCode<=CHAR_UZ;
     }
 
     static
+    bool IsLower(String Character){
+        int CharCode=Character.CharCodeAt(0);
+        return CHAR_La<=CharCode && CharCode<=CHAR_Lz;
+    }
+
+    static
+    bool IsLetter(String Character)
+    {return IsUpper(Character) || IsLower(Character);}
+
+    static
     bool IsDigit(String Character){
-        static const Name Digits[]={
-            '0', '1', '2', '3', '4',
-            '5', '6', '7', '8', '9'
-        };
-        for(int i=0; i<Digits.Size(); i++)
-            if(Character==Digits[i])
-                return true;
-        return false;
+        int CharCode=Character.CharCodeAt(0);
+        return CHAR_0<=CharCode && CharCode<=CHAR_9;
     }
 
     static
     bool IsPunctuation(String Character){
-        static const String Punctuation[]={
-            "!", "\"", "#", "$", "%", "&", "'", "(",
-            ")",  "*", "+", ",", "-", ".", "/", ":", 
-            ";",  "<", "=", ">", "?", "@", "[", "]",
-            "^",  "_", "`", "{", "¦", "}", "~"
-        };
-        for(int i=0; i<Punctuation.Size(); i++)
-            if(Character==Punctuation[i])
-                return true;
-        return false;
+        int CharCode=Character.CharCodeAt(0);
+        return (CHAR_Exclamation<=CharCode  &&  CharCode<=CHAR_Slash)
+            || (CHAR_Semicolon<=CharCode    &&  CharCode<=CHAR_At   )
+            || (CHAR_OBracket<=CharCode     &&  CharCode<=CHAR_Grave)
+            || (CHAR_OBrace<=CharCode       &&  CharCode<=CHAR_Tilde);
     }
 }
