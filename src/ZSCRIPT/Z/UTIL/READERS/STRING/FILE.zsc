@@ -1,6 +1,6 @@
 class ZR_File:ZR_String{
     static
-    ZR_File Create(String Filename, int Namespace=0, Name Type='File'){
+    ZR_File Create(String Filename, int Namespace=Wads.GlobalNamespace, Name Type='File'){
         String Data;
         if(Filename.Length()<=8 && Filename.IndexOf("/")==-1 && Filename.IndexOf(".")==-1){
             int Lump;
