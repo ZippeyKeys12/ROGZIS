@@ -50,8 +50,8 @@ struct ZString{
     }
 
     static
-    int IndexOf(String Character, ZE_StrSys Type=English){
-        uint Index;
+    int IndexOf(String Character, uint Index=0, ZE_StrSys Type=English){
+        Character=Character.CharAt(Index);
         if(Type & English){
             static const Name Letters[]={
                 'A', 'B',
@@ -95,30 +95,30 @@ struct ZString{
     {return Str.Mid(StartIndex, EndIndex-StartIndex);}
 
     static
-    bool IsUpper(String Character){
-        int CharCode=Character.CharCodeAt(0);
+    bool IsUpper(String Character, uint Index=0){
+        int CharCode=Character.CharCodeAt(Index);
         return CHAR_UA<=CharCode && CharCode<=CHAR_UZ;
     }
 
     static
-    bool IsLower(String Character){
-        int CharCode=Character.CharCodeAt(0);
+    bool IsLower(String Character, uint Index=0){
+        int CharCode=Character.CharCodeAt(Index);
         return CHAR_La<=CharCode && CharCode<=CHAR_Lz;
     }
 
     static
-    bool IsLetter(String Character)
-    {return IsUpper(Character) || IsLower(Character);}
+    bool IsLetter(String Character, uint Index=0)
+    {return IsUpper(Character, Index) || IsLower(Character, Index);}
 
     static
-    bool IsDigit(String Character){
-        int CharCode=Character.CharCodeAt(0);
+    bool IsDigit(String Character, uint Index=0){
+        int CharCode=Character.CharCodeAt(Index);
         return CHAR_0<=CharCode && CharCode<=CHAR_9;
     }
 
     static
-    bool IsPunctuation(String Character){
-        int CharCode=Character.CharCodeAt(0);
+    bool IsPunctuation(String Character, uint Index=0){
+        int CharCode=Character.CharCodeAt(Index);
         return (CHAR_Exclamation<=CharCode  &&  CharCode<=CHAR_Slash)
             || (CHAR_Semicolon<=CharCode    &&  CharCode<=CHAR_At   )
             || (CHAR_OBracket<=CharCode     &&  CharCode<=CHAR_Grave)
@@ -126,6 +126,6 @@ struct ZString{
     }
 
     static
-    bool IsWhitespace(String Character)
-    {return Character.CharCodeAt(0)<=CHAR_Space;}
+    bool IsWhitespace(String Character, uint Index=0)
+    {return Character.CharCodeAt(Index)<=CHAR_Space;}
 }
