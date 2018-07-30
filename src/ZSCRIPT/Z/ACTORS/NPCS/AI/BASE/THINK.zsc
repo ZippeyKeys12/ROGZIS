@@ -1,12 +1,14 @@
 enum ZE_ThinkDelay{
     TICK_NEVER_THINK=-1,
     TICK_DEFAULT_THINK,
+    TICK_ALWAYS_THINK=int.min,
 }
 
 extend
 class ZNPC{
     private
-    ZE_ThinkDelay NextThink;
+    ZE_ThinkDelay LastThink,
+                  NextThink;
 
     Class<ZBrain> BrainName;
 
@@ -24,14 +26,22 @@ class ZNPC{
         super.Tick();
         if(NextThink!=TICK_NEVER_THINK)
             return;
-        if(Level.TotalTime==NextThink)
+        if(NextThink==TICK_ALWAYS_THINK || Level.TotalTime==NextThink){
             Think();
+            LastThink=Level.TotalTime;
+        }
     }
 
     virtual
     void Think(){
         bool Acting=Brain.Think();
     }
+
+    ZE_ThinkDelay GetLastThink()
+    {return LastThink;}
+
+    ZE_ThinkDelay GetNextThink()
+    {return NextThink;}
 
     void SetNextThink(ZE_ThinkDelay Delay){
         if(Delay==TICK_NEVER_THINK)
