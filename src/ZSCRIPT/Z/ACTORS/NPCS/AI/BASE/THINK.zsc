@@ -1,0 +1,42 @@
+enum ZE_ThinkDelay{
+    TICK_NEVER_THINK=-1,
+    TICK_DEFAULT_THINK,
+}
+
+extend
+class ZNPC{
+    private
+    ZE_ThinkDelay NextThink;
+
+    Class<ZBrain> BrainName;
+
+    ZBrain Brain;
+
+    Property Brain: BrainName;
+
+    [Property]{
+        [ZNPC]
+        Brain='ZBrain';
+    }
+
+    override
+    void Tick(){
+        super.Tick();
+        if(NextThink!=TICK_NEVER_THINK)
+            return;
+        if(Level.TotalTime==NextThink)
+            Think();
+    }
+
+    virtual
+    void Think(){
+        bool Acting=Brain.Think();
+    }
+
+    void SetNextThink(ZE_ThinkDelay Delay){
+        if(Delay==TICK_NEVER_THINK)
+            NextThink=TICK_NEVER_THINK;
+        else
+            NextThink=Level.TotalTime+Delay;
+    }
+}
