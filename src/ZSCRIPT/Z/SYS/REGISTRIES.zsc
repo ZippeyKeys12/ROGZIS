@@ -12,21 +12,21 @@ class ZManager{
     private
     void InitRegistries(){
         // Node Graphs
-        ActorIterator it=ActorIterator.Create(TID_NODES, "ZPathMarker");
-        ZPathNode StartNode, TargetNode, Node;
-        ZPathMarker Marker;
-        static const uint NodeGraphTypes[]={
-            PATH_ALL
-        };
-        for(int i=0; i<NodeGraphTypes.Size(); i++){
-            ZGraph Graph=new('ZGraph');
-            while(Marker=ZPathMarker(it.Next())){
-                Marker.Init();
-                if((Node=Marker.Node) && (i==PATH_ALL || Node.Type==NodeGraphTypes[i]))
-                    Graph.Nodes.Push(Marker.Node);
-            }
-            NodeGraphs.Push(Graph);
-        }
+        // ActorIterator it=ActorIterator.Create(TID_NODES, "ZPathMarker");
+        // ZPathNode StartNode, TargetNode, Node;
+        // ZPathMarker Marker;
+        // static const uint NodeGraphTypes[]={
+        //     PATH_ALL
+        // };
+        // for(int i=0; i<NodeGraphTypes.Size(); i++){
+        //     ZGraph Graph=new('ZGraph');
+        //     while(Marker=ZPathMarker(it.Next())){
+        //         Marker.Init();
+        //         if((Node=Marker.Node) && (i==PATH_ALL || Node.Type==NodeGraphTypes[i]))
+        //             Graph.Nodes.Push(Marker.Node);
+        //     }
+        //     NodeGraphs.Push(Graph);
+        // }
         // For registration
         Parser_TSV ParserTSV; TSVRow Row;
         // DamageTypes
