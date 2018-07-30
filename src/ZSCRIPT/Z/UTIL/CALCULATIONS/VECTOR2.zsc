@@ -1,5 +1,9 @@
 class ZCalc_V2:ZSingleton{
     static
+    Vector2 Midpoint(Vector2 P1, Vector2 P2)
+    {return (P1+P2)/2;}
+
+    static
     Vector2 Lerp(double Time, Vector2 Start=(0, 0), Vector2 End=(1, 1)){
         Time=Clamp(Time, 0, 1);
         return (1-Time)*Start+Time*End;
@@ -36,4 +40,8 @@ class ZCalc_V2:ZSingleton{
     static
     Vector2 CenterOfMass(Vector2 A, Vector2 B, Vector2 C, double AWeight=1, double BWeight=1, double CWeight=1)
     {return (A*AWeight+B*BWeight+C*CWeight)/(AWeight+BWeight+CWeight);}
+
+    static
+    Vector3 ToV3(Vector2 Point, double Z)
+    {return (Point.X, Point.Y, Z);}
 }

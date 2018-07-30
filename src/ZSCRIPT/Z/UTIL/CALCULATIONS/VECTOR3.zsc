@@ -1,5 +1,9 @@
 class ZCalc_V3:ZSingleton{
     static
+    Vector3 Midpoint(Vector3 P1, Vector3 P2)
+    {return (P1+P2)/2;}
+
+    static
     Vector3 Lerp(double Time, Vector3 Start, Vector3 End){
         Time=Clamp(Time, 0, 1);
         return (1-Time)*Start+Time*End;

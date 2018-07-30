@@ -35,6 +35,9 @@ class ZVector{
     double LengthSquared() const
     {return VDot(Clone());}
 
+    ZVector Midpoint(ZVector Other) const
+    {return Add(Other).SDiv(2);}
+
     ///////////////////
     // Manipulations //
     ///////////////////
