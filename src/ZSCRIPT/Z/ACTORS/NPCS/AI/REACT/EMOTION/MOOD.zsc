@@ -12,6 +12,10 @@ class ZMood play{
         return Result;
     }
 
+    void Tick(){
+
+    }
+
     ZVector PAD()
     {return Dimensions.Clone();}
 

@@ -1,0 +1,51 @@
+class ZUtility{
+    Array<ZUtilityAxis> Axes;
+
+    bool Push(ZUtilityAxis Axis){
+        if(Axes.Find(Axis)!=Axes.Size()){
+            ZManager.Error("Axis already exists", ERR_ERROR);
+            return false;
+        }
+        return Axes.Push(Axis);
+    }
+
+    double Get(ZVector Inputs){
+        if(Inputs.Size()!=Axes.Size()){
+            ZManager.Error("Incorrect Number of Axes\nIs: "..Inputs.Size()..", Should Be: "..Axes.Size(), ERR_ERROR);
+            return double.NaN;
+        }
+        double Score=1;
+        for(int i=0; i<Axes.Size(); i++)
+            Score*=Axes[i].Get(Inputs.Get(i));
+        return Score*(1+(1-1/Axes.Size())*(1-Score));
+    }
+}
+
+class ZUtilityAxis{
+    bool XSign,
+         YSign;
+
+    ZMapper Mapper;
+
+    ZF_Base Func;
+
+    static
+    ZUtilityAxis Create(ZF_Base Function, double Min, double Max, bool XSign=true, bool YSign=true){
+        ZUtilityAxis Result=new('ZUtilityAxis');
+        Result.XSign=XSign;
+        Result.YSign=YSign;
+        Result.Mapper=ZMapper.Create(Min, Max);
+        Result.Func=Function;
+        return Result;
+    }
+
+    double Get(double X){
+        X=Mapper.NormRangeMap(X);
+        if(!XSign)
+            X=1-X;
+        // X=Func.Apply(X);
+        if(!YSign)
+            X=1-X;
+        return Clamp(X, 0, 1);
+    }
+}
