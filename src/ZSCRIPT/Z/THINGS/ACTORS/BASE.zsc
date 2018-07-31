@@ -1,0 +1,10 @@
+class ZActor:ZEntity{
+    static
+    ZActor CreateActor(){
+        return new('ZActor');
+    }
+
+    virtual
+    ZActor Init()
+    {return self;}
+}

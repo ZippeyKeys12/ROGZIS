@@ -83,7 +83,7 @@
 #include "ZSCRIPT/Z/PLYR/INCLUDES.zsc"
 
 // ACTORS
-#include "ZSCRIPT/Z/ACTORS/INCLUDES.zsc"
+#include "ZSCRIPT/Z/THINGS/INCLUDES.zsc"
 
 // INVENTORY
 #include "ZSCRIPT/Z/INV/ITEM.zsc"

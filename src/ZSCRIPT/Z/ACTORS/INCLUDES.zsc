@@ -1,5 +1,0 @@
-// Base
-#include "ZSCRIPT/Z/ACTORS/BASE/BASE.zsc"
-// NPCs
-#include "ZSCRIPT/Z/ACTORS/NPCS/BASE.zsc"
-#include "ZSCRIPT/Z/ACTORS/NPCS/AI/INCLUDES.zsc"

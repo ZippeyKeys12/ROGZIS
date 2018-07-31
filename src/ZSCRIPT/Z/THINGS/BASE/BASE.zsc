@@ -1,0 +1,29 @@
+class ZThing:Actor{
+    [Property]{
+        [Flags]
+        // Physics
+        NoBlockmap=true;
+        NoLiftDrop=true;
+        NoTrigger=true;
+        NeverRespawn=true;
+
+        // (In)Abilities
+        CanNotPush=true;
+        NoTeleport=true;
+        NoTelestomp=true;
+        DontThrust=true;
+        NoKillScripts=true;
+
+        // Defenses
+        NoDamage=true;
+
+        // Appearance & Sound
+        Invisible=true;
+        DontGib=true;
+        DontSplash=true;
+        NoPain=true;
+
+        // Limited Use
+        NoClip=true;
+    }
+}
