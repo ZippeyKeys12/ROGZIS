@@ -1,4 +1,14 @@
 class ZActor:ZEntity{
+    [Property]{
+        [Flags]
+        // Physics
+        Pushable=false;
+        NoTrigger=false;
+
+        // (In)Abilities
+        NoTelestomp=false;
+    }
+
     static
     ZActor CreateActor(){
         return new('ZActor');

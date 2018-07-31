@@ -1,1 +1,26 @@
-class ZEntity:ZThing{}
+class ZEntity:ZThing{
+    [Property]{
+        [Flags]
+        // Physics
+        Pushable=true;
+        NoBlockmap=false;
+        NoLiftDrop=false;
+
+        // (In)Abilities
+        CanNotPush=false;
+        NoTeleport=false;
+        DontThrust=false;
+
+        // Defenses
+        NoDamage=false;
+
+        // Appearance & Sound
+        Invisible=false;
+        DontGib=false;
+        DontSplash=false;
+        NoPain=false;
+
+        // Limited Use
+        NoClip=false;
+    }
+}

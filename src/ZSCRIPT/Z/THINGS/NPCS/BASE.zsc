@@ -1,14 +1,36 @@
 class ZNPC:ZActor{
-    override
-    void BeginPlay(){
-        super.BeginPlay();
-        Brain=ZBrain.Create(BrainName, self);
+    Class<ZBrain> BrainName;
+
+    ZBrain Brain;
+
+    Property Brain: BrainName;
+
+    [Property]{
+        [Flags]
+        // Physics
+        Pushable=false;
+        NoTrigger=false;
+
+        // (In)Abilities
+        NoTelestomp=false;
+        [ZNPC]
+        Brain='ZBrain';
     }
 
     virtual
     clearscope
     bool IsFriend(Actor Other) const
     {return Species==Other.Species;}
+
+    override
+    void BeginPlay(){
+        super.BeginPlay();
+        Brain=ZBrain.Create(BrainName, self);
+    }
+
+    override
+    void Think()
+    {bool Acting=Brain.Think();}
 }
 
 class ZZZ:ZNPC{

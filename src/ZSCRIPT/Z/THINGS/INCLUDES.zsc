@@ -3,6 +3,7 @@
 
 // Entities
 #include "ZSCRIPT/Z/THINGS/ENTITIES/BASE.zsc"
+#include "ZSCRIPT/Z/THINGS/ENTITIES/THINK.zsc"
 
 // Actors
 #include "ZSCRIPT/Z/THINGS/ACTORS/BASE.zsc"
