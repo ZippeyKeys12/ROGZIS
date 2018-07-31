@@ -58,8 +58,9 @@ class ZMarine:ZPlayer{
 
     override
     int TakeSpecialDamage(Actor Inflictor, Actor Source, int Damage, Name DamageType){
+        if(Damage>=TELEFRAG_DAMAGE)
+            return Damage;
         MStats.Health-=Damage;
-        Damage=(Damage>=TELEFRAG_DAMAGE || MStats.Health<=0)?Damage:0;
         return Damage;
     }
 }
