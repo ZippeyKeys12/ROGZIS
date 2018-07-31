@@ -30,29 +30,15 @@ class ZMarine:ZPlayer{
     }
 
     override
-    void SetAimTarget(){
-        FLineTraceData Data;
-        Trace(Data, 2048, Stats.ActualPitch);
-        AimTarget=Data.HitActor;
-    }
-
-    override
-    void HandleScreenShake(){
-        AddScreenShake(ZCalc_S.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
-        double CurrentShake=MStats.ShakeLevel*Clamp(ZCalc_S.SmoothStart(Stats.Shake), 0, 1);
-        if(CurrentShake>0){
-            ActiveYaw=CurrentShake*Perl2Shake.RangeMap(YawShake.Get(Level.MapTime%1000, 1));
-            ActivePitch=CurrentShake*Perl2Shake.RangeMap(PitchShake.Get(Level.MapTime%1000, 1));
-            ActiveRoll=2*CurrentShake*Perl2Shake.RangeMap(RollShake.Get(Level.MapTime%1000, 1));
-            AddScreenShake(-.02);
-        }else ActiveYaw=ActivePitch=ActiveRoll=0;
-    }
+    double ShakeLevel() const
+    {return MStats.ShakeLevel;}
 
     override
     int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags, double Angle){
         if(Damage>0)MStats.Recharger=0;
-        Damage=MStats.ModifyDamageTaken(Inflictor, Source, Damage, Mod, Flags, Angle);
-        Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags|DMG_NO_ARMOR|DMG_NO_FACTOR, Angle);
+        Damage=MStats.ModifyDamage(Inflictor, Source, Damage, Mod, true, Flags);
+        Flags|=DMG_NO_ARMOR | DMG_NO_FACTOR;
+        Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);
         return Damage;
     }
 

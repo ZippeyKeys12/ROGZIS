@@ -6,15 +6,17 @@ class ZStats:Thinker{
 
     static
     ZStats Instance(){
-        ThinkerIterator it=ThinkerIterator.Create("ZStats", STAT_STATIC);
-        ZStats p=ZStats(it.Next());
-        if(!p)p=new('ZStats').Init();
-        return p;
+        ThinkerIterator it=ThinkerIterator.Create('ZStats', STAT_STATIC);
+        ZStats Result=ZStats(it.Next());
+        if(!Result)
+            Result=ZStats.Create();
+        return Result;
     }
 
-    private
-    ZStats Init(){
-        ChangeStatNum(STAT_STATIC);
-        return self;
+    static
+    ZStats Create(){
+        ZStats Result=new('ZStats');
+        Result.ChangeStatNum(STAT_STATIC);
+        return Result;
     }
 }

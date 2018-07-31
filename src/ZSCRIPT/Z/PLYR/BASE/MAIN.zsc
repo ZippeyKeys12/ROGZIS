@@ -31,18 +31,26 @@ class ZPlayer:PlayerPawn{
     }
 
     virtual
+    bool ShouldTick() const
+    {return Player && Player.mo==self && 0<Health;}
+
+    virtual
     void AddScreenShake(double Amount)
     {Stats.Shake=Clamp(Stats.Shake+Amount, 0, 1);}
 
     override
     void Tick(){
         super.Tick();
-        // Handle Voodoo Dolls
-        if(!player || player.mo!=self || Health<=0)return;
+        BaseTick();
+        if(!ShouldTick())
+            return;
         PreTick();
         RealTick();
         PostTick();
     }
+
+    virtual
+    void BaseTick(){}
 
     virtual
     void PreTick(){
@@ -87,7 +95,7 @@ class ZPlayer:PlayerPawn{
     void CheckPitch(){}
 
     virtual
-    bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0, double OffsetZ=0)
+    bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0, double OffsetZ=0) const
     {return LineTrace(Stats.ActualYaw, Distance, Pitch, 0, OffsetZ, Data: Data);}
 
     override

@@ -31,9 +31,13 @@ class ZPlayer{
     }
 
     virtual
+    double ShakeLevel() const
+    {return 1;}
+
+    virtual
     void HandleScreenShake(){
         AddScreenShake(ZCalc_S.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
-        double CurrentShake=Clamp(ZCalc_S.SmoothStart(Stats.Shake), 0, 1);
+        double CurrentShake=ShakeLevel()*Clamp(ZCalc_S.SmoothStart(Stats.Shake), 0, 1);
         if(CurrentShake>0){
             ActiveYaw=CurrentShake*Perl2Shake.RangeMap(YawShake.Get(Level.MapTime%1000, 1));
             ActivePitch=CurrentShake*Perl2Shake.RangeMap(PitchShake.Get(Level.MapTime%1000, 1));

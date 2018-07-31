@@ -5,10 +5,6 @@ class ZPlayer{
          LockMovement,
          CrouchingJump;
 
-    int DashOppurt,
-        DashCountdown,
-        CurrentDashButton;
-
     double LedgeHeight;
 
     Vector3 LastVel;
@@ -25,6 +21,10 @@ class ZPlayer{
         MaxLedgeHeight=35;
     }
 
+    virtual
+    bool CanMove() const
+    {return !LockMovement;}
+
     override
     void HandleMovement(){
         let Player=self.Player;
@@ -34,7 +34,7 @@ class ZPlayer{
         // Handle Movement
         if(ReactionTime)ReactionTime--;
         else{
-            if(!LockMovement){
+            if(CanMove()){
                 MovePlayer();
                 CheckMoveUpDown();
                 CheckJump();
@@ -125,11 +125,11 @@ class ZPlayer{
     }
 
     virtual
-    double GetAirControl()
+    double GetAirControl() const
     {return 1;}
 
     virtual
-    double CheckSprint()
+    double CheckSprint() const
     {return 1;}
 
     override
@@ -159,23 +159,7 @@ class ZPlayer{
     }
 
     virtual
-    void CheckClamber(){
-        Vector3 LastPos=Pos;
-        SetXYZ(Pos+(0, 0, MaxLedgeHeight));
-        LedgeHeight=GetZAt(Radius+4)-LastPos.Z;
-        SetXYZ(LastPos);
-        bool Jumping=Buttons & BT_JUMP;
-        if(!MidClamber){
-            MidClamber=Player.JumpTics!=0 && Vel.Z<=0 && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
-        }else{
-            if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
-            else if(LedgeHeight<=MaxStepHeight){
-                MidClamber=false;
-                Vel.xy+=2*FrontVector;
-            }
-        }
-        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:1);
-    }
+    void CheckClamber(){}
 
     override
     void CheckCrouch(bool totallyfrozen){
@@ -207,5 +191,17 @@ class ZPlayer{
             if(bSkullfly)Vel.XY=-50*FrontVector;
             else DamageMobj(self, self, Dam-20, 'Collision', DMG_THRUSTLESS);
         LastVel=Vel;
+    }
+
+    override
+    bool CanCollideWith(Actor Other, bool Passive){
+        bool Result=super.CanCollideWith(Other, Passive);
+        if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
+            Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
+            // TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
+            Vel.xy=Vel.xy dot SideVector*SideVector;
+            bSkullfly=false;
+        }
+        return Result;
     }
 }

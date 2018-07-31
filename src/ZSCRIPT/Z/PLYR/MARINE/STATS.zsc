@@ -63,7 +63,7 @@ class ZMStats:Thinker{
 
     static
     ZMStats Instance(){
-        ThinkerIterator it=ThinkerIterator.Create("ZMStats", STAT_STATIC);
+        ThinkerIterator it=ThinkerIterator.Create('ZMStats', STAT_STATIC);
         ZMStats p=ZMStats(it.Next());
         if(!p)p=new('ZMStats').Init();
         return p;
@@ -171,7 +171,7 @@ class ZMStats:Thinker{
             return true;
         }
         for(int i=0; i<Upgrades.Size()-1; i++)
-            if(Upgrades[i].Priority>=Upgrade.Priority && Upgrades[i+1].Priority<Upgrade.Priority){
+            if(Upgrade.Priority<=Upgrades[i].Priority && Upgrades[i+1].Priority<Upgrade.Priority){
                 Upgrades.Insert(i+1, Upgrade);
                 return true;
             }
@@ -223,34 +223,35 @@ class ZMStats:Thinker{
     }
 
     virtual
-    int ModifyDamageGiven(ZWeapon Weapon, int Damage, Name Mod, int Flags=0){
-        switch(Mod){
-            case 'Melee':
-                Damage*=1+.03*Strength;
-                break;
+    int ModifyDamage(Actor Inflictor, Actor Source, int Damage, Name Mod, bool Passive, int Flags=0){
+        if(Passive){
+            if(Plate<=0)
+                return Damage;
+            ZDamageType DamageType=Manager.DamageType(Mod);
+            if(!DamageType){
+                ZManager.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
+                return 0;
+            }
+            double Dam, TempDamage=Damage;
+            Array<ZArmorUpgrade> Upgrades;
+            for(int i=0; i<Upgrades.Size(); i++)
+                if(Upgrades[i].Activated)
+                    TempDamage=Upgrades[i].ModifyDamage(Inflictor, Source, TempDamage, DamageType, Flags);
+            int PlateHit;
+            // Armor Plating
+            if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
+                TempDamage*=1-Floor(PlateHit=PlateAbsorption*ArmorMapping.ANormRangeMap(double(Plate)/MaxPlate));
+                Plate=Max(Plate-PlateHit, 0);
+            }
+            return Ceil(TempDamage);
+        }else{
+            ZWeapon Weapon=ZWeapon(Source);
+            switch(Mod){
+                case 'Melee':
+                    Damage*=1+.03*Strength;
+                    break;
+            }
+            return Damage+(FRandom(0, 1)<=CriticalChance*Weapon.CriticalMultiplier())*Weapon.CritDmg;
         }
-        return Damage+(FRandom(0, 1)<=CriticalChance*Weapon.CriticalMultiplier())*Weapon.CritDmg;
-    }
-
-    virtual
-    int ModifyDamageTaken(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags=0, double Angle=0){
-        if(Plate<=0)return Damage;
-        ZDamageType DamageType=Manager.DamageType(Mod);
-        if(!DamageType){
-            ZManager.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
-            return 0;
-        }
-        double Dam, TempDamage=Damage;
-        Array<ZArmorUpgrade> Upgrades;
-        for(int i=0; i<Upgrades.Size(); i++)
-            if(Upgrades[i].Activated)
-                TempDamage=Upgrades[i].ModifyDamage(Inflictor, Source, TempDamage, DamageType, Flags, Angle);
-        int PlateHit;
-        // Armor Plating
-        if((Dam=TempDamage*DamageType.Factor(AMR_PLATE))>0){
-            TempDamage*=1-Floor(PlateHit=PlateAbsorption*ArmorMapping.ANormRangeMap(double(Plate)/MaxPlate));
-            Plate=Max(Plate-PlateHit, 0);
-        }
-        return Ceil(TempDamage);
     }
 }

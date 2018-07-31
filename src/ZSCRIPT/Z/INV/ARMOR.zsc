@@ -20,7 +20,7 @@ class ZArmorUpgrade:ZUpgrade{
     void HandleMovement(ZPlayer Player, PlayerInfo PlayerInfo){}
 
     virtual
-    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0, double Angle=0)
+    double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0)
     {return Damage;}
 }
 

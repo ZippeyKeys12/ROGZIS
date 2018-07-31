@@ -5,7 +5,7 @@ class ZMarine{
     {MStats.HandleMovement(self);}
 
     override
-    double GetAirControl()
+    double GetAirControl() const
     {return 5/11.;}
 
     override
@@ -17,8 +17,10 @@ class ZMarine{
             MStats.Energy-=MStats.SprintCost;
             return MStats.SprintMultiplier;
         // Backstep
-        }else if(Buttons & BT_BACK)return SideMove1;
-        else return 1;
+        }else if(Buttons & BT_BACK)
+            return SideMove1;
+        else
+            return 1;
     }
 
     override
@@ -29,26 +31,16 @@ class ZMarine{
         SetXYZ(LastPos);
         bool Jumping=Buttons & BT_JUMP;
         if(!MidClamber){
-            MidClamber=Player.JumpTics!=0 && (Vel.Z<=0) && LedgeHeight>(Player.CrouchOffset!=0)*MaxStepHeight && LedgeHeight<=MaxLedgeHeight;
+            MidClamber=Player.JumpTics!=0 && Vel.Z<=0 && (Player.CrouchOffset!=0)*MaxStepHeight<LedgeHeight && LedgeHeight<=MaxLedgeHeight;
         }else{
-            if(LedgeHeight>MaxLedgeHeight)MidClamber=false;
+            if(LedgeHeight>MaxLedgeHeight)
+                MidClamber=false;
             else if(LedgeHeight<=MaxStepHeight){
                 MidClamber=false;
                 Vel.xy+=2*FrontVector;
             }
         }
-        if(MidClamber)Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:MStats.ClamberSpeed);
-    }
-
-    override
-    bool CanCollideWith(Actor Other, bool Passive){
-        bool Result=super.CanCollideWith(Other, Passive);
-        if(Result && bSkullfly && Vel.XY.Length()>=15 && Other.bSOLID){
-            Other.DamageMobj(self, self, 1.5*Vel.XY.Length()*sqrt(Vel.XY.Length()/30.), 'Charge');
-            // TODO: Take monster mass/size into account. Continue through weak ones and stop at larger ones?
-            Vel.xy=Vel.xy dot SideVector*SideVector;
-            bSkullfly=false;
-        }
-        return Result;
+        if(MidClamber)
+            Vel=(0, 0, (ledgeHeight<=maxStepHeight)?0:MStats.ClamberSpeed);
     }
 }
