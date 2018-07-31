@@ -8,9 +8,13 @@ class ZMAU_Morph{
 
     override
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags){
-        if(LastDmgType==DamageType)
+        if(LastDmgType==DamageType){
             Damage*=1-MorphAbsorption;
-        else LastDmgType=DamageType;
+            DamageEffect(Damage, DamageType);
+        }else{
+            LastDmgType=DamageType;
+            DamageEffect(Damage, DamageType);
+        }
         return Damage;
     }
 }

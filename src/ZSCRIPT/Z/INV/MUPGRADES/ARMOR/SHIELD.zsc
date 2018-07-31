@@ -30,7 +30,8 @@ class ZMAU_Shield{
     override
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags){
         double Dam, DamageFactor=DamageType.Factor(AMR_SHIELD);
-        if((Dam=Damage*DamageFactor)>0)
+        if((Dam=Damage*DamageFactor)>0){
+            DamageEffect(Dam, DamageType);
             if(Ceil(Dam)<=Shield){
                 Shield-=Dam;
                 return 0;
@@ -38,7 +39,7 @@ class ZMAU_Shield{
                 Damage-=Floor(Shield/DamageFactor);
                 Shield=0;
             }
-        else if(Dam<0){
+        }else if(Dam<0){
             Shield=Min(Shield-Ceil(Dam), MaxShield);
             return 0;
         }

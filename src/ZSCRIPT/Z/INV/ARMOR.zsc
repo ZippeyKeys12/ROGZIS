@@ -22,6 +22,9 @@ class ZArmorUpgrade:ZUpgrade{
     virtual
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags=0)
     {return Damage;}
+
+    virtual
+    void DamageEffect(int Damage, ZDamageType DamageType){}
 }
 
 class ZArmorUpgrades:ZRegistry{

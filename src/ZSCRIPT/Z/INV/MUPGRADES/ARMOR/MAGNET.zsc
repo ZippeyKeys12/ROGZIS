@@ -27,7 +27,8 @@ class ZMAU_Magnet{
     override
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags){
         double Dam, DamageFactor=DamageType.Factor(AMR_MAGNET);
-        if((Dam=Damage*DamageFactor)>0)
+        if((Dam=Damage*DamageFactor)>0){
+            DamageEffect(Dam, DamageType);
             if(Ceil(Dam)<=Magnet){
                 Magnet-=Dam;
                 return 0;
@@ -35,7 +36,7 @@ class ZMAU_Magnet{
                 Damage-=Floor(Magnet/DamageFactor);
                 Magnet=0;
             }
-        else if(Dam<0){
+        }else if(Dam<0){
             Magnet=Min(Magnet-Ceil(Dam), MaxMagnet);
             return 0;
         }

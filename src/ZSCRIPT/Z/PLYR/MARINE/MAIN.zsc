@@ -35,7 +35,8 @@ class ZMarine:ZPlayer{
 
     override
     int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags, double Angle){
-        if(Damage>0)MStats.Recharger=0;
+        if(Damage>0)
+            MStats.Recharger=0;
         Damage=MStats.ModifyDamage(Inflictor, Source, Damage, Mod, true, Flags);
         Flags|=DMG_NO_ARMOR | DMG_NO_FACTOR;
         Damage=super.DamageMobj(Inflictor, Source, Damage, Mod, Flags, Angle);

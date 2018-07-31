@@ -31,7 +31,8 @@ class ZMAU_Light{
     override
     double ModifyDamage(Actor Inflictor, Actor Source, double Damage, ZDamageType DamageType, int Flags){
         double Dam, DamageFactor=DamageType.Factor(AMR_Light);
-        if((Dam=Damage*DamageFactor)>0)
+        if((Dam=Damage*DamageFactor)>0){
+            DamageEffect(Dam, DamageType);
             if(Ceil(Dam)<=Light){
                 Light-=Dam;
                 return 0;
@@ -39,7 +40,7 @@ class ZMAU_Light{
                 Damage-=Floor(Light/DamageFactor);
                 Light=0;
             }
-        else if(Dam<0){
+        }else if(Dam<0){
             Light=Min(Light-Ceil(Dam), MaxLight);
             return 0;
         }
