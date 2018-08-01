@@ -100,4 +100,20 @@ class ZMatrix2{
         return Perspective(ZScreen.FoVY(FoV), ZScreen.AspectRatio(), 5, 65535)
               .M2Mul(self);
     }
+
+    enum ZE_HomogeneousCoord{
+        HM_DIRECTION,
+        HM_POSITION,
+    }
+
+    ZVector V3Mul(Vector3 Vec, double W=HM_POSITION){
+        ZVector Vector=ZVector.Create(4);
+        Vector.Set(0, Vec.X);
+        Vector.Set(1, Vec.Y);
+        Vector.Set(2, Vec.Z);
+        if(W<HM_DIRECTION || HM_POSITION<W)
+            ZDebug.Error("Invalid homogeneous coordinate: "..W, ERR_FATAL);
+        Vector.Set(3, W);
+        return VMul(Vector).ToV();
+    }
 }

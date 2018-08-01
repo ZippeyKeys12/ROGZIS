@@ -20,6 +20,8 @@ class ZPlayer{
             PitchShake,
             RollShake;
 
+    ZMatrix2 World2Clip;
+
     virtual
     void HandleView(){
         HandleScreenShake();
@@ -28,6 +30,7 @@ class ZPlayer{
             HandleViewChange();
         HandleOrientation();
         HandleDirectionVectors();
+        HandlePerspectiveMatrix();
     }
 
     virtual
@@ -78,4 +81,8 @@ class ZPlayer{
         FrontVector=AngleToVector(Stats.ActualYaw);
         SideVector=RotateVector(FrontVector, -90);
     }
+
+    virtual
+    void HandlePerspectiveMatrix()
+    {World2Clip=ZMatrix2.WorldToClip(Pos, Stats.ActualYaw, Stats.ActualPitch, Stats.ActualRoll, Player.DesiredFoV);}
 }

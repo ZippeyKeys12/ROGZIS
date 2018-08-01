@@ -416,6 +416,8 @@ class ZMatrix2{
     /////////////////////
     // Transformations //
     /////////////////////
+    Vector3 ToV3()
+    {return (Values[0], Values[1], Values[2]);}
 
     ZVector ToV(){
         ZVector Result=ZVector.Create(Values.Size());

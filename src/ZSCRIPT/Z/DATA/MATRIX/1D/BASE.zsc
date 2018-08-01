@@ -19,6 +19,23 @@ class ZVector{
         return Result;
     }
 
+    static
+    ZVector FromV2(Vector2 Vec){
+        ZVector Result=Create(2);
+        Result.Set(0, Vec.X);
+        Result.Set(1, Vec.Y);
+        return Result;
+    }
+
+    static
+    ZVector FromV3(Vector3 Vec){
+        ZVector Result=Create(3);
+        Result.Set(0, Vec.X);
+        Result.Set(1, Vec.Y);
+        Result.Set(2, Vec.Z);
+        return Result;
+    }
+
     //////////
     // Info //
     //////////
