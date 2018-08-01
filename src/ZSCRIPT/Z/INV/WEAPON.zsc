@@ -55,10 +55,7 @@ class ZWeapon:StateProvider{
     static
     ZWeapon Instance(Class<ZWeapon> Name='ZWeapon'){
         ActorIterator it=ActorIterator.Create(TID_WEAPS, Name);
-        ZWeapon p;
-        if(p=ZWeapon(it.Next()))
-            return p;
-        return ZWeapon(spawn(Name));
+        return ZWeapon(it.Next());
     }
 
     static
