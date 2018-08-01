@@ -12,7 +12,7 @@ class ZR_String:ZReader{
     override
     String Read(){
         if(End())
-            ZManager.Error("Reached end of stream", ERR_ERROR);
+            ZDebug.Error("Reached end of stream", ERR_ERROR);
         Skip(1);
         return Data.CharAt(Index-1);
     }
@@ -20,7 +20,7 @@ class ZR_String:ZReader{
     override
     int ReadChar(){
         if(End())
-            ZManager.Error("Reached end of stream", ERR_ERROR);
+            ZDebug.Error("Reached end of stream", ERR_ERROR);
         Skip(1);
         return Data.CharCodeAt(Index-1);
     }

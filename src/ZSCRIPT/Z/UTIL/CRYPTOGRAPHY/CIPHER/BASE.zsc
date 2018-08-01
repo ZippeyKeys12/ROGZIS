@@ -6,7 +6,7 @@ class ZCipher abstract{
     ZCipher Create(Name Type, String Key){
         Type='ZC_'..Type;
         if(!ZUtil.ChildOf(Type, 'ZCipher')){
-            ZManager.Error(Type.." does not exist", ERR_FATAL);
+            ZDebug.Error(Type.." does not exist", ERR_FATAL);
             return null;
         }
         ZCipher Result=ZCipher(new(Type));

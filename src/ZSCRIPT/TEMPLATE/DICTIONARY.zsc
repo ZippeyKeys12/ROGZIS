@@ -6,7 +6,7 @@ class ZDictionary_@KeyType_@ValType{
         if(!Key || !Value || Get(Key))
             return false;
         else if(Keys.Find(Key)==Keys.Size()){
-            ZManager.Error("Key: "..Key.." Already Exists", ERR_ERROR);
+            ZDebug.Error("Key: "..Key.." Already Exists", ERR_ERROR);
             return false;
         }
         Keys.Push(Key);

@@ -38,7 +38,7 @@ class ZR_Binary:ZReader{
     {return (ReadLong(), ReadLong(), ReadLong());}
 
     float ReadFloat(){
-        ZManager.Error("ReadFloat not defined yet", ERR_FATAL);
+        ZDebug.Error("ReadFloat not defined yet", ERR_FATAL);
         return double.NaN;
     }
 

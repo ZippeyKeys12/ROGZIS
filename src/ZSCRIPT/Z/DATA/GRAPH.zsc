@@ -9,7 +9,7 @@ class ZGraph{
     ZPlan GetPlan(ZNode StartNode, ZNode GoalNode){
         uint Index=Nodes.Find(StartNode);
         if(Index==Nodes.Size() || Nodes.Find(GoalNode)==Nodes.Size())
-            ZManager.Error("Node doesn't exist", ERR_FATAL);
+            ZDebug.Error("Node doesn't exist", ERR_FATAL);
         Array<ZNode> Open,
                      Closed,
                      CameFrom;

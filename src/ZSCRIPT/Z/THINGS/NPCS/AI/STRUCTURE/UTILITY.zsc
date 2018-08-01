@@ -3,7 +3,7 @@ class ZUtility{
 
     bool Push(ZUtilityAxis Axis){
         if(Axes.Find(Axis)!=Axes.Size()){
-            ZManager.Error("Axis already exists", ERR_ERROR);
+            ZDebug.Error("Axis already exists", ERR_ERROR);
             return false;
         }
         return Axes.Push(Axis);
@@ -11,7 +11,7 @@ class ZUtility{
 
     double Get(ZVector Inputs){
         if(Inputs.Size()!=Axes.Size()){
-            ZManager.Error("Incorrect Number of Axes\nIs: "..Inputs.Size()..", Should Be: "..Axes.Size(), ERR_ERROR);
+            ZDebug.Error("Incorrect Number of Axes\nIs: "..Inputs.Size()..", Should Be: "..Axes.Size(), ERR_ERROR);
             return double.NaN;
         }
         double Score=1;

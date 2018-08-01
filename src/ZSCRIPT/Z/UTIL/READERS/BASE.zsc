@@ -6,7 +6,7 @@ class ZReader abstract{
     ZReader Create(Name Type){
         Type='ZR_'..Type;
         if(!ZUtil.ChildOf(Type, 'ZReader')){
-            ZManager.Error(Type.." does not exist", ERR_FATAL);
+            ZDebug.Error(Type.." does not exist", ERR_FATAL);
             return null;
         }
         return ZReader(new(Type));

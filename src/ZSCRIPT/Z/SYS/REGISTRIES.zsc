@@ -52,7 +52,7 @@ class ZManager{
         for(int i=0; i<ArmorUpgradeNames.Size(); i++){
             ArmorUpgrades.Add(Upgrade=ZArmorUpgrade(ZUpgrade(new(ArmorUpgradeNames[i])).Init()));
             if(!Upgrade.Priority)
-                Error(Upgrade.ID.." doesn't have an priority", ERR_ERROR);
+                ZDebug.Error(Upgrade.ID.." doesn't have an priority", ERR_ERROR);
         }
     }
 

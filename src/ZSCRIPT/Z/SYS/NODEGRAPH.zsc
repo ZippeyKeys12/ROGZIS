@@ -49,7 +49,7 @@ class ZNavSector:ZNode{
     double DistanceTo(ZNode Other){
         ZNavSector Actual=ZNavSector(Other);
         if(!Actual)
-            ZManager.Error("Attempted to connect non-ZPathNode", ERR_ERROR);
+            ZDebug.Error("Attempted to connect non-ZPathNode", ERR_ERROR);
         return level.Vec3Diff(Center, Actual.Center).Length();
     }
 }

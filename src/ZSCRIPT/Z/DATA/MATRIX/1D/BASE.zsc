@@ -48,7 +48,7 @@ class ZVector{
 
     ZVector Add(ZVector Other) const{
         if(__Length__!=Other.__Length__)
-            ZManager.Error("Attempted to add differently-sized vectors", ERR_FATAL);
+            ZDebug.Error("Attempted to add differently-sized vectors", ERR_FATAL);
         ZVector Result=Create(__Length__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]+Other.Values[i];
@@ -57,7 +57,7 @@ class ZVector{
 
     ZVector Sub(ZVector Other) const{
         if(__Length__!=Other.__Length__)
-            ZManager.Error("Attempted to subtract differently-sized vectors", ERR_FATAL);
+            ZDebug.Error("Attempted to subtract differently-sized vectors", ERR_FATAL);
         ZVector Result=Create(__Length__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]-Other.Values[i];
@@ -66,7 +66,7 @@ class ZVector{
 
     ZVector Mul(ZVector Other) const{
         if(__Length__!=Other.__Length__)
-            ZManager.Error("Attempted to multiply differently-sized vectors", ERR_FATAL);
+            ZDebug.Error("Attempted to multiply differently-sized vectors", ERR_FATAL);
         ZVector Result=Create(__Length__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Other.Values[i];
@@ -75,7 +75,7 @@ class ZVector{
 
     ZVector Div(ZVector Other) const{
         if(__Length__!=Other.__Length__)
-            ZManager.Error("Attempted to divide differently-sized vectors", ERR_FATAL);
+            ZDebug.Error("Attempted to divide differently-sized vectors", ERR_FATAL);
         ZVector Result=Create(__Length__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Other.Values[i];
@@ -113,7 +113,7 @@ class ZVector{
 
     double VDot(ZVector Other) const{
         if(__Length__!=Other.Size())
-            ZManager.Error("Attempted to dot incorrectly-sized vectors", ERR_FATAL);
+            ZDebug.Error("Attempted to dot incorrectly-sized vectors", ERR_FATAL);
         double Total=0;
         for(int Index=0; Index<__Length__; Index++)
             Total+=Get(Index)*Other.Get(Index);
@@ -149,13 +149,13 @@ class ZVector{
 
     Vector2 ToV2() const{
         if(__Length__!=2)
-            ZManager.Error("Attempted to convert ZVector to Vector2: Is not 2 values", ERR_FATAL);
+            ZDebug.Error("Attempted to convert ZVector to Vector2: Is not 2 values", ERR_FATAL);
         return (Values[0], Values[1]);
     }
 
     Vector3 ToV3() const{
         if(__Length__!=3)
-            ZManager.Error("Attempted to convert ZVector to Vector3: Is not 3 values", ERR_FATAL);
+            ZDebug.Error("Attempted to convert ZVector to Vector3: Is not 3 values", ERR_FATAL);
         return (Values[0], Values[1], Values[2]);
     }
 

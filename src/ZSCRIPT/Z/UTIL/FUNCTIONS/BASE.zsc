@@ -9,7 +9,7 @@ class ZF_Base{
     ZF_Base Create(Name Type, double Misc=0){
         Type='ZF_'..Type;
         if(!ZUtil.ClassExists(Type)){
-            ZManager.Error(Type.." does not exist", ERR_FATAL);
+            ZDebug.Error(Type.." does not exist", ERR_FATAL);
             return null;
         }else{
             ZF_Base Result=ZF_Base(new(Type));
@@ -32,7 +32,7 @@ class ZF_Base{
     virtual
     ZF_Base Attach(ZF_Base Function){
         if(Child)
-            ZManager.Error("Function already has child", ERR_FATAL);
+            ZDebug.Error("Function already has child", ERR_FATAL);
         Child=Function;
         return self;
     }

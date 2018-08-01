@@ -21,7 +21,7 @@ class ZConsiderer{
 
     Name Consider(ZVector Rewards){
         if(Rewards.Length()!=Considerations.Size()){
-            ZManager.Error("Incorrect Number of Considerations\nIs: "..Rewards.Length()..", Should Be: "..Considerations.Size(), ERR_ERROR);
+            ZDebug.Error("Incorrect Number of Considerations\nIs: "..Rewards.Length()..", Should Be: "..Considerations.Size(), ERR_ERROR);
             return '';
         }
         Array<uint> Best;
