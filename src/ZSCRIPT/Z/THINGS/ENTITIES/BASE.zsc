@@ -33,27 +33,5 @@ class ZEntity:ZThing{
     }
 
     override
-    int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags, double Angle){
-        ZDamageType DamageType=Manager.DamageType(Mod);
-        if(!DamageType){
-            ZManager.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
-            return 0;
-        }
-        return TakeDamage(Inflictor, Source, Damage, DamageType, Flags, Angle);
     }
-
-    virtual
-    int TakeDamage(Actor Inflictor, Actor Source, int Damage, ZDamageType DamageType, int Flags=0, double Angle=0)
-    {return Damage;}
-
-    // TODO: Physics
-    virtual
-    int PhysTakeDamage(Actor Inflictor, Actor Source, int Damage, ZDamageType DamageType, int Flags=0, double Angle=0)
-    {return Damage;}
-
-    virtual
-    void Heal(int Health, ZDamageType DamageType){}
-
-    virtual
-    void DamageEffect(int Damage, ZDamageType DamageType){}
 }
