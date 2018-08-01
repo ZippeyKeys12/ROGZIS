@@ -30,8 +30,13 @@ class ZEntity:ZThing{
     void PostBeginPlay(){
         super.PostBeginPlay();
         Manager=ZManager.Instance();
+        if(ThinkDelay!=TICK_NEVER_THINK)
+            Manager.RegisterEntity(self);
     }
 
     override
+    void OnDestroy(){
+        super.OnDestroy();
+        Manager.UnregisterEntity(self);
     }
 }

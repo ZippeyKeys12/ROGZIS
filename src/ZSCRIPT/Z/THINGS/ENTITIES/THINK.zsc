@@ -10,6 +10,15 @@ class ZEntity{
     ZE_ThinkDelay LastThink,
                   NextThink;
 
+    int ThinkDelay;
+
+    Property ThinkDelay: ThinkDelay;
+
+    [Property]{
+        [ZEntity]
+        ThinkDelay=-1;
+    }
+
     override
     void Tick(){
         super.Tick();
@@ -17,12 +26,19 @@ class ZEntity{
             return;
         if(NextThink==TICK_ALWAYS_THINK || Level.TotalTime==NextThink){
             Think();
-            LastThink=Level.TotalTime;
         }
     }
 
     virtual
-    void Think(){}
+    void PreThink(){}
+
+    virtual
+    void Think()
+    {SetNextThink(ThinkDelay);}
+
+    virtual
+    void PostThink()
+    {LastThink=Level.TotalTime;}
 
     ZE_ThinkDelay GetLastThink()
     {return LastThink;}
@@ -33,7 +49,7 @@ class ZEntity{
     void SetNextThink(ZE_ThinkDelay Delay){
         if(Delay==TICK_NEVER_THINK)
             NextThink=TICK_NEVER_THINK;
-        else
+        else if(Delay)
             NextThink=Level.TotalTime+Delay;
     }
 }

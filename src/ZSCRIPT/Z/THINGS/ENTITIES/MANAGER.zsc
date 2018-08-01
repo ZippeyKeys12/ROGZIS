@@ -1,0 +1,33 @@
+class ZEntityManager:EventHandler{
+    Array<ZEntity> Entities;
+
+    static
+    clearscope
+    ZEntityManager Instance()
+    {return ZEntityManager(EventHandler.Find('ZEntityManager'));}
+
+    void Register(ZEntity Entity){
+        if(Entities.Find(Entity)!=Entities.Size()){
+            ZDebug.Error("ZEntity: "..Entity.GetClassName().."is already registered", ERR_ERROR);
+            return;
+        }
+        Entities.Push(Entity);
+    }
+
+    void Unregister(ZEntity Entity)
+    {Entities.Delete(Entities.Find(Entity));}
+
+    override
+    void WorldTick(){
+        for(int i=0; i<Entities.Size(); i++)
+            if(Entities[i].GetNextThink()==TICK_NEVER_THINK){
+                Entities.Delete(i);
+                i--;
+            }else if(Level.TotalTime==Entities[i].GetNextThink()){
+                Entities[i].PreThink();
+                Entities[i].Think();
+                Entities[i].PostThink();
+            }
+    }
+
+}

@@ -10,6 +10,9 @@ class ZManager{
     Array<ZGraph> NodeGraphs;
 
     private
+    ZEntityManager Entities;
+
+    private
     void InitRegistries(){
         // Node Graphs
         // ActorIterator it=ActorIterator.Create(TID_NODES, "ZPathMarker");
@@ -54,6 +57,8 @@ class ZManager{
             if(!Upgrade.Priority)
                 ZDebug.Error(Upgrade.ID.." doesn't have an priority", ERR_ERROR);
         }
+        // Entities
+        Entities=ZEntityManager.Instance();
     }
 
     clearscope
@@ -73,4 +78,10 @@ class ZManager{
         }
         return null;
     }
+
+    void RegisterEntity(ZEntity Entity)
+    {Entities.Register(Entity);}
+
+    void UnregisterEntity(ZEntity Entity)
+    {Entities.Unregister(Entity);}
 }
