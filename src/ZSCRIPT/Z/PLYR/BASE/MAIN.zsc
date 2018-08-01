@@ -6,6 +6,8 @@ class ZPlayer:PlayerPawn{
 
     double RelativeZ;
 
+    ZE_WpnStance WpnStance;
+
     Actor AimTarget;
 
     ZStats Stats;
@@ -97,6 +99,16 @@ class ZPlayer:PlayerPawn{
     virtual
     bool Trace(out FLineTraceData Data, double Distance=1024, double Pitch=0, double OffsetZ=0) const
     {return LineTrace(Stats.ActualYaw, Distance, Pitch, 0, OffsetZ, Data: Data);}
+
+    enum ZE_WpnStance{
+        WPN_STANCE_UNARMED,
+        WPN_STANCE_HOLSTERED,
+        WPN_STANCE_AIMING,
+    }
+
+    virtual
+    ZE_WpnStance CombatStance()
+    {return WpnStance;}
 
     override
     void CheatGive(String Name, int Amount)
