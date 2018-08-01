@@ -1,18 +1,3 @@
-class ZEventHandler:EventHandler{
-    ZBroadcaster Broadcaster;
-
-    override
-    void OnRegister(){
-        Broadcaster=ZBroadcaster.Instance();
-        Broadcaster.Register(self);
-    }
-
-    override
-    void OnUnregister(){
-        Broadcaster.Unregister(self);
-    }
-}
-
 class ZBroadcaster:StaticEventHandler{
     Array<ZEventHandler> Handlers;
 
@@ -26,6 +11,54 @@ class ZBroadcaster:StaticEventHandler{
     static
     void Notification(String NotificationText)
     {Instance().Notifs.Push(NotificationText);}
+
+    override
+    void WorldThingSpawned(WorldEvent e){
+        if(e.Thing is 'ZThing')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].ThingSpawned(e);
+        if(e.Thing is 'ZEntity')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].EntitySpawned(e);
+        if(e.Thing is 'ZActor')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].ActorSpawned(e);
+        if(e.Thing is 'ZNPC')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].NPCSpawned(e);
+    }
+
+    override
+    void WorldThingDied(WorldEvent e){
+        if(e.Thing is 'ZThing')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].ThingDied(e);
+        if(e.Thing is 'ZEntity')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].EntityDied(e);
+        if(e.Thing is 'ZActor')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].ActorDied(e);
+        if(e.Thing is 'ZNPC')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].NPCDied(e);
+    }
+
+    override
+    void WorldThingDamaged(WorldEvent e){
+        if(e.Thing is 'ZThing')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].ThingDamaged(e);
+        if(e.Thing is 'ZEntity')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].EntityDamaged(e);
+        if(e.Thing is 'ZActor')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].ActorDamaged(e);
+        if(e.Thing is 'ZNPC')
+            for(int i=0; i<Handlers.Size(); i++)
+                Handlers[i].NPCDamaged(e);
+    }
 
     void Register(ZEventHandler Handler){
         if(Handlers.Find(Handler)!=Handlers.Size()){

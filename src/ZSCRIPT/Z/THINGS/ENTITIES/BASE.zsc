@@ -29,9 +29,8 @@ class ZEntity:ZThing{
     override
     void PostBeginPlay(){
         super.PostBeginPlay();
+        SetNextThink(ThinkDelay);
         Manager=ZManager.Instance();
-        if(ThinkDelay!=TICK_NEVER_THINK)
-            Manager.RegisterEntity(self);
     }
 
     override

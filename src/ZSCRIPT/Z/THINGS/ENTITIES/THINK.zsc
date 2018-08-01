@@ -10,6 +10,7 @@ class ZEntity{
     ZE_ThinkDelay LastThink,
                   NextThink;
 
+    meta
     int ThinkDelay;
 
     Property ThinkDelay: ThinkDelay;

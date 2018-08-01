@@ -10,8 +10,11 @@ enum ZE_TIDs{
 
 enum ZE_StatNum{
     // Thinkers that don't actually think
-    STAT_STATIC =   Thinker.STAT_STATIC,    // Persists between levels
+    STAT_STATIC     =   Thinker.STAT_STATIC,    // Persists between levels
 
     // Ticking thinkers
-    STAT_ZDATA  =   Thinker.STAT_USER,      // Thinkers storing world data
+    STAT_ZTHING    =   Thinker.STAT_USER,       // Things
+    STAT_ZDATA,                                 // Thinkers storing world data
+
+    STAT_ALL        =   Thinker.MAX_STATNUM+1,
 }

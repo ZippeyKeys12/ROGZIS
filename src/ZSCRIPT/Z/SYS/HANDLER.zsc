@@ -9,46 +9,9 @@ class ZHandler:StaticEventHandler{
     }
 
     override
-    void WorldThingDied(WorldEvent e){
-        if(e.Thing is 'ZEntity')
-            WorldEntityDied(e);
-        if(e.Thing is 'ZActor')
-            WorldActorDied(e);
-        if(e.Thing is 'ZNPC')
-            WorldNPCDied(e);
-    }
-
-    virtual
-    void WorldEntityDied(WorldEvent e){}
-
-    virtual
-    void WorldActorDied(WorldEvent e){}
-
-    virtual
-    void WorldNPCDied(WorldEvent e){}
-
-    override
-    void WorldThingDamaged(WorldEvent e){
-        if(e.Thing is 'ZEntity')
-            WorldEntityDamaged(e);
-        if(e.Thing is 'ZActor')
-            WorldActorDamaged(e);
-        if(e.Thing is 'ZNPC')
-            WorldNPCDamaged(e);
-    }
-
-    virtual
-    void WorldEntityDamaged(WorldEvent e){}
-
-    virtual
-    void WorldActorDamaged(WorldEvent e){}
-
-    virtual
-    void WorldNPCDamaged(WorldEvent e){}
-
-    override
     void PlayerEntered(PlayerEvent e){
-        if(!Manager)Manager=ZManager.Instance();
+        if(!Manager)
+            Manager=ZManager.Instance();
         Manager.PlayerSetup(e);
     }
 }

@@ -1,4 +1,4 @@
-class ZEntityManager:EventHandler{
+class ZEntityManager:ZEventHandler{
     Array<ZEntity> Entities;
 
     static
@@ -6,16 +6,23 @@ class ZEntityManager:EventHandler{
     ZEntityManager Instance()
     {return ZEntityManager(EventHandler.Find('ZEntityManager'));}
 
-    void Register(ZEntity Entity){
-        if(Entities.Find(Entity)!=Entities.Size()){
-            ZDebug.Error("ZEntity: "..Entity.GetClassName().."is already registered", ERR_ERROR);
-            return;
+    override
+    void WorldLoaded(WorldEvent e){
+        if(e.IsReopen){
+            ThinkerIterator it=ThinkerIterator.Create('ZEntity', STAT_ZTHING);
+            ZEntity Entity;
+            while(Entity=ZEntity(it.Next()))
+                Register(Entity);
         }
-        Entities.Push(Entity);
     }
 
-    void Unregister(ZEntity Entity)
-    {Entities.Delete(Entities.Find(Entity));}
+    override
+    void WorldUnloaded(WorldEvent e)
+    {Entities.Clear();}
+
+    override
+    void EntitySpawned(WorldEvent e)
+    {Register(ZEntity(e.Thing));}
 
     override
     void WorldTick(){
@@ -30,4 +37,15 @@ class ZEntityManager:EventHandler{
             }
     }
 
+    void Register(ZEntity Entity){
+        if(Entities.Find(Entity)!=Entities.Size()){
+            ZDebug.Error("ZEntity: "..Entity.GetClassName().."is already registered", ERR_ERROR);
+            return;
+        }
+        if(Entity.GetNextThink()!=TICK_NEVER_THINK)
+            Entities.Push(Entity);
+    }
+
+    void Unregister(ZEntity Entity)
+    {Entities.Delete(Entities.Find(Entity));}
 }
