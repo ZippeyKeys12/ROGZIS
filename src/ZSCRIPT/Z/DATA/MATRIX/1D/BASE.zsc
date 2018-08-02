@@ -157,6 +157,13 @@ class ZVector{
         return Result;
     }
 
+    ZVector Clip(uint StartIndex, uint EndIndex){
+        ZVector Result=Create(EndIndex-StartIndex);
+        for(int i=0; i<Result.Size(); i++)
+            Result.Set(i, Get(StartIndex+i));
+        return Result;
+    }
+
     ////////////////
     // Transforms //
     ////////////////
