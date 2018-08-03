@@ -316,8 +316,8 @@ class ZMatrix2{
         return Result;
     }
 
-    ZMatrix2 VMul(ZVector Other) const
-    {return M2Mul(Other.ToM2(__Width__!=Other.Size()));}
+    ZVector VMul(ZVector Other) const
+    {return M2Mul(Other.ToM2(__Width__!=Other.Size())).ToV();}
 
     ZMatrix2 SMin(double Min, double Min2=int.max) const{
         ZMatrix2 Result=Create(__Height__, __Width__);

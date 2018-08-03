@@ -172,15 +172,18 @@ class ZVector{
     {return Clone().SDiv(Length());}
 
     Vector2 ToV2() const{
-        if(__Length__!=2)
-            ZDebug.Error("Attempted to convert ZVector to Vector2: Is not 2 values", ERR_FATAL);
+        if(__Length__!=2 && __Length__!=3)
+            ZDebug.Error("Attempted to convert ZVector to Vector2: Is not 2 or 3 values", ERR_FATAL);
         return (Values[0], Values[1]);
     }
 
     Vector3 ToV3() const{
-        if(__Length__!=3)
-            ZDebug.Error("Attempted to convert ZVector to Vector3: Is not 3 values", ERR_FATAL);
-        return (Values[0], Values[1], Values[2]);
+        if(__Length__!=3 && __Length__!=4)
+            ZDebug.Error("Attempted to convert ZVector to Vector3: Is not 3 or 4 values", ERR_FATAL);
+        Vector3 Result=(Values[0], Values[1], Values[2]);
+        if(__Length__==4)
+            Result/=Values[3];
+        return Result;
     }
 
     ZMatrix2 ToM2(bool AsRow=false) const{
