@@ -5,7 +5,11 @@ class ZStatusBar:BaseStatusBar{
 
     ZBroadcaster Broadcaster;
 
+    ZStats Stats;
+
     Array<ZElement> Elements;
+
+    ZMatrix2 World2Clip;
 
     override
     void NewGame(){
@@ -17,7 +21,6 @@ class ZStatusBar:BaseStatusBar{
     void Init(){
         super.Init();
         SetSize(0, 640, 480);
-        Elements.Push(ZBox.Create((100, 100), (500, 100), .7, BOX_TR));
     }
 
     override
@@ -28,6 +31,9 @@ class ZStatusBar:BaseStatusBar{
     void Draw (int State, double TicFrac){
         super.Draw(State, TicFrac);
         BeginHUD();
+        if(!Stats)
+            Stats=PlayerInst.Stats;
+        World2Clip=ZMatrix2.WorldToClip(PlayerInst.Pos, Stats.ActualYaw, Stats.ActualPitch, Stats.ActualRoll, CPlayer.FoV);
         DrawStats();
         DrawDebug();
         int VWidth=Screen.GetWidth()*.2,
@@ -35,6 +41,12 @@ class ZStatusBar:BaseStatusBar{
         Screen.DrawText(SmallFont, Font.CR_GOLD, VWidth/2-SmallFont.StringWidth("Wassup!!!")/2, 10, "Wassup!!!", DTA_VirtualWidth, VWidth, DTA_VirtualHeight, VHeight);
         for(int i=0; i<Elements.Size(); i++)
             Elements[i].OnDraw();
+    }
+
+    virtual
+    Vector2 OnActor(Actor mo){
+        Vector3 Vec3=World2Clip.Transform_3D(mo.Pos).ToV3();
+        return ((1+Vec3.X)*Screen.GetWidth()/2, (1-Vec3.Y)*Screen.GetHeight()/2);
     }
 
     override
