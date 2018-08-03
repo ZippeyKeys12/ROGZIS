@@ -84,5 +84,5 @@ class ZPlayer{
 
     virtual
     void HandlePerspectiveMatrix()
-    {World2Clip=ZMatrix2.WorldToClip(Pos, Stats.ActualYaw, Stats.ActualPitch, Stats.ActualRoll, Player.DesiredFoV);}
+    {World2Clip=ZMatrix2.WorldToClip(Pos, Stats.ActualYaw, Stats.ActualPitch, Stats.ActualRoll, Player.FoV);}
 }
