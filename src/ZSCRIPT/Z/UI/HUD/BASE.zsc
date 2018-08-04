@@ -33,7 +33,7 @@ class ZStatusBar:BaseStatusBar{
         BeginHUD();
         if(!Stats)
             Stats=PlayerInst.Stats;
-        World2Clip=ZMatrix2.WorldToClip(PlayerInst.Pos, Stats.ActualYaw, Stats.ActualPitch, Stats.ActualRoll, CPlayer.FoV);
+        World2Clip=ZMatrix2.WorldToClip(PlayerInst.Pos, PlayerInst.Angle, PlayerInst.Pitch, PlayerInst.Roll, CPlayer.FoV);
         DrawStats();
         DrawDebug();
         int VWidth=Screen.GetWidth()*.2,
