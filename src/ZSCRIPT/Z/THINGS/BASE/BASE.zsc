@@ -30,4 +30,8 @@ class ZThing:Actor{
     virtual
     bool GoToState(StateLabel NewState, bool NoFunction=false)
     {return SetStateLabel(NewState, NoFunction);}
+
+    virtual
+    bool HasState(StateLabel DesiredState)
+    {return FindState(DesiredState);}
 }
