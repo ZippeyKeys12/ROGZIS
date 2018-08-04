@@ -2,6 +2,10 @@ extend
 class ZStatusBar{
     void DrawDebug(){
         DebugStats();
+        if(PlayerInst.AimTarget){
+            Vector2 vec2=OnActor(PlayerInst.AimTarget);
+            Screen.DrawText(SmallFont, Font.CR_GOLD, vec2.X, vec2.Y, ""..PlayerInst.AimTarget.Health);
+        }
     }
 
     void DebugStats(){
