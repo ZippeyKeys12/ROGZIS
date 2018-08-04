@@ -46,7 +46,7 @@ class ZStatusBar:BaseStatusBar{
     virtual
     Vector2 OnActor(Actor mo, Vector3 Offset=(0, 0, 0)){
         Vector3 Pos=mo.Pos+Offset;
-        Pos.Z+=PlayerInst.ViewHeight-CPlayer.ViewZ;
+        Pos.Z+=PlayerInst.ViewHeight+PlayerInst.Pos-CPlayer.ViewZ;
         Vector3 Vec3=World2Clip.Transform_3D(Pos).ToV3();
         return ((1+Vec3.X)*Screen.GetWidth()/2, (1-Vec3.Y)*Screen.GetHeight()/2);
     }
