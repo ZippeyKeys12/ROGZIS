@@ -26,4 +26,8 @@ class ZThing:Actor{
         // Limited Use
         NoClip=true;
     }
+
+    virtual
+    bool GoToState(StateLabel NewState, bool NoFunction=false)
+    {return SetStateLabel(NewState, NoFunction);}
 }
