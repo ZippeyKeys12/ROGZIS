@@ -70,6 +70,7 @@
 #include "ZSCRIPT/Z/DATA/GRAPH.zsc"
 #include "ZSCRIPT/Z/DATA/PERLIN.zsc"
 #include "ZSCRIPT/Z/DATA/MAPPER.zsc"
+#include "ZSCRIPT/Z/DATA/VERSION.zsc"
 #include "ZSCRIPT/Z/DATA/GAUSSIAN.zsc"
 #include "ZSCRIPT/Z/DATA/RECTANGLE.zsc"
 #include "ZSCRIPT/Z/DATA/REGISTRIES.zsc"
