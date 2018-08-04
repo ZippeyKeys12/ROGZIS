@@ -1,3 +1,13 @@
+struct ZModInfo{
+    static
+    Name Name()
+    {return 'ROGZIS';} // For now...
+
+    static
+    ZVersion GetVersion()
+    {return ZVersion.Create(0, 0, 0, 0, VERS_PreAlpha);}
+}
+
 // UTIL
 #include "ZSCRIPT/Z/UTIL/CHAR.zsc"
 #include "ZSCRIPT/Z/UTIL/STRING.zsc"
