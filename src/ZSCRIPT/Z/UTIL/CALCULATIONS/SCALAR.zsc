@@ -27,7 +27,7 @@ class ZCalc_S:ZSingleton{
 
     static
     int Round(double Value)
-    {return (Abs(Value%1)>=.5)?Ceil(Value):Floor(Value);}
+    {return (Value+.5);}
 
     static
     double NormRangeMap(double Value, double Start, double End)
