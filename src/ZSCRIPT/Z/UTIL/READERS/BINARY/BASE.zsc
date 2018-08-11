@@ -16,7 +16,7 @@ class ZR_Binary:ZReader{
     int ReadShort()
     {return ReadByte()<<8 | ReadByte();}
 
-    int ReadLong()
+    int ReadInt()
     {return ReadShort()<<16 | ReadShort();}
 
     Vector2 ReadByteV2()
@@ -25,8 +25,8 @@ class ZR_Binary:ZReader{
     Vector2 ReadShortV2()
     {return (ReadShort(), ReadShort());}
 
-    Vector2 ReadLongV2()
-    {return (ReadLong(), ReadLong());}
+    Vector2 ReadIntV2()
+    {return (ReadInt(), ReadInt());}
 
     Vector3 ReadByteV3()
     {return (ReadByte(), ReadByte(), ReadByte());}
@@ -34,8 +34,8 @@ class ZR_Binary:ZReader{
     Vector3 ReadShortV3()
     {return (ReadShort(), ReadShort(), ReadShort());}
 
-    Vector3 ReadLongV3()
-    {return (ReadLong(), ReadLong(), ReadLong());}
+    Vector3 ReadIntV3()
+    {return (ReadInt(), ReadInt(), ReadInt());}
 
     float ReadFloat(){
         ZDebug.Error("ReadFloat not defined yet", ERR_FATAL);
