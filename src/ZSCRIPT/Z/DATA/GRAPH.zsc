@@ -1,8 +1,3 @@
-enum ZE_EdgeType{
-    EDGE_None,
-    EDGE_TwoWay,
-}
-
 class ZGraph{
     Array<ZNode> Nodes;
 
@@ -88,10 +83,8 @@ class ZNode abstract{
     Array<ZEdge> Edges;
 
     static
-    ZNode Create(Class<ZNode> Type){
-        ZNode Result=ZNode(new(Type));
-        return Result;
-    }
+    ZNode Create(Class<ZNode> Type)
+    {return ZNode(new(Type));}
 
     virtual
     double DistanceTo(ZNode Other)
@@ -101,18 +94,13 @@ class ZNode abstract{
 class ZEdge{
     double Cost;
 
-    ZE_EdgeType Flags;
-
-    ZNode To,
-          From;
+    ZNode To;
 
     static
-    ZEdge Create(Class<ZEdge> Type, ZNode From, ZNode To, ZE_EdgeType Flags=EDGE_None){
+    ZEdge Create(Class<ZEdge> Type, ZNode From, ZNode To){
         ZEdge Result=ZEdge(new(Type));
         Result.Cost=From.DistanceTo(To);
-        Result.From=From;
         Result.To=To;
-        Result.Flags=Flags;
         return Result;
     }
 }
