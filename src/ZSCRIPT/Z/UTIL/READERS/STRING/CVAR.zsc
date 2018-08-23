@@ -3,7 +3,7 @@ class ZR_CVar:ZR_String{
     ZR_CVar Create(String CVarName, Name Type='CVar'){
         CVar Data=CVar.FindCVar(CVarName);
         if(Data.GetRealType()!=CVar.CVAR_String)
-            ZDebug.Error(CVarName.." is not a String", ERR_ERROR);
+            Cl_Util.Log('', LOG_Error, CVarName.." is not a String");
         return ZR_CVar(ZR_String.Create(Data.GetString(), Type));
     }
 }

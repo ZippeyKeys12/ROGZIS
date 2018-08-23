@@ -1,4 +1,4 @@
-class ZMatrix2{
+class ZMatrix2:ZObject{
     //////////
     // Data //
     //////////
@@ -17,7 +17,7 @@ class ZMatrix2{
     ZMatrix2 Create(uint Height, uint Width, bool Ones=false){
         ZMatrix2 Result=new('ZMatrix2');
         if(Height<=0 || Width<=0)
-            ZDebug.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
+            Result.Fatal("Attempted to create a non-positively-sized matrix");
         Result.__Height__=Height;
         Result.__Width__=Width;
         for(int i=0; i<Height*Width; i++)
@@ -232,7 +232,7 @@ class ZMatrix2{
     virtual
     ZMatrix2 Add(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
-            ZDebug.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to add differently-sized matrices");
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]+Other.Values[i];
@@ -242,7 +242,7 @@ class ZMatrix2{
     virtual
     ZMatrix2 Sub(ZMatrix2 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
-            ZDebug.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to subtract differently-sized matrices");
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]-Other.Values[i];
@@ -252,7 +252,7 @@ class ZMatrix2{
     virtual
     ZMatrix2 Mul(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
-            ZDebug.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to multiply differently-sized matrices");
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Other.Values[i];
@@ -262,7 +262,7 @@ class ZMatrix2{
     virtual
     ZMatrix2 Div(ZMatrix2 Other){
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__)
-            ZDebug.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to multiply differently-sized matrices");
         ZMatrix2 Result=ZMatrix2.Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Other.Values[i];
@@ -304,7 +304,7 @@ class ZMatrix2{
     virtual
     ZMatrix2 M2Mul(ZMatrix2 Other) const{
         if(__Width__!=Other.__Height__)
-            ZDebug.Error("Attempted to multiply incorrectly-sized matrices", ERR_FATAL);
+            Fatal("Attempted to multiply incorrectly-sized matrices");
         ZMatrix2 Result=ZMatrix2.Create(__Height__, Other.__Width__);
         for(int Row=0; Row<Result.__Height__; Row++)
             for(int Column=0; Column<Result.__Width__; Column++){
@@ -328,7 +328,7 @@ class ZMatrix2{
 
     ZMatrix2 M2Min(ZMatrix2 Min, ZMatrix2 Min2=null) const{
         if(__Height__!=Min.__Height__ || __Width__!=Min.__Width__ || (Min2 && (__Height__!=Min2.__Height__ || __Width__!=Min2.__Width__)))
-            ZDebug.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to min differently-sized matrices");
         ZMatrix2 Result=Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Min(Values[i], Min.Values[i], (Min2)?Min2.Values[i]:int.max);
@@ -344,7 +344,7 @@ class ZMatrix2{
 
     ZMatrix2 M2Max(ZMatrix2 Max, ZMatrix2 Max2=null) const{
         if(__Height__!=Max.__Height__ || __Width__!=Max.__Width__ || (Max2 && (__Height__!=Max2.__Height__ || __Width__!=Max2.__Width__)))
-            ZDebug.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to min differently-sized matrices");
         ZMatrix2 Result=Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Max(Values[i], Max.Values[i], (Max2)?Max2.Values[i]:int.min);
@@ -360,7 +360,7 @@ class ZMatrix2{
 
     ZMatrix2 M2Clamp(ZMatrix2 Min, ZMatrix2 Max) const{
         if(__Height__!=Min.__Height__ || __Width__!=Min.__Width__ || __Height__!=Max.__Height__ || __Width__!=Max.__Width__)
-            ZDebug.Error("Attempted to min differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to min differently-sized matrices");
         ZMatrix2 Result=Create(__Height__, __Width__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Clamp(Values[i], Min.Values[i], Max.Values[i]);

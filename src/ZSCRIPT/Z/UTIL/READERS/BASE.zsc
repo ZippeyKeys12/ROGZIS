@@ -1,4 +1,4 @@
-class ZReader abstract{
+class ZReader:ZObject abstract{
     protected
     uint Index;
 
@@ -6,7 +6,7 @@ class ZReader abstract{
     ZReader Create(Name Type){
         Type='ZR_'..Type;
         if(!ZUtil.ChildOf(Type, 'ZReader')){
-            ZDebug.Error(Type.." does not exist", ERR_FATAL);
+            Cl_Util.Log('', LOG_Fatal, Type.." does not exist");
             return null;
         }
         return ZReader(new(Type));

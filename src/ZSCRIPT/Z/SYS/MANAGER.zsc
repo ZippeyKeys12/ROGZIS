@@ -1,4 +1,4 @@
-class ZManager:Thinker{
+class ZManager:ZThinker{
     ZVector P2E;
 
     ZMatrix2 P2M,

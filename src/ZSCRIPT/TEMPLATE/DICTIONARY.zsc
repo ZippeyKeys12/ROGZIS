@@ -1,4 +1,4 @@
-class ZDictionary_@KeyType_@ValType{
+class ZDictionary_@KeyType_@ValType:ZObject{
     Array<@KeyType> Keys;
     Array<@ValType> Values;
 
@@ -6,7 +6,7 @@ class ZDictionary_@KeyType_@ValType{
         if(!Key || !Value || Get(Key))
             return false;
         else if(Keys.Find(Key)==Keys.Size()){
-            ZDebug.Error("Key: "..Key.." Already Exists", ERR_ERROR);
+            Error("Key: "..Key.." Already Exists");
             return false;
         }
         Keys.Push(Key);

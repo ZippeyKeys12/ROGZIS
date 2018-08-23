@@ -1,6 +1,6 @@
 class ZF_Linear:ZF_Base{}
 
-class ZF_Base{
+class ZF_Base:ZObject{
     double Misc;
 
     ZF_Base Child;
@@ -9,7 +9,7 @@ class ZF_Base{
     ZF_Base Create(Name Type, double Misc=0){
         Type='ZF_'..Type;
         if(!ZUtil.ClassExists(Type)){
-            ZDebug.Error(Type.." does not exist", ERR_FATAL);
+            Cl_Util.Log('', LOG_Fatal, Type.." does not exist");
             return null;
         }else{
             ZF_Base Result=ZF_Base(new(Type));
@@ -32,7 +32,7 @@ class ZF_Base{
     virtual
     ZF_Base Attach(ZF_Base Function){
         if(Child)
-            ZDebug.Error("Function already has child", ERR_FATAL);
+            Error("Function already has child");
         Child=Function;
         return self;
     }

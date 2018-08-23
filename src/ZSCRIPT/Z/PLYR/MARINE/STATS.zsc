@@ -1,4 +1,4 @@
-class ZMStats:Thinker{
+class ZMStats:ZThinker{
     [Config]{
         "BaseHealth": "STATS.iMaxHealth",
         "MaxPlate": "STATS.iStartPlate",
@@ -163,7 +163,7 @@ class ZMStats:Thinker{
     bool AddUpgrade(Name ID){
         ZArmorUpgrade Upgrade=ZArmorUpgrade(Manager.Upgrade(UPR_MARMOR, ID));
         if(Upgrades.Find(Upgrade)!=Upgrades.Size()){
-            ZDebug.Error("Upgrade: "..Upgrade.ID.."is already in player inventory", ERR_ERROR);
+            Error("Upgrade: "..Upgrade.ID.."is already in player inventory");
             return false;
         }
         if(Upgrades.Size()>0 && Upgrade.Priority>Upgrades[0].Priority){
@@ -229,7 +229,7 @@ class ZMStats:Thinker{
                 return Damage;
             ZDamageType DamageType=Manager.DamageType(Mod);
             if(!DamageType){
-                ZDebug.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
+                Error("Undefined ZDamageType: "..Mod);
                 return 0;
             }
             double Dam, TempDamage=Damage;

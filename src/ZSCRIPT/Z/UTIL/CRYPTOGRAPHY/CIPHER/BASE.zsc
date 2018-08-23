@@ -1,4 +1,4 @@
-class ZCipher abstract{
+class ZCipher:ZObject abstract{
     protected
     String Key;
 
@@ -6,7 +6,7 @@ class ZCipher abstract{
     ZCipher Create(Name Type, String Key){
         Type='ZC_'..Type;
         if(!ZUtil.ChildOf(Type, 'ZCipher')){
-            ZDebug.Error(Type.." does not exist", ERR_FATAL);
+            Cl_Util.Log('', LOG_Fatal, Type.." does not exist");
             return null;
         }
         ZCipher Result=ZCipher(new(Type));

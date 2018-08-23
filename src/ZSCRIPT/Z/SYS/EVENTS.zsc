@@ -38,7 +38,7 @@ class ZEventManager:EventHandler{
 
     void RegisterStimulus(ZStimulus Stimulus){
         if(Stimuli.Find(Stimulus)!=Stimuli.Size())
-            ZDebug.Error("Stimulus: "..Stimulus.ID.." is Already Registered", ERR_ERROR);
+            Cl_Util.Log(']Stim_React[', LOG_Error, "Stimulus: "..Stimulus.ID.." is Already Registered");
         if(Consumed(Stimulus))
             Stimuli.Push(Stimulus);
         else
@@ -55,7 +55,7 @@ class ZEventManager:EventHandler{
 
     void RegisterReactor(ZReactor Reactor){
         if(Reactors.Find(Reactor)!=Reactors.Size())
-            ZDebug.Error("Reactor: "..Reactor.ID.." is Already Registered", ERR_ERROR);
+            Cl_Util.Log(']Stim_React[', LOG_Error, "Reactor: "..Reactor.ID.." is Already Registered");
         Reactors.Push(Reactor);
     }
 }

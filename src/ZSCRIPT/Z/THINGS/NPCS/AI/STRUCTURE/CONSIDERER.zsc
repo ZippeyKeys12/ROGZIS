@@ -1,4 +1,4 @@
-class ZConsiderer{
+class ZConsiderer:ZObject{
     private
     Array<Name> Considerations;
 
@@ -21,7 +21,7 @@ class ZConsiderer{
 
     Name Consider(ZVector Rewards){
         if(Rewards.Length()!=Considerations.Size()){
-            ZDebug.Error("Incorrect Number of Considerations\nIs: "..Rewards.Length()..", Should Be: "..Considerations.Size(), ERR_ERROR);
+            Error("Incorrect Number of Considerations\nIs: "..Rewards.Length()..", Should Be: "..Considerations.Size());
             return '';
         }
         Array<uint> Best;

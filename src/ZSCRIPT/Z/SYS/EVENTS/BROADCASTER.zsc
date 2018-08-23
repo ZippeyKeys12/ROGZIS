@@ -62,7 +62,7 @@ class ZBroadcaster:StaticEventHandler{
 
     void Register(ZEventHandler Handler){
         if(Handlers.Find(Handler)!=Handlers.Size()){
-            ZDebug.Error("ZEventHandler: "..Handler.GetClassName().."is already registered", ERR_ERROR);
+            Cl_Util.Log(GetClassName(), LOG_Error, "ZEventHandler: "..Handler.GetClassName().."is already registered");
             return;
         }
         if(Handlers.Size()>0 && Handler.Order>Handlers[0].Order)

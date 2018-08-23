@@ -86,7 +86,7 @@ struct ZString{
                 if(Character==Base64Table[i])
                     return i;
         }
-        ZDebug.Error("Character does not exist in designated set", ERR_ERROR);
+        Cl_Util.Log('', LOG_Error, "Character"..Character.."does not exist in designated set");
         return -1;
     }
 

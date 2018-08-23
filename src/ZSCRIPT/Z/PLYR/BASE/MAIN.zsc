@@ -112,7 +112,7 @@ class ZPlayer:PlayerPawn{
 
     override
     void CheatGive(String Name, int Amount)
-    {ZDebug.Error("WIP", ERR_ERROR);}
+    {Cl_Util.Log(GetClassName(), LOG_Error, "WIP");}
 }
 
 #include "ZSCRIPT/Z/PLYR/BASE/VIEW.zsc"

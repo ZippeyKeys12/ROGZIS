@@ -4,7 +4,7 @@ class ZEntity{
     int DamageMobj(Actor Inflictor, Actor Source, int Damage, Name Mod, int Flags, double Angle){
         ZDamageType DamageType=Manager.DamageType(Mod);
         if(!DamageType){
-            ZDebug.Error("Undefined ZDamageType: "..Mod, ERR_ERROR);
+            Error("Undefined ZDamageType: "..Mod);
             return Damage;
         }
         return TakeDamage(Inflictor, Source, Damage, DamageType, Flags, Angle);

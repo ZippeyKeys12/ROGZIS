@@ -1,4 +1,4 @@
-class ZMatrix3{
+class ZMatrix3:ZObject{
     private
     uint __Height__,
          __Width__,
@@ -10,7 +10,7 @@ class ZMatrix3{
     ZMatrix3 Create(uint Height, uint Width, uint Depth, bool Ones=false){
         ZMatrix3 Result=new('ZMatrix3');
         if(Height<=0 || Width<=0 || Depth<=0)
-            ZDebug.Error("Attempted to create a non-positively-sized matrix", ERR_FATAL);
+            Result.Fatal("Attempted to create a non-positively-sized matrix");
         Result.__Height__=Height;
         Result.__Width__=Width;
         Result.__Depth__=Depth;
@@ -42,7 +42,7 @@ class ZMatrix3{
     virtual
     ZMatrix3 Add(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
-            ZDebug.Error("Attempted to add differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to add differently-sized matrices");
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]+Other.Values[i];
@@ -52,7 +52,7 @@ class ZMatrix3{
     virtual
     ZMatrix3 Sub(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
-            ZDebug.Error("Attempted to subtract differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to subtract differently-sized matrices");
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]-Other.Values[i];
@@ -62,7 +62,7 @@ class ZMatrix3{
     virtual
     ZMatrix3 Mul(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
-            ZDebug.Error("Attempted to multiply differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to multiply differently-sized matrices");
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]*Other.Values[i];
@@ -72,7 +72,7 @@ class ZMatrix3{
     virtual
     ZMatrix3 Div(ZMatrix3 Other) const{
         if(__Height__!=Other.__Height__ || __Width__!=Other.__Width__ || __Depth__!=Other.__Depth__)
-            ZDebug.Error("Attempted to divide differently-sized matrices", ERR_FATAL);
+            Fatal("Attempted to divide differently-sized matrices");
         ZMatrix3 Result=Create(__Height__, __Width__, __Depth__);
         for(int i=0; i<Values.Size(); i++)
             Result.Values[i]=Values[i]/Other.Values[i];
@@ -130,7 +130,7 @@ class ZMatrix3{
     // virtual
     // ZMatrix2_G ToSM2(){
     //     if(__Depth__!=2)
-    //         ZDebug.Error("Attempted to convert ZMatrix3 to ZMatrix2_G: Is not 2 deep", ERR_FATAL);
+    //         Fatal("Attempted to convert ZMatrix3 to ZMatrix2_G: Is not 2 deep");
     //     ZMatrix2_G Result=ZMatrix2_G.Create(__Height__, __Width__);
     //     Result.Values.Copy(Values);
     //     return Result;

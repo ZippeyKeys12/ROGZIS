@@ -39,7 +39,7 @@ class ZEntityManager:ZEventHandler{
 
     void Register(ZEntity Entity){
         if(Entities.Find(Entity)!=Entities.Size()){
-            ZDebug.Error("ZEntity: "..Entity.GetClassName().."is already registered", ERR_ERROR);
+            Error("ZEntity: "..Entity.GetClassName().."is already registered");
             return;
         }
         if(Entity.GetNextThink()!=TICK_NEVER_THINK)

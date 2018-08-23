@@ -34,4 +34,12 @@ class ZThing:Actor{
     virtual
     bool HasState(StateLabel DesiredState)
     {return FindState(DesiredState);}
+
+    protected
+    void Error(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Error, Msg);}
+
+    protected
+    void Fatal(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Fatal, Msg);}
 }

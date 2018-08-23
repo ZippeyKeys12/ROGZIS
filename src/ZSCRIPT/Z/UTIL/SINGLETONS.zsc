@@ -1,4 +1,4 @@
-class ZSingleton{
+class ZSingleton:ZObject{
     virtual
     virtualscope
     ZSingleton Init()

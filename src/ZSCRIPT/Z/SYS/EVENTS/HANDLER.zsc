@@ -49,4 +49,12 @@ class ZEventHandler:EventHandler{
 
     virtual
     void NPCDamaged(WorldEvent e){}
+
+    protected
+    void Error(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Error, Msg);}
+
+    protected
+    void Fatal(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Fatal, Msg);}
 }
