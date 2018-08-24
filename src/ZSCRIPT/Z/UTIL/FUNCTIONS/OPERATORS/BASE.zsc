@@ -9,4 +9,12 @@ class ZF_Operator:ZF_Base abstract{
         Result.Operand=Operand;
         return Result;
     }
+
+    override
+    ZF_Base Clone() const{
+        ZF_Operator Result=ZF_Operator(super.Clone());
+        Result.Main=Main.Clone();
+        Result.Operand=Operand.Clone();
+        return Result;
+    }
 }

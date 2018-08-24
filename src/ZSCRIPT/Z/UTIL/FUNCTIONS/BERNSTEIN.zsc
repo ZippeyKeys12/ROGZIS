@@ -13,4 +13,12 @@ class ZF_Bernstein:ZF_Base{
     override
     double Apply(double X) const
     {return Misc*super.Apply(X)**I*(1-super.Apply(X))**(N-I);}
+
+    override
+    ZF_Base Clone() const{
+        ZF_Bernstein Result=ZF_Bernstein(super.Clone());
+        Result.N=N;
+        Result.I=I;
+        return Result;
+    }
 }

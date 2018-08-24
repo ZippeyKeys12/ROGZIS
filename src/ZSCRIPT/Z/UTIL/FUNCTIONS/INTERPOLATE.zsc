@@ -14,4 +14,12 @@ class ZF_Interpolator:ZF_Base{
     override
     double Apply(double X) const
     {return (1-super.Apply(X))*Start.Apply(super.Apply(X))+super.Apply(X)*End.Apply(super.Apply(X));}
+
+    override
+    ZF_Base Clone() const{
+        ZF_Interpolator Result=ZF_Interpolator(super.Clone());
+        Result.Start=Start;
+        Result.End=End;
+        return Result;
+    }
 }

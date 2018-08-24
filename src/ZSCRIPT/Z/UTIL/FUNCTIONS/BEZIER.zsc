@@ -20,4 +20,14 @@ class ZF_Bezier:ZF_Base{
             Total+=Bernsteins[i].Apply(X)*Points.Get(i);
         return Total;
     }
+
+    override
+    ZF_Base Clone() const{
+        ZF_Bezier Result=ZF_Bezier(super.Clone());
+        Result.Points=Points.Clone();
+        uint Size=Points.Size();
+        for(int I=0; I<Size; I++)
+            Result.Bernsteins.Push(ZF_Bernstein.Create(Size, I));
+        return Result;
+    }
 }
