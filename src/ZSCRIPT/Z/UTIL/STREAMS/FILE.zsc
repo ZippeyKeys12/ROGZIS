@@ -1,0 +1,25 @@
+class ZS_File:ZS_String{
+    static
+    ZS_File Create(String Filename, int Namespace=Wads.GlobalNamespace, Name Type='File'){
+        String Data;
+        if(Filename.Length()<=8 && Filename.IndexOf("/")==-1 && Filename.IndexOf(".")==-1){
+            int Lump;
+            until(-1==(Lump=Wads.CheckNumForName(Filename, Namespace, Lump+1)))
+                Data=Data.Left(Data.Length()-1).."\n"..ZS_Lump.Create(Lump).Data;
+        }else
+            Data=ZS_Lump.Create(Wads.CheckNumForFullName(Filename)).Data;
+        return ZS_File(ZS_String.Create(Data, Type));
+    }
+
+    /////////////
+    // Writing //
+    /////////////
+
+    override
+    void Write(String Data)
+    {Fatal("Cannot write to files");}
+
+    override
+    void Append(String Data)
+    {Fatal("Cannot write to files");}
+}

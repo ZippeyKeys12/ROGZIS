@@ -1,5 +1,0 @@
-class ZR_Lump:ZR_String{
-    static
-    ZR_Lump Create(uint Lump, Name Type='Lump')
-    {return ZR_Lump(ZR_String.Create(Wads.ReadLump(Lump), Type));}
-}
