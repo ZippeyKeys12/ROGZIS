@@ -52,7 +52,7 @@ class ZCalc_S:ZSingleton{
         else if(N==0)
             return 1;
         else
-            Fatal("Attempted factorial of a negative number");
+            Cl_Util.Log('ZCalc', LOG_Fatal, "Attempted factorial of a negative number");
         return 0;
     }
 
