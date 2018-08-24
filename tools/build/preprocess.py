@@ -2,8 +2,7 @@ import re
 
 from strip import ZStript
 
-IncludePattern = re.compile('"(.+)"\\s*', re.IGNORECASE)
-ConfigPattern = re.compile('"(.+)"\\s*(\\s|,)\\s*"(.+)"', re.IGNORECASE)
+ConfigPattern = re.compile('"(.+)"\\s*(\\s|,)\\s*"(.+)"')
 
 
 def ZPreprocess(FullFile, Data):
@@ -15,13 +14,18 @@ def ZPreprocess(FullFile, Data):
         "define": ZPDefine,
         "undef": ZPUndef,
         "if": ZPIf,
-        "ifdef": ZPIfDef,
-        "ifndef": ZPIfNDef,
+        "ifn": ZPIfN,
     }
     Pattern = re.compile("#(\\w+)(\\s+(.*))?")
     Call = Pattern.search(FullFile)
     while Call:
-        Result = Macros[Call.group(1).lower()](FullFile, Call.group(3), Data, Defines)
+        if (
+            Call.group(1) is "endif"
+            or Call.group(1) is "region"
+            or Call.group(1) is "endregion"
+        ):
+            FullFile = re.sub(Call.group(0), "", FullFile)
+        Result = Macros[Call.group(1)](FullFile, Call.group(3), Data, Defines)
         if Result:
             FullFile = re.sub(
                 "#" + Call.group(1) + "\\s+" + Result[0], Result[1] + "\n", FullFile
@@ -35,7 +39,7 @@ def ZPreprocess(FullFile, Data):
 
 def ZPConfigBlocks(FullFile):
     # Config Blocks
-    Pattern = re.compile("\\[Config\\](\\s*){([^}]*)}", re.DOTALL | re.IGNORECASE)
+    Pattern = re.compile("\\[Config\\](\\s*){([^}]*)}", re.DOTALL)
     Call = Pattern.search(FullFile)
     while Call:
         Sections = Call.group(2).split(",")
@@ -46,13 +50,13 @@ def ZPConfigBlocks(FullFile):
                 Components[0].replace('"', ""), Components[1].replace(".", '","')
             )
         FullFile = re.sub(
-            "\\[Config\\](\\s*){" + Call.group(2) + "}",
-            Replacement,
-            FullFile,
-            flags=re.IGNORECASE,
+            "\\[Config\\](\\s*){" + Call.group(2) + "}", Replacement, FullFile
         )
         Call = Pattern.search(FullFile)
     return FullFile
+
+
+IncludePattern = re.compile('"(.+)"\\s*')
 
 
 def ZPInclude(FullFile, Args, Data, Defines):
@@ -74,16 +78,14 @@ def ZPDefine(FullFile, Args, Data, Defines):
 
 
 def ZPUndef(FullFile, Args, Data, Defines):
-    Defines[Args] = False
+    if Args in Defines:
+        del Defines[Args]
 
 
 def ZPIf(FullFile, Args, Data, Defines):
-    return ""
+    if Args not in Defines:
+        FullFile = re.sub("#if\\s+" + Args, "", FullFile)
 
 
-def ZPIfDef(FullFile, Args, Data, Defines):
-    return ""
-
-
-def ZPIfNDef(FullFile, Args, Data, Defines):
-    return ""
+def ZPIfN(FullFile, Args, Data, Defines):
+    return
