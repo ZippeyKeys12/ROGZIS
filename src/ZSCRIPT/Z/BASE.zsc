@@ -1,0 +1,29 @@
+struct ZModInfo{
+    static
+    Name Name()
+    {return 'ROGZIS';} // For now...
+
+    static
+    ZVersion GetVersion()
+    {return ZVersion.Create(0, 0, 0, 0, VERS_PreAlpha);}
+}
+
+class ZObject abstract{
+    protected
+    void Error(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Error, Msg);}
+
+    protected
+    void Fatal(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Fatal, Msg);}
+}
+
+class ZThinker:Thinker abstract{
+    protected
+    void Error(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Error, Msg);}
+
+    protected
+    void Fatal(String Msg)
+    {Cl_Util.Log(GetClassName(), LOG_Fatal, Msg);}
+}
