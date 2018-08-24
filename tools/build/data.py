@@ -8,7 +8,7 @@ def ZData(FullFile, IniFiles):
     # INI Loading
     print("Loading INI Settings")
     Config = SafeConfigParser()
-    IniFiles = (Ini+".ini" for Ini in IniFiles)
+    IniFiles = (Ini + ".ini" for Ini in IniFiles)
     InisFound = Config.read(IniFiles)
     for Ini in InisFound:
         print("  ", Ini)
@@ -21,7 +21,7 @@ def ZData(FullFile, IniFiles):
     for Section in Config:
         for Key, Value in Config.items(Section):
             if Key[0] is "j":
-                JsonFile = Value+".json"
+                JsonFile = Value + ".json"
                 print("  ", JsonFile)
                 with open(JsonFile) as Input:
                     Value = "".join(Input)
@@ -32,14 +32,10 @@ def ZData(FullFile, IniFiles):
     for Section in Config:
         for Key, Value in Config.items(Section):
             if Key[0] in ["i", "d"]:
-                Temp = eval(
-                    compile(parse(Value, mode="eval"), "<string>", "eval"))
+                Temp = eval(compile(parse(Value, mode="eval"), "<string>", "eval"))
                 if Key[0] is "i":
                     Temp = int(Temp)
                 Config[Section][Key] = str(Temp)
 
     # End
-    return {
-        "CONFIG": Config,
-        "DATABASE": Database
-    }
+    return {"CONFIG": Config, "DATABASE": Database}

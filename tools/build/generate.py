@@ -25,23 +25,24 @@ def ZGenerate(FullFile, Data):
                         continue
                     Call += "+" if Default[1] == "true" else "-"
                     if SectionName.find(".") > -1:
-                        Call += SectionName.split(".")[1]+"."
-                    Call += Default[0]+";"
+                        Call += SectionName.split(".")[1] + "."
+                    Call += Default[0] + ";"
                 else:
                     if SectionName == "Type":
-                        Call += Default+";"
+                        Call += Default + ";"
                     else:
                         Default = Default.split("=")
                         if len(Default) < 2:
                             continue
                         if SectionName == "Info":
-                            Call += "//$"+Default[0]+" "+Default[1]+"\n"
+                            Call += "//$" + Default[0] + " " + Default[1] + "\n"
                         else:
                             if not SectionName == "Default":
-                                Call += SectionName+"."
-                            Call += Default[0]+" " + \
-                                re.sub("[()]", "", Default[1])+";"
-        FullFile = Pattern.sub(Call+"}", FullFile, 1)
+                                Call += SectionName + "."
+                            Call += (
+                                Default[0] + " " + re.sub("[()]", "", Default[1]) + ";"
+                            )
+        FullFile = Pattern.sub(Call + "}", FullFile, 1)
         Call = Pattern.search(FullFile)
     print("Successful")
 
@@ -66,8 +67,10 @@ def ZGenerate(FullFile, Data):
                     return super.Init();
                 }}
             }}
-        """.format(MAUpgrade)
-        FullFile = Zsc+FullFile
+        """.format(
+            MAUpgrade
+        )
+        FullFile = Zsc + FullFile
     print("    Inserting Marine Upgrades:", end=" ")
     FullFile = FullFile.replace("$ZMAUpgrades", str(MAUpgrades)[1:-1])
     print("Successful")
@@ -82,11 +85,16 @@ def ZGenerate(FullFile, Data):
     Pattern = re.compile("Map\\s*<\\s*(\\w+)\\s*,\\s*(\\w+)\\s*>")
     Call = Pattern.search(FullFile)
     while Call:
-        print("      "+Call.group(1))
-        FullFile += Template.replace("@KeyType", Call.group(1)
-                                     ).replace("@ValType", Call.group(2))
-        FullFile = re.sub("Map\\s*<\\s*"+Call.group(1)+"\\s*,\\s*"+Call.group(2)+"\\s*>",
-                          "ZDictionary_"+Call.group(1)+"_"+Call.group(2), FullFile, flags=re.IGNORECASE)
+        print("      " + Call.group(1))
+        FullFile += Template.replace("@KeyType", Call.group(1)).replace(
+            "@ValType", Call.group(2)
+        )
+        FullFile = re.sub(
+            "Map\\s*<\\s*" + Call.group(1) + "\\s*,\\s*" + Call.group(2) + "\\s*>",
+            "ZDictionary_" + Call.group(1) + "_" + Call.group(2),
+            FullFile,
+            flags=re.IGNORECASE,
+        )
         Call = Pattern.search(FullFile)
 
     # End

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import re
 import json
@@ -10,13 +9,7 @@ from strip import ZStript
 from generate import ZGenerate
 from preprocess import ZPreprocess
 
-SETTINGS = {
-    "ModName": "ROGZIS",
-    "Version": 3.3,
-    "IniFiles": [
-        "ZCONFIG"
-    ]
-}
+SETTINGS = {"ModName": "ROGZIS", "Version": 3.3, "IniFiles": ["ZCONFIG"]}
 
 
 def ZBuild(Settings, Compress):
@@ -24,7 +17,7 @@ def ZBuild(Settings, Compress):
     ModName = Settings["ModName"]
     # Clean build destination
     print("Cleaning Build Destination: ", end="")
-    BuildFolder = "dist/"+ModName
+    BuildFolder = "dist/" + ModName
     if os.path.exists(BuildFolder):
         shutil.rmtree(BuildFolder)
 
@@ -34,7 +27,7 @@ def ZBuild(Settings, Compress):
     print("Successful")
 
     # Move to Build Folder
-    os.chdir(BuildFolder+"/")
+    os.chdir(BuildFolder + "/")
 
     # Compact ZScript
     print("Compacting ZScript")
@@ -47,16 +40,16 @@ def ZBuild(Settings, Compress):
     Data["DATABASE"].connection.close()
     if Compress:
         FullFile = ZStript(FullFile, True)
-    FullFile = "version \"{}\"".format(Settings["Version"])+FullFile
+    FullFile = 'version "{}"'.format(Settings["Version"]) + FullFile
     os.remove("ZSCRIPT.zsc")
     with open(StartLump, "w+") as Output:
         Output.write(FullFile)
     shutil.rmtree("ZSCRIPT")
     print("Compacting ZScript: Successful")
     os.chdir("../")
-    if os.path.isfile(ModName+".zip"):
-        os.remove(ModName+".zip")
-    ArchiveName = ModName+".pk3"
+    if os.path.isfile(ModName + ".zip"):
+        os.remove(ModName + ".zip")
+    ArchiveName = ModName + ".pk3"
     if os.path.isfile(ArchiveName):
         os.remove(ArchiveName)
 
@@ -64,15 +57,16 @@ def ZBuild(Settings, Compress):
     if Compress:
         print("Compressing PK3 Archive: ", end="")
         shutil.make_archive(ModName, "zip", ModName)
-        os.rename(ModName+".zip", ArchiveName)
+        os.rename(ModName + ".zip", ArchiveName)
         shutil.rmtree(ModName)
         print("Successful")
 
 
 if __name__ == "__main__":
     from sys import argv
+
     Compress = False
     for arg in argv[1:]:
-        if arg.startswith('-C'):
+        if arg.startswith("-C"):
             Compress = True
     ZBuild(SETTINGS, Compress)

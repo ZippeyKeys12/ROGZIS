@@ -2,10 +2,9 @@ import re
 
 from strip import ZStript
 
-IncludePattern = re.compile("\"(.+)\"\\s*", re.IGNORECASE)
+IncludePattern = re.compile('"(.+)"\\s*', re.IGNORECASE)
 
-ConfigPattern = re.compile(
-    "\"(.+)\"\\s*(\\s|,)\\s*\"(.+)\"", re.IGNORECASE)
+ConfigPattern = re.compile('"(.+)"\\s*(\\s|,)\\s*"(.+)"', re.IGNORECASE)
 
 
 def ZPreprocess(FullFile, Data):
@@ -18,16 +17,16 @@ def ZPreprocess(FullFile, Data):
         "undef": ZPUndef,
         "if": ZPIf,
         "ifdef": ZPIfDef,
-        "ifndef": ZPIfNDef
+        "ifndef": ZPIfNDef,
     }
     Pattern = re.compile("#(\\w+)(\\s+(.*))?")
     Call = Pattern.search(FullFile)
     while Call:
-        Result = Macros[Call.group(1).lower()](
-            FullFile, Call.group(3), Data, Defines)
+        Result = Macros[Call.group(1).lower()](FullFile, Call.group(3), Data, Defines)
         if Result:
-            FullFile = re.sub("#"+Call.group(1)+"\\s+" +
-                              Result[0], Result[1]+"\n", FullFile)
+            FullFile = re.sub(
+                "#" + Call.group(1) + "\\s+" + Result[0], Result[1] + "\n", FullFile
+            )
         else:
             FullFile = re.sub(Call.group(0), "", FullFile)
         Call = Pattern.search(FullFile)
@@ -37,8 +36,7 @@ def ZPreprocess(FullFile, Data):
 
 def ZPConfigBlocks(FullFile):
     # Config Blocks
-    Pattern = re.compile(
-        "\\[Config\\](\\s*){([^}]*)}", re.DOTALL | re.IGNORECASE)
+    Pattern = re.compile("\\[Config\\](\\s*){([^}]*)}", re.DOTALL | re.IGNORECASE)
     Call = Pattern.search(FullFile)
     while Call:
         Sections = Call.group(2).split(",")
@@ -46,15 +44,25 @@ def ZPConfigBlocks(FullFile):
         for Section in Sections:
             Components = re.sub("\\s+", " ", Section).split(":")
             Replacement += "const {}=#config {};\n".format(
-                Components[0].replace("\"", ""), Components[1].replace(".", "\",\""))
+                Components[0].replace('"', ""), Components[1].replace(".", '","')
+            )
         FullFile = re.sub(
-            "\\[Config\\](\\s*){"+Call.group(2)+"}", Replacement, FullFile, flags=re.IGNORECASE)
+            "\\[Config\\](\\s*){" + Call.group(2) + "}",
+            Replacement,
+            FullFile,
+            flags=re.IGNORECASE,
+        )
         Call = Pattern.search(FullFile)
     return FullFile
 
 
 def ZPInclude(FullFile, Args, Data, Defines):
-    return (Args, ZPConfigBlocks(ZStript(open(IncludePattern.match(Args.strip()).group(1)).read())))
+    return (
+        Args,
+        ZPConfigBlocks(
+            ZStript(open(IncludePattern.match(Args.strip()).group(1)).read())
+        ),
+    )
 
 
 def ZPConfig(FullFile, Args, Data, Defines):
