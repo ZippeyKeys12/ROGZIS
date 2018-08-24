@@ -3,7 +3,6 @@ import re
 from strip import ZStript
 
 IncludePattern = re.compile('"(.+)"\\s*', re.IGNORECASE)
-
 ConfigPattern = re.compile('"(.+)"\\s*(\\s|,)\\s*"(.+)"', re.IGNORECASE)
 
 

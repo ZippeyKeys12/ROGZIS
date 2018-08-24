@@ -1,13 +1,13 @@
+import json
 import os
 import re
-import json
 import shutil
 from distutils.dir_util import copy_tree
 
 from data import ZData
-from strip import ZStript
 from generate import ZGenerate
 from preprocess import ZPreprocess
+from strip import ZStript
 
 SETTINGS = {"ModName": "ROGZIS", "Version": 3.3, "IniFiles": ["ZCONFIG"]}
 
