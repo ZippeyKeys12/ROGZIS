@@ -1,5 +1,0 @@
-class ZF_Cosine:ZF_Base{
-    override
-    double Apply(double X) const
-    {return Cos(super.Apply(X));}
-}

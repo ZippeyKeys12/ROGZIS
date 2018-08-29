@@ -1,4 +1,4 @@
-class ZMStats:ZThinker{
+class ZMStats:Av_Thinker{
     [Config]{
         "BaseHealth": "STATS.iMaxHealth",
         "MaxPlate": "STATS.iStartPlate",
@@ -55,7 +55,7 @@ class ZMStats:ZThinker{
 
            ShakeLevel;
 
-    ZMapper ArmorMapping;
+    Av_Mapper ArmorMapping;
 
     ZManager Manager;
 
@@ -91,7 +91,7 @@ class ZMStats:ZThinker{
         RunHealth=MaxHealth*RunHealthPercent;
         Plate=MaxPlate;
         PlateAbsorption=BasePlateAbsorption;
-        ArmorMapping=ZMapper.Create(0, 1.5);
+        ArmorMapping=Av_Mapper.Create(0, 1.5);
         MaxEnergy=Energy=BaseEnergy;
         EnergyRechargeRate=MaxEnergy/2;
         IdleRechargeBonus=2;

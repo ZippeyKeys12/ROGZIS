@@ -1,7 +1,7 @@
-class ZManager:ZThinker{
-    ZVector P2E;
+class ZManager:Av_Thinker{
+    Av_Vector P2E;
 
-    ZMatrix2 P2M,
+    Av_Matrix2 P2M,
              M2E_OCC,
              M2E_Ekman;
 

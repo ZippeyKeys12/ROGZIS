@@ -1,7 +1,7 @@
 class ZMood play{
     const DIMENSIONCOUNT=3;
 
-    ZVector Dimensions,
+    Av_Vector Dimensions,
             Ideal;
 
     static
@@ -16,27 +16,27 @@ class ZMood play{
 
     }
 
-    ZVector PAD()
+    Av_Vector PAD()
     {return Dimensions.Clone();}
 
     Name Subspace(){
-        switch(ZCalc_S.Sign(Dimensions.Get(0))){
-            case  1: switch(ZCalc_S.Sign(Dimensions.Get(1))){
-                case  1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
+        switch(Av_Calc_S.Sign(Dimensions.Get(0))){
+            case  1: switch(Av_Calc_S.Sign(Dimensions.Get(1))){
+                case  1: switch(Av_Calc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Exuberant';
                     case -1: return 'Dependent';
                 }
-                case -1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
+                case -1: switch(Av_Calc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Relaxed';
                     case -1: return 'Docile';
                 }
             }
-            case -1: switch(ZCalc_S.Sign(Dimensions.Get(1))){
-                case  1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
+            case -1: switch(Av_Calc_S.Sign(Dimensions.Get(1))){
+                case  1: switch(Av_Calc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Hostile';
                     case -1: return 'Anxious';
                 }
-                case -1: switch(ZCalc_S.Sign(Dimensions.Get(2))){
+                case -1: switch(Av_Calc_S.Sign(Dimensions.Get(2))){
                     case  1: return 'Disdainful';
                     case -1: return 'Bored';
                 }
@@ -46,17 +46,17 @@ class ZMood play{
     }
 
     Name Expression(){
-        if(ZCalc_S.Sign(Dimensions.Get(0))==1)
+        if(Av_Calc_S.Sign(Dimensions.Get(0))==1)
             return 'Happy';
-        else if(ZCalc_S.Sign(Dimensions.Get(1))==-1)
+        else if(Av_Calc_S.Sign(Dimensions.Get(1))==-1)
             return 'Sad';
-        else if(ZCalc_S.Sign(Dimensions.Get(2))==1)
+        else if(Av_Calc_S.Sign(Dimensions.Get(2))==1)
             return 'Angry';
         else
             return 'Fearful';
     }
 
-    ZVector ToEkman(){
+    Av_Vector ToEkman(){
         ZManager Manager=ZManager.Instance();
         if(!Manager.M2E_Ekman){
             // Transformation Matrix: Mood -> Emotion - Ekman Model
@@ -65,14 +65,14 @@ class ZMood play{
                  .59,  .2,  .6,  .2,  -.2,
                  .25,  .1, -.43, .15, -.5
             };
-            Manager.M2E_Ekman=ZMatrix2.Create(ZMood.DIMENSIONCOUNT, ZEmotion.DIMENSIONCOUNT_EKMAN);
+            Manager.M2E_Ekman=Av_Matrix2.Create(ZMood.DIMENSIONCOUNT, ZEmotion.DIMENSIONCOUNT_EKMAN);
             for(int i=0; i<StaticM2E.Size(); i++)
                 Manager.M2E_Ekman.Values[i]=StaticM2E[i];
         }
         return PAD().M2Mul(Manager.M2E_Ekman).SClamp(0, 1);
     }
 
-    ZVector ToOCC(){
+    Av_Vector ToOCC(){
         ZManager Manager=ZManager.Instance();
         if(!Manager.M2E_OCC){
             // Transformation Matrix: Mood -> Emotion - OCC Model
@@ -100,7 +100,7 @@ class ZMood play{
                  .3, -.2,   .4,
                 -.3,  .1,  -.6
             };
-            Manager.M2E_OCC=ZMatrix2.Create(ZEmotion.DIMENSIONCOUNT_OCC, ZMood.DIMENSIONCOUNT);
+            Manager.M2E_OCC=Av_Matrix2.Create(ZEmotion.DIMENSIONCOUNT_OCC, ZMood.DIMENSIONCOUNT);
             for(int i=0; i<StaticM2E.Size(); i++)
                 Manager.M2E_OCC.Values[i]=StaticM2E[i];
             Manager.M2E_OCC=Manager.M2E_OCC.Transpose();

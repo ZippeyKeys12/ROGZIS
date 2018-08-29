@@ -7,7 +7,7 @@ class ZManager{
     ZArmorUpgrades ArmorUpgrades;
 
     private
-    Array<ZGraph> NodeGraphs;
+    Array<Av_Graph> NodeGraphs;
 
     private
     ZEntityManager Entities;
@@ -22,7 +22,7 @@ class ZManager{
         //     PATH_ALL
         // };
         // for(int i=0; i<NodeGraphTypes.Size(); i++){
-        //     ZGraph Graph=new('ZGraph');
+        //     Av_Graph Graph=new('Av_Graph');
         //     while(Marker=ZPathMarker(it.Next())){
         //         Marker.Init();
         //         if((Node=Marker.Node) && (i==PATH_ALL || Node.Type==NodeGraphTypes[i]))
@@ -62,7 +62,7 @@ class ZManager{
     }
 
     clearscope
-    ZGraph Graph(uint Index)
+    Av_Graph Graph(uint Index)
     {return NodeGraphs[Index];}
 
     clearscope

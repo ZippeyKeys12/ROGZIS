@@ -1,20 +1,20 @@
 class ZNeuralLayer abstract{
     virtual
-    ZMatrix2 Get(ZMatrix2 Input)
+    Av_Matrix2 Get(Av_Matrix2 Input)
     {return null;}
 
     virtual
-    ZMatrix2 Weights()
+    Av_Matrix2 Weights()
     {return null;}
 
     virtual
-    ZMatrix2 Train(ZMatrix2 Input, ZMatrix2 LastError, ZMatrix2 LastWeights=null, bool Last=false)
+    Av_Matrix2 Train(Av_Matrix2 Input, Av_Matrix2 LastError, Av_Matrix2 LastWeights=null, bool Last=false)
     {return null;}
 
     virtual
     protected
-    ZMatrix2 Activation(ZMatrix2 Inputs, bool Derivative=false){
-        ZMatrix2 Outputs=ZMatrix2.Create(Inputs.Height(), Inputs.Width());
+    Av_Matrix2 Activation(Av_Matrix2 Inputs, bool Derivative=false){
+        Av_Matrix2 Outputs=Av_Matrix2.Create(Inputs.Height(), Inputs.Width());
         for(int Row=0; Row<Inputs.Height(); Row++)
             for(int Column=0; Column<Inputs.Width(); Column++)
                 Outputs.Set(Row, Column, Sigmoid(Inputs.Get(Row, Column), Derivative));
@@ -26,6 +26,6 @@ class ZNeuralLayer abstract{
     double Sigmoid(double X, bool Derivative=false){
         if(Derivative)
             return X*(1-X);
-        return 1/(1+ZUtil.E**-X);
+        return 1/(1+Av_Util.E**-X);
     }
 }

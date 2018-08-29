@@ -1,4 +1,4 @@
-class ZUtility:ZObject{
+class ZUtility:Av_Object{
     Array<ZUtilityAxis> Axes;
 
     bool Push(ZUtilityAxis Axis){
@@ -9,7 +9,7 @@ class ZUtility:ZObject{
         return Axes.Push(Axis);
     }
 
-    double Get(ZVector Inputs){
+    double Get(Av_Vector Inputs){
         if(Inputs.Size()!=Axes.Size()){
             Error("Incorrect Number of Axes\nIs: "..Inputs.Size()..", Should Be: "..Axes.Size());
             return double.NaN;
@@ -25,16 +25,16 @@ class ZUtilityAxis{
     bool XSign,
          YSign;
 
-    ZMapper Mapper;
+    Av_Mapper Mapper;
 
-    ZF_Base Func;
+    Av_FBase Func;
 
     static
-    ZUtilityAxis Create(ZF_Base Function, double Min, double Max, bool XSign=true, bool YSign=true){
+    ZUtilityAxis Create(Av_FBase Function, double Min, double Max, bool XSign=true, bool YSign=true){
         ZUtilityAxis Result=new('ZUtilityAxis');
         Result.XSign=XSign;
         Result.YSign=YSign;
-        Result.Mapper=ZMapper.Create(Min, Max);
+        Result.Mapper=Av_Mapper.Create(Min, Max);
         Result.Func=Function;
         return Result;
     }

@@ -1,5 +1,0 @@
-class ZF_ArcSine:ZF_Base{
-    override
-    double Apply(double X) const
-    {return ASin(super.Apply(X));}
-}

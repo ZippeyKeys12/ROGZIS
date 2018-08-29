@@ -1,5 +1,0 @@
-class ZF_ArcTangent:ZF_Base{
-    override
-    double Apply(double X) const
-    {return ATan(super.Apply(X));}
-}

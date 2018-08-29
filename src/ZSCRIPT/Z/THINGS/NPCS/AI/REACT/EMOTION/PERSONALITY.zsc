@@ -2,12 +2,12 @@ class ZPersonality play{
     const DIMENSIONCOUNT=5;
     const FACETCOUNT=6;
 
-    ZMapper Bipolar;
+    Av_Mapper Bipolar;
 
-    ZMatrix2 Facets;
+    Av_Matrix2 Facets;
 
     static
-    ZPersonality Create(ZMatrix2 Facets)
+    ZPersonality Create(Av_Matrix2 Facets)
     {return new('ZPersonality').Init(Facets.Clone());}
 
     static
@@ -15,14 +15,14 @@ class ZPersonality play{
     {return new('ZPersonality').Init();}
 
     private
-    ZPersonality Init(ZMatrix2 OrigFacets=null){
+    ZPersonality Init(Av_Matrix2 OrigFacets=null){
         if(!OrigFacets){
-            Facets=ZMatrix2.Create(FACETCOUNT, DIMENSIONCOUNT);
-            ZGaussian Distribution=ZGaussian.Create(0, .125);
+            Facets=Av_Matrix2.Create(FACETCOUNT, DIMENSIONCOUNT);
+            Av_Gaussian Distribution=Av_Gaussian.Create(0, .125);
             for(int i=0; i<DIMENSIONCOUNT*FACETCOUNT; i++)
                 Facets.Values[i]=Clamp(Distribution.Generate(), 0, 1);
         }else Facets=OrigFacets.SClamp(0, 1); // Maybe -1 to 1, inconsistent standards
-        Bipolar=ZMapper.Create(-1, 1);
+        Bipolar=Av_Mapper.Create(-1, 1);
         return self;
     }
 
@@ -32,7 +32,7 @@ class ZPersonality play{
         return Result;
     }
 
-    ZVector OCEAN(bool AsRow=false)
+    Av_Vector OCEAN(bool AsRow=false)
     {return Facets.TAMean(AsRow);}
 
     double Facet(Name Facet){
@@ -89,14 +89,14 @@ class ZPersonality play{
             static const double StaticP2E[]={
                 .354, .177, .135, .312, .021
             };
-            Manager.P2E=ZVector.Create(ZPersonality.DIMENSIONCOUNT);
+            Manager.P2E=Av_Vector.Create(ZPersonality.DIMENSIONCOUNT);
             for(int i=0; i<StaticP2E.Size(); i++)
                 Manager.P2E.Values[i]=StaticP2E[i];
         }
-        return Manager.P2E.VDot(ZVector(Bipolar.VANormRangeMap(OCEAN())));
+        return Manager.P2E.VDot(Av_Vector(Bipolar.VANormRangeMap(OCEAN())));
     }
 
-    ZVector ToPAD(){
+    Av_Vector ToPAD(){
         ZManager Manager=ZManager.Instance();
         if(!Manager.P2M){
             // Transformation Matrix: Personality -> Mood
@@ -105,7 +105,7 @@ class ZPersonality play{
                 .15,  0,   0,   .3,  -.57, // .57 might be positive, research papers are inconsistent...
                 .25, .17, .6,  -.32,   0
             };
-            Manager.P2M=ZMatrix2.Create(ZMood.DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
+            Manager.P2M=Av_Matrix2.Create(ZMood.DIMENSIONCOUNT, ZPersonality.DIMENSIONCOUNT);
             for(int i=0; i<StaticP2M.Size(); i++)
                 Manager.P2M.Values[i]=StaticP2M[i];
         }

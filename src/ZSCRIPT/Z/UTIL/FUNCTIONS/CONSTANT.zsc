@@ -1,5 +1,0 @@
-class ZF_Constant:ZF_Base{
-    override
-    double Apply(double X) const
-    {return Misc;}
-}

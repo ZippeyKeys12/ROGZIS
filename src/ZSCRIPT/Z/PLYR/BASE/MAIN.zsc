@@ -23,7 +23,7 @@ class ZPlayer:PlayerPawn{
     void PostBeginPlay(){
         super.PostBeginPlay();
         UpdateStats();
-        Perl2Shake=ZMapper.Create(2, 7, -2.5, 2.5);
+        Perl2Shake=Av_Mapper.Create(2, 7, -2.5, 2.5);
         Stats.ActualPitch=Pitch;
         Stats.ActualYaw=Angle;
         Stats.ActualRoll=Roll;

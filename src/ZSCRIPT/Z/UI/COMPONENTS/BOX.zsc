@@ -21,9 +21,9 @@ class ZBox:ZElement{
         ZBox Result=ZBox(ZElement.Create('ZBox', Pos, Size, Parent));
         Result.Sides=Sides;
         Result.Alpha=Alpha;
-        Result.Corner=ZTexture.Misc('HUDCNR');
-        Result.Edge=ZTexture.Misc('HUDEDGE');
-        Result.Fill=ZTexture.Misc('HUDFILL');
+        Result.Corner=Av_Texture.Misc('HUDCNR');
+        Result.Edge=Av_Texture.Misc('HUDEDGE');
+        Result.Fill=Av_Texture.Misc('HUDFILL');
         return Result;
     }
 

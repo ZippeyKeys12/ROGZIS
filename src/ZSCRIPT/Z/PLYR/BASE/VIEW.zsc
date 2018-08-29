@@ -14,9 +14,9 @@ class ZPlayer{
 
     Vector3 ViewVector;
 
-    ZMapper Perl2Shake;
+    Av_Mapper Perl2Shake;
 
-    ZPerlin YawShake,
+    Av_Perlin YawShake,
             PitchShake,
             RollShake;
 
@@ -36,8 +36,8 @@ class ZPlayer{
 
     virtual
     void HandleScreenShake(){
-        AddScreenShake(ZCalc_S.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
-        double CurrentShake=ShakeLevel()*Clamp(ZCalc_S.SmoothStart(Stats.Shake), 0, 1);
+        AddScreenShake(Av_Calc_S.NormRangeMap(Vel.Z-LastVel.Z, 35, 50));
+        double CurrentShake=ShakeLevel()*Clamp(Av_Calc_S.SmoothStart(Stats.Shake), 0, 1);
         if(CurrentShake>0){
             ActiveYaw=CurrentShake*Perl2Shake.RangeMap(YawShake.Get(Level.MapTime%1000, 1));
             ActivePitch=CurrentShake*Perl2Shake.RangeMap(PitchShake.Get(Level.MapTime%1000, 1));
@@ -51,7 +51,7 @@ class ZPlayer{
         if(LockTilt)return;
         if(Player.OnGround)PassiveRoll+=Sin(RunOscillation+=11.25)*(Vel.XY dot FrontVector)/30;
         PassiveRoll+=Clamp((Vel.XY dot SideVector)/7.5, -1, 1);
-        PassiveRoll*=!ZCalc_S.Equals(PassiveRoll, 0, .0001)*.75;
+        PassiveRoll*=!Av_Calc_S.Equals(PassiveRoll, 0, .0001)*.75;
     }
 
     virtual

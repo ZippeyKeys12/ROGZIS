@@ -15,21 +15,21 @@ class ZNeuralNetwork{
     bool Push(ZNeuralLayer Layer)
     {return Layers.Push(Layer);}
 
-    ZMatrix2 Get(ZMatrix2 Input){
+    Av_Matrix2 Get(Av_Matrix2 Input){
         for(int i=0; i<Layers.Size(); i++)
             Input=Layers[i].Get(Input);
         return Input;
     }
 
-    void Train(ZMatrix2 InputVals, ZMatrix2 TargetVals){
+    void Train(Av_Matrix2 InputVals, Av_Matrix2 TargetVals){
         for(int i=0; i<InputVals.Height(); i++){
-            ZMatrix2 Input=InputVals.Row(i).AsRow(),
+            Av_Matrix2 Input=InputVals.Row(i).AsRow(),
                     Target=TargetVals.Row(i).AsRow();
-            Array<ZMatrix2> Inputs; Inputs.Clear();
+            Array<Av_Matrix2> Inputs; Inputs.Clear();
             Inputs.Push(Input);
             for(int j=0; j<Layers.Size()-1; j++)
                 Inputs.Push(Input=Layers[j].Get(Input));
-            ZMatrix2 Error=Target.Sub(Layers[Layers.Size()-1].Get(Input));
+            Av_Matrix2 Error=Target.Sub(Layers[Layers.Size()-1].Get(Input));
             for(int j=Layers.Size()-1; j>=0; j--)
                 Error=Layers[j].Train(Inputs[j], Error, (j+1<Layers.Size())?Layers[j+1].Weights():null, j==Layers.Size()-1);
         }

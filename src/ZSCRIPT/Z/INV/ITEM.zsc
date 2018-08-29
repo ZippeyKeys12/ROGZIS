@@ -1,4 +1,4 @@
-class ZItem:ZRegistryItem play{
+class ZItem:Av_RegistryItem play{
     int Price;
 
     String Description;
@@ -28,7 +28,7 @@ class ZItem:ZRegistryItem play{
     {return Description;}
 }
 
-class ZItems:ZRegistry{
+class ZItems:Av_Registry{
     bool Add(ZItem Item)
     {return Item && super.Add(Item);}
 

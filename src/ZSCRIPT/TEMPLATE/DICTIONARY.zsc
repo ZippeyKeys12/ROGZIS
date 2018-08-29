@@ -1,4 +1,4 @@
-class ZDictionary_@KeyType_@ValType:ZObject{
+class ZDictionary_@KeyType_@ValType:Av_Object{
     Array<@KeyType> Keys;
     Array<@ValType> Values;
 

@@ -4,7 +4,7 @@ enum ZE_DamageInfo{
     DMG_ZONE    =   1<<0,
 }
 
-class ZDamageTypes:ZRegistry{
+class ZDamageTypes:Av_Registry{
     bool Add(ZDamageType DamageType)
     {return DamageType && super.Add(DamageType);}
 
@@ -12,7 +12,7 @@ class ZDamageTypes:ZRegistry{
     {return ZDamageType(super.Get(ID));}
 }
 
-class ZDamageType:ZRegistryItem{
+class ZDamageType:Av_RegistryItem{
     private
     ZE_DamageInfo DamageFlags;
 
@@ -26,16 +26,16 @@ class ZDamageType:ZRegistryItem{
     ZDamageType Init(Name ID, String Name, double ArmorPlating, double MagneticShield, double PlasmaShield, double HardLight, ZE_DamageInfo DamageFlags=DMG_NONE){
         self.ID=ID;
         self.Name=Name;
-        Factors[ZCalc_S.ShiftOf(AMR_PLATE)]=ArmorPlating;
-        Factors[ZCalc_S.ShiftOf(AMR_MAGNET)]=MagneticShield;
-        Factors[ZCalc_S.ShiftOf(AMR_SHIELD)]=PlasmaShield;
-        Factors[ZCalc_S.ShiftOf(AMR_LIGHT)]=HardLight;
+        Factors[Av_Calc_S.ShiftOf(AMR_PLATE)]=ArmorPlating;
+        Factors[Av_Calc_S.ShiftOf(AMR_MAGNET)]=MagneticShield;
+        Factors[Av_Calc_S.ShiftOf(AMR_SHIELD)]=PlasmaShield;
+        Factors[Av_Calc_S.ShiftOf(AMR_LIGHT)]=HardLight;
         self.DamageFlags=DamageFlags;
         return self;
     }
 
     double Factor(ZE_ArmorInfo AMR_TYPE) const
-    {return Factors[ZCalc_S.ShiftOf(AMR_TYPE)];}
+    {return Factors[Av_Calc_S.ShiftOf(AMR_TYPE)];}
 
     int Flags() const
     {return DamageFlags;}

@@ -7,7 +7,7 @@ class ZElement ui abstract{
 
     ZDrawer Drawer;
 
-    ZRectangle AABB;
+    Av_Rectangle AABB;
 
     static
     ZElement Create(Class<ZElement> Type, Vector2 Pos, Vector2 Size, ZComponent Parent=null){
@@ -18,7 +18,7 @@ class ZElement ui abstract{
             Parent.Elements.Push(Result);
             Result.__Scale__=Parent.__Scale__;
         }
-        Result.AABB=ZRectangle.Create(Pos, Size);
+        Result.AABB=Av_Rectangle.Create(Pos, Size);
         Result.Drawer=ZDrawer.Create(Result);
         return Result;
     }
@@ -29,7 +29,7 @@ class ZElement ui abstract{
     double Width()
     {return AABB.Width();}
 
-    ZRectangle Bounds()
+    Av_Rectangle Bounds()
     {return AABB.Clone();}
 
     Vector2 Scale()

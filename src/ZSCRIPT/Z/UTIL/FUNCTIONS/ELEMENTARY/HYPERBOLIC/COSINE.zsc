@@ -1,5 +1,0 @@
-class ZF_HyperCosine:ZF_Base{
-    override
-    double Apply(double X) const
-    {return CosH(super.Apply(X));}
-}

@@ -14,7 +14,7 @@ class ZDrawer ui{
         return Result;
     }
 
-    void SetClipRect(ZRectangle Rectangle){
+    void SetClipRect(Av_Rectangle Rectangle){
         Vector2 Pos=Element.AbsPos(),
                 Scale=Element.Scale();
         ClipTop=Pos.Y+Rectangle.Pos.Y*Scale.Y;
@@ -28,7 +28,7 @@ class ZDrawer ui{
             return;
         Pos=Element.AbsPos()+Element.Rel2AbsPos(Pos);
         Vector2 Scale=Element.Scale(),
-                Size=ZTexture.Size(Tex);
+                Size=Av_Texture.Size(Tex);
         Screen.DrawTexture(Tex, Animate, Pos.X/Scale.X, Pos.Y/Scale.Y,
             DTA_Alpha, Alpha,
             DTA_FlipX, FlipX,

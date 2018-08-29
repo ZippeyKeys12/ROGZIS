@@ -34,7 +34,7 @@ class ZNPC:ZActor{
 }
 
 class ZZZ:ZNPC{
-    ZPlan Plan;
+    Av_Plan Plan;
 
     [Property]{
         [Default]

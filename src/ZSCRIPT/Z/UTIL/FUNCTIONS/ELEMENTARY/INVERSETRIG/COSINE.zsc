@@ -1,5 +1,0 @@
-class ZF_ArcCosine:ZF_Base{
-    override
-    double Apply(double X) const
-    {return ACos(super.Apply(X));}
-}

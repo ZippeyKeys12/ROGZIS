@@ -27,8 +27,8 @@ class ZManager{
         __MapSeed__=0;
         for(int i=0; i<Checksum.Length(); i++)
             __MapSeed__^=Checksum.CharCodeAt(i)<<8*(i%4);
-        Player.YawShake=ZPerlin.Create(1000, 3);
-        Player.PitchShake=ZPerlin.Create(1000, 3);
-        Player.RollShake=ZPerlin.Create(1000, 3);
+        Player.YawShake=Av_Perlin.Create(1000, 3);
+        Player.PitchShake=Av_Perlin.Create(1000, 3);
+        Player.RollShake=Av_Perlin.Create(1000, 3);
     }
 }

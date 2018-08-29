@@ -24,7 +24,7 @@ class ZNavMesh play{
     }
 }
 
-class ZNavSector:ZNode{
+class ZNavSector:Av_Node{
     int Index;
 
     Vector3 Center;
@@ -36,9 +36,9 @@ class ZNavSector:ZNode{
 
     static
     ZNavSector Create(Sector Ref){
-        ZNavSector Result=ZNavSector(ZNode.Create('ZNavSector'));
+        ZNavSector Result=ZNavSector(Av_Node.Create('ZNavSector'));
         Vector2 CenterSpot=Ref.CenterSpot;
-        Result.Center=ZCalc.V2().ToV3(CenterSpot, Ref.FloorPlane.ZAtPoint(CenterSpot));
+        Result.Center=Av_Calc.V2().ToV3(CenterSpot, Ref.FloorPlane.ZAtPoint(CenterSpot));
         Result.Ref=Ref;
         Result.Floor=Ref.FloorPlane;
         Result.Ceiling=Ref.CeilingPlane;
@@ -46,7 +46,7 @@ class ZNavSector:ZNode{
     }
 
     override
-    double DistanceTo(ZNode Other){
+    double DistanceTo(Av_Node Other){
         ZNavSector Actual=ZNavSector(Other);
         if(!Actual)
             Error("Attempted to connect non-ZPathNode");
@@ -54,16 +54,16 @@ class ZNavSector:ZNode{
     }
 }
 
-class ZNavLine:ZEdge{
+class ZNavLine:Av_Edge{
     int LineFlags;
 
     Vector3 Midpoint;
 
     static
     ZNavLine Create(ZNavSector From, ZNavSector To, int LineFlags){
-        ZNavLine Result=ZNavLine(ZEdge.Create('ZNavLine', From, To));
+        ZNavLine Result=ZNavLine(Av_Edge.Create('ZNavLine', From, To));
         Result.LineFlags=LineFlags;
-        Result.Midpoint=ZCalc.V3().Midpoint(From.Center, To.Center);
+        Result.Midpoint=Av_Calc.V3().Midpoint(From.Center, To.Center);
         return Result;
     }
 }

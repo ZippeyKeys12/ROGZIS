@@ -1,4 +1,4 @@
-class ZConsiderer:ZObject{
+class ZConsiderer:Av_Object{
     private
     Array<Name> Considerations;
 
@@ -19,7 +19,7 @@ class ZConsiderer:ZObject{
     Name GetID(uint Index)
     {return Considerations[Index];}
 
-    Name Consider(ZVector Rewards){
+    Name Consider(Av_Vector Rewards){
         if(Rewards.Length()!=Considerations.Size()){
             Error("Incorrect Number of Considerations\nIs: "..Rewards.Length()..", Should Be: "..Considerations.Size());
             return '';

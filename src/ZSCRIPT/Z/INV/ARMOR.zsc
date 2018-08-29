@@ -27,7 +27,7 @@ class ZArmorUpgrade:ZUpgrade{
     void DamageEffect(int Damage, ZDamageType DamageType){}
 }
 
-class ZArmorUpgrades:ZRegistry{
+class ZArmorUpgrades:Av_Registry{
     bool Add(ZArmorUpgrade Upgrade)
     {return Upgrade && super.Add(Upgrade);}
 
