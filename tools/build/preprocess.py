@@ -20,9 +20,9 @@ def ZPreprocess(FullFile, Data):
     Call = Pattern.search(FullFile)
     while Call:
         if (
-            Call.group(1) is "endif"
-            or Call.group(1) is "region"
-            or Call.group(1) is "endregion"
+            Call.group(1) == "endif"
+            or Call.group(1) == "region"
+            or Call.group(1) == "endregion"
         ):
             FullFile = re.sub(Call.group(0), "", FullFile)
         Result = Macros[Call.group(1)](FullFile, Call.group(3), Data, Defines)

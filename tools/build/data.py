@@ -20,7 +20,7 @@ def ZData(FullFile, IniFiles):
     print("Loading JSON Data")
     for Section in Config:
         for Key, Value in Config.items(Section):
-            if Key[0] is "j":
+            if Key[0] == "j":
                 JsonFile = Value + ".json"
                 print("  ", JsonFile)
                 with open(JsonFile) as Input:
@@ -33,7 +33,7 @@ def ZData(FullFile, IniFiles):
         for Key, Value in Config.items(Section):
             if Key[0] in ["i", "d"]:
                 Temp = eval(compile(parse(Value, mode="eval"), "<string>", "eval"))
-                if Key[0] is "i":
+                if Key[0] == "i":
                     Temp = int(Temp)
                 Config[Section][Key] = str(Temp)
 
