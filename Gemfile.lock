@@ -2,12 +2,14 @@ GEM
   remote: https://rubygems.org/
   specs:
     rake (12.3.1)
+    rubyzip (1.2.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   rake
+  rubyzip (~> 1.2)
 
 RUBY VERSION
    ruby 2.5.1p57

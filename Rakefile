@@ -1,8 +1,24 @@
 # frozen_string_literal: true
 
+require 'rake/clean'
+
+require 'fileutils'
+
+require 'zip'
+
+NAME = 'ROGZIS'
 VERSION = 3.3
 
-task default: %i[compile build]
+CLEAN.include('./dist/*')
+CLEAN.exclude('./dist/*.pk3')
+
+desc 'Do everything!'
+task default: [] do
+  sh 'rake upgrade'
+  sh 'rake compile'
+  sh 'rake build'
+  sh 'rake clean'
+end
 
 desc 'Updates submodules'
 task :upgrade do
@@ -12,7 +28,7 @@ end
 desc 'Compiles submods'
 task :compile do
   first = true
-  Dir.foreach('./packages') do |package|
+  Dir.foreach('./packages/') do |package|
     next if (package == '.') || (package == '..')
 
     puts "Building: #{package.capitalize}"
@@ -34,8 +50,6 @@ task :compile do
     puts '  Successful'
   end
 end
-
-require 'fileutils'
 
 desc 'Builds PK3 out of compiled submods'
 task :build do
@@ -67,5 +81,10 @@ task :build do
       end
     end
   end
-  Dir.chdir('../')
+  Dir.chdir('../dist/')
+  Zip::File.open("./#{NAME}.pk3", Zip::File::CREATE) do |zipFile|
+    Dir.foreach('./') do |filename|
+      zipFile.add(filename, filename)
+    end
+  end
 end
