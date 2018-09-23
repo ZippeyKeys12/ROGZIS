@@ -1,6 +1,0 @@
-ID	Name	Armor Plating	Magnetic Repulsion	Plasma Shield	Hard Light	Flags	Average	
-BULTS	Armor-Piercing Bullets	1.25	0.50	0.75	1.00		0.875	
-PLSMA	Plasma	0.75	0.00	1.25	1.00		1.000	
-LIGHT	Hard Light	1.25	0.00	1.00	1.25		1.167	
-LASER	Concentrated Laser	1.50	0.00	1.50	-0.50		0.833	
-RADTN	Radiation	0.00	0.00	1.00	1.00	DMG_ZONE	1.000	0.9666666667

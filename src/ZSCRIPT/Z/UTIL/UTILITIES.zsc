@@ -1,5 +1,0 @@
-struct ZUtil{
-    static
-    int MapSeed(Object Caller=null)
-    {return ZManager.DataInstance().__MapSeed__^((Caller)?int(Caller.GetClassName()):0);}
-}

@@ -1,5 +1,0 @@
-GameInfo{
-    PlayerClasses   =   "ZMarine"
-    StatusBarClass  =   "ZStatusBar"
-    EventHandlers   =   "ZHandler", "ZEventManager", "ZBroadcaster", "ZEntityManager"
-}

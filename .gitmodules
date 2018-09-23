@@ -1,0 +1,16 @@
+[submodule "packages/clematis"]
+	path = packages/clematis
+	url = https://github.com/zippeykeys12/clematis
+	update = checkout
+[submodule "packages/avail"]
+	path = packages/avail
+	url = https://github.com/zippeykeys12/avail
+	update = checkout
+[submodule "packages/enki"]
+	path = packages/enki
+	url = https://github.com/zippeykeys12/enki
+	update = checkout
+[submodule "packages/agon"]
+	path = packages/agon
+	url = https://github.com/zippeykeys12/agon
+	update = checkout

@@ -1,7 +1,0 @@
-class ZSentiments{
-    Array<ZSentiment> Sentiments;
-}
-
-class ZSentiment{
-    
-}

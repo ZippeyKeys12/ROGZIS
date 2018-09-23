@@ -1,2 +1,0 @@
-include MapInfo/GameInfo.txt
-include MapInfo/DoomEdNums.txt

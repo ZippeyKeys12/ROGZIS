@@ -1,3 +1,0 @@
-DoomEdNums{
-    //15000   =   ZPathMarker
-}

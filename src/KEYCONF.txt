@@ -1,3 +1,0 @@
-// addkeysection "My Controls", zmodoptions
-clearplayerclasses
-addplayerclass "ZMarine"
