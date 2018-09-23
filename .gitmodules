@@ -1,20 +1,25 @@
 [submodule "packages/clematis"]
 	path = packages/clematis
 	url = https://github.com/zippeykeys12/clematis
+	branch = master
 	update = checkout
 [submodule "packages/avail"]
 	path = packages/avail
 	url = https://github.com/zippeykeys12/avail
+	branch = master
 	update = checkout
 [submodule "packages/enki"]
 	path = packages/enki
 	url = https://github.com/zippeykeys12/enki
+	branch = master
 	update = checkout
 [submodule "packages/agon"]
 	path = packages/agon
 	url = https://github.com/zippeykeys12/agon
+	branch = master
 	update = checkout
 [submodule "scripts/compile/bobby"]
 	path = scripts/compile/bobby
 	url = https://github.com/ZippeyKeys12/bobby
+	branch = master
 	update = checkout
