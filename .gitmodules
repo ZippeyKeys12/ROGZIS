@@ -14,3 +14,7 @@
 	path = packages/agon
 	url = https://github.com/zippeykeys12/agon
 	update = checkout
+[submodule "scripts/compile/bobby"]
+	path = scripts/compile/bobby
+	url = https://github.com/ZippeyKeys12/bobby
+	update = checkout
