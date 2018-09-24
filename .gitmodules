@@ -18,8 +18,8 @@
 	url = https://github.com/zippeykeys12/agon
 	branch = master
 	update = checkout
-[submodule "scripts/compile/bobby"]
-	path = scripts/compile/bobby
-	url = https://github.com/ZippeyKeys12/bobby
+[submodule "scripts/main/compile/bobby"]
+	path = scripts/main/compile/bobby
+	url = https://github.com/zippeykeys12/bobby
 	branch = master
 	update = checkout
