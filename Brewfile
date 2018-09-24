@@ -1,2 +1,2 @@
-brew "python"
+brew "python3"
 brew "ruby"
