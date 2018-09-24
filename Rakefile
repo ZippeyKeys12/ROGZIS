@@ -2,7 +2,8 @@
 
 require 'rake/clean'
 
-import 'scripts/main/main.mf'
+import 'scripts/main/build.mf'
+import 'scripts/docs/build.mf'
 
 NAME = 'ROGZIS'
 VERSION = 1.0
@@ -24,7 +25,10 @@ task :upgrade do
 end
 
 desc 'Build all'
-multitask build: [:dist]
+multitask build: %i[dist docs]
 
 desc "Build #{NAME}"
 task dist: 'dist:all'
+
+desc "Build #{NAME} documentation"
+task docs: 'docs:all'

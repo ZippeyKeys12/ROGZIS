@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+namespace 'docs' do
+    desc 'Build documentation'
+    task :build do
+        sh 'pipenv run sphinx-build docs/source docs/_build'
+    end
+end
