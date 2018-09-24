@@ -81,6 +81,7 @@ task :build do
       end
     end
   end
+
   Dir.chdir('../dist/')
   Zip::File.open("./#{NAME}.pk3", Zip::File::CREATE) do |zipFile|
     Dir.foreach('./') do |filename|
