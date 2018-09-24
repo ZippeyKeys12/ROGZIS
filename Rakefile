@@ -12,10 +12,13 @@ ZVERSION = 3.3
 CLEAN.include('./dist/*')
 CLEAN.exclude('./dist/*.pk3')
 
+CLOBBER.include('./dist/')
+CLOBBER.include('./docs/_build/')
+
 desc 'Do everything!'
 task default: [] do
   sh 'rake upgrade'
-  sh 'rake dist'
+  sh 'rake build'
   sh 'rake clean'
 end
 
