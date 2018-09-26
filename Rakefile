@@ -24,6 +24,7 @@ end
 
 desc 'Updates submodules'
 task :upgrade do
+  sh 'git pull'
   sh 'git submodule foreach git pull origin master'
 end
 

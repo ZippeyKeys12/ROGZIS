@@ -6,5 +6,5 @@
         "Gemfile": "ruby",
         "Pipfile": "toml"
     },
-    "python.formatting.provider": "yapf"
+    "python.formatting.provider": "autopep8"
 }
