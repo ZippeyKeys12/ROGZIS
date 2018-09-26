@@ -46,7 +46,7 @@ namespace 'dist' do
 
         nItem = subdir + item
         if File.directory?(nItem)
-          FileUtils.copy_entry(nItem, "../dist/#{item}")
+          FileUtils.cp_r(nItem, "../dist/#{item}")
         elsif File.file?(nItem)
           dest = "../dist/#{item}"
           if File.exist?(dest)
