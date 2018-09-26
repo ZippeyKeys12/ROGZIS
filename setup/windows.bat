@@ -1,4 +1,4 @@
-scoop install python ruby
-gem install bundler
-bundler install
-pip install sphinx
+call gem install bundler
+call bundler install
+call pip install pipenv
+call pipenv install

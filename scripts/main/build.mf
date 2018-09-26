@@ -26,7 +26,7 @@ namespace 'dist' do
         end
       end
 
-      sh "python3 scripts/main/compile/bobby/build.py #{dest} #{settings}"
+      sh "pipenv run py scripts/main/compile/bobby/build.py #{dest} #{settings}"
       puts '  Successful'
     end
   end

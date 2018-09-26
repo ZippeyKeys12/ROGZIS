@@ -8,6 +8,4 @@ pylint = "*"
 sphinx = "*"
 recommonmark = "*"
 sphinx-autobuild = "*"
-
-[requires]
-python_version = "3.6"
+yapf = "*"

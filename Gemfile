@@ -4,7 +4,6 @@ ruby ">= #{RUBY_VERSION}", patchlevel: RUBY_PATCHLEVEL.to_s
 
 source 'https://rubygems.org'
 
-group :build do
-  gem 'rake'
-  gem 'rubyzip', '~> 1.2'
-end
+gem 'rubocop', require: false, group: :development
+gem 'rake', group: :development
+gem 'rubyzip', '~> 1.2', group: :development

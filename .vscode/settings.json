@@ -1,4 +1,10 @@
 {
-    "python.pythonPath": "/Users/Administrator/.local/share/virtualenvs/rogzis-1Ur99J3l",
-    "python.formatting.provider": "black"
+    "python.pythonPath": "C:\\Users\\ZAame\\.virtualenvs\\rogzis-rJO8ReiQ\\Scripts\\python.exe",
+    "files.associations": {
+        "*.zsc": "csharp",
+        "*.mf": "ruby",
+        "Gemfile": "ruby",
+        "Pipfile": "toml"
+    },
+    "python.formatting.provider": "yapf"
 }
