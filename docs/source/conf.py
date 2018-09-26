@@ -16,7 +16,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = "ROGZIS"
@@ -27,7 +26,6 @@ author = "ZippeyKeys12"
 version = ""
 # The full version, including alpha/beta/rc tags
 release = "1.0"
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -78,7 +76,6 @@ exclude_patterns = []
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -107,12 +104,10 @@ html_static_path = ["_static"]
 #
 # html_sidebars = {}
 
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "ROGZISdoc"
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -134,10 +129,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, "ROGZIS.tex", "ROGZIS Documentation", "ZippeyKeys12", "manual")
-]
-
+latex_documents = [(master_doc, "ROGZIS.tex", "ROGZIS Documentation",
+                    "ZippeyKeys12", "manual")]
 
 # -- Options for manual page output ------------------------------------------
 
@@ -145,24 +138,20 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [(master_doc, "rogzis", "ROGZIS Documentation", [author], 1)]
 
-
 # -- Options for Texinfo output ----------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-    (
-        master_doc,
-        "ROGZIS",
-        "ROGZIS Documentation",
-        author,
-        "ROGZIS",
-        "Really Overambitious GZDoom Immersive Simulation",
-        "Mod",
-    )
-]
-
+texinfo_documents = [(
+    master_doc,
+    "ROGZIS",
+    "ROGZIS Documentation",
+    author,
+    "ROGZIS",
+    "Really Overambitious GZDoom Immersive Simulation",
+    "Mod",
+)]
 
 # -- Options for Epub output -------------------------------------------------
 
@@ -180,7 +169,6 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
-
 
 # -- Extension configuration -------------------------------------------------
 
