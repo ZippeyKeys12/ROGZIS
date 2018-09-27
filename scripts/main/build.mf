@@ -33,8 +33,8 @@ namespace 'dist' do
 
   desc 'Builds PK3 out of compiled submods'
   task :build do
-    FileUtils.rm_rf('./dist')
-    Dir.mkdir './dist'
+    FileUtils.rm_rf('./dist/', secure: true)
+    Dir.mkdir './dist' unless File.exist?('./dist')
     Dir.chdir './packages'
     Dir.foreach('./') do |package|
       next if (package == '.') || (package == '..')
@@ -64,11 +64,18 @@ namespace 'dist' do
 
     Dir.chdir('../dist/')
     Zip::File.open("./#{NAME}-v#{VERSION}.pk3", Zip::File::CREATE) do |zipFile|
-      Dir.foreach('./') do |filename|
-        zipFile.add(filename, filename)
-      end
+      zipFolder('./', zipFile)
     end
   end
 
   task all: %i[compile build]
+end
+
+def zipFolder(directory, _zipfile)
+  Dir.foreach(directory) do |filename|
+    next if (filename == '.') || (filename == '..')
+
+    _zipfile.add("#{directory}#{filename}", "#{directory}#{filename}")
+    zipFolder("#{directory}#{filename}/", _zipfile) if File.directory?(filename)
+  end
 end
