@@ -32,7 +32,7 @@ namespace 'dist' do
   end
 
   desc 'Builds PK3 out of compiled submods'
-  task :build do
+  task build: :compile do
     FileUtils.rm_rf('./dist/', secure: true)
     Dir.mkdir './dist' unless File.exist?('./dist')
     Dir.chdir './packages'
@@ -68,7 +68,7 @@ namespace 'dist' do
     end
   end
 
-  task all: %i[compile build]
+  task all: %i[build]
 end
 
 def zipFolder(directory, _zipfile)
