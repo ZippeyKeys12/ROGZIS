@@ -221,3 +221,4 @@ build-iPhoneSimulator/
 
 # Specific
 dist/
+gzdoom_log.txt
