@@ -64,18 +64,11 @@ namespace 'dist' do
 
     Dir.chdir('../dist/')
     Zip::File.open("./#{NAME}-v#{VERSION}.pk3", Zip::File::CREATE) do |zipFile|
-      zipFolder('./', zipFile)
+      Dir.glob('**/*').reject { |fn| File.directory?(fn) }.each do |file|
+        zipFile.add(file.sub('./' + '/', ''), file)
+      end
     end
   end
 
   task all: %i[build]
-end
-
-def zipFolder(directory, _zipfile)
-  Dir.foreach(directory) do |filename|
-    next if (filename == '.') || (filename == '..')
-
-    _zipfile.add("#{directory}#{filename}", "#{directory}#{filename}")
-    zipFolder("#{directory}#{filename}/", _zipfile) if File.directory?(filename)
-  end
 end
