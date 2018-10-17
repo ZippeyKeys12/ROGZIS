@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-ruby ">= #{RUBY_VERSION}", patchlevel: RUBY_PATCHLEVEL.to_s
-
+ruby '>= 2.5.1'
 source 'https://rubygems.org'
 
 gem 'rubocop', require: false, group: :development
