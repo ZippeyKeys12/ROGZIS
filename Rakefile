@@ -16,7 +16,7 @@ CLOBBER.include('./dist/')
 CLOBBER.include('./docs/_build/')
 
 desc 'Do everything!'
-task default: [] do
+task :default do
   sh 'rake upgrade'
   sh 'rake build'
   sh 'rake clean'
