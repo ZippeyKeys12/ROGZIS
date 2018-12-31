@@ -52,7 +52,7 @@ namespace 'dist' do
           if File.exist?(dest)
             open(dest, 'a') do |o|
               open(nItem, 'r').each do |line|
-                o.puts(line)
+                o.puts("\n" + line)
               end
             end
           elsif
